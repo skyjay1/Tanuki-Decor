@@ -20,12 +20,14 @@ import tanukidecor.block.entity.ClockBlockEntity;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.TDBlockShapes;
 
+import java.util.function.Supplier;
+
 public class LibraryClockBlock extends HorizontalMultiblock implements EntityBlock, IChimeProvider {
 
-    protected final @Nullable SoundEvent chimeSound;
-    protected final @Nullable SoundEvent tickSound;
+    protected final Supplier<SoundEvent> chimeSound;
+    protected final Supplier<SoundEvent> tickSound;
 
-    public LibraryClockBlock(@Nullable SoundEvent tickSound, @Nullable SoundEvent chimeSound, Properties pProperties) {
+    public LibraryClockBlock(Supplier<SoundEvent> tickSound, Supplier<SoundEvent> chimeSound, Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X3X1, createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X3X1, TDBlockShapes.LIBRARY_CLOCK_SHAPE), pProperties);
         this.tickSound = tickSound;
         this.chimeSound = chimeSound;
@@ -36,13 +38,13 @@ public class LibraryClockBlock extends HorizontalMultiblock implements EntityBlo
     @Nullable
     @Override
     public SoundEvent getChimeSound() {
-        return this.chimeSound;
+        return this.chimeSound.get();
     }
 
     @Nullable
     @Override
     public SoundEvent getTickSound() {
-        return this.tickSound;
+        return this.tickSound.get();
     }
 
     //// BLOCK ENTITY ////

@@ -9,11 +9,11 @@ package tanukidecor.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.block.IChimeProvider;
@@ -22,13 +22,11 @@ import java.util.Random;
 
 public class ClockBlockEntity extends BlockEntity {
 
-    protected static final long CHIME_INTERVAL = 40L;
+    protected static final long NOON = 6000L;
+    protected static final long MIDNIGHT = 18000L;
+    protected static final long MIN_CHIME_INTERVAL = 40L;
 
     protected final @Nullable IChimeProvider chimeProvider;
-
-    protected long chimeTimestamp;
-    protected long nextChimeTimestamp;
-
 
     public ClockBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
@@ -59,13 +57,12 @@ public class ClockBlockEntity extends BlockEntity {
         }
         final long dayTime = level.getDayTime();
         final Random random = level.getRandom();
-        // attempt to play chime sound
-        final long chimeTimeRemaining = nextChimeTimestamp - chimeTimestamp;
-        final SoundEvent chimeSound = chimeProvider.getChimeSound();
-        if(chimeTimeRemaining == 0 && chimeSound != null) {
-            final float pitch = chimeProvider.getChimePitch(random, dayTime);
-            final float volume = chimeProvider.getChimeVolume(random, dayTime);
-            level.playSound(null, blockPos, chimeSound, SoundSource.BLOCKS, volume, pitch);
+        // attempt to play tick sound
+        final SoundEvent tickSound = chimeProvider.getTickSound();
+        if(tickSound != null && dayTime % 20 == 0) {
+            final float pitch = chimeProvider.getTickPitch(random, dayTime);
+            final float volume = chimeProvider.getTickVolume(random, dayTime);
+            level.playSound(null, blockPos, tickSound, SoundSource.BLOCKS, volume, pitch);
         }
     }
 
@@ -75,21 +72,25 @@ public class ClockBlockEntity extends BlockEntity {
         }
         final long dayTime = level.getDayTime();
         final Random random = level.getRandom();
-        // attempt to play tick sound
-        final SoundEvent tickSound = chimeProvider.getTickSound();
-        if(dayTime % 20 == 0 && tickSound != null) {
-            final float pitch = chimeProvider.getTickPitch(random, dayTime);
-            final float volume = chimeProvider.getTickVolume(random, dayTime);
-            level.playSound(null, blockPos, tickSound, SoundSource.BLOCKS, volume, pitch);
+        // attempt to play chime sound
+        final SoundEvent chimeSound = chimeProvider.getChimeSound();
+        if(chimeSound != null && (dayTime == NOON || dayTime == MIDNIGHT || dayTime == (MIDNIGHT + MIN_CHIME_INTERVAL))) {
+            final float pitch = chimeProvider.getChimePitch(random, dayTime);
+            final float volume = chimeProvider.getChimeVolume(random, dayTime);
+            level.playSound(null, blockPos, chimeSound, SoundSource.BLOCKS, volume, pitch);
         }
     }
 
-    public float getHour() {
-        return (level.getDayTime()) / 1000.0F;
+    public static float getHour(final long dayTime, final float partialTick) {
+        return Mth.lerp(partialTick, dayTime - 1, dayTime) / 1000.0F;
     }
 
-    public float getMinute() {
-        return (level.getDayTime()) / 100.0F; // TODO fix math
+    public static float getMinute(final long dayTime, final float partialTick) {
+        return Mth.lerp(partialTick, dayTime - 1, dayTime) / 100.0F; // TODO fix math
+    }
+
+    public static float getSecond(final long dayTime, final float partialTick) {
+        return Mth.lerp(partialTick, dayTime - 1, dayTime) / 20.0F; // TODO fix math
     }
 
     @Override

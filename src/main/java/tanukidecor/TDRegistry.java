@@ -6,6 +6,7 @@
 
 package tanukidecor;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
@@ -48,7 +49,7 @@ public final class TDRegistry {
         }
 
         public static final RegistryObject<Block> LIBRARY_CLOCK = registerWithMultiblockItem("library_clock", () ->
-                new LibraryClockBlock(SoundEvents.STONE_BUTTON_CLICK_ON, SoundEvents.AMETHYST_BLOCK_CHIME,
+                new LibraryClockBlock(SoundReg.GRANDFATHER_CLOCK_TICK, SoundReg.GRANDFATHER_CLOCK_CHIME,
                         BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 60.0F))
         );
 
@@ -100,7 +101,7 @@ public final class TDRegistry {
             BLOCK_ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
         }
 
-        public static final RegistryObject<BlockEntityType<?>> LIBRARY_CLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("library_clock", () ->
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> LIBRARY_CLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("library_clock", () ->
                 BlockEntityType.Builder.of((pos, state) -> new ClockBlockEntity(BlockEntityReg.LIBRARY_CLOCK_BLOCK_ENTITY.get(), pos, state),
                                 BlockReg.LIBRARY_CLOCK.get())
                         .build(null));
@@ -112,5 +113,12 @@ public final class TDRegistry {
         private static void register() {
             SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         }
+
+        private static RegistryObject<SoundEvent> register(final String name) {
+            return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(TanukiDecor.MODID, name)));
+        }
+
+        public static final RegistryObject<SoundEvent> GRANDFATHER_CLOCK_TICK = register("block.grandfather_clock.tick");
+        public static final RegistryObject<SoundEvent> GRANDFATHER_CLOCK_CHIME = register("block.grandfather_clock.chime");
     }
 }

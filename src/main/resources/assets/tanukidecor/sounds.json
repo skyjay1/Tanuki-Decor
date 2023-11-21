@@ -1,0 +1,10 @@
+{
+  "block.grandfather_clock.tick": {
+    "sounds": [ "tanukidecor:grandfather_tick" ],
+    "subtitle": "subtitles.block.tanukidecor.grandfather_clock.tick"
+  },
+  "block.grandfather_clock.chime": {
+    "sounds": [ "tanukidecor:grandfather_chime" ],
+    "subtitle": "subtitles.block.tanukidecor.grandfather_clock.chime"
+  }
+}

@@ -10,6 +10,11 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -18,6 +23,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
+import tanukidecor.client.blockentity.LibraryClockBlockEntityRenderer;
 
 public final class TDClientEvents {
 
@@ -30,9 +36,21 @@ public final class TDClientEvents {
     }
 
     public static final class ModHandler {
+
         @SubscribeEvent
         public static void onCommonSetup(final FMLCommonSetupEvent event) {
+            event.enqueueWork(ModHandler::registerBlockRenderLayers);
+        }
 
+        @SubscribeEvent
+        public static void onRegisterEntityRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LIBRARY_CLOCK_BLOCK_ENTITY.get(), LibraryClockBlockEntityRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerModel(final ModelRegistryEvent event) {
+            // TODO figure out how to register additional models
+            LibraryClockBlockEntityRenderer.addSpecialModels();
         }
 
         private static void registerBlockRenderLayers() {

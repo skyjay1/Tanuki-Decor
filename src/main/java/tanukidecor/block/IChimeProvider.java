@@ -30,6 +30,6 @@ public interface IChimeProvider {
     }
 
     default float getTickPitch(Random random, long dayTime) {
-        return 0.9F + (dayTime % 2) * 0.1F; // TODO fix math so every other tick is different pitch
+        return 0.9F + ((dayTime / 20) % 2) * 0.1F; // TODO fix math so every other tick is different pitch
     }
 }
