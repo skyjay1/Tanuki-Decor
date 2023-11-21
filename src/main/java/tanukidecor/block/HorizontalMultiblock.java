@@ -9,9 +9,14 @@ package tanukidecor.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -19,17 +24,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeUtils;
-import tanukidecor.util.TDBlockShapes;
 
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 public class HorizontalMultiblock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
@@ -47,12 +54,21 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
         this(multiblockHandler, multiblockHandler.createShapeBuilder(shapeTemplate), pProperties);
     }
 
-    public HorizontalMultiblock(MultiblockHandler multiblockHandler, Function<BlockState, VoxelShape> shapeBuilder, Properties pProperties) {
+    public HorizontalMultiblock(MultiblockHandler multiblockHandler,
+                                Function<BlockState, VoxelShape> shapeBuilder,
+                                Properties pProperties) {
         super(pProperties.dynamicShape());
         this.multiblockHandler = multiblockHandler;
         this.shapeBuilder = shapeBuilder;
+        // re-create state definition
+        StateDefinition.Builder<Block, BlockState> builder = new StateDefinition.Builder<>(this);
+        this.createMultiblockStateDefinition(builder);
+        this.stateDefinition = builder.create(Block::defaultBlockState, BlockState::new);
+        this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
+                .setValue(WATERLOGGED, false)
+                .setValue(FACING, Direction.NORTH)));
+        // calculate voxel shapes for all possible states
         this.precalculateShapes();
-        this.registerDefaultState(multiblockHandler.getCenterState(this.stateDefinition.any()));
     }
 
     public MultiblockHandler getMultiblockHandler() {
@@ -63,7 +79,12 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        multiblockHandler.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
+        // note: this method is called from the super constructor before the multiblockHandler is assigned
+        super.createBlockStateDefinition(pBuilder);
+    }
+
+    protected void createMultiblockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        this.multiblockHandler.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
     }
 
     //// PLACEMENT ////
@@ -73,28 +94,63 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
         /*
          * The BlockPlaceContext is adjusted in the block item to contain the center position
          */
-        // prepare to scan area for valid block placement
-        final Level level = pContext.getLevel();
         final Direction direction = pContext.getHorizontalDirection().getOpposite();
-        // determine center
-        final BlockPos center = pContext.getClickedPos();
-        // verify not outside world height
-        final Vec3i dimensions = multiblockHandler.getDimensions();
-        final Vec3i centerIndex = multiblockHandler.getCenterIndex();
-        if(dimensions.getY() > 1 && (level.isOutsideBuildHeight(center.above(dimensions.getY() - centerIndex.getY() - 1))
-                || level.isOutsideBuildHeight(center.below(centerIndex.getY())))) {
-            return null;
-        }
-        // validate blocks
-        if(!multiblockHandler.allPositions(center, p -> level.getBlockState(p).canBeReplaced(pContext))) {
-            return null;
-        }
-        // place block
-        final boolean waterlogged = pContext.getLevel().getFluidState(center).getType() == Fluids.WATER;
-        return multiblockHandler.getCenterState(
-                this.defaultBlockState()
+        // create base block state
+        final boolean waterlogged = pContext.getLevel().getFluidState(pContext.getClickedPos()).getType() == Fluids.WATER;
+        final BlockState blockState = this.defaultBlockState()
                 .setValue(FACING, direction)
-                .setValue(WATERLOGGED, waterlogged));
+                .setValue(WATERLOGGED, waterlogged);
+        // defer to multiblock handler
+        return multiblockHandler.getStateForPlacement(pContext, blockState, direction);
+    }
+
+    @Override
+    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        // update waterlogged
+        if (pState.getValue(WATERLOGGED)) {
+            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+        }
+        // validate block can stay
+        if(!multiblockHandler.canSurvive(pState, pLevel, pCurrentPos, pState.getValue(FACING))) {
+            return getFluidState(pState).createLegacyBlock();
+        }
+        return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+    }
+
+    @Override
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+        multiblockHandler.onBlockPlaced(pLevel, pPos, pState, pState.getValue(FACING));
+    }
+
+    @Override
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+        // assume if the block at the given position is not this one, this is a preemptive check
+        if(!pState.is(this)) {
+            return true;
+        }
+        // validate the multiblock is intact
+        return multiblockHandler.canSurvive(pState, pLevel, pPos, pState.getValue(FACING));
+    }
+
+    @Override
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+        if (!pLevel.isClientSide() && pPlayer.isCreative()) {
+            multiblockHandler.preventCreativeDropFromCenterPart(pLevel, pPos, pState, pState.getValue(FACING), pPlayer);
+        }
+        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    }
+
+    @Override
+    public PushReaction getPistonPushReaction(BlockState pState) {
+        return PushReaction.BLOCK;
+    }
+
+    //// FLUID ////
+
+    @Override
+    public FluidState getFluidState(BlockState pState) {
+        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
     //// SHAPE ////
@@ -114,47 +170,41 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
         CENTERED_VISUAL_SHAPES.clear();
         MULTIBLOCK_SHAPES.clear();
         // calculate centered visual shapes
-        final BlockState centerBlockState = multiblockHandler.getCenterState(this.defaultBlockState());;
-        final VoxelShape centeredShape = createMultiblockShape(centerBlockState);
-        final Vec3i centerIndex = multiblockHandler.getCenterIndex();
-        CENTERED_VISUAL_SHAPES.putAll(ShapeUtils.rotateShapes(TDBlockShapes.ORIGIN_DIRECTION, centeredShape));
+        final VoxelShape centeredShape = createMultiblockShape();
+        CENTERED_VISUAL_SHAPES.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, centeredShape));
         // iterate all block states
         for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
             // cache the individual shape
             BLOCK_SHAPES.put(blockState, this.shapeBuilder.apply(blockState));
             // move the centered shape for the given rotation to the correct offset
+            Direction direction = blockState.getValue(FACING);
             Vec3i index = multiblockHandler.getIndex(blockState);
+            Vec3i offset = MultiblockHandler.indexToOffset(index, direction);
             VoxelShape shape = CENTERED_VISUAL_SHAPES.get(blockState.getValue(FACING))
-                    .move(centerIndex.getX() - index.getX(), centerIndex.getY() - index.getY(), centerIndex.getZ() - index.getZ());
+                    .move(-offset.getX(), -offset.getY(), -offset.getZ());
             // cache the offset visual shape
             MULTIBLOCK_SHAPES.put(blockState, shape);
         }
     }
 
     /**
-     * @param blockState the block state
-     * @return a newly created multiblock {@link VoxelShape} for the given block state
+     * @return a newly created multiblock {@link VoxelShape}, centered around the center block
      */
-    protected VoxelShape createMultiblockShape(final BlockState blockState) {
-        final Vec3i offset = multiblockHandler.getIndex(blockState);
-        final Vec3i dimensions = multiblockHandler.getDimensions();
-        Vec3i index = Vec3i.ZERO;
-        VoxelShape shape = Shapes.empty();
-        for(int x = 0, xn = dimensions.getX(); x < xn; x++) {
-            for(int y = 0, yn = dimensions.getY(); y < yn; y++) {
-                for(int z = 0, zn = dimensions.getZ(); z < zn; z++) {
-                    index = new Vec3i(x, y, z);
-                    BlockState b = multiblockHandler.getIndexedState(blockState, index);
-                    shape = ShapeUtils.orUnoptimized(shape, BLOCK_SHAPES.computeIfAbsent(b, this.shapeBuilder).move(x - offset.getX(), y - offset.getY(), z - offset.getZ()));
-                }
-            }
-        }
-        return shape.optimize();
+    protected VoxelShape createMultiblockShape() {
+        final BlockState blockState = multiblockHandler.getCenterState(defaultBlockState());
+        final AtomicReference<VoxelShape> shape = new AtomicReference<>(Shapes.empty());
+        MultiblockHandler.iterateIndices(multiblockHandler.getMinIndex(), multiblockHandler.getMaxIndex(), index -> {
+            BlockState b = multiblockHandler.getIndexedState(blockState, index);
+            shape.set(ShapeUtils.orUnoptimized(shape.get(), BLOCK_SHAPES.computeIfAbsent(b, this.shapeBuilder)
+                    .move(index.getX(), index.getY(), index.getZ())
+            ));
+        });
+        return shape.get().optimize();
     }
 
     /**
      * @param blockState the block state
-     * @return the cached shape data for the given block state
+     * @return the cached shape for the given block state
      */
     public VoxelShape getBlockShape(final BlockState blockState) {
         return BLOCK_SHAPES.get(blockState);
@@ -162,7 +212,7 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
 
     /**
      * @param blockState the block state
-     * @return the cached shape data for the given block state
+     * @return the cached multiblock shape for the given block state
      */
     public VoxelShape getMultiblockShape(final BlockState blockState) {
         return MULTIBLOCK_SHAPES.get(blockState);

@@ -14,6 +14,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import tanukidecor.block.HorizontalMultiblock;
 import tanukidecor.util.MultiblockHandler;
+import tanukidecor.util.ShapeUtils;
 
 import javax.annotation.Nullable;
 
@@ -29,10 +30,9 @@ public class MultiblockItem extends BlockItem {
         final BlockPos blockpos = pContext.getClickedPos();
         final Direction direction = pContext.getHorizontalDirection();
         final MultiblockHandler multiblockHandler = ((HorizontalMultiblock) this.getBlock()).getMultiblockHandler();
-        final Vec3i dimensions = multiblockHandler.getDimensions();
-        // determine the center position of a multiblock placed with the given position and rotation
-        final Vec3i index = Vec3i.ZERO; // TODO fix math new Vec3i(-(direction.getStepX() - (dimensions.getX() / 2)), 0, -(direction.getStepZ() - (dimensions.getZ() / 2)));
-        final BlockPos center = multiblockHandler.getCenter(blockpos, index);
+        // determine the index of the clicked position and the desired center position
+        final Vec3i clickedIndex = new Vec3i(0, -1, 0); // TODO math new Vec3i(-(direction.getStepX() - centerIndex.getX()), 0, -(direction.getStepZ() - centerIndex.getZ()));
+        final BlockPos center = MultiblockHandler.getCenterPos(pContext.getClickedPos(), clickedIndex, direction.getOpposite());
         // create a block place context at the center position
         return BlockPlaceContext.at(pContext, center, direction);
     }

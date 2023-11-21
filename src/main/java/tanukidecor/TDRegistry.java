@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -45,7 +46,7 @@ public final class TDRegistry {
         }
 
         public static final RegistryObject<Block> LIBRARY_CLOCK = registerWithMultiblockItem("library_clock", () ->
-                new HorizontalMultiblock(MultiblockHandler.MULTIBLOCK_3X3X1, TDBlockShapes.LIBRARY_CLOCK_SHAPE,
+                new HorizontalMultiblock(MultiblockHandler.MULTIBLOCK_2X3X1, b -> Shapes.block() /* TODO shapes */,
                         BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 60.0F))
         );
 
