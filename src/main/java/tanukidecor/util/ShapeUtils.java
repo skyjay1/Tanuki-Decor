@@ -7,8 +7,6 @@
 package tanukidecor.util;
 
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -133,42 +131,5 @@ public final class ShapeUtils {
             rotatedShapes.put(direction, rotatedShapes.get(direction).optimize());
         }
         return rotatedShapes;
-    }
-
-    //// OTHER ////
-
-    /**
-     * @param index the original index as calculated by {@link MultiblockHandler#getIndex(BlockState)}
-     * @param direction the direction to rotate
-     * @return the index after rotating in the given direction
-     * @see ShapeUtils#createRotatedIndexedShape(Vec3i, Direction, Direction, VoxelShape[][][])
-     */
-    public static Vec3i rotateIndex(final Vec3i index, final Direction direction) {
-        // TODO fix shapes
-        return MultiblockHandler.indexToOffset(index, direction);
-        /*switch (direction) {
-            default:
-            case WEST: return new Vec3i(-index.getX() + 2, index.getY(), -index.getZ() + 2);
-            case NORTH: return new Vec3i(-index.getZ() + 2, index.getY(), index.getX());
-            case EAST: return index;
-            case SOUTH: return new Vec3i(index.getZ(), index.getY(), -index.getX() + 2);
-        }*/
-    }
-
-    /**
-     * Creates a new {@link VoxelShape} with rotated shapes, using the shape data in a 3d array as a reference
-     * @param index the [width, height, depth] index of the blockstate as calculated by {@link MultiblockHandler#getIndex(BlockState)}
-     * @param originDirection the horizontal direction of the shapes in the 3d array
-     * @param direction the target direction to rotate towards
-     * @param template a 3d array containing base values for all indices of the multiblock
-     * @return a new {@link VoxelShape} for the rotated shape
-     */
-    public static VoxelShape createRotatedIndexedShape(final Vec3i index,
-                                                       final Direction originDirection, final Direction direction,
-                                                       final VoxelShape[][][] template) {
-        // TODO fix shapes
-        final Vec3i rotatedIndex = rotateIndex(index, Direction.from2DDataValue(direction.get2DDataValue() - originDirection.get2DDataValue() + 4));
-        final VoxelShape shapeData = template[rotatedIndex.getY() % template.length][rotatedIndex.getX() % template[0].length][rotatedIndex.getZ() % template[0][0].length];
-        return shapeData;
     }
 }

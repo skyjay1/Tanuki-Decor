@@ -6,21 +6,21 @@
 
 package tanukidecor;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import tanukidecor.block.HorizontalMultiblock;
+import tanukidecor.block.LibraryClockBlock;
+import tanukidecor.block.entity.ClockBlockEntity;
 import tanukidecor.item.MultiblockItem;
-import tanukidecor.util.MultiblockHandler;
-import tanukidecor.util.TDBlockShapes;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -32,11 +32,13 @@ public final class TDRegistry {
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MODID);
+    private static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
 
     public static void register() {
         BlockReg.register();
         ItemReg.register();
         BlockEntityReg.register();
+        SoundReg.register();
     }
 
     public static final class BlockReg {
@@ -46,7 +48,7 @@ public final class TDRegistry {
         }
 
         public static final RegistryObject<Block> LIBRARY_CLOCK = registerWithMultiblockItem("library_clock", () ->
-                new HorizontalMultiblock(MultiblockHandler.MULTIBLOCK_2X3X1, b -> Shapes.block() /* TODO shapes */,
+                new LibraryClockBlock(SoundEvents.STONE_BUTTON_CLICK_ON, SoundEvents.AMETHYST_BLOCK_CHIME,
                         BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 60.0F))
         );
 
@@ -96,6 +98,19 @@ public final class TDRegistry {
 
         private static void register() {
             BLOCK_ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        }
+
+        public static final RegistryObject<BlockEntityType<?>> LIBRARY_CLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("library_clock", () ->
+                BlockEntityType.Builder.of((pos, state) -> new ClockBlockEntity(BlockEntityReg.LIBRARY_CLOCK_BLOCK_ENTITY.get(), pos, state),
+                                BlockReg.LIBRARY_CLOCK.get())
+                        .build(null));
+    }
+
+
+    public static final class SoundReg {
+
+        private static void register() {
+            SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         }
     }
 }

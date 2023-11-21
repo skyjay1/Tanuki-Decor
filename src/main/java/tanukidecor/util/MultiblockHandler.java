@@ -62,9 +62,9 @@ public class MultiblockHandler {
     public static final MultiblockHandler MULTIBLOCK_2X3X1 = new MultiblockHandler(2, 3, 1);
     public static final MultiblockHandler MULTIBLOCK_2X2X1 = new MultiblockHandler(2, 2, 3);
     
-    @Nullable private final IntegerProperty widthProperty;
-    @Nullable private final IntegerProperty heightProperty;
-    @Nullable private final IntegerProperty depthProperty;
+    private final @Nullable IntegerProperty widthProperty;
+    private final @Nullable IntegerProperty heightProperty;
+    private final @Nullable IntegerProperty depthProperty;
     
     private final Vec3i dimensions;
     private final Vec3i minIndex;
@@ -198,6 +198,14 @@ public class MultiblockHandler {
         return DEPTH_BY_MAX_VALUE[index];
     }
 
+    /**
+     * @param blockState a block state
+     * @return true if the index for the given block state is the center
+     */
+    public boolean isCenterState(final BlockState blockState) {
+        return getIndex(blockState).equals(CENTER_INDEX);
+    }
+
     public StateDefinition.Builder<Block, BlockState> createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         if(widthProperty != null) {
             builder.add(widthProperty);
@@ -225,9 +233,9 @@ public class MultiblockHandler {
      * @return the [width, height, depth] values of the block state, each in the range [-1,1]
      */
     public Vec3i getIndex(final BlockState blockState) {
-        final int width = widthProperty != null ? (blockState.getValue(widthProperty) - 1) : 0;
-        final int height = heightProperty != null ? (blockState.getValue(heightProperty) - 1) : 0;
-        final int depth = depthProperty != null ? (blockState.getValue(depthProperty) - 1) : 0;
+        final int width = widthProperty != null ? (blockState.getValue(widthProperty) - dimensions.getX() / 2) : 0;
+        final int height = heightProperty != null ? (blockState.getValue(heightProperty) - dimensions.getY() / 2) : 0;
+        final int depth = depthProperty != null ? (blockState.getValue(depthProperty) - dimensions.getZ() / 2) : 0;
         return new Vec3i(width, height, depth);
     }
 
@@ -239,13 +247,13 @@ public class MultiblockHandler {
     public BlockState getIndexedState(final BlockState blockState, final Vec3i index) {
         BlockState mutableBlockState = blockState;
         if(widthProperty != null) {
-            mutableBlockState = mutableBlockState.setValue(widthProperty, index.getX() + 1);
+            mutableBlockState = mutableBlockState.setValue(widthProperty, index.getX() + dimensions.getX() / 2);
         }
         if(heightProperty != null) {
-            mutableBlockState = mutableBlockState.setValue(heightProperty, index.getY() + 1);
+            mutableBlockState = mutableBlockState.setValue(heightProperty, index.getY() + dimensions.getY() / 2);
         }
         if(depthProperty != null) {
-            mutableBlockState = mutableBlockState.setValue(depthProperty, index.getZ() + 1);
+            mutableBlockState = mutableBlockState.setValue(depthProperty, index.getZ() + dimensions.getZ() / 2);
         }
         return mutableBlockState;
     }
@@ -330,17 +338,6 @@ public class MultiblockHandler {
         }
     }
 
-    //// SHAPE HELPER METHODS ////
-
-    public Function<BlockState, VoxelShape> createShapeBuilder(final VoxelShape[][][] template) {
-        // TODO fix shapes
-        return blockState -> Shapes.block();
-        /*return blockState -> {
-            final Vec3i index = this.getIndex(blockState);
-            final Direction facing = blockState.getValue(HorizontalDirectionalBlock.FACING);
-            return ShapeUtils.createRotatedIndexedShape(index, ORIGIN_DIRECTION, facing, template);
-        };*/
-    }
 
     //// POSITION HELPER METHODS ////
 
@@ -435,5 +432,9 @@ public class MultiblockHandler {
                 }
             }
         }
+    }
+
+    public static Vec3i rotateIndexForShape(final Vec3i index, final Direction direction) {
+        return index;
     }
 }

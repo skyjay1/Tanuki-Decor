@@ -39,31 +39,28 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
+/**
+ * Handles waterloggable, horizontally directional, variable size multiblocks
+ */
 public class HorizontalMultiblock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
 
     protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private final MultiblockHandler multiblockHandler;
+    protected final MultiblockHandler multiblockHandler;
     private final Map<BlockState, VoxelShape> BLOCK_SHAPES = new HashMap<>();
     private final Map<Direction, VoxelShape> CENTERED_VISUAL_SHAPES = new EnumMap<>(Direction.class);
     private final Map<BlockState, VoxelShape> MULTIBLOCK_SHAPES = new HashMap<>();
 
     private final Function<BlockState, VoxelShape> shapeBuilder;
 
-    public HorizontalMultiblock(MultiblockHandler multiblockHandler, VoxelShape[][][] shapeTemplate, Properties pProperties) {
-        this(multiblockHandler, multiblockHandler.createShapeBuilder(shapeTemplate), pProperties);
-    }
-
-    public HorizontalMultiblock(MultiblockHandler multiblockHandler,
-                                Function<BlockState, VoxelShape> shapeBuilder,
-                                Properties pProperties) {
+    protected HorizontalMultiblock(MultiblockHandler multiblockHandler,
+                                   Function<BlockState, VoxelShape> shapeBuilder,
+                                   Properties pProperties) {
         super(pProperties.dynamicShape());
         this.multiblockHandler = multiblockHandler;
         this.shapeBuilder = shapeBuilder;
         // re-create state definition
-        StateDefinition.Builder<Block, BlockState> builder = new StateDefinition.Builder<>(this);
-        this.createMultiblockStateDefinition(builder);
-        this.stateDefinition = builder.create(Block::defaultBlockState, BlockState::new);
+        this.stateDefinition = createStateDefinition();
         this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
                 .setValue(WATERLOGGED, false)
                 .setValue(FACING, Direction.NORTH)));
@@ -74,6 +71,13 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
     public MultiblockHandler getMultiblockHandler() {
         return multiblockHandler;
     }
+
+    protected StateDefinition<Block, BlockState> createStateDefinition() {
+        StateDefinition.Builder<Block, BlockState> builder = new StateDefinition.Builder<>(this);
+        this.createMultiblockStateDefinition(builder);
+        return builder.create(Block::defaultBlockState, BlockState::new);
+    }
+
 
     //// STATE PROPERTIES ////
 
@@ -172,6 +176,7 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
         // calculate centered visual shapes
         final VoxelShape centeredShape = createMultiblockShape();
         CENTERED_VISUAL_SHAPES.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, centeredShape));
+        final Vec3i dimensions = multiblockHandler.getDimensions();
         // iterate all block states
         for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
             // cache the individual shape
@@ -181,7 +186,7 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
             Vec3i index = multiblockHandler.getIndex(blockState);
             Vec3i offset = MultiblockHandler.indexToOffset(index, direction);
             VoxelShape shape = CENTERED_VISUAL_SHAPES.get(blockState.getValue(FACING))
-                    .move(-offset.getX(), -offset.getY(), -offset.getZ());
+                    .move(-offset.getX() + direction.getStepZ(), -offset.getY(),  -offset.getZ() - direction.getStepX());
             // cache the offset visual shape
             MULTIBLOCK_SHAPES.put(blockState, shape);
         }
@@ -216,5 +221,25 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
      */
     public VoxelShape getMultiblockShape(final BlockState blockState) {
         return MULTIBLOCK_SHAPES.get(blockState);
+    }
+
+    //// SHAPE HELPER METHODS ////
+
+    /**
+     * @param handler the multiblock handler
+     * @param template the array of voxel shapes ordered by {@code [height][width][depth]}
+     * @return a shape builder for the given handler that uses the {@link #FACING} property to rotate shapes
+     */
+    public static Function<BlockState, VoxelShape> createHorizontalShapeBuilder(final MultiblockHandler handler, final VoxelShape[][][] template) {
+        return blockState -> {
+            final Vec3i index = handler.getIndex(blockState);
+            final Vec3i dimensions = handler.getDimensions();
+            final Direction facing =  blockState.getValue(FACING);
+            final VoxelShape shape = template
+                    [(index.getY() + dimensions.getY() / 2) % template.length]
+                    [(index.getX() + dimensions.getX() / 2) % template[0].length]
+                    [(index.getZ() + dimensions.getZ() / 2) % template[0][0].length];
+            return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);
+        };
     }
 }
