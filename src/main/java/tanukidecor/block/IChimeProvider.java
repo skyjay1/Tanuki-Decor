@@ -13,23 +13,50 @@ import java.util.Random;
 
 public interface IChimeProvider {
 
+    /** @return the chime sound, if any **/
     @Nullable SoundEvent getChimeSound();
 
+    /** @return the tick sound, if any **/
     @Nullable SoundEvent getTickSound();
 
+    /** @return the number of ticks to wait before playing the next tick sound **/
+    default int getTickSoundInterval() {
+        return 20;
+    }
+
+    /**
+     * @param random the random instance
+     * @param dayTime the day time from 0 to 24000
+     * @return the volume of the chime sound
+     */
     default float getChimeVolume(Random random, long dayTime) {
         return 1.0F;
     }
 
+    /**
+     * @param random the random instance
+     * @param dayTime the day time from 0 to 24000
+     * @return the pitch of the chime sound
+     */
     default float getChimePitch(Random random, long dayTime) {
         return 1.0F;
     }
 
+    /**
+     * @param random the random instance
+     * @param dayTime the day time from 0 to 24000
+     * @return the volume of the tick sound
+     */
     default float getTickVolume(Random random, long dayTime) {
         return 0.6F;
     }
 
+    /**
+     * @param random the random instance
+     * @param dayTime the day time from 0 to 24000
+     * @return the pitch of the tick sound
+     */
     default float getTickPitch(Random random, long dayTime) {
-        return 0.9F + ((dayTime / 20) % 2) * 0.1F; // TODO fix math so every other tick is different pitch
+        return 1.0F;
     }
 }

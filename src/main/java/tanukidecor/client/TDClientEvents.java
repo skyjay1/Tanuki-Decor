@@ -25,6 +25,9 @@ import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
 import tanukidecor.client.blockentity.LibraryClockBlockEntityRenderer;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public final class TDClientEvents {
 
     public static void register() {
@@ -49,8 +52,11 @@ public final class TDClientEvents {
 
         @SubscribeEvent
         public static void registerModel(final ModelRegistryEvent event) {
-            // TODO figure out how to register additional models
-            LibraryClockBlockEntityRenderer.addSpecialModels();
+            // gather special models
+            final List<ResourceLocation> list = new LinkedList<>();
+            LibraryClockBlockEntityRenderer.addSpecialModels(list);
+            // register special models
+            list.forEach(ForgeModelBakery::addSpecialModel);
         }
 
         private static void registerBlockRenderLayers() {

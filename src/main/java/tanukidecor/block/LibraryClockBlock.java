@@ -47,6 +47,11 @@ public class LibraryClockBlock extends HorizontalMultiblock implements EntityBlo
         return this.tickSound.get();
     }
 
+    @Override
+    public int getTickSoundInterval() {
+        return 40;
+    }
+
     //// BLOCK ENTITY ////
 
 

@@ -186,7 +186,7 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
             Vec3i index = multiblockHandler.getIndex(blockState);
             Vec3i offset = MultiblockHandler.indexToOffset(index, direction);
             VoxelShape shape = CENTERED_VISUAL_SHAPES.get(blockState.getValue(FACING))
-                    .move(-offset.getX() + direction.getStepZ(), -offset.getY(),  -offset.getZ() - direction.getStepX());
+                    .move(-offset.getX()/* + direction.getStepZ()*/, -offset.getY(),  -offset.getZ()/* - direction.getStepX()*/);
             // cache the offset visual shape
             MULTIBLOCK_SHAPES.put(blockState, shape);
         }
@@ -201,7 +201,7 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
         MultiblockHandler.iterateIndices(multiblockHandler.getMinIndex(), multiblockHandler.getMaxIndex(), index -> {
             BlockState b = multiblockHandler.getIndexedState(blockState, index);
             shape.set(ShapeUtils.orUnoptimized(shape.get(), BLOCK_SHAPES.computeIfAbsent(b, this.shapeBuilder)
-                    .move(index.getX(), index.getY(), index.getZ())
+                    .move(-index.getX(), index.getY(), -index.getZ())
             ));
         });
         return shape.get().optimize();
@@ -235,10 +235,13 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
             final Vec3i index = handler.getIndex(blockState);
             final Vec3i dimensions = handler.getDimensions();
             final Direction facing =  blockState.getValue(FACING);
+            int heightIndex = (index.getY() + dimensions.getY() / 2);
+            int widthIndex = (index.getX() + dimensions.getX() / 2);
+            int depthIndex = (index.getZ() + dimensions.getZ() / 2);
             final VoxelShape shape = template
-                    [(index.getY() + dimensions.getY() / 2) % template.length]
-                    [(index.getX() + dimensions.getX() / 2) % template[0].length]
-                    [(index.getZ() + dimensions.getZ() / 2) % template[0][0].length];
+                    [heightIndex]
+                    [widthIndex]
+                    [depthIndex];
             return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);
         };
     }
