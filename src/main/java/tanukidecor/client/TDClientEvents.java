@@ -11,19 +11,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ForgeModelBakery;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import tanukidecor.TDRegistry;
-import tanukidecor.TanukiDecor;
-import tanukidecor.client.blockentity.LibraryClockBlockEntityRenderer;
+import tanukidecor.client.blockentity.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -47,14 +42,16 @@ public final class TDClientEvents {
 
         @SubscribeEvent
         public static void onRegisterEntityRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LIBRARY_CLOCK_BLOCK_ENTITY.get(), LibraryClockBlockEntityRenderer::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LIBRARY_CLOCK_BLOCK_ENTITY.get(), LibraryClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GRANDFATHER_CLOCK_BLOCK_ENTITY.get(), GrandfatherClockBER::new);
         }
 
         @SubscribeEvent
         public static void registerModel(final ModelRegistryEvent event) {
             // gather special models
             final List<ResourceLocation> list = new LinkedList<>();
-            LibraryClockBlockEntityRenderer.addSpecialModels(list);
+            LibraryClockBER.addSpecialModels(list);
+            GrandfatherClockBER.addSpecialModels(list);
             // register special models
             list.forEach(ForgeModelBakery::addSpecialModel);
         }

@@ -19,6 +19,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import tanukidecor.block.GrandfatherClockBlock;
 import tanukidecor.block.LibraryClockBlock;
 import tanukidecor.block.entity.ClockBlockEntity;
 import tanukidecor.item.MultiblockItem;
@@ -53,6 +54,10 @@ public final class TDRegistry {
                         BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 60.0F))
         );
 
+        public static final RegistryObject<Block> GRANDFATHER_CLOCK = registerWithMultiblockItem("grandfather_clock", () ->
+                new GrandfatherClockBlock(SoundReg.GRANDFATHER_CLOCK_TICK, SoundReg.GRANDFATHER_CLOCK_CHIME,
+                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 60.0F))
+        );
 
         private static RegistryObject<Block> registerWithItem(final String name, final Supplier<Block> supplier) {
             return registerWithItem(name, supplier, ItemReg::registerBlockItem);
@@ -104,6 +109,10 @@ public final class TDRegistry {
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> LIBRARY_CLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("library_clock", () ->
                 BlockEntityType.Builder.of((pos, state) -> new ClockBlockEntity(BlockEntityReg.LIBRARY_CLOCK_BLOCK_ENTITY.get(), pos, state),
                                 BlockReg.LIBRARY_CLOCK.get())
+                        .build(null));
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> GRANDFATHER_CLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("grandfather_clock", () ->
+                BlockEntityType.Builder.of((pos, state) -> new ClockBlockEntity(BlockEntityReg.GRANDFATHER_CLOCK_BLOCK_ENTITY.get(), pos, state),
+                                BlockReg.GRANDFATHER_CLOCK.get())
                         .build(null));
     }
 
