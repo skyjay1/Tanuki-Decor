@@ -9,24 +9,17 @@ package tanukidecor.client.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.ClockBlockEntity;
 
-import java.util.List;
+import java.util.Set;
 
-public class LibraryClockBER implements BlockEntityRenderer<ClockBlockEntity> {
+public class LibraryClockBER extends ClockBER {
 
     public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/library_clock/long_hand");
     public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/library_clock/short_hand");
@@ -39,75 +32,32 @@ public class LibraryClockBER implements BlockEntityRenderer<ClockBlockEntity> {
     private static final Vec3 PENDULUM_POSITION = new Vec3(0, -2.5D / 16.0D, 0);
     private static final Vec3 PENDULUM_PIVOT_POINT = new Vec3(8.0D / 16.0D, 18.0D / 16.0D, 0);
 
-    protected final BlockRenderDispatcher blockRenderer;
-    protected final ClockRenderHelper clockRenderHelper;
-
     public LibraryClockBER(BlockEntityRendererProvider.Context pContext) {
-        this.blockRenderer = pContext.getBlockRenderDispatcher();
-        this.clockRenderHelper = new ClockRenderHelper();
+        super(pContext, SHORT_HAND, LONG_HAND, ROOT_POSITION, ROOT_PIVOT_POINT, HANDS_POSITION, HANDS_PIVOT_POINT);
     }
 
     @Override
     public void render(ClockBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
-        // prepare to render
-        final Minecraft mc = Minecraft.getInstance();
-        final BlockState blockState = pBlockEntity.getBlockState();
-        final Direction direction = blockState.getValue(HorizontalDirectionalBlock.FACING);
-        final Level level = pBlockEntity.getLevel();
-        // query the day time with an offset to ensure 18000 is noon (etc)
-        final long dayTime = (level.getDayTime() + 6000L) % 24000L;
-        final float hourAngleInterval = Mth.TWO_PI / 12.0F;
+        super.render(pBlockEntity, pPartialTick, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay);
+    }
+
+    @Override
+    public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity, MultiBufferSource bufferSource) {
         final float maxPendulumAngle = (float) Math.toRadians(16);
-        final float hourRotation = ClockBlockEntity.getHour(dayTime, pPartialTick) * hourAngleInterval;
-        final float minuteRotation = ClockBlockEntity.getMinute(dayTime, 0.98F) * Mth.TWO_PI;
-        final float pendulumRotation = Mth.sin(ClockBlockEntity.getSecond(level.getGameTime(), pPartialTick) * Mth.PI) * maxPendulumAngle;
+        final float pendulumRotation = Mth.sin(ClockBlockEntity.getSecond(blockEntity.getLevel().getGameTime(), renderHelper.getPartialTick()) * Mth.PI) * maxPendulumAngle;
 
-        final BakedModel shortHand = mc.getModelManager().getModel(SHORT_HAND);
-        final BakedModel longHand = mc.getModelManager().getModel(LONG_HAND);
-        final BakedModel pendulum = mc.getModelManager().getModel(PENDULUM);
-
-        // prepare render helper
-        this.clockRenderHelper
-                .withPoseStack(pPoseStack)
-                .withBlockState(blockState)
-                .withRenderType(pBufferSource, RenderType.translucentMovingBlock())
-                .withPackedLight(pPackedLight)
-                .withPackedOverlay(pPackedOverlay)
-                .withRotationZ(0);
-
-        // rotate pose stack
-        this.clockRenderHelper
-                .withPosition(ROOT_POSITION)
-                .withPivotPoint(ROOT_PIVOT_POINT)
-                .rotateForDirection(direction);
-
-        // render short hand
-        this.clockRenderHelper
-                .withModel(shortHand)
-                .withPosition(HANDS_POSITION)
-                .withPivotPoint(HANDS_PIVOT_POINT)
-                .withRotationZ(hourRotation)
-                .render(blockRenderer);
-
-        // render long hand
-        this.clockRenderHelper
-                .withModel(longHand)
-                .withRotationZ(minuteRotation)
-                .render(blockRenderer);
+        final BakedModel pendulum = Minecraft.getInstance().getModelManager().getModel(PENDULUM);
 
         // render pendulum
-        this.clockRenderHelper
+        renderHelper
                 .withModel(pendulum)
                 .withPosition(PENDULUM_POSITION)
                 .withPivotPoint(PENDULUM_PIVOT_POINT)
                 .withRotationZ(pendulumRotation)
                 .render(blockRenderer);
-
-        // finish rendering
-        pPoseStack.popPose();
     }
 
-    public static void addSpecialModels(final List<ResourceLocation> list) {
+    public static void addSpecialModels(final Set<ResourceLocation> list) {
         list.add(LONG_HAND);
         list.add(SHORT_HAND);
         list.add(PENDULUM);

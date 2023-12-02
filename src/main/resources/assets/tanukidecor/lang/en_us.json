@@ -1,5 +1,22 @@
 {
+  "block.tanukidecor.emblem_clock": "Emblem Clock",
+  "block.tanukidecor.grandfather_clock": "Grandfather Clock",
   "block.tanukidecor.library_clock": "Library Clock",
-  "subtitles.block.tanukidecor.grandfather_clock.tick": "Grandfather clock ticks",
-  "subtitles.block.tanukidecor.grandfather_clock.chime": "Grandfather clock chimes"
+  "subtitle.block.tanukidecor.alarm_clock.tick": "Alarm clock ticks",
+  "subtitle.block.tanukidecor.alarm_clock.chime": "Alarm clock rings",
+  "subtitle.block.tanukidecor.clock_tower.tick": "Clock tower ticks",
+  "subtitle.block.tanukidecor.clock_tower.chime": "Clock tower chimes",
+  "subtitle.block.tanukidecor.cuckoo_clock.tick": "Cuckoo clock ticks",
+  "subtitle.block.tanukidecor.cuckoo_clock.chime": "Cuckoo clock chimes",
+  "subtitle.block.tanukidecor.foliot_clock.tick": "Foliot clock ticks",
+  "subtitle.block.tanukidecor.grandfather_clock.tick": "Grandfather clock ticks",
+  "subtitle.block.tanukidecor.grandfather_clock.chime": "Grandfather clock chimes",
+  "subtitle.block.tanukidecor.lantern_clock.chime": "Lantern clock chimes",
+  "subtitle.block.tanukidecor.mantle_clock.tick": "Mantle clock ticks",
+  "subtitle.block.tanukidecor.mantle_clock.chime": "Mantle clock chimes",
+  "subtitle.block.tanukidecor.medium_clock.tick": "Medium clock ticks",
+  "subtitle.block.tanukidecor.medium_clock.chime": "Medium clock chimes",
+  "subtitle.block.tanukidecor.pocket_watch.tick": "Pocket watch ticks",
+  "subtitle.block.tanukidecor.recognizable_clock.chime": "Recognizable clock chimes",
+  "subtitle.block.tanukidecor.slatee_clock.chime": "Slate clock chimes"
 }

@@ -23,10 +23,6 @@ import java.util.Random;
 
 public class ClockBlockEntity extends BlockEntity {
 
-    protected static final long NOON = 6000L;
-    protected static final long MIDNIGHT = 18000L;
-    protected static final long MIN_CHIME_INTERVAL = 40L;
-
     protected final @Nullable IChimeProvider chimeProvider;
 
     public ClockBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
@@ -82,7 +78,7 @@ public class ClockBlockEntity extends BlockEntity {
         final Random random = level.getRandom();
         // attempt to play chime sound
         final SoundEvent chimeSound = chimeProvider.getChimeSound();
-        if(chimeSound != null && (dayTime == NOON || dayTime == (NOON + MIN_CHIME_INTERVAL) || dayTime == MIDNIGHT)) {
+        if(chimeSound != null && this.chimeProvider.isTimeToChime(dayTime)) {
             final float pitch = chimeProvider.getChimePitch(random, dayTime);
             final float volume = chimeProvider.getChimeVolume(random, dayTime);
             level.playSound(null, blockPos, chimeSound, SoundSource.BLOCKS, volume, pitch);

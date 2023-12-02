@@ -59,7 +59,7 @@ public class LibraryClockBlock extends HorizontalMultiblock implements EntityBlo
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         if(this.getMultiblockHandler().isCenterState(pState)) {
-            return TDRegistry.BlockEntityReg.LIBRARY_CLOCK_BLOCK_ENTITY.get().create(pPos, pState);
+            return TDRegistry.BlockEntityReg.LIBRARY_CLOCK.get().create(pPos, pState);
         }
         return null;
     }

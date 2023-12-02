@@ -47,9 +47,9 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
     protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected final MultiblockHandler multiblockHandler;
-    private final Map<BlockState, VoxelShape> BLOCK_SHAPES = new HashMap<>();
-    private final Map<Direction, VoxelShape> CENTERED_VISUAL_SHAPES = new EnumMap<>(Direction.class);
-    private final Map<BlockState, VoxelShape> MULTIBLOCK_SHAPES = new HashMap<>();
+    private final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
+    private final Map<Direction, VoxelShape> centeredVisualShapes = new EnumMap<>(Direction.class);
+    private final Map<BlockState, VoxelShape> multiblockShapes = new HashMap<>();
 
     private final Function<BlockState, VoxelShape> shapeBuilder;
 
@@ -170,25 +170,24 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
     }
 
     protected void precalculateShapes() {
-        BLOCK_SHAPES.clear();
-        CENTERED_VISUAL_SHAPES.clear();
-        MULTIBLOCK_SHAPES.clear();
+        blockShapes.clear();
+        centeredVisualShapes.clear();
+        multiblockShapes.clear();
         // calculate centered visual shapes
         final VoxelShape centeredShape = createMultiblockShape();
-        CENTERED_VISUAL_SHAPES.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, centeredShape));
-        final Vec3i dimensions = multiblockHandler.getDimensions();
+        centeredVisualShapes.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, centeredShape));
         // iterate all block states
         for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
             // cache the individual shape
-            BLOCK_SHAPES.put(blockState, this.shapeBuilder.apply(blockState));
+            blockShapes.put(blockState, this.shapeBuilder.apply(blockState));
             // move the centered shape for the given rotation to the correct offset
             Direction direction = blockState.getValue(FACING);
             Vec3i index = multiblockHandler.getIndex(blockState);
             Vec3i offset = MultiblockHandler.indexToOffset(index, direction);
-            VoxelShape shape = CENTERED_VISUAL_SHAPES.get(blockState.getValue(FACING))
-                    .move(-offset.getX()/* + direction.getStepZ()*/, -offset.getY(),  -offset.getZ()/* - direction.getStepX()*/);
+            VoxelShape shape = centeredVisualShapes.get(blockState.getValue(FACING))
+                    .move(-offset.getX(), -offset.getY(),  -offset.getZ());
             // cache the offset visual shape
-            MULTIBLOCK_SHAPES.put(blockState, shape);
+            multiblockShapes.put(blockState, shape);
         }
     }
 
@@ -200,7 +199,7 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
         final AtomicReference<VoxelShape> shape = new AtomicReference<>(Shapes.empty());
         MultiblockHandler.iterateIndices(multiblockHandler.getMinIndex(), multiblockHandler.getMaxIndex(), index -> {
             BlockState b = multiblockHandler.getIndexedState(blockState, index);
-            shape.set(ShapeUtils.orUnoptimized(shape.get(), BLOCK_SHAPES.computeIfAbsent(b, this.shapeBuilder)
+            shape.set(ShapeUtils.orUnoptimized(shape.get(), blockShapes.computeIfAbsent(b, this.shapeBuilder)
                     .move(-index.getX(), index.getY(), -index.getZ())
             ));
         });
@@ -212,7 +211,7 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
      * @return the cached shape for the given block state
      */
     public VoxelShape getBlockShape(final BlockState blockState) {
-        return BLOCK_SHAPES.get(blockState);
+        return blockShapes.get(blockState);
     }
 
     /**
@@ -220,7 +219,7 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
      * @return the cached multiblock shape for the given block state
      */
     public VoxelShape getMultiblockShape(final BlockState blockState) {
-        return MULTIBLOCK_SHAPES.get(blockState);
+        return multiblockShapes.get(blockState);
     }
 
     //// SHAPE HELPER METHODS ////

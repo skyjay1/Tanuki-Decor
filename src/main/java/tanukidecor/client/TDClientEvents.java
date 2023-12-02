@@ -20,8 +20,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import tanukidecor.TDRegistry;
 import tanukidecor.client.blockentity.*;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public final class TDClientEvents {
 
@@ -42,18 +42,22 @@ public final class TDClientEvents {
 
         @SubscribeEvent
         public static void onRegisterEntityRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LIBRARY_CLOCK_BLOCK_ENTITY.get(), LibraryClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GRANDFATHER_CLOCK_BLOCK_ENTITY.get(), GrandfatherClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.EMBLEM_CLOCK.get(), EmblemClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.FOLIOT_CLOCK.get(), FoliotClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LIBRARY_CLOCK.get(), LibraryClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GRANDFATHER_CLOCK.get(), GrandfatherClockBER::new);
         }
 
         @SubscribeEvent
         public static void registerModel(final ModelRegistryEvent event) {
             // gather special models
-            final List<ResourceLocation> list = new LinkedList<>();
-            LibraryClockBER.addSpecialModels(list);
-            GrandfatherClockBER.addSpecialModels(list);
+            final Set<ResourceLocation> set = new HashSet<>();
+            LibraryClockBER.addSpecialModels(set);
+            GrandfatherClockBER.addSpecialModels(set);
+            EmblemClockBER.addSpecialModels(set);
+            FoliotClockBER.addSpecialModels(set);
             // register special models
-            list.forEach(ForgeModelBakery::addSpecialModel);
+            set.forEach(ForgeModelBakery::addSpecialModel);
         }
 
         private static void registerBlockRenderLayers() {

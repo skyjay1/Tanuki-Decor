@@ -13,15 +13,31 @@ import java.util.Random;
 
 public interface IChimeProvider {
 
+    public static final long NOON = 6000L;
+    public static final long MIDNIGHT = 18000L;
+    public static final long MIN_CHIME_INTERVAL = 40L;
+
     /** @return the chime sound, if any **/
-    @Nullable SoundEvent getChimeSound();
+    @Nullable default SoundEvent getChimeSound() {
+        return null;
+    }
 
     /** @return the tick sound, if any **/
-    @Nullable SoundEvent getTickSound();
+    @Nullable default SoundEvent getTickSound() {
+        return null;
+    }
 
     /** @return the number of ticks to wait before playing the next tick sound **/
     default int getTickSoundInterval() {
         return 20;
+    }
+
+    /**
+     * @param dayTime the day time
+     * @return true to play a chime sound in this tick
+     */
+    default boolean isTimeToChime(final long dayTime) {
+        return dayTime == NOON || dayTime == (NOON + MIN_CHIME_INTERVAL) || dayTime == MIDNIGHT;
     }
 
     /**

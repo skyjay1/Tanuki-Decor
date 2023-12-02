@@ -24,6 +24,7 @@ public class ClockRenderHelper {
     private RenderType renderType;
     private VertexConsumer vertexConsumer;
     private BlockState blockState;
+    private float partialTick;
     private int packedLight;
     private int packedOverlay;
     private BakedModel model;
@@ -33,7 +34,10 @@ public class ClockRenderHelper {
 
     //// CONSTRUCTOR ////
 
-    public ClockRenderHelper() {}
+    public ClockRenderHelper() {
+        this.pivotPoint = Vec3.ZERO;
+        this.position = Vec3.ZERO;
+    }
 
     //// METHODS ////
 
@@ -47,7 +51,9 @@ public class ClockRenderHelper {
     }
 
     public void render(BlockRenderDispatcher blockRenderer) {
-        // load values
+        if(null == model) {
+            return;
+        }
         // render the model
         poseStack.pushPose();
         poseStack.translate(position.x(), position.y(), position.z());
@@ -102,6 +108,11 @@ public class ClockRenderHelper {
         return this;
     }
 
+    public ClockRenderHelper withPartialTick(final float partialTick) {
+        this.partialTick = partialTick;
+        return this;
+    }
+
     public ClockRenderHelper withRotationZ(final float zRotation) {
         this.rotZ = zRotation;
         return this;
@@ -143,6 +154,10 @@ public class ClockRenderHelper {
 
     public Vec3 getPosition() {
         return position;
+    }
+
+    public float getPartialTick() {
+        return partialTick;
     }
 
     public float getRotationZ() {
