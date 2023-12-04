@@ -1,10 +1,10 @@
-/**
+/*
  * Copyright (c) 2023 Skyler James
  * Permission is granted to use, modify, and redistribute this software, in parts or in whole,
  * under the GNU LGPLv3 license (https://www.gnu.org/licenses/lgpl-3.0.en.html)
- **/
+ */
 
-package tanukidecor.block;
+package tanukidecor.block.clock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,6 +27,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
+import tanukidecor.block.HorizontalDoubleBlock;
 import tanukidecor.block.entity.ClockBlockEntity;
 
 import java.util.function.Supplier;
@@ -58,7 +59,7 @@ public class FoliotClockBlock extends HorizontalDoubleBlock implements EntityBlo
             box(8.5D, 13, 13, 9.5D, 16, 14));
 
     public FoliotClockBlock(Supplier<SoundEvent> tickSound, Properties pProperties) {
-        super(pProperties, createShapeBuilder(UPPER_SHAPE, LOWER_SHAPE));
+        super(pProperties, HorizontalDoubleBlock.createShapeBuilder(UPPER_SHAPE, LOWER_SHAPE));
         this.tickSound = tickSound;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)

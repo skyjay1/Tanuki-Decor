@@ -42,8 +42,11 @@ public final class TDClientEvents {
 
         @SubscribeEvent
         public static void onRegisterEntityRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+            // TODO alarm clock BER
+            // TODO antique clock BER
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.EMBLEM_CLOCK.get(), EmblemClockBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.FOLIOT_CLOCK.get(), FoliotClockBER::new);
+            // TODO green clock ber
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LIBRARY_CLOCK.get(), LibraryClockBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GRANDFATHER_CLOCK.get(), GrandfatherClockBER::new);
         }
@@ -61,6 +64,10 @@ public final class TDClientEvents {
         }
 
         private static void registerBlockRenderLayers() {
+            registerRenderLayer(TDRegistry.BlockReg.ALARM_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.ANTIQUE_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.FOLIOT_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.GRANDFATHER_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.LIBRARY_CLOCK.get(), RenderType.cutout());
         }
 

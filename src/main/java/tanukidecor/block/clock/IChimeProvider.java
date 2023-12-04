@@ -4,7 +4,7 @@
  * under the GNU LGPLv3 license (https://www.gnu.org/licenses/lgpl-3.0.en.html)
  */
 
-package tanukidecor.block;
+package tanukidecor.block.clock;
 
 import net.minecraft.sounds.SoundEvent;
 
@@ -13,6 +13,7 @@ import java.util.Random;
 
 public interface IChimeProvider {
 
+    public static final long DAWN = 0L;
     public static final long NOON = 6000L;
     public static final long MIDNIGHT = 18000L;
     public static final long MIN_CHIME_INTERVAL = 40L;

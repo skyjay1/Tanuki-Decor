@@ -4,10 +4,9 @@
  * under the GNU LGPLv3 license (https://www.gnu.org/licenses/lgpl-3.0.en.html)
  */
 
-package tanukidecor.block;
+package tanukidecor.block.clock;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
@@ -15,23 +14,28 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
+import tanukidecor.block.HorizontalBlock;
 import tanukidecor.block.entity.ClockBlockEntity;
-import tanukidecor.util.MultiblockHandler;
-import tanukidecor.util.ShapeUtils;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
-public class EmblemClockBlock extends HorizontalMultiblock implements EntityBlock, IChimeProvider {
+public class AlarmClockBlock extends HorizontalBlock implements EntityBlock, IChimeProvider {
 
-    protected final Supplier<SoundEvent> chimeSound;
     protected final Supplier<SoundEvent> tickSound;
+    protected final Supplier<SoundEvent> chimeSound;
 
-    public EmblemClockBlock(Supplier<SoundEvent> tickSound, Supplier<SoundEvent> chimeSound, Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_3X3X1, EmblemClockBlock::buildShape, pProperties);
+    public static final VoxelShape SHAPE = Shapes.or(
+            box(3, 2, 5, 13, 12, 11),
+            box(6.5D, 12, 8, 9.5D, 15, 8),
+            box(2, 0, 7, 4, 4, 9),
+            box(12, 0, 7, 14, 4, 9));
+
+    public AlarmClockBlock(Supplier<SoundEvent> tickSound, Supplier<SoundEvent> chimeSound, Properties pProperties) {
+        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
         this.tickSound = tickSound;
         this.chimeSound = chimeSound;
     }
@@ -40,24 +44,19 @@ public class EmblemClockBlock extends HorizontalMultiblock implements EntityBloc
 
     @Nullable
     @Override
-    public SoundEvent getChimeSound() {
-        return this.chimeSound.get();
-    }
-
-    @Nullable
-    @Override
     public SoundEvent getTickSound() {
         return this.tickSound.get();
     }
 
+    @Nullable
     @Override
-    public float getChimeVolume(Random random, long dayTime) {
-        return 4.0F;
+    public SoundEvent getChimeSound() {
+        return this.chimeSound.get();
     }
 
     @Override
-    public float getTickVolume(Random random, long dayTime) {
-        return 2.0F;
+    public boolean isTimeToChime(long dayTime) {
+        return dayTime == DAWN;
     }
 
     //// BLOCK ENTITY ////
@@ -65,24 +64,12 @@ public class EmblemClockBlock extends HorizontalMultiblock implements EntityBloc
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(this.getMultiblockHandler().isCenterState(pState)) {
-            return TDRegistry.BlockEntityReg.EMBLEM_CLOCK.get().create(pPos, pState);
-        }
-        return null;
+        return TDRegistry.BlockEntityReg.ALARM_CLOCK.get().create(pPos, pState);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return !pLevel.isClientSide() ? (BlockEntityTicker<T>) (BlockEntityTicker<ClockBlockEntity>) (ClockBlockEntity::tick) : null;
-    }
-
-    //// SHAPE ////
-
-    public static VoxelShape SHAPE = box(0, 0, 12, 16, 16, 16);
-
-    public static VoxelShape buildShape(final BlockState blockState) {
-        final Direction facing =  blockState.getValue(FACING);
-        return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, SHAPE);
     }
 }

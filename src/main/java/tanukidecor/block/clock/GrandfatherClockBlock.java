@@ -4,7 +4,7 @@
  * under the GNU LGPLv3 license (https://www.gnu.org/licenses/lgpl-3.0.en.html)
  */
 
-package tanukidecor.block;
+package tanukidecor.block.clock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,6 +20,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
+import tanukidecor.block.HorizontalMultiblock;
 import tanukidecor.block.entity.ClockBlockEntity;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeUtils;
