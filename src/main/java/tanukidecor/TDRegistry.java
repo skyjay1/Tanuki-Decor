@@ -20,23 +20,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import tanukidecor.block.clock.AlarmClockBlock;
-import tanukidecor.block.clock.AnniversaryClockBlock;
-import tanukidecor.block.clock.AntiqueClock;
-import tanukidecor.block.clock.BanjoClockBlock;
-import tanukidecor.block.clock.BlueClock;
-import tanukidecor.block.clock.CarriageClockBlock;
-import tanukidecor.block.clock.EmblemClockBlock;
-import tanukidecor.block.clock.FoliotClockBlock;
-import tanukidecor.block.clock.GorgeousClockBlock;
-import tanukidecor.block.clock.GrandfatherClockBlock;
-import tanukidecor.block.clock.GreenClock;
-import tanukidecor.block.clock.LibraryClockBlock;
-import tanukidecor.block.clock.MantleClockBlock;
-import tanukidecor.block.clock.MinimalistClock;
-import tanukidecor.block.clock.RegalClockBlock;
-import tanukidecor.block.clock.RococoClockBlock;
-import tanukidecor.block.clock.WoodenBlockClockBlock;
+import tanukidecor.block.clock.*;
 import tanukidecor.block.entity.ClockBlockEntity;
 import tanukidecor.item.MultiblockItem;
 
@@ -89,6 +73,18 @@ public final class TDRegistry {
                 new CarriageClockBlock(SoundReg.POCKET_WATCH_TICK, SoundReg.SLATE_CLOCK_CHIME,
                         BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 8.0F))
         );
+        public static final RegistryObject<Block> CRYSTAL_CLOCK = registerWithItem("crystal_clock", () ->
+                new CrystalClockBlock(SoundReg.MANTLE_CLOCK_TICK, SoundReg.LANTERN_CLOCK_CHIME,
+                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
+        );
+        public static final RegistryObject<Block> DISPLAY_WATCH = registerWithItem("display_watch", () ->
+                new DisplayWatchBlock(SoundReg.POCKET_WATCH_TICK,
+                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
+        );
+        public static final RegistryObject<Block> CUCKOO_CLOCK = registerWithItem("cuckoo_clock", () ->
+                new CuckooClock(SoundReg.CUCKOO_CLOCK_TICK, SoundReg.CUCKOO_CLOCK_CHIME,
+                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
+        );
         public static final RegistryObject<Block> EMBLEM_CLOCK = registerWithMultiblockItem("emblem_clock", () ->
                 new EmblemClockBlock(SoundReg.CLOCK_TOWER_TICK, SoundReg.CLOCK_TOWER_CHIME,
                         BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 80.0F))
@@ -97,6 +93,7 @@ public final class TDRegistry {
                 new FoliotClockBlock(SoundReg.FOLIOT_CLOCK_TICK,
                         BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.0F, 10.0F))
         );
+        // TODO gingerbread clock
         public static final RegistryObject<Block> GORGEOUS_CLOCK = registerWithItem("gorgeous_clock", () ->
                 new GorgeousClockBlock(SoundReg.MEDIUM_CLOCK_TICK, SoundReg.MEDIUM_CLOCK_CHIME,
                         BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.0F, 10.0F))
@@ -108,6 +105,14 @@ public final class TDRegistry {
         public static final RegistryObject<Block> GREEN_CLOCK = registerWithItem("green_clock", () ->
                 new GreenClock(SoundReg.ALARM_CLOCK_TICK,
                         BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
+        );
+        public static final RegistryObject<Block> LANTERN_CLOCK = registerWithItem("lantern_clock", () ->
+                new LanternClockBlock(SoundReg.FOLIOT_CLOCK_TICK, SoundReg.LANTERN_CLOCK_CHIME,
+                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
+        );
+        public static final RegistryObject<Block> LARGE_CLOCK_TOWER_DIAL = registerWithMultiblockItem("large_clock_tower_dial", () ->
+                new LargeClockTowerDialBlock(SoundReg.CLOCK_TOWER_TICK, SoundReg.CLOCK_TOWER_CHIME,
+                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 80.0F))
         );
         public static final RegistryObject<Block> LIBRARY_CLOCK = registerWithMultiblockItem("library_clock", () ->
                 new LibraryClockBlock(SoundReg.GRANDFATHER_CLOCK_TICK, SoundReg.GRANDFATHER_CLOCK_CHIME,
@@ -121,6 +126,22 @@ public final class TDRegistry {
                 new MinimalistClock(SoundReg.ALARM_CLOCK_TICK,
                         BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
         );
+        public static final RegistryObject<Block> OWL_CLOCK = registerWithItem("owl_clock", () ->
+                new OwlClock(SoundReg.MEDIUM_CLOCK_TICK2,
+                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
+        );
+        public static final RegistryObject<Block> RECOGNIZABLE_CLOCK = registerWithItem("recognizable_clock", () ->
+                new RecognizableClockBlock(SoundReg.GRANDFATHER_CLOCK_TICK, SoundReg.RECOGNIZABLE_CLOCK_CHIME,
+                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.0F, 10.0F))
+        );
+        public static final RegistryObject<Block> RED_CLOCK = registerWithItem("red_clock", () ->
+                new RedClockBlock(SoundReg.ALARM_CLOCK_TICK, SoundReg.ALARM_CLOCK_CHIME,
+                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
+        );
+        public static final RegistryObject<Block> REED_CLOCK = registerWithItem("reed_clock", () ->
+                new ReedClockBlock(SoundReg.MEDIUM_CLOCK_TICK,
+                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
+        );
         public static final RegistryObject<Block> REGAL_CLOCK = registerWithItem("regal_clock", () ->
                 new RegalClockBlock(SoundReg.GRANDFATHER_CLOCK_TICK,
                         BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.0F, 12.0F))
@@ -128,6 +149,10 @@ public final class TDRegistry {
         public static final RegistryObject<Block> ROCOCO_CLOCK = registerWithItem("rococo_clock", () ->
                 new RococoClockBlock(SoundReg.MANTLE_CLOCK_TICK, SoundReg.LANTERN_CLOCK_CHIME,
                         BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 6.0F))
+        );
+        public static final RegistryObject<Block> SMALL_CLOCK_TOWER_DIAL = registerWithMultiblockItem("small_clock_tower_dial", () ->
+                new SmallClockTowerDialBlock(SoundReg.CLOCK_TOWER_TICK, SoundReg.CLOCK_TOWER_CHIME,
+                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 60.0F))
         );
         public static final RegistryObject<Block> WOODEN_BLOCK_CLOCK = registerWithItem("wooden_block_clock", () ->
                 new WoodenBlockClockBlock(SoundReg.CUCKOO_CLOCK_TICK,
@@ -200,6 +225,12 @@ public final class TDRegistry {
                 () -> BlockEntityReg.BLUE_CLOCK, BlockReg.BLUE_CLOCK);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> CARRIAGE_CLOCK = register(
                 () -> BlockEntityReg.CARRIAGE_CLOCK, BlockReg.CARRIAGE_CLOCK);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> CRYSTAL_CLOCK = register(
+                () -> BlockEntityReg.CRYSTAL_CLOCK, BlockReg.CRYSTAL_CLOCK);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> CUCKOO_CLOCK = register(
+                () -> BlockEntityReg.CUCKOO_CLOCK, BlockReg.CUCKOO_CLOCK);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> DISPLAY_WATCH = register(
+                () -> BlockEntityReg.DISPLAY_WATCH, BlockReg.DISPLAY_WATCH);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> EMBLEM_CLOCK = register(
                 () -> BlockEntityReg.EMBLEM_CLOCK, BlockReg.EMBLEM_CLOCK);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> FOLIOT_CLOCK = register(
@@ -210,19 +241,38 @@ public final class TDRegistry {
                 () -> BlockEntityReg.GRANDFATHER_CLOCK, BlockReg.GRANDFATHER_CLOCK);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> GREEN_CLOCK = register(
                 () -> BlockEntityReg.GREEN_CLOCK, BlockReg.GREEN_CLOCK);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> LANTERN_CLOCK = register(
+                () -> BlockEntityReg.LANTERN_CLOCK, BlockReg.LANTERN_CLOCK);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> LARGE_CLOCK_TOWER_DIAL = register(
+                () -> BlockEntityReg.LARGE_CLOCK_TOWER_DIAL, BlockReg.LARGE_CLOCK_TOWER_DIAL);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> LIBRARY_CLOCK = register(
                 () -> BlockEntityReg.LIBRARY_CLOCK, BlockReg.LIBRARY_CLOCK);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> MANTLE_CLOCK = register(
                 () -> BlockEntityReg.MANTLE_CLOCK, BlockReg.MANTLE_CLOCK);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> MINIMALIST_CLOCK = register(
                 () -> BlockEntityReg.MINIMALIST_CLOCK, BlockReg.MINIMALIST_CLOCK);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> OWL_CLOCK = register(
+                () -> BlockEntityReg.OWL_CLOCK, BlockReg.OWL_CLOCK);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> RECOGNIZABLE_CLOCK = register(
+                () -> BlockEntityReg.RECOGNIZABLE_CLOCK, BlockReg.RECOGNIZABLE_CLOCK);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> RED_CLOCK = register(
+                () -> BlockEntityReg.RED_CLOCK, BlockReg.RED_CLOCK);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> REED_CLOCK = register(
+                () -> BlockEntityReg.REED_CLOCK, BlockReg.REED_CLOCK);
             public static final RegistryObject<BlockEntityType<ClockBlockEntity>> REGAL_CLOCK = register(
                 () -> BlockEntityReg.REGAL_CLOCK, BlockReg.REGAL_CLOCK);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> ROCOCO_CLOCK = register(
                 () -> BlockEntityReg.ROCOCO_CLOCK, BlockReg.ROCOCO_CLOCK);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> SMALL_CLOCK_TOWER_DIAL = register(
+                () -> BlockEntityReg.SMALL_CLOCK_TOWER_DIAL, BlockReg.SMALL_CLOCK_TOWER_DIAL);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> WOODEN_BLOCK_CLOCK = register(
                 () -> BlockEntityReg.WOODEN_BLOCK_CLOCK, BlockReg.WOODEN_BLOCK_CLOCK);
 
+        /**
+         * @param type the supplier for the block entity type registry object
+         * @param block the block registry object for the block entity type
+         * @return the registered block entity type for the ClockBlockEntity
+         */
         private static RegistryObject<BlockEntityType<ClockBlockEntity>> register(final Supplier<Supplier<BlockEntityType<ClockBlockEntity>>> type, final RegistryObject<Block> block) {
             return BLOCK_ENTITY_TYPES.register(block.getId().getPath(), () -> BlockEntityType.Builder
                     .of((pos, state) -> new ClockBlockEntity(type.get().get(), pos, state), block.get())
@@ -237,9 +287,6 @@ public final class TDRegistry {
             SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
         }
 
-        private static RegistryObject<SoundEvent> register(final String name) {
-            return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(TanukiDecor.MODID, name)));
-        }
 
         public static final RegistryObject<SoundEvent> ALARM_CLOCK_TICK = register("block.alarm_clock.tick");
         public static final RegistryObject<SoundEvent> ALARM_CLOCK_CHIME = register("block.alarm_clock.chime");
@@ -260,5 +307,12 @@ public final class TDRegistry {
         public static final RegistryObject<SoundEvent> RECOGNIZABLE_CLOCK_CHIME = register("block.recognizable_clock.chime");
         public static final RegistryObject<SoundEvent> SLATE_CLOCK_CHIME = register("block.slate_clock.chime");
 
+        /**
+         * @param name the sound name as specified in the sounds.json file
+         * @return a registered sound event for the TanukiDecor namespace and the given sound name
+         */
+        private static RegistryObject<SoundEvent> register(final String name) {
+            return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(TanukiDecor.MODID, name)));
+        }
     }
 }

@@ -31,7 +31,7 @@ public class GrandfatherClockBER extends ClockBER {
     public GrandfatherClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,
                 new Vec3(0, 3.0F / 16.0F, 0),
-                new Vec3(8.0D / 16.0D, 0, 8.0D / 16.0D),
+                ROOT_PIVOT_POINT,
                 new Vec3(0, 13.0D / 16.0D, 0.98D / 16.0D),
                 new Vec3(8.0D / 16.0D, 7.0D / 16.0D, 0));
     }

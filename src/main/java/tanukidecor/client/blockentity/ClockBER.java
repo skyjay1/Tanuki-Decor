@@ -29,6 +29,8 @@ import java.util.List;
 public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
 
     public static final ResourceLocation EMPTY = new ResourceLocation(TanukiDecor.MODID, "block/library_clock/empty");
+    protected static final Vec3 ROOT_POSITION = new Vec3(8.0D / 16.0D, 8.0D / 16.0D, 0);
+    protected static final Vec3 ROOT_PIVOT_POINT = new Vec3(8.0D / 16.0D, 0, 8.0D / 16.0D);
 
     protected final BlockRenderDispatcher blockRenderer;
     protected final ClockRenderHelper clockRenderHelper;

@@ -60,13 +60,9 @@ public class GreenClock extends HorizontalBlock implements EntityBlock, IChimePr
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos blockpos = pContext.getClickedPos();
-        Level level = pContext.getLevel();
         FluidState fluidstate = pContext.getLevel().getFluidState(pContext.getClickedPos());
         boolean waterlogged = fluidstate.getType() == Fluids.WATER;
-        if (pContext.getClickedFace().getAxis() != Direction.Axis.Y
-                && blockpos.getY() < level.getMaxBuildHeight() - 1
-                && level.getBlockState(blockpos.above()).canBeReplaced(pContext)) {
+        if (pContext.getClickedFace().getAxis() != Direction.Axis.Y) {
             return this.defaultBlockState()
                     .setValue(FACING, pContext.getClickedFace())
                     .setValue(WATERLOGGED, waterlogged);

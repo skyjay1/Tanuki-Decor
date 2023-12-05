@@ -48,16 +48,26 @@ public final class TDClientEvents {
             // TODO banjo clock BER
             // TODO blue clock BER
             // TODO carriage clock BER (optional: spinning gears)
+            // TODO crystal clock BER
+            // TODO cuckoo clock BER (optional: cuckoo, needs art first)
+            // TODO display watch BER
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.EMBLEM_CLOCK.get(), EmblemClockBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.FOLIOT_CLOCK.get(), FoliotClockBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GRANDFATHER_CLOCK.get(), GrandfatherClockBER::new);
             // TODO gorgeous clock BER
             // TODO green clock BER
+            // TODO lantern clock BER
+            // TODO large clock tower dial BER
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LIBRARY_CLOCK.get(), LibraryClockBER::new);
             // TODO mantle clock BER
             // TODO minimalist clock BER
-            // TODO regal clock BER
+            // TODO owl clock BER
+            // TODO recognizable clock BER
+            // TODO red clock BER
+            // TODO reed clock BER
+            // TODO regal clock BER (also: fix upper model to stop z fighting)
             // TODO rococo clock BER
+            // TODO small clock tower dial BER
             // TODO wooden block clock BER
         }
 
@@ -79,10 +89,16 @@ public final class TDClientEvents {
             registerRenderLayer(TDRegistry.BlockReg.ANTIQUE_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.BANJO_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.BLUE_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.CARRIAGE_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.CRYSTAL_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.DISPLAY_WATCH.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.FOLIOT_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.GORGEOUS_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.GRANDFATHER_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.LANTERN_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.LIBRARY_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.RECOGNIZABLE_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.RED_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.ROCOCO_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.WOODEN_BLOCK_CLOCK.get(), RenderType.cutout());
         }

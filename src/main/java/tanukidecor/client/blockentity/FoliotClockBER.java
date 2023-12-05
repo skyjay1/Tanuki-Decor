@@ -22,8 +22,8 @@ public class FoliotClockBER extends ClockBER {
 
     public FoliotClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, null,
-                new Vec3(8.0D / 16.0D, 8.0D / 16.0D, 0),
-                new Vec3(8.0D / 16.0D, 0, 8.0D / 16.0D),
+                ROOT_POSITION,
+                ROOT_PIVOT_POINT,
                 new Vec3(-8.0D / 16.0D, -8.0D / 16.0D, 0),
                 new Vec3(8.0D / 16.0D, 6.0D / 16.0D, 0));
     }

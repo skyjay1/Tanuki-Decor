@@ -55,12 +55,13 @@ public class MultiblockHandler {
     private static final IntegerProperty[] WIDTH_BY_MAX_VALUE = new IntegerProperty[] { null, WIDTH_1_2, WIDTH_0_2};
     private static final IntegerProperty[] HEIGHT_BY_MAX_VALUE = new IntegerProperty[] { null, HEIGHT_1_2, HEIGHT_0_2};
     private static final IntegerProperty[] DEPTH_BY_MAX_VALUE = new IntegerProperty[] { null, DEPTH_1_2, DEPTH_0_2};
-    
+
+    public static final MultiblockHandler MULTIBLOCK_3X3X3 = new MultiblockHandler(3, 3, 3);
     public static final MultiblockHandler MULTIBLOCK_3X3X1 = new MultiblockHandler(3, 3, 1);
     public static final MultiblockHandler MULTIBLOCK_3X2X1 = new MultiblockHandler(3, 2, 1);
-    public static final MultiblockHandler MULTIBLOCK_3X3X3 = new MultiblockHandler(3, 3, 3);
+    public static final MultiblockHandler MULTIBLOCK_3X1X1 = new MultiblockHandler(3, 1, 1);
     public static final MultiblockHandler MULTIBLOCK_2X3X1 = new MultiblockHandler(2, 3, 1);
-    public static final MultiblockHandler MULTIBLOCK_2X2X1 = new MultiblockHandler(2, 2, 3);
+    public static final MultiblockHandler MULTIBLOCK_2X2X1 = new MultiblockHandler(2, 2, 1);
     public static final MultiblockHandler MULTIBLOCK_1X3X1 = new MultiblockHandler(1, 3, 1);
 
     private final @Nullable IntegerProperty widthProperty;

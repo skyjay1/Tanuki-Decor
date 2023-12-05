@@ -9,34 +9,30 @@ package tanukidecor.block.clock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.HorizontalDoubleBlock;
+import tanukidecor.block.HorizontalBlock;
 import tanukidecor.block.entity.ClockBlockEntity;
 
 import java.util.function.Supplier;
 
-public class FoliotClockBlock extends HorizontalDoubleBlock implements EntityBlock, IChimeProvider {
+public class FoliotClockBlock extends HorizontalBlock implements EntityBlock, IChimeProvider {
 
     protected final Supplier<SoundEvent> tickSound;
 
-    public static final VoxelShape UPPER_SHAPE = Shapes.or(
+    public static final VoxelShape SHAPE = Shapes.or(
             box(1.5D, 12, 12, 14.5D, 13, 13),
             box(2.5D, 9, 12.5D, 4.5D, 12, 12.5D),
             box(11.5D, 9, 12.5D, 13.5D, 12, 12.5D),
@@ -52,20 +48,14 @@ public class FoliotClockBlock extends HorizontalDoubleBlock implements EntityBlo
             box(7, 3, 13, 9, 5, 14),
             box(7.5D, 3.5D, 11, 8.5D, 4.5D, 15),
             box(8.5D, 5.5D, 11, 9.5D, 6.5D, 15),
-            box(7.5D, 7.5D, 11, 8.5D, 8.5D, 15));
-    public static final VoxelShape LOWER_SHAPE = Shapes.or(
+            box(7.5D, 7.5D, 11, 8.5D, 8.5D, 15),
             box(7, 14, 15, 9, 16, 16),
-            box(6, 10, 12.5D, 8, 14, 14.5D),
-            box(8.5D, 13, 13, 9.5D, 16, 14));
+            box(6, -6, 12.5D, 8, -2, 14.5D),
+            box(8.5D, -3, 13, 9.5D, 0, 14));
 
-    // TODO decide whether to make Foliot Clock a single block instead of double block
     public FoliotClockBlock(Supplier<SoundEvent> tickSound, Properties pProperties) {
-        super(pProperties, HorizontalDoubleBlock.createShapeBuilder(UPPER_SHAPE, LOWER_SHAPE));
+        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
         this.tickSound = tickSound;
-        this.registerDefaultState(this.stateDefinition.any()
-                .setValue(FACING, Direction.NORTH)
-                .setValue(WATERLOGGED, false)
-                .setValue(HALF, DoubleBlockHalf.UPPER));
     }
 
     //// CHIME PROVIDER ////
@@ -80,34 +70,23 @@ public class FoliotClockBlock extends HorizontalDoubleBlock implements EntityBlo
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos blockpos = pContext.getClickedPos();
-        Level level = pContext.getLevel();
         FluidState fluidstate = pContext.getLevel().getFluidState(pContext.getClickedPos());
         boolean waterlogged = fluidstate.getType() == Fluids.WATER;
-        if (pContext.getClickedFace().getAxis() != Direction.Axis.Y
-                && blockpos.getY() > level.getMinBuildHeight()
-                && level.getBlockState(blockpos.below()).canBeReplaced(pContext)) {
+        if (pContext.getClickedFace().getAxis() != Direction.Axis.Y) {
             return this.defaultBlockState()
                     .setValue(FACING, pContext.getClickedFace())
-                    .setValue(WATERLOGGED, waterlogged)
-                    .setValue(HALF, DoubleBlockHalf.UPPER);
+                    .setValue(WATERLOGGED, waterlogged);
         } else {
             return null;
         }
     }
 
     @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
-        boolean waterlogged = pLevel.getFluidState(pPos.below()).getType() == Fluids.WATER;
-        pLevel.setBlock(pPos.below(), pState.setValue(HALF, DoubleBlockHalf.LOWER).setValue(WATERLOGGED, waterlogged), Block.UPDATE_ALL);
-    }
-
-    @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         final Direction facing = pState.getValue(FACING);
         final BlockPos supportingPos = pPos.relative(facing.getOpposite());
-        return (pState.getValue(HALF) == DoubleBlockHalf.UPPER && pLevel.getBlockState(supportingPos).isFaceSturdy(pLevel, supportingPos, facing))
-                || pLevel.getBlockState(pPos.above()).is(this);
+        final BlockState supportingState = pLevel.getBlockState(supportingPos);
+        return supportingState.isFaceSturdy(pLevel, supportingPos, facing);
     }
 
     //// BLOCK ENTITY ////
@@ -115,10 +94,7 @@ public class FoliotClockBlock extends HorizontalDoubleBlock implements EntityBlo
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
-            return TDRegistry.BlockEntityReg.FOLIOT_CLOCK.get().create(pPos, pState);
-        }
-        return null;
+        return TDRegistry.BlockEntityReg.FOLIOT_CLOCK.get().create(pPos, pState);
     }
 
     @Nullable

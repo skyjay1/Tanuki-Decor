@@ -23,8 +23,8 @@ public class EmblemClockBER extends ClockBER {
 
     public EmblemClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,
-                new Vec3(8.0D / 16.0D, 8.0D / 16.0D, 0),
-                new Vec3(8.0D / 16.0D, 0, 8.0D / 16.0D),
+                ROOT_POSITION,
+                ROOT_PIVOT_POINT,
                 new Vec3(-8.0D / 16.0D, -8.0D / 16.0D, 0),
                 new Vec3(8.0D / 16.0D, 8.0D / 16.0D, 0));
     }
