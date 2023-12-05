@@ -15,41 +15,30 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
+import tanukidecor.block.HorizontalBlock;
 import tanukidecor.block.HorizontalDoubleBlock;
 import tanukidecor.block.entity.ClockBlockEntity;
 
 import java.util.function.Supplier;
 
-public class AntiqueClock extends HorizontalDoubleBlock implements EntityBlock, IChimeProvider {
+public class WoodenBlockClockBlock extends HorizontalDoubleBlock implements EntityBlock, IChimeProvider {
 
     protected final Supplier<SoundEvent> tickSound;
-    protected final Supplier<SoundEvent> chimeSound;
 
     public static final VoxelShape UPPER_SHAPE = Shapes.or(
-            box(1, 0, 1, 15, 12, 15),
-            box(0, 12, 0, 16, 16, 16));
-    public static final VoxelShape LOWER_SHAPE = Shapes.or(
-            box(0, 2, 0, 16, 6, 16),
-            box(1, 6, 1, 15, 16, 15),
-            Shapes.join(
-                    box(0, 0, 0, 16, 2, 16),
-                    Shapes.or(
-                            box(4, 0, 0, 12, 2, 16),
-                            box(0, 0, 4, 16, 2, 12),
-                            box(2, 0, 2, 14, 2, 14)
-                    ),
-                    BooleanOp.ONLY_FIRST
-            ));
+            box(0.2D, 0, 10, 15.8D, 2, 16),
+            box(2.2D, 2, 10, 13.8D, 4, 16),
+            box(4.2D, 4, 10, 11.8D, 6, 16),
+            box(6.2D, 6, 10, 9.8D, 8, 16));
+    public static final VoxelShape LOWER_SHAPE = box(2, 4, 10, 14, 16, 16);
 
-    public AntiqueClock(Supplier<SoundEvent> tickSound, Supplier<SoundEvent> chimeSound, Properties pProperties) {
+    public WoodenBlockClockBlock(Supplier<SoundEvent> tickSound, Properties pProperties) {
         super(pProperties, HorizontalDoubleBlock.createShapeBuilder(UPPER_SHAPE, LOWER_SHAPE));
         this.tickSound = tickSound;
-        this.chimeSound = chimeSound;
     }
 
     //// CHIME PROVIDER ////
@@ -60,24 +49,13 @@ public class AntiqueClock extends HorizontalDoubleBlock implements EntityBlock, 
         return this.tickSound.get();
     }
 
-    @Nullable
-    @Override
-    public SoundEvent getChimeSound() {
-        return this.chimeSound.get();
-    }
-
-    @Override
-    public int getTickSoundInterval() {
-        return 40;
-    }
-
     //// BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         if(pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
-            return TDRegistry.BlockEntityReg.ANTIQUE_CLOCK.get().create(pPos, pState);
+            return TDRegistry.BlockEntityReg.WOODEN_BLOCK_CLOCK.get().create(pPos, pState);
         }
         return null;
     }

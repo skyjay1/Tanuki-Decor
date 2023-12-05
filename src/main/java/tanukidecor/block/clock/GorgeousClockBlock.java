@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
@@ -32,36 +31,18 @@ import tanukidecor.block.entity.ClockBlockEntity;
 
 import java.util.function.Supplier;
 
-public class FoliotClockBlock extends HorizontalDoubleBlock implements EntityBlock, IChimeProvider {
+public class GorgeousClockBlock extends HorizontalDoubleBlock implements EntityBlock, IChimeProvider {
 
     protected final Supplier<SoundEvent> tickSound;
+    protected final Supplier<SoundEvent> chimeSound;
 
-    public static final VoxelShape UPPER_SHAPE = Shapes.or(
-            box(1.5D, 12, 12, 14.5D, 13, 13),
-            box(2.5D, 9, 12.5D, 4.5D, 12, 12.5D),
-            box(11.5D, 9, 12.5D, 13.5D, 12, 12.5D),
-            box(7.5D, 11, 12, 8.5D, 12, 13),
-            box(7.5D, 13, 12, 8.5D, 14, 15),
-            box(7.5D, 10, 11, 8.5D, 11, 15),
-            box(7.5D, 1, 11, 8.5D, 2, 15),
-            box(7, 0, 10, 9, 12, 11),
-            box(9, 0, 15, 12, 2, 16),
-            box(4, 0, 15, 7, 2, 16),
-            box(7, 0, 15, 9, 16, 16),
-            box(4, 2, 9, 12, 10, 10),
-            box(7, 3, 13, 9, 5, 14),
-            box(7.5D, 3.5D, 11, 8.5D, 4.5D, 15),
-            box(8.5D, 5.5D, 11, 9.5D, 6.5D, 15),
-            box(7.5D, 7.5D, 11, 8.5D, 8.5D, 15));
-    public static final VoxelShape LOWER_SHAPE = Shapes.or(
-            box(7, 14, 15, 9, 16, 16),
-            box(6, 10, 12.5D, 8, 14, 14.5D),
-            box(8.5D, 13, 13, 9.5D, 16, 14));
+    public static final VoxelShape UPPER_SHAPE = box(2, 0, 9, 14, 12, 16);
+    public static final VoxelShape LOWER_SHAPE = box(4, 4, 11, 12, 16, 16);
 
-    // TODO decide whether to make Foliot Clock a single block instead of double block
-    public FoliotClockBlock(Supplier<SoundEvent> tickSound, Properties pProperties) {
+    public GorgeousClockBlock(Supplier<SoundEvent> tickSound, Supplier<SoundEvent> chimeSound, Properties pProperties) {
         super(pProperties, HorizontalDoubleBlock.createShapeBuilder(UPPER_SHAPE, LOWER_SHAPE));
         this.tickSound = tickSound;
+        this.chimeSound = chimeSound;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(WATERLOGGED, false)
@@ -74,6 +55,12 @@ public class FoliotClockBlock extends HorizontalDoubleBlock implements EntityBlo
     @Override
     public SoundEvent getTickSound() {
         return this.tickSound.get();
+    }
+
+    @Nullable
+    @Override
+    public SoundEvent getChimeSound() {
+        return this.chimeSound.get();
     }
 
     //// PLACEMENT ////
@@ -116,7 +103,7 @@ public class FoliotClockBlock extends HorizontalDoubleBlock implements EntityBlo
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         if(pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
-            return TDRegistry.BlockEntityReg.FOLIOT_CLOCK.get().create(pPos, pState);
+            return TDRegistry.BlockEntityReg.GORGEOUS_CLOCK.get().create(pPos, pState);
         }
         return null;
     }

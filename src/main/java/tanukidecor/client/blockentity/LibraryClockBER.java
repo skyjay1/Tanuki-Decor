@@ -25,15 +25,15 @@ public class LibraryClockBER extends ClockBER {
     public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/library_clock/short_hand");
     public static final ResourceLocation PENDULUM = new ResourceLocation(TanukiDecor.MODID, "block/library_clock/pendulum");
 
-    private static final Vec3 ROOT_POSITION = new Vec3(-8.0D / 16.0D, 0, 0);
-    private static final Vec3 ROOT_PIVOT_POINT = new Vec3(8.0D / 16.0D, 0, 8.0D / 16.0D);
-    private static final Vec3 HANDS_POSITION = new Vec3(0, 13.0D / 16.0D, 0);
-    private static final Vec3 HANDS_PIVOT_POINT = new Vec3(8.0D / 16.0D, 11.0D / 16.0D, 0);
     private static final Vec3 PENDULUM_POSITION = new Vec3(0, -2.5D / 16.0D, 0);
     private static final Vec3 PENDULUM_PIVOT_POINT = new Vec3(8.0D / 16.0D, 18.0D / 16.0D, 0);
 
     public LibraryClockBER(BlockEntityRendererProvider.Context pContext) {
-        super(pContext, SHORT_HAND, LONG_HAND, ROOT_POSITION, ROOT_PIVOT_POINT, HANDS_POSITION, HANDS_PIVOT_POINT);
+        super(pContext, SHORT_HAND, LONG_HAND,
+                new Vec3(-8.0D / 16.0D, 0, 0),
+                new Vec3(8.0D / 16.0D, 0, 8.0D / 16.0D),
+                new Vec3(0, 13.0D / 16.0D, 0),
+                new Vec3(8.0D / 16.0D, 11.0D / 16.0D, 0));
     }
 
     @Override

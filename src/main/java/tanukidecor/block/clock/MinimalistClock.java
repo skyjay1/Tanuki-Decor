@@ -11,13 +11,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -30,20 +28,13 @@ import tanukidecor.block.entity.ClockBlockEntity;
 
 import java.util.function.Supplier;
 
-public class GreenClock extends HorizontalBlock implements EntityBlock, IChimeProvider {
+public class MinimalistClock extends HorizontalBlock implements EntityBlock, IChimeProvider {
 
     protected final Supplier<SoundEvent> tickSound;
 
-    public static final VoxelShape SHAPE = Shapes.or(
-            box(4, 0, 14, 12, 16, 16),
-            box(0, 4, 14, 16, 12, 16),
-            Shapes.join(
-                    box(4, 4, 13, 12, 12, 14),
-                    box(5, 5, 13, 11, 11, 14),
-                    BooleanOp.ONLY_FIRST
-            ));
+    public static final VoxelShape SHAPE = box(2, 2, 13, 14, 14, 16);
 
-    public GreenClock(Supplier<SoundEvent> tickSound, Properties pProperties) {
+    public MinimalistClock(Supplier<SoundEvent> tickSound, Properties pProperties) {
         super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
         this.tickSound = tickSound;
     }
@@ -75,20 +66,12 @@ public class GreenClock extends HorizontalBlock implements EntityBlock, IChimePr
         }
     }
 
-    @Override
-    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        final Direction facing = pState.getValue(FACING);
-        final BlockPos supportingPos = pPos.relative(facing.getOpposite());
-        final BlockState supportingState = pLevel.getBlockState(supportingPos);
-        return supportingState.isFaceSturdy(pLevel, supportingPos, facing);
-    }
-
     //// BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return TDRegistry.BlockEntityReg.GREEN_CLOCK.get().create(pPos, pState);
+        return TDRegistry.BlockEntityReg.MINIMALIST_CLOCK.get().create(pPos, pState);
     }
 
     @Nullable

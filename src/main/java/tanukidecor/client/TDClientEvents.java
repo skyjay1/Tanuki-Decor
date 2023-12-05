@@ -43,12 +43,22 @@ public final class TDClientEvents {
         @SubscribeEvent
         public static void onRegisterEntityRenderers(final EntityRenderersEvent.RegisterRenderers event) {
             // TODO alarm clock BER
+            // TODO anniversary clock BER
             // TODO antique clock BER
+            // TODO banjo clock BER
+            // TODO blue clock BER
+            // TODO carriage clock BER (optional: spinning gears)
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.EMBLEM_CLOCK.get(), EmblemClockBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.FOLIOT_CLOCK.get(), FoliotClockBER::new);
-            // TODO green clock ber
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LIBRARY_CLOCK.get(), LibraryClockBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GRANDFATHER_CLOCK.get(), GrandfatherClockBER::new);
+            // TODO gorgeous clock BER
+            // TODO green clock BER
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LIBRARY_CLOCK.get(), LibraryClockBER::new);
+            // TODO mantle clock BER
+            // TODO minimalist clock BER
+            // TODO regal clock BER
+            // TODO rococo clock BER
+            // TODO wooden block clock BER
         }
 
         @SubscribeEvent
@@ -65,10 +75,16 @@ public final class TDClientEvents {
 
         private static void registerBlockRenderLayers() {
             registerRenderLayer(TDRegistry.BlockReg.ALARM_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.ANNIVERSARY_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.ANTIQUE_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.BANJO_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.BLUE_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.FOLIOT_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.GORGEOUS_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.GRANDFATHER_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.LIBRARY_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.ROCOCO_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.WOODEN_BLOCK_CLOCK.get(), RenderType.cutout());
         }
 
         private static void registerRenderLayer(final Block block, RenderType renderType) {
