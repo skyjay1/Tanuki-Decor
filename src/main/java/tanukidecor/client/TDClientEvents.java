@@ -62,12 +62,14 @@ public final class TDClientEvents {
             // TODO mantle clock BER
             // TODO minimalist clock BER
             // TODO owl clock BER
-            // TODO recognizable clock BER
+            // TODO recognizable clock BER (has hands on all 4 sides)
             // TODO red clock BER
             // TODO reed clock BER
             // TODO regal clock BER (also: fix upper model to stop z fighting)
             // TODO rococo clock BER
             // TODO small clock tower dial BER
+            // TODO slate clock BER (might have bad model structure)
+            // TODO station clock BER (has hands on front and back)
             // TODO wooden block clock BER
         }
 
@@ -100,6 +102,7 @@ public final class TDClientEvents {
             registerRenderLayer(TDRegistry.BlockReg.RECOGNIZABLE_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.RED_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.ROCOCO_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.SLATE_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.WOODEN_BLOCK_CLOCK.get(), RenderType.cutout());
         }
 

@@ -150,8 +150,16 @@ public final class TDRegistry {
                 new RococoClockBlock(SoundReg.MANTLE_CLOCK_TICK, SoundReg.LANTERN_CLOCK_CHIME,
                         BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 6.0F))
         );
+        public static final RegistryObject<Block> SLATE_CLOCK = registerWithItem("slate_clock", () ->
+                new SlateClockBlock(SoundReg.MANTLE_CLOCK_TICK, SoundReg.SLATE_CLOCK_CHIME,
+                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 6.0F))
+        );
         public static final RegistryObject<Block> SMALL_CLOCK_TOWER_DIAL = registerWithMultiblockItem("small_clock_tower_dial", () ->
                 new SmallClockTowerDialBlock(SoundReg.CLOCK_TOWER_TICK, SoundReg.CLOCK_TOWER_CHIME,
+                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 60.0F))
+        );
+        public static final RegistryObject<Block> STATION_CLOCK = registerWithMultiblockItem("station_clock", () ->
+                new StationClockBlock(SoundReg.CLOCK_TOWER_TICK,
                         BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 60.0F))
         );
         public static final RegistryObject<Block> WOODEN_BLOCK_CLOCK = registerWithItem("wooden_block_clock", () ->
@@ -263,8 +271,12 @@ public final class TDRegistry {
                 () -> BlockEntityReg.REGAL_CLOCK, BlockReg.REGAL_CLOCK);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> ROCOCO_CLOCK = register(
                 () -> BlockEntityReg.ROCOCO_CLOCK, BlockReg.ROCOCO_CLOCK);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> SLATE_CLOCK = register(
+                () -> BlockEntityReg.SLATE_CLOCK, BlockReg.SLATE_CLOCK);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> SMALL_CLOCK_TOWER_DIAL = register(
                 () -> BlockEntityReg.SMALL_CLOCK_TOWER_DIAL, BlockReg.SMALL_CLOCK_TOWER_DIAL);
+        public static final RegistryObject<BlockEntityType<ClockBlockEntity>> STATION_CLOCK = register(
+                () -> BlockEntityReg.STATION_CLOCK, BlockReg.STATION_CLOCK);
         public static final RegistryObject<BlockEntityType<ClockBlockEntity>> WOODEN_BLOCK_CLOCK = register(
                 () -> BlockEntityReg.WOODEN_BLOCK_CLOCK, BlockReg.WOODEN_BLOCK_CLOCK);
 
