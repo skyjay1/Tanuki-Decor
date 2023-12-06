@@ -128,28 +128,6 @@
         "north": {"uv": [7, 5, 11, 6.5], "texture": "#clock"},
         "south": {"uv": [7, 5, 11, 6.5], "texture": "#clock"}
       }
-    },
-    {
-      "name": "clock_12",
-      "from": [7, 7, 6],
-      "to": [10, 10, 10],
-      "faces": {
-        "east": {"uv": [6, 10, 4, 11.5], "texture": "#clock"},
-        "west": {"uv": [4, 10, 6, 11.5], "texture": "#clock"},
-        "up": {"uv": [4, 10, 6, 11.5], "rotation": 90, "texture": "#clock"},
-        "down": {"uv": [6, 10, 4, 11.5], "rotation": 90, "texture": "#clock"}
-      }
-    },
-    {
-      "name": "clock_11",
-      "from": [6, 3, 6],
-      "to": [9, 6, 10],
-      "faces": {
-        "east": {"uv": [6, 10, 4, 11.5], "texture": "#clock"},
-        "west": {"uv": [4, 10, 6, 11.5], "texture": "#clock"},
-        "up": {"uv": [4, 10, 6, 11.5], "rotation": 90, "texture": "#clock"},
-        "down": {"uv": [6, 10, 4, 11.5], "rotation": 90, "texture": "#clock"}
-      }
     }
   ],
   "groups": [
@@ -158,18 +136,6 @@
       "origin": [8, 8, 8],
       "color": 0,
       "children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    },
-    {
-      "name": "gear1",
-      "origin": [0, 0, 0],
-      "color": 0,
-      "children": [13]
-    },
-    {
-      "name": "gear2",
-      "origin": [0, 0, 0],
-      "color": 0,
-      "children": [14]
     }
   ]
 }

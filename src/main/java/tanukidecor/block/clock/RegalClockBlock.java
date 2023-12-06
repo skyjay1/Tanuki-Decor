@@ -31,6 +31,7 @@ public class RegalClockBlock extends HorizontalDoubleBlock implements EntityBloc
     public static final VoxelShape UPPER_SHAPE = Shapes.or(
             box(2, 0, 1, 14, 8, 15),
             box(1, 8, 1, 15, 12, 15),
+            box(3, 12, 1, 13, 13, 15),
             box(6, 12, 1, 10, 16, 15));
     public static final VoxelShape LOWER_SHAPE = box(2, 0, 1, 14, 16, 15);
 

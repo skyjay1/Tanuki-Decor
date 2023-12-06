@@ -43,7 +43,6 @@ public class ClockRenderHelper {
 
     public void rotateForDirection(final Direction direction) {
         final float yRot = (direction.getOpposite().toYRot()) * Mth.DEG_TO_RAD;
-        poseStack.pushPose();
         poseStack.translate(pivotPoint.x(), pivotPoint.y(), pivotPoint.z());
         poseStack.mulPose(Vector3f.YN.rotation(yRot));
         poseStack.translate(-pivotPoint.x(), -pivotPoint.y(), -pivotPoint.z());

@@ -42,49 +42,77 @@ public final class TDClientEvents {
 
         @SubscribeEvent
         public static void onRegisterEntityRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-            // TODO alarm clock BER
-            // TODO anniversary clock BER
-            // TODO antique clock BER
-            // TODO banjo clock BER
-            // TODO blue clock BER
-            // TODO carriage clock BER (optional: spinning gears)
-            // TODO crystal clock BER
-            // TODO cuckoo clock BER (optional: cuckoo, needs art first)
-            // TODO display watch BER
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.ALARM_CLOCK.get(), AlarmClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.ANNIVERSARY_CLOCK.get(), AnniversaryClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.ANTIQUE_CLOCK.get(), AntiqueClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.BANJO_CLOCK.get(), BanjoClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.BLUE_CLOCK.get(), BlueClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.CARRIAGE_CLOCK.get(), CarriageClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.CRYSTAL_CLOCK.get(), CrystalClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.CUCKOO_CLOCK.get(), CuckooClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.DISPLAY_WATCH.get(), DisplayWatchBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.EMBLEM_CLOCK.get(), EmblemClockBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.FOLIOT_CLOCK.get(), FoliotClockBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GRANDFATHER_CLOCK.get(), GrandfatherClockBER::new);
-            // TODO gorgeous clock BER
-            // TODO green clock BER
-            // TODO lantern clock BER
-            // TODO large clock tower dial BER
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GORGEOUS_CLOCK.get(), GorgeousClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GREEN_CLOCK.get(), GreenClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LANTERN_CLOCK.get(), LanternClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LARGE_CLOCK_TOWER_DIAL.get(), LargeClockTowerDialBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LIBRARY_CLOCK.get(), LibraryClockBER::new);
-            // TODO mantle clock BER
-            // TODO minimalist clock BER
-            // TODO owl clock BER
-            // TODO recognizable clock BER (has hands on all 4 sides)
-            // TODO red clock BER
-            // TODO reed clock BER
-            // TODO regal clock BER (also: fix upper model to stop z fighting)
-            // TODO rococo clock BER
-            // TODO small clock tower dial BER
-            // TODO slate clock BER (might have bad model structure)
-            // TODO station clock BER (has hands on front and back)
-            // TODO wooden block clock BER
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.MANTLE_CLOCK.get(), MantleClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.MINIMALIST_CLOCK.get(), MinimalistClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.OWL_CLOCK.get(), OwlClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.RECOGNIZABLE_CLOCK.get(), RecognizableClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.RED_CLOCK.get(), RedClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.REED_CLOCK.get(), ReedClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.REGAL_CLOCK.get(), RegalClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.ROCOCO_CLOCK.get(), RococoClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.SMALL_CLOCK_TOWER_DIAL.get(), SmallClockTowerDialBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.SLATE_CLOCK.get(), SlateClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.STATION_CLOCK.get(), StationClockBER::new);
+            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.WOODEN_BLOCK_CLOCK.get(), WoodenBlockClockBER::new);
         }
 
         @SubscribeEvent
-        public static void registerModel(final ModelRegistryEvent event) {
+        public static void onRegisterModels(final ModelRegistryEvent event) {
             // gather special models
             final Set<ResourceLocation> set = new HashSet<>();
-            LibraryClockBER.addSpecialModels(set);
-            GrandfatherClockBER.addSpecialModels(set);
+            AlarmClockBER.addSpecialModels(set);
+            AnniversaryClockBER.addSpecialModels(set);
+            AntiqueClockBER.addSpecialModels(set);
+            BanjoClockBER.addSpecialModels(set);
+            BlueClockBER.addSpecialModels(set);
+            CarriageClockBER.addSpecialModels(set);
+            CrystalClockBER.addSpecialModels(set);
+            CuckooClockBER.addSpecialModels(set);
+            DisplayWatchBER.addSpecialModels(set);
             EmblemClockBER.addSpecialModels(set);
             FoliotClockBER.addSpecialModels(set);
+            GorgeousClockBER.addSpecialModels(set);
+            GrandfatherClockBER.addSpecialModels(set);
+            GreenClockBER.addSpecialModels(set);
+            LanternClockBER.addSpecialModels(set);
+            LargeClockTowerDialBER.addSpecialModels(set);
+            LibraryClockBER.addSpecialModels(set);
+            MantleClockBER.addSpecialModels(set);
+            MinimalistClockBER.addSpecialModels(set);
+            OwlClockBER.addSpecialModels(set);
+            RecognizableClockBER.addSpecialModels(set);
+            RedClockBER.addSpecialModels(set);
+            ReedClockBER.addSpecialModels(set);
+            RegalClockBER.addSpecialModels(set);
+            RococoClockBER.addSpecialModels(set);
+            SmallClockTowerDialBER.addSpecialModels(set);
+            SlateClockBER.addSpecialModels(set);
+            StationClockBER.addSpecialModels(set);
+            WoodenBlockClockBER.addSpecialModels(set);
             // register special models
             set.forEach(ForgeModelBakery::addSpecialModel);
         }
 
+        /**
+         * Register blocks that use something other than the solid render layer
+         */
         private static void registerBlockRenderLayers() {
             registerRenderLayer(TDRegistry.BlockReg.ALARM_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.ANNIVERSARY_CLOCK.get(), RenderType.cutout());

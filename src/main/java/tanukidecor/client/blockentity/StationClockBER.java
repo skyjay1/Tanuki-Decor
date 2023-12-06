@@ -7,14 +7,11 @@
 package tanukidecor.client.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -26,36 +23,19 @@ import net.minecraft.world.phys.Vec3;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.ClockBlockEntity;
 
-import java.util.List;
+import java.util.Set;
 
-public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
+public class StationClockBER extends ClockBER {
 
-    public static final ResourceLocation EMPTY = new ResourceLocation("block/air");
-    protected static final Vec3 ROOT_POSITION = new Vec3(8.0D / 16.0D, 8.0D / 16.0D, 0);
-    protected static final Vec3 ROOT_PIVOT_POINT = new Vec3(8.0D / 16.0D, 0, 8.0D / 16.0D);
-    protected static final Vec3 HANDS_POSITION = new Vec3(-8.0D / 16.0D, -8.0D / 16.0D, 0);
+    public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/station_clock/short_hand");
+    public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/station_clock/long_hand");
 
-    protected final BlockRenderDispatcher blockRenderer;
-    protected final ClockRenderHelper clockRenderHelper;
-    protected final ResourceLocation shortHand;
-    protected final ResourceLocation longHand;
-    protected final Vec3 rootPosition;
-    protected final Vec3 rootPivotPoint;
-    protected final Vec3 handsPosition;
-    protected final Vec3 handsPivotPoint;
-
-    public ClockBER(BlockEntityRendererProvider.Context pContext,
-                    ResourceLocation shortHand, ResourceLocation longHand,
-                    Vec3 rootPosition, Vec3 rootPivotPoint,
-                    Vec3 handsPosition, Vec3 handsPivotPoint) {
-        this.shortHand = shortHand;
-        this.longHand = longHand;
-        this.rootPosition = rootPosition;
-        this.rootPivotPoint = rootPivotPoint;
-        this.handsPosition = handsPosition;
-        this.handsPivotPoint = handsPivotPoint;
-        this.blockRenderer = pContext.getBlockRenderDispatcher();
-        this.clockRenderHelper = new ClockRenderHelper();
+    public StationClockBER(BlockEntityRendererProvider.Context pContext) {
+        super(pContext, SHORT_HAND, LONG_HAND,
+                new Vec3(8.0D / 16.0D, 8.0D / 16.0D, 8.0D / 16.0D),
+                ROOT_PIVOT_POINT,
+                new Vec3(-8.0D / 16.0D, 8.0D / 16.0D, -1.48D / 16.0D),
+                new Vec3(8.0D / 16.0D, 8.0D / 16.0D, 0));
     }
 
     @Override
@@ -90,49 +70,38 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
                 .withPivotPoint(this.rootPivotPoint)
                 .rotateForDirection(direction);
 
-        // render short hand
-        if(this.shortHand != null) {
+        // don't ask why it works, it just does
+        pPoseStack.translate(-8.0D / 16.0D, -8.0D / 16.0D, -6.5D / 16.0D);
+
+        // render on front and back
+        for(int i = 0; i < 2; i++) {
+
+            // render short hand
             this.clockRenderHelper
                     .withModel(mc.getModelManager().getModel(this.shortHand))
                     .withPosition(this.handsPosition)
                     .withPivotPoint(this.handsPivotPoint)
                     .withRotationZ(hourRotation)
                     .render(blockRenderer);
-        }
 
-        // render long hand
-        if(this.longHand != null) {
+            // render long hand
             this.clockRenderHelper
                     .withModel(mc.getModelManager().getModel(this.longHand))
-                    .withPosition(this.handsPosition)
-                    .withPivotPoint(this.handsPivotPoint)
                     .withRotationZ(minuteRotation)
                     .render(blockRenderer);
+
+            renderAdditional(this.clockRenderHelper, pBlockEntity, pBufferSource);
+
+            pPoseStack.mulPose(Vector3f.YP.rotation(Mth.PI));
+            pPoseStack.translate(0, 0, -13.0D / 16.0D);
         }
-        renderAdditional(this.clockRenderHelper, pBlockEntity, pBufferSource);
 
         // finish rendering
         pPoseStack.popPose();
     }
 
-    /**
-     * Allows implementations to render additional models
-     * @param renderHelper the clock render helper
-     * @param blockEntity the block entity
-     * @param bufferSource the buffer source
-     */
-    public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity,  MultiBufferSource bufferSource) {
-        // do nothing
-    }
-
-    /**
-     * @param speed the pendulum speed factor
-     * @param maximumAngle the maximum angle in radians
-     * @param time the current time to pass into {@link ClockBlockEntity#getSecond(long, float)}
-     * @param partialTick the partial tick
-     * @return the pendulum angle in radians
-     */
-    public static float getPendulumRotation(final float speed, final float maximumAngle, final long time, final float partialTick) {
-        return Mth.sin(ClockBlockEntity.getSecond(time, partialTick) * speed * Mth.TWO_PI) * maximumAngle;
+    public static void addSpecialModels(final Set<ResourceLocation> list) {
+        list.add(SHORT_HAND);
+        list.add(LONG_HAND);
     }
 }

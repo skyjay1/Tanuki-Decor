@@ -19,21 +19,21 @@ import tanukidecor.block.entity.ClockBlockEntity;
 
 import java.util.Set;
 
-public class LibraryClockBER extends ClockBER {
+public class BlueClockBER extends ClockBER {
 
-    public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/library_clock/long_hand");
-    public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/library_clock/short_hand");
-    public static final ResourceLocation PENDULUM = new ResourceLocation(TanukiDecor.MODID, "block/library_clock/pendulum");
+    public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/blue_clock/long_hand");
+    public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/blue_clock/short_hand");
+    public static final ResourceLocation PENDULUM = new ResourceLocation(TanukiDecor.MODID, "block/blue_clock/pendulum");
 
-    private static final Vec3 PENDULUM_POSITION = new Vec3(0, -2.5D / 16.0D, 0);
-    private static final Vec3 PENDULUM_PIVOT_POINT = new Vec3(8.0D / 16.0D, 18.0D / 16.0D, 0);
+    private static final Vec3 PENDULUM_POSITION = new Vec3(-8.0D / 16.0D, -24.0D / 16.0D, 0);
+    private static final Vec3 PENDULUM_PIVOT_POINT = new Vec3(8.0D / 16.0D, 16.0D / 16.0D, 0);
 
-    public LibraryClockBER(BlockEntityRendererProvider.Context pContext) {
+    public BlueClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,
-                new Vec3(-8.0D / 16.0D, 0, 0),
+                ROOT_POSITION,
                 ROOT_PIVOT_POINT,
-                new Vec3(0, 13.0D / 16.0D, 0),
-                new Vec3(8.0D / 16.0D, 11.0D / 16.0D, 0));
+                HANDS_POSITION,
+                new Vec3(8.0D / 16.0D, 10.0D / 16.0D, 0));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class LibraryClockBER extends ClockBER {
 
     @Override
     public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity, MultiBufferSource bufferSource) {
-        final float pendulumRotation = blockEntity.getBias() * getPendulumRotation(0.5F, 12 * Mth.DEG_TO_RAD, blockEntity.getLevel().getGameTime(), renderHelper.getPartialTick());
+        final float pendulumRotation = blockEntity.getBias() * getPendulumRotation(0.5F, 16 * Mth.DEG_TO_RAD, blockEntity.getLevel().getGameTime(), renderHelper.getPartialTick());
 
         final BakedModel pendulum = Minecraft.getInstance().getModelManager().getModel(PENDULUM);
 
@@ -61,4 +61,5 @@ public class LibraryClockBER extends ClockBER {
         list.add(SHORT_HAND);
         list.add(PENDULUM);
     }
+
 }

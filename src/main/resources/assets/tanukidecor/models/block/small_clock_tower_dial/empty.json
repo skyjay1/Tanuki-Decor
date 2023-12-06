@@ -2,6 +2,6 @@
   "parent": "minecraft:block/air",
   "render_type": "minecraft:cutout",
   "textures": {
-    "particle": "tanukidecor:block/small_clock_tower_dial"
+    "particle": "minecraft:block/white_concrete"
   }
 }

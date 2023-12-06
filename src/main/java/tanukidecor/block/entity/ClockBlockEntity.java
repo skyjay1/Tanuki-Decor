@@ -15,6 +15,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.block.clock.IChimeProvider;
@@ -24,10 +26,17 @@ import java.util.Random;
 public class ClockBlockEntity extends BlockEntity {
 
     protected final @Nullable IChimeProvider chimeProvider;
+    protected final byte bias;
 
     public ClockBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
         this.chimeProvider = (pBlockState.getBlock() instanceof IChimeProvider provider) ? provider : null;
+        this.bias = (byte) ((Mth.getSeed(pPos) % 2 == 0) ? -1 : 1);
+    }
+
+    /** @return a number that is either -1 or 1, based on the block position **/
+    public byte getBias() {
+        return this.bias;
     }
 
     /**

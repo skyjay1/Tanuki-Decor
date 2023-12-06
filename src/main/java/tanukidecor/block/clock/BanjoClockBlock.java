@@ -68,40 +68,6 @@ public class BanjoClockBlock extends HorizontalDoubleBlock implements EntityBloc
         return this.chimeSound.get();
     }
 
-    //// PLACEMENT ////
-
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos blockpos = pContext.getClickedPos();
-        Level level = pContext.getLevel();
-        FluidState fluidstate = pContext.getLevel().getFluidState(pContext.getClickedPos());
-        boolean waterlogged = fluidstate.getType() == Fluids.WATER;
-        if (pContext.getClickedFace().getAxis() != Direction.Axis.Y
-                && blockpos.getY() > level.getMinBuildHeight()
-                && level.getBlockState(blockpos.below()).canBeReplaced(pContext)) {
-            return this.defaultBlockState()
-                    .setValue(FACING, pContext.getClickedFace())
-                    .setValue(WATERLOGGED, waterlogged)
-                    .setValue(HALF, DoubleBlockHalf.UPPER);
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
-        boolean waterlogged = pLevel.getFluidState(pPos.below()).getType() == Fluids.WATER;
-        pLevel.setBlock(pPos.below(), pState.setValue(HALF, DoubleBlockHalf.LOWER).setValue(WATERLOGGED, waterlogged), Block.UPDATE_ALL);
-    }
-
-    @Override
-    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        final Direction facing = pState.getValue(FACING);
-        final BlockPos supportingPos = pPos.relative(facing.getOpposite());
-        return (pState.getValue(HALF) == DoubleBlockHalf.UPPER && pLevel.getBlockState(supportingPos).isFaceSturdy(pLevel, supportingPos, facing))
-                || pLevel.getBlockState(pPos.above()).is(this);
-    }
-
     //// BLOCK ENTITY ////
 
     @Nullable

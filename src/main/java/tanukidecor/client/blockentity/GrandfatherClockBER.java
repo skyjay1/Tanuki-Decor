@@ -43,8 +43,7 @@ public class GrandfatherClockBER extends ClockBER {
 
     @Override
     public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity, MultiBufferSource bufferSource) {
-        final float maxPendulumAngle = (float) Math.toRadians(16);
-        final float pendulumRotation = Mth.sin(ClockBlockEntity.getSecond(blockEntity.getLevel().getGameTime(), renderHelper.getPartialTick()) * Mth.PI) * maxPendulumAngle;
+        final float pendulumRotation = blockEntity.getBias() * getPendulumRotation(0.5F, 8 * Mth.DEG_TO_RAD, blockEntity.getLevel().getGameTime(), renderHelper.getPartialTick());
 
         final BakedModel pendulum = Minecraft.getInstance().getModelManager().getModel(PENDULUM);
 
