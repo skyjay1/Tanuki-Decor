@@ -18,7 +18,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import tanukidecor.TDRegistry;
-import tanukidecor.client.blockentity.*;
+import tanukidecor.client.blockentity.clock.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -42,6 +42,7 @@ public final class TDClientEvents {
 
         @SubscribeEvent
         public static void onRegisterEntityRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+            // CLOCKS //
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.ALARM_CLOCK.get(), AlarmClockBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.ANNIVERSARY_CLOCK.get(), AnniversaryClockBER::new);
             event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.ANTIQUE_CLOCK.get(), AntiqueClockBER::new);
@@ -114,6 +115,7 @@ public final class TDClientEvents {
          * Register blocks that use something other than the solid render layer
          */
         private static void registerBlockRenderLayers() {
+            // CLOCKS //
             registerRenderLayer(TDRegistry.BlockReg.ALARM_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.ANNIVERSARY_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.ANTIQUE_CLOCK.get(), RenderType.cutout());
@@ -132,6 +134,9 @@ public final class TDClientEvents {
             registerRenderLayer(TDRegistry.BlockReg.ROCOCO_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.SLATE_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(TDRegistry.BlockReg.WOODEN_BLOCK_CLOCK.get(), RenderType.cutout());
+            // STORAGE //
+            registerRenderLayer(TDRegistry.BlockReg.ANTIQUE_CABINET.get(), RenderType.cutout());
+            registerRenderLayer(TDRegistry.BlockReg.ANTIQUE_WALL_SHELF.get(), RenderType.cutout());
         }
 
         private static void registerRenderLayer(final Block block, RenderType renderType) {

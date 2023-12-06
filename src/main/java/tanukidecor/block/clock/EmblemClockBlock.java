@@ -58,7 +58,7 @@ public class EmblemClockBlock extends HorizontalMultiblock implements EntityBloc
 
     @Override
     public float getTickVolume(Random random, long dayTime) {
-        return 2.0F;
+        return 1.5F;
     }
 
     //// BLOCK ENTITY ////

@@ -58,7 +58,7 @@ public class SmallClockTowerDialBlock extends HorizontalMultiblock implements En
 
     @Override
     public float getTickVolume(Random random, long dayTime) {
-        return 2.0F;
+        return 1.5F;
     }
 
     //// BLOCK ENTITY ////
@@ -80,7 +80,7 @@ public class SmallClockTowerDialBlock extends HorizontalMultiblock implements En
 
     //// SHAPE ////
 
-    public static VoxelShape SHAPE = box(0, 0, 12, 16, 16, 16);
+    public static VoxelShape SHAPE = box(0, 0, 13, 16, 16, 16);
 
     public static VoxelShape buildShape(final BlockState blockState) {
         final Direction facing =  blockState.getValue(FACING);

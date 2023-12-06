@@ -7,7 +7,10 @@
 package tanukidecor;
 
 import com.mojang.logging.LogUtils;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import org.slf4j.Logger;
 import tanukidecor.client.TDClientEvents;
@@ -19,9 +22,14 @@ public class TanukiDecor {
 
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    private static final ForgeConfigSpec.Builder CONFIG_BUILDER = new ForgeConfigSpec.Builder();
+    public static final TDConfig CONFIG = new TDConfig(CONFIG_BUILDER);
+
     public TanukiDecor() {
         // TODO remove tests when done
         TDUnitTests.run();
+        // register config
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CONFIG_BUILDER.build());
         // register common config
         // TODO
         // register client config

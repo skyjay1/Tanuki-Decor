@@ -1,5 +1,18 @@
 {
   "values": [
-    "tanukidecor:library_clock"
+    "tanukidecor:antique_clock",
+    "tanukidecor:banjo_clock",
+    "tanukidecor:blue_clock",
+    "tanukidecor:cuckoo_clock",
+    "tanukidecor:foliot_clock",
+    "tanukidecor:grandfather_clock",
+    "tanukidecor:green_clock",
+    "tanukidecor:library_clock",
+    "tanukidecor:mantle_clock",
+    "tanukidecor:minimalist_clock",
+    "tanukidecor:owl_clock",
+    "tanukidecor:reed_clock",
+    "tanukidecor:regal_clock",
+    "tanukidecor:wooden_block_clock"
   ]
 }

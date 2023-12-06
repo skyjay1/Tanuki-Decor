@@ -58,7 +58,7 @@ public class LargeClockTowerDialBlock extends HorizontalMultiblock implements En
 
     @Override
     public float getTickVolume(Random random, long dayTime) {
-        return 2.0F;
+        return 1.5F;
     }
 
     //// BLOCK ENTITY ////

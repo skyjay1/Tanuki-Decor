@@ -45,7 +45,7 @@ public class StationClockBlock extends HorizontalMultiblock implements EntityBlo
 
     @Override
     public float getTickVolume(Random random, long dayTime) {
-        return 2.0F;
+        return 1.5F;
     }
 
     //// BLOCK ENTITY ////
