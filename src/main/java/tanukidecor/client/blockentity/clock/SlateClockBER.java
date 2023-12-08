@@ -25,8 +25,8 @@ public class SlateClockBER extends ClockBER {
         super(pContext, SHORT_HAND, LONG_HAND,
                 ROOT_POSITION,
                 ROOT_PIVOT_POINT,
-                new Vec3(-8.0D / 16.0D, -9.0D / 16.0D, 0),
-                new Vec3(8.0D / 16.0D, 7.0D / 16.0D, 0));
+                HANDS_POSITION,
+                new Vec3(8.0D / 16.0D, 6.0D / 16.0D, 0));
     }
 
     @Override

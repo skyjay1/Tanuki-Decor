@@ -61,6 +61,11 @@ public class LargeClockTowerDialBlock extends HorizontalMultiblock implements En
         return 1.5F;
     }
 
+    @Override
+    public int getTickSoundInterval() {
+        return 40;
+    }
+
     //// BLOCK ENTITY ////
 
     @Nullable

@@ -29,25 +29,22 @@ import tanukidecor.block.entity.ClockBlockEntity;
 
 import java.util.function.Supplier;
 
-public class CuckooClock extends HorizontalBlock implements EntityBlock, IChimeProvider {
+public class GreenClockBlock extends HorizontalBlock implements EntityBlock, IChimeProvider {
 
     protected final Supplier<SoundEvent> tickSound;
-    protected final Supplier<SoundEvent> chimeSound;
 
     public static final VoxelShape SHAPE = Shapes.or(
-            box(3, 1, 7.5D, 13, 13, 15.5D),
-            box(6.5D, 13, 7.5D, 9.5D, 14, 15.5D),
-            box(2.5D, 0, 7, 4.5D, 11, 9),
-            box(11.5D, 0, 7, 13.5D, 11, 9),
-            box(2.5D, 0, 14, 4.5D, 11, 16),
-            box(11.5D, 0, 14, 13.5D, 11, 16),
-            box(5.5D, -8.0D, 10.5D, 7.5D, -5.0D, 12.5D),
-            box(8.5D, -5, 10.5D, 10.5D, -2, 12.5D));
+            box(4, 0, 14, 12, 16, 16),
+            box(0, 4, 14, 16, 12, 16),
+            Shapes.join(
+                    box(4, 4, 13, 12, 12, 14),
+                    box(5, 5, 13, 11, 11, 14),
+                    BooleanOp.ONLY_FIRST
+            ));
 
-    public CuckooClock(Supplier<SoundEvent> tickSound, Supplier<SoundEvent> chimeSound, Properties pProperties) {
+    public GreenClockBlock(Supplier<SoundEvent> tickSound, Properties pProperties) {
         super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
         this.tickSound = tickSound;
-        this.chimeSound = chimeSound;
     }
 
     //// CHIME PROVIDER ////
@@ -56,12 +53,6 @@ public class CuckooClock extends HorizontalBlock implements EntityBlock, IChimeP
     @Override
     public SoundEvent getTickSound() {
         return this.tickSound.get();
-    }
-
-    @Nullable
-    @Override
-    public SoundEvent getChimeSound() {
-        return this.chimeSound.get();
     }
 
     //// PLACEMENT ////
@@ -92,7 +83,7 @@ public class CuckooClock extends HorizontalBlock implements EntityBlock, IChimeP
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return TDRegistry.BlockEntityReg.CUCKOO_CLOCK.get().create(pPos, pState);
+        return TDRegistry.BlockEntityReg.GREEN_CLOCK.get().create(pPos, pState);
     }
 
     @Nullable

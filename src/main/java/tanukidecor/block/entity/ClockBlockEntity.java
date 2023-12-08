@@ -63,7 +63,7 @@ public class ClockBlockEntity extends BlockEntity {
             return;
         }
         final long gameTime = level.getGameTime();
-        final long dayTime = level.getDayTime();
+        final long dayTime = level.getDayTime() % 24000L;
         final Random random = level.getRandom();
         // attempt to play tick sound
         final SoundEvent tickSound = chimeProvider.getTickSound();
@@ -83,7 +83,7 @@ public class ClockBlockEntity extends BlockEntity {
         if(!level.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
             return;
         }
-        final long dayTime = level.getDayTime();
+        final long dayTime = level.getDayTime() % 24000L;
         final Random random = level.getRandom();
         // attempt to play chime sound
         final SoundEvent chimeSound = chimeProvider.getChimeSound();

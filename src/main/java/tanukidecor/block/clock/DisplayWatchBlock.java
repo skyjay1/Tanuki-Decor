@@ -26,6 +26,7 @@ import tanukidecor.TDRegistry;
 import tanukidecor.block.HorizontalBlock;
 import tanukidecor.block.entity.ClockBlockEntity;
 
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class DisplayWatchBlock extends HorizontalBlock implements EntityBlock, IChimeProvider {
@@ -48,6 +49,11 @@ public class DisplayWatchBlock extends HorizontalBlock implements EntityBlock, I
     @Override
     public SoundEvent getTickSound() {
         return this.tickSound.get();
+    }
+
+    @Override
+    public float getTickVolume(Random random, long dayTime) {
+        return 0.4F;
     }
 
     //// BLOCK ENTITY ////

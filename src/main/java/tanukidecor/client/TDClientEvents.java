@@ -17,7 +17,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import tanukidecor.TDRegistry;
+import tanukidecor.TDRegistry.BlockReg;
+import tanukidecor.TDRegistry.BlockEntityReg;
 import tanukidecor.client.blockentity.clock.*;
 
 import java.util.HashSet;
@@ -43,35 +44,36 @@ public final class TDClientEvents {
         @SubscribeEvent
         public static void onRegisterEntityRenderers(final EntityRenderersEvent.RegisterRenderers event) {
             // CLOCKS //
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.ALARM_CLOCK.get(), AlarmClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.ANNIVERSARY_CLOCK.get(), AnniversaryClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.ANTIQUE_CLOCK.get(), AntiqueClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.BANJO_CLOCK.get(), BanjoClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.BLUE_CLOCK.get(), BlueClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.CARRIAGE_CLOCK.get(), CarriageClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.CRYSTAL_CLOCK.get(), CrystalClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.CUCKOO_CLOCK.get(), CuckooClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.DISPLAY_WATCH.get(), DisplayWatchBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.EMBLEM_CLOCK.get(), EmblemClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.FOLIOT_CLOCK.get(), FoliotClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GRANDFATHER_CLOCK.get(), GrandfatherClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GORGEOUS_CLOCK.get(), GorgeousClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.GREEN_CLOCK.get(), GreenClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LANTERN_CLOCK.get(), LanternClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LARGE_CLOCK_TOWER_DIAL.get(), LargeClockTowerDialBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.LIBRARY_CLOCK.get(), LibraryClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.MANTLE_CLOCK.get(), MantleClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.MINIMALIST_CLOCK.get(), MinimalistClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.OWL_CLOCK.get(), OwlClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.RECOGNIZABLE_CLOCK.get(), RecognizableClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.RED_CLOCK.get(), RedClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.REED_CLOCK.get(), ReedClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.REGAL_CLOCK.get(), RegalClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.ROCOCO_CLOCK.get(), RococoClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.SMALL_CLOCK_TOWER_DIAL.get(), SmallClockTowerDialBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.SLATE_CLOCK.get(), SlateClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.STATION_CLOCK.get(), StationClockBER::new);
-            event.registerBlockEntityRenderer(TDRegistry.BlockEntityReg.WOODEN_BLOCK_CLOCK.get(), WoodenBlockClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.ALARM_CLOCK.get(), AlarmClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.ANNIVERSARY_CLOCK.get(), AnniversaryClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.ANTIQUE_CLOCK.get(), AntiqueClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.BANJO_CLOCK.get(), BanjoClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.BLUE_CLOCK.get(), BlueClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.CARRIAGE_CLOCK.get(), CarriageClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.CRYSTAL_CLOCK.get(), CrystalClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.CUCKOO_CLOCK.get(), CuckooClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.DISPLAY_WATCH.get(), DisplayWatchBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.EMBLEM_CLOCK.get(), EmblemClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.FOLIOT_CLOCK.get(), FoliotClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.GINGERBREAD_CLOCK.get(), GingerbreadClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.GRANDFATHER_CLOCK.get(), GrandfatherClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.GORGEOUS_CLOCK.get(), GorgeousClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.GREEN_CLOCK.get(), GreenClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.LANTERN_CLOCK.get(), LanternClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.LARGE_CLOCK_TOWER_DIAL.get(), LargeClockTowerDialBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.LIBRARY_CLOCK.get(), LibraryClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.MANTLE_CLOCK.get(), MantleClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.MINIMALIST_CLOCK.get(), MinimalistClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.OWL_CLOCK.get(), OwlClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.RECOGNIZABLE_CLOCK.get(), RecognizableClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.RED_CLOCK.get(), RedClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.REED_CLOCK.get(), ReedClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.REGAL_CLOCK.get(), RegalClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.ROCOCO_CLOCK.get(), RococoClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.SMALL_CLOCK_TOWER_DIAL.get(), SmallClockTowerDialBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.SLATE_CLOCK.get(), SlateClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.STATION_CLOCK.get(), StationClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.WOODEN_BLOCK_CLOCK.get(), WoodenBlockClockBER::new);
         }
 
         @SubscribeEvent
@@ -89,6 +91,7 @@ public final class TDClientEvents {
             DisplayWatchBER.addSpecialModels(set);
             EmblemClockBER.addSpecialModels(set);
             FoliotClockBER.addSpecialModels(set);
+            GingerbreadClockBER.addSpecialModels(set);
             GorgeousClockBER.addSpecialModels(set);
             GrandfatherClockBER.addSpecialModels(set);
             GreenClockBER.addSpecialModels(set);
@@ -116,27 +119,32 @@ public final class TDClientEvents {
          */
         private static void registerBlockRenderLayers() {
             // CLOCKS //
-            registerRenderLayer(TDRegistry.BlockReg.ALARM_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.ANNIVERSARY_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.ANTIQUE_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.BANJO_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.BLUE_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.CARRIAGE_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.CRYSTAL_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.DISPLAY_WATCH.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.FOLIOT_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.GORGEOUS_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.GRANDFATHER_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.LANTERN_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.LIBRARY_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.RECOGNIZABLE_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.RED_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.ROCOCO_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.SLATE_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.WOODEN_BLOCK_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.ALARM_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.ANNIVERSARY_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.ANTIQUE_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.BANJO_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.BLUE_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.CARRIAGE_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.CRYSTAL_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.DISPLAY_WATCH.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.FOLIOT_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GINGERBREAD_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GORGEOUS_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GRANDFATHER_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.LANTERN_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.LIBRARY_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.RECOGNIZABLE_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.RED_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.ROCOCO_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.SLATE_CLOCK.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.WOODEN_BLOCK_CLOCK.get(), RenderType.cutout());
             // STORAGE //
-            registerRenderLayer(TDRegistry.BlockReg.ANTIQUE_CABINET.get(), RenderType.cutout());
-            registerRenderLayer(TDRegistry.BlockReg.ANTIQUE_WALL_SHELF.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.ANTIQUE_CABINET.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.ANTIQUE_WALL_SHELF.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GREEN_PANTRY.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.REGAL_ARMOIRE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.REGAL_BOOKSHELF.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.REGAL_DRESSER.get(), RenderType.cutout());
         }
 
         private static void registerRenderLayer(final Block block, RenderType renderType) {

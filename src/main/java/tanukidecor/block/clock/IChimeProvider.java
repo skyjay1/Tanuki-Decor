@@ -13,7 +13,7 @@ import java.util.Random;
 
 public interface IChimeProvider {
 
-    public static final long DAWN = 0L;
+    public static final long DAWN = 10L;
     public static final long NOON = 6000L;
     public static final long MIDNIGHT = 18000L;
     public static final long MIN_CHIME_INTERVAL = 40L;

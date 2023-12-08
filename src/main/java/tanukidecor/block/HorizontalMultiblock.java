@@ -30,6 +30,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import tanukidecor.block.storage.IDelegateProvider;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeUtils;
 
@@ -42,7 +43,7 @@ import java.util.function.Function;
 /**
  * Handles waterloggable, horizontally directional, variable size multiblocks
  */
-public class HorizontalMultiblock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+public class HorizontalMultiblock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock, IDelegateProvider {
 
     protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -78,6 +79,12 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
         return builder.create(Block::defaultBlockState, BlockState::new);
     }
 
+    //// DELEGATE PROVIDER ////
+
+    @Override
+    public BlockPos getDelegatePos(BlockState blockState, BlockPos blockPos) {
+        return multiblockHandler.getCenterPos(blockPos, blockState, blockState.getValue(FACING));
+    }
 
     //// STATE PROPERTIES ////
 
@@ -241,6 +248,20 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
                     [heightIndex]
                     [widthIndex]
                     [depthIndex];
+            return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);
+        };
+    }
+
+    /**
+     * @param shapeEast the shape for the east half
+     * @param shapeWest the shape for the west half
+     * @return a shape builder hardcoded to support {@link MultiblockHandler#MULTIBLOCK_2X1X1} and the {@link #FACING} property
+     */
+    public static Function<BlockState, VoxelShape> createEWShapeBuilder(final VoxelShape shapeEast, final VoxelShape shapeWest) {
+        return blockState -> {
+            final Direction facing = blockState.getValue(FACING);
+            final int width = blockState.getValue(MultiblockHandler.MULTIBLOCK_2X1X1.getWidthProperty());
+            final VoxelShape shape = width == 1 ? shapeEast : shapeWest;
             return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);
         };
     }

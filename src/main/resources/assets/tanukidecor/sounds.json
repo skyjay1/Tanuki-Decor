@@ -59,8 +59,12 @@
     "sounds": [ "tanukidecor:medium_clock_chime" ],
     "subtitle": "subtitle.block.tanukidecor.medium_clock.chime"
   },
+  "block.medium_clock.chime2": {
+    "sounds": [ "tanukidecor:medium_clock_chime_2" ],
+    "subtitle": "subtitle.block.tanukidecor.medium_clock.chime"
+  },
   "block.pocket_watch.tick": {
-    "sounds": [ "tanukidecor:medium_clock_tick" ],
+    "sounds": [ "tanukidecor:pocket_watch_tick" ],
     "subtitle": "subtitle.block.tanukidecor.pocket_watch.tick"
   },
   "block.recognizable_clock.chime": {

@@ -1,7 +1,7 @@
 {
   "credit": "Made by Skart2000",
   "parent": "minecraft:block/block",
-  "render_type": "minecraft:cutout",
+  "render_type": "minecraft:solid",
   "texture_size": [32, 32],
   "textures": {
     "particle": "#desk",

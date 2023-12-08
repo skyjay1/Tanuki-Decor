@@ -28,12 +28,13 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import tanukidecor.block.storage.IDelegateProvider;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeUtils;
 
 import java.util.function.Function;
 
-public class HorizontalDoubleBlock extends HorizontalBlock {
+public class HorizontalDoubleBlock extends HorizontalBlock implements IDelegateProvider {
 
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
@@ -46,8 +47,14 @@ public class HorizontalDoubleBlock extends HorizontalBlock {
         precalculateShapes();
     }
 
-    //// METHODS ////
+    //// DELEGATE PROVIDER ////
 
+    @Override
+    public BlockPos getDelegatePos(BlockState blockState, BlockPos blockPos) {
+        return blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? blockPos : blockPos.above();
+    }
+
+    //// METHODS ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

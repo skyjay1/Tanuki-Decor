@@ -7,9 +7,11 @@
 package tanukidecor.block.storage;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -32,7 +34,7 @@ public class AntiqueCabinetBlock extends HorizontalMultiblock implements EntityB
     //// CONTAINER ////
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        return StorageBlockEntity.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return StorageBlockEntity.use(pState, pLevel, pPos, pPlayer, pHand, pHit, SoundEvents.BARREL_OPEN);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class AntiqueCabinetBlock extends HorizontalMultiblock implements EntityB
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(this.getMultiblockHandler().isCenterState(pState)) {
+        if(pPos.equals(getDelegatePos(pState, pPos))) {
             return TDRegistry.BlockEntityReg.ANTIQUE_CABINET.get().create(pPos, pState);
         }
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);
@@ -63,7 +65,7 @@ public class AntiqueCabinetBlock extends HorizontalMultiblock implements EntityB
 
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        return StorageBlockEntity.getAnalogOutputSignal(state, level, pos);
+        return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
 
     //// SHAPE ////

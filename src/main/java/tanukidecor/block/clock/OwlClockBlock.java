@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -30,20 +29,24 @@ import tanukidecor.block.entity.ClockBlockEntity;
 
 import java.util.function.Supplier;
 
-public class GreenClock extends HorizontalBlock implements EntityBlock, IChimeProvider {
+public class OwlClockBlock extends HorizontalBlock implements EntityBlock, IChimeProvider {
 
     protected final Supplier<SoundEvent> tickSound;
 
     public static final VoxelShape SHAPE = Shapes.or(
-            box(4, 0, 14, 12, 16, 16),
-            box(0, 4, 14, 16, 12, 16),
+            box(4, 0, 12, 12, 10, 16),
+            box(3, 3, 12.5D, 4, 8, 15.5D),
+            box(12, 3, 12.5D, 13, 8, 15.5D),
+            box(7.5D, 9, 11, 8.5D, 11, 12),
             Shapes.join(
-                    box(4, 4, 13, 12, 12, 14),
-                    box(5, 5, 13, 11, 11, 14),
+                    box(3, 10, 12, 13, 16, 16),
+                    Shapes.or(
+                            box(6, 14, 12, 10, 15, 16),
+                            box(5, 15, 12, 11, 16, 16)),
                     BooleanOp.ONLY_FIRST
             ));
 
-    public GreenClock(Supplier<SoundEvent> tickSound, Properties pProperties) {
+    public OwlClockBlock(Supplier<SoundEvent> tickSound, Properties pProperties) {
         super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
         this.tickSound = tickSound;
     }
@@ -84,7 +87,7 @@ public class GreenClock extends HorizontalBlock implements EntityBlock, IChimePr
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return TDRegistry.BlockEntityReg.GREEN_CLOCK.get().create(pPos, pState);
+        return TDRegistry.BlockEntityReg.OWL_CLOCK.get().create(pPos, pState);
     }
 
     @Nullable

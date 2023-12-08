@@ -8,6 +8,7 @@ package tanukidecor.block.storage;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -51,7 +52,7 @@ public class AntiqueBureauBlock extends HorizontalDoubleBlock implements EntityB
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        return StorageBlockEntity.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return StorageBlockEntity.use(pState, pLevel, pPos, pPlayer, pHand, pHit, SoundEvents.BARREL_OPEN);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class AntiqueBureauBlock extends HorizontalDoubleBlock implements EntityB
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+        if(pPos.equals(getDelegatePos(pState, pPos))) {
             return TDRegistry.BlockEntityReg.ANTIQUE_BUREAU.get().create(pPos, pState);
         }
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);
@@ -82,6 +83,6 @@ public class AntiqueBureauBlock extends HorizontalDoubleBlock implements EntityB
 
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        return StorageBlockEntity.getAnalogOutputSignal(state, level, pos);
+        return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
 }

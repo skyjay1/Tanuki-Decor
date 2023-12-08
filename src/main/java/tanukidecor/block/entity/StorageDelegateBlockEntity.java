@@ -18,12 +18,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import tanukidecor.block.HorizontalMultiblock;
+import tanukidecor.block.storage.IDelegateProvider;
 
 import java.util.Optional;
 
@@ -34,10 +33,10 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
 
     public StorageDelegateBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
-        if(pBlockState.getBlock() instanceof HorizontalMultiblock multiblock) {
-            delegatePos = multiblock.getMultiblockHandler().getCenterPos(pPos, pBlockState, pBlockState.getValue(BlockStateProperties.HORIZONTAL_FACING));
+        if(pBlockState.getBlock() instanceof IDelegateProvider delegateProvider) {
+            this.delegatePos = delegateProvider.getDelegatePos(pBlockState, pPos);
         } else {
-            delegatePos = null;
+            this.delegatePos = null;
         }
     }
 
@@ -157,6 +156,4 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
             container.clearContent();
         }
     }
-
-
 }

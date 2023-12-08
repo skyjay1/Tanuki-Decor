@@ -10,6 +10,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
@@ -33,9 +36,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class StorageBlockEntity extends RandomizableContainerBlockEntity {
 
-    private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
-
-    protected final NonNullList<ItemStack> inventory;
+    protected NonNullList<ItemStack> inventory;
     protected final int rows;
     protected final int slots;
 
@@ -52,35 +53,52 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
 
     //// METHODS ////
 
-    public static InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (pLevel.isClientSide()) {
+    /**
+     * Attempts to open the storage menu, anger piglins, and play a sound
+     * @param blockState the block state
+     * @param level the level
+     * @param pos the block position
+     * @param player the player
+     * @param hand the hand
+     * @param hitResult the hit result
+     * @param openMenuSound the sound to play when opening the menu
+     * @return if the menu was opened
+     */
+    public static InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, SoundEvent openMenuSound) {
+        if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
-        if (pLevel.getBlockEntity(pPos) instanceof MenuProvider blockEntity) {
-            pPlayer.openMenu(blockEntity);
-            PiglinAi.angerNearbyPiglins(pPlayer, true);
+        if (level.getBlockEntity(pos) instanceof MenuProvider blockEntity) {
+            player.openMenu(blockEntity);
+            PiglinAi.angerNearbyPiglins(player, true);
+            level.playSound(null, pos, openMenuSound, SoundSource.BLOCKS, 1.0F, 0.8F + player.getRandom().nextFloat() * 0.4F);
         }
         return InteractionResult.CONSUME;
     }
 
-    public static void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        if (pLevel.getBlockEntity(pPos) instanceof StorageBlockEntity blockEntity) {
+    /**
+     * Drops the contents of the block entity inventory
+     * @param blockState the block state
+     * @param level the level
+     * @param pos the block position
+     * @param newState the block state that replaced this one
+     * @param isMoving true if the block is moving
+     */
+    public static void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (level.getBlockEntity(pos) instanceof StorageBlockEntity blockEntity) {
             blockEntity.dropContents();
-            pLevel.updateNeighbourForOutputSignal(pPos, pState.getBlock());
+            level.updateNeighbourForOutputSignal(pos, blockState.getBlock());
         }
     }
 
-    public static int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        final BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof Container container) {
-            return AbstractContainerMenu.getRedstoneSignalFromContainer(container);
-        }
-        return 0;
-    }
-
+    /**
+     * Drops the contents of the block entity
+     * @see Containers#dropContents(Level, BlockPos, NonNullList)
+     */
     public void dropContents() {
         if (this.level != null && !this.level.isClientSide()) {
             Containers.dropContents(this.level, this.getBlockPos(), this.inventory);
+            this.setChanged();
         }
     }
 
@@ -109,6 +127,7 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
     protected void setItems(NonNullList<ItemStack> pItemStacks) {
         this.inventory.clear();
         this.inventory.addAll(pItemStacks);
+        this.setChanged();
     }
 
     @Override
@@ -148,16 +167,16 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
         if (!this.trySaveLootTable(pTag)) {
-            ContainerHelper.saveAllItems(pTag, this.items);
+            ContainerHelper.saveAllItems(pTag, this.inventory);
         }
     }
 
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
-        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+        this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         if (!this.tryLoadLootTable(pTag)) {
-            ContainerHelper.loadAllItems(pTag, this.items);
+            ContainerHelper.loadAllItems(pTag, this.inventory);
         }
     }
 }
