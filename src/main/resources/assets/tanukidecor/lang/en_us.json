@@ -1,5 +1,6 @@
 {
   "itemGroup.tanukidecor": "Tanuki Decor",
+
   "block.tanukidecor.alarm_clock": "Alarm Clock",
   "block.tanukidecor.anniversary_clock": "Anniversary Clock",
   "block.tanukidecor.antique_clock": "Antique Clock",
@@ -30,6 +31,7 @@
   "block.tanukidecor.small_clock_tower_dial": "Small Clock Tower Dial",
   "block.tanukidecor.station_clock": "Station Clock",
   "block.tanukidecor.wooden_block_clock": "Wooden Block Clock",
+
   "block.tanukidecor.antique_bureau": "Antique Bureau",
   "block.tanukidecor.antique_cabinet": "Antique Cabinet",
   "block.tanukidecor.antique_desk": "Antique Desk",
@@ -41,6 +43,14 @@
   "block.tanukidecor.blue_cabinet": "Blue Cabinet",
   "block.tanukidecor.blue_dresser": "Blue Dresser",
   "block.tanukidecor.blue_wardrobe": "Blue Wardrobe",
+  "block.tanukidecor.cabana_bookcase": "Cabana Bookcase",
+  "block.tanukidecor.cabana_dresser": "Cabana Dresser",
+  "block.tanukidecor.cabana_vanity": "Cabana Vanity",
+  "block.tanukidecor.cabana_wardrobe": "Cabana Wardrobe",
+  "block.tanukidecor.gorgeous_chest": "Gorgeous Chest",
+  "block.tanukidecor.gorgeous_closet": "Gorgeous Closet",
+  "block.tanukidecor.gorgeous_desk": "Gorgeous Desk",
+  "block.tanukidecor.gorgeous_mini_drawer": "Gorgeous Mini Drawer",
   "block.tanukidecor.green_desk": "Green Desk",
   "block.tanukidecor.green_dresser": "Green Dresser",
   "block.tanukidecor.green_mini_drawer": "Green Mini Drawer",
@@ -52,7 +62,12 @@
   "block.tanukidecor.regal_armoire": "Regal Armoire",
   "block.tanukidecor.regal_bookshelf": "Regal Bookshelf",
   "block.tanukidecor.regal_dresser": "Regal Dresser",
+  "block.tanukidecor.sweets_closet": "Sweets Closet",
+  "block.tanukidecor.sweets_dresser": "Sweets Dresser",
   "block.tanukidecor.wooden_block_drawers": "Wooden Block Drawers",
+
+  "block.tanukidecor.antique_chair": "Antique Chair",
+
   "subtitle.block.tanukidecor.alarm_clock.tick": "Alarm clock ticks",
   "subtitle.block.tanukidecor.alarm_clock.chime": "Alarm clock rings",
   "subtitle.block.tanukidecor.clock_tower.tick": "Clock tower ticks",

@@ -216,6 +216,30 @@ public final class TDRegistry {
         public static final RegistryObject<Block> BLUE_WARDROBE = registerWithItem("blue_wardrobe", () ->
                 new BlueWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
         );
+        public static final RegistryObject<Block> CABANA_BOOKCASE = registerWithMultiblockItem("cabana_bookcase", () ->
+                new CabanaBookcaseBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
+        );
+        public static final RegistryObject<Block> CABANA_DRESSER = registerWithMultiblockItem("cabana_dresser", () ->
+                new CabanaDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
+        );
+        public static final RegistryObject<Block> CABANA_VANITY = registerWithItem("cabana_vanity", () ->
+                new CabanaVanityBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
+        );
+        public static final RegistryObject<Block> CABANA_WARDROBE = registerWithMultiblockItem("cabana_wardrobe", () ->
+                new CabanaWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
+        );
+        public static final RegistryObject<Block> GORGEOUS_CHEST = registerWithMultiblockItem("gorgeous_chest", () ->
+                new GorgeousChestBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
+        );
+        public static final RegistryObject<Block> GORGEOUS_CLOSET = registerWithMultiblockItem("gorgeous_closet", () ->
+                new GorgeousClosetBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
+        );
+        public static final RegistryObject<Block> GORGEOUS_DESK = registerWithItem("gorgeous_desk", () ->
+                new GorgeousDeskBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
+        );
+        public static final RegistryObject<Block> GORGEOUS_MINI_DRAWER = registerWithItem("gorgeous_mini_drawer", () ->
+                new GorgeousMiniDrawerBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
+        );
         public static final RegistryObject<Block> GREEN_DESK = registerWithItem("green_desk", () ->
                 new GreenDeskBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
         );
@@ -248,6 +272,12 @@ public final class TDRegistry {
         );
         public static final RegistryObject<Block> REGAL_DRESSER = registerWithMultiblockItem("regal_dresser", () ->
                 new RegalDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
+        );
+        public static final RegistryObject<Block> SWEETS_CLOSET = registerWithMultiblockItem("sweets_closet", () ->
+                new SweetsClosetBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
+        );
+        public static final RegistryObject<Block> SWEETS_DRESSER = registerWithMultiblockItem("sweets_dresser", () ->
+                new SweetsDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
         );
         public static final RegistryObject<Block> WOODEN_BLOCK_DRAWERS = registerWithMultiblockItem("wooden_block_drawers", () ->
                 new WoodenBlockDrawersBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
@@ -381,9 +411,12 @@ public final class TDRegistry {
                 .of((pos, state) -> new StorageDelegateBlockEntity(BlockEntityReg.STORAGE_DELEGATE.get(), pos, state),
                         BlockReg.ANTIQUE_BUREAU.get(), BlockReg.ANTIQUE_DESK.get(), BlockReg.ANTIQUE_MIRROR.get(), BlockReg.ANTIQUE_WARDROBE.get(),
                         BlockReg.BLUE_BOOKSHELF.get(), BlockReg.BLUE_BUREAU.get(), BlockReg.BLUE_CABINET.get(), BlockReg.BLUE_WARDROBE.get(),
+                        BlockReg.CABANA_BOOKCASE.get(), BlockReg.CABANA_DRESSER.get(), BlockReg.CABANA_VANITY.get(), BlockReg.CABANA_WARDROBE.get(),
+                        BlockReg.GORGEOUS_CHEST.get(), BlockReg.GORGEOUS_CLOSET.get(),
                         BlockReg.GREEN_DRESSER.get(), BlockReg.GREEN_WARDROBE.get(),
                         BlockReg.MINIMALIST_DRESSER.get(), BlockReg.MINIMALIST_MIRROR.get(), BlockReg.MINIMALIST_WARDROBE.get(),
                         BlockReg.REGAL_ARMOIRE.get(), BlockReg.REGAL_BOOKSHELF.get(), BlockReg.REGAL_DRESSER.get(),
+                        BlockReg.SWEETS_CLOSET.get(), BlockReg.SWEETS_DRESSER.get(),
                         BlockReg.WOODEN_BLOCK_DRAWERS.get())
                 .build(null));
 
@@ -405,10 +438,26 @@ public final class TDRegistry {
                 () -> BlockEntityReg.BLUE_BUREAU, 6, BlockReg.BLUE_BUREAU);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> BLUE_CABINET = registerStorage(
                 () -> BlockEntityReg.BLUE_CABINET, 6, BlockReg.BLUE_CABINET);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> CABANA_BOOKCASE = registerStorage(
+                () -> BlockEntityReg.CABANA_BOOKCASE, 6, BlockReg.CABANA_BOOKCASE);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> CABANA_DRESSER = registerStorage(
+                () -> BlockEntityReg.CABANA_DRESSER, 6, BlockReg.CABANA_DRESSER);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> CABANA_VANITY = registerStorage(
+                () -> BlockEntityReg.CABANA_VANITY, 3, BlockReg.CABANA_VANITY);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> CABANA_WARDROBE = registerStorage(
+                () -> BlockEntityReg.CABANA_WARDROBE, 6, BlockReg.CABANA_WARDROBE);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> BLUE_DRESSER = registerStorage(
                 () -> BlockEntityReg.BLUE_DRESSER, 3, BlockReg.BLUE_DRESSER);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> BLUE_WARDROBE = registerStorage(
                 () -> BlockEntityReg.BLUE_WARDROBE, 6, BlockReg.BLUE_WARDROBE);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> GORGEOUS_CHEST = registerStorage(
+                () -> BlockEntityReg.GORGEOUS_CHEST, 6, BlockReg.GORGEOUS_CHEST);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> GORGEOUS_CLOSET = registerStorage(
+                () -> BlockEntityReg.GORGEOUS_CLOSET, 6, BlockReg.GORGEOUS_CLOSET);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> GORGEOUS_DESK = registerStorage(
+                () -> BlockEntityReg.GORGEOUS_DESK, 3, BlockReg.GORGEOUS_DESK);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> GORGEOUS_MINI_DRAWER = registerStorage(
+                () -> BlockEntityReg.GORGEOUS_MINI_DRAWER, 3, BlockReg.GORGEOUS_MINI_DRAWER);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> GREEN_DESK = registerStorage(
                 () -> BlockEntityReg.GREEN_DESK, 3, BlockReg.GREEN_DESK);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> GREEN_DRESSER = registerStorage(
@@ -431,6 +480,10 @@ public final class TDRegistry {
                 () -> BlockEntityReg.REGAL_BOOKSHELF, 6, BlockReg.REGAL_BOOKSHELF);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> REGAL_DRESSER = registerStorage(
                 () -> BlockEntityReg.REGAL_DRESSER, 6, BlockReg.REGAL_DRESSER);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> SWEETS_CLOSET = registerStorage(
+                () -> BlockEntityReg.SWEETS_CLOSET, 6, BlockReg.SWEETS_CLOSET);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> SWEETS_DRESSER = registerStorage(
+                () -> BlockEntityReg.SWEETS_DRESSER, 6, BlockReg.SWEETS_DRESSER);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> WOODEN_BLOCK_DRAWERS = registerStorage(
                 () -> BlockEntityReg.WOODEN_BLOCK_DRAWERS, 6, BlockReg.WOODEN_BLOCK_DRAWERS);
 

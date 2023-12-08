@@ -145,6 +145,8 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.REGAL_ARMOIRE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.REGAL_BOOKSHELF.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.REGAL_DRESSER.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.SWEETS_CLOSET.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.SWEETS_DRESSER.get(), RenderType.cutout());
         }
 
         private static void registerRenderLayer(final Block block, RenderType renderType) {
