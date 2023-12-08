@@ -139,12 +139,14 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.SLATE_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.WOODEN_BLOCK_CLOCK.get(), RenderType.cutout());
             // STORAGE //
+            registerRenderLayer(BlockReg.ANTIQUE_BOOKCASE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.ANTIQUE_CABINET.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.ANTIQUE_WALL_SHELF.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.GREEN_PANTRY.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.REGAL_ARMOIRE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.REGAL_BOOKSHELF.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.REGAL_DRESSER.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.REGAL_VANITY.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SWEETS_CLOSET.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SWEETS_DRESSER.get(), RenderType.cutout());
         }

@@ -183,6 +183,9 @@ public final class TDRegistry {
         );
 
         // STORAGE //
+        public static final RegistryObject<Block> ANTIQUE_BOOKCASE = registerWithMultiblockItem("antique_bookcase", () ->
+                new AntiqueBookcaseBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
+        );
         public static final RegistryObject<Block> ANTIQUE_BUREAU = registerWithItem("antique_bureau", () ->
                 new AntiqueBureauBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
         );
@@ -272,6 +275,9 @@ public final class TDRegistry {
         );
         public static final RegistryObject<Block> REGAL_DRESSER = registerWithMultiblockItem("regal_dresser", () ->
                 new RegalDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
+        );
+        public static final RegistryObject<Block> REGAL_VANITY = registerWithItem("regal_vanity", () ->
+                new RegalVanityBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
         );
         public static final RegistryObject<Block> SWEETS_CLOSET = registerWithMultiblockItem("sweets_closet", () ->
                 new SweetsClosetBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
@@ -409,19 +415,21 @@ public final class TDRegistry {
         // STORAGE //
         public static final RegistryObject<BlockEntityType<StorageDelegateBlockEntity>> STORAGE_DELEGATE = BLOCK_ENTITY_TYPES.register("storage_delegate", () -> BlockEntityType.Builder
                 .of((pos, state) -> new StorageDelegateBlockEntity(BlockEntityReg.STORAGE_DELEGATE.get(), pos, state),
-                        BlockReg.ANTIQUE_BUREAU.get(), BlockReg.ANTIQUE_DESK.get(), BlockReg.ANTIQUE_MIRROR.get(), BlockReg.ANTIQUE_WARDROBE.get(),
+                        BlockReg.ANTIQUE_BOOKCASE.get(), BlockReg.ANTIQUE_BUREAU.get(), BlockReg.ANTIQUE_DESK.get(), BlockReg.ANTIQUE_MIRROR.get(), BlockReg.ANTIQUE_WARDROBE.get(),
                         BlockReg.BLUE_BOOKSHELF.get(), BlockReg.BLUE_BUREAU.get(), BlockReg.BLUE_CABINET.get(), BlockReg.BLUE_WARDROBE.get(),
                         BlockReg.CABANA_BOOKCASE.get(), BlockReg.CABANA_DRESSER.get(), BlockReg.CABANA_VANITY.get(), BlockReg.CABANA_WARDROBE.get(),
                         BlockReg.GORGEOUS_CHEST.get(), BlockReg.GORGEOUS_CLOSET.get(),
                         BlockReg.GREEN_DRESSER.get(), BlockReg.GREEN_WARDROBE.get(),
                         BlockReg.MINIMALIST_DRESSER.get(), BlockReg.MINIMALIST_MIRROR.get(), BlockReg.MINIMALIST_WARDROBE.get(),
-                        BlockReg.REGAL_ARMOIRE.get(), BlockReg.REGAL_BOOKSHELF.get(), BlockReg.REGAL_DRESSER.get(),
+                        BlockReg.REGAL_ARMOIRE.get(), BlockReg.REGAL_BOOKSHELF.get(), BlockReg.REGAL_DRESSER.get(), BlockReg.REGAL_VANITY.get(),
                         BlockReg.SWEETS_CLOSET.get(), BlockReg.SWEETS_DRESSER.get(),
                         BlockReg.WOODEN_BLOCK_DRAWERS.get())
                 .build(null));
 
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> ANTIQUE_BOOKCASE = registerStorage(
+                () -> BlockEntityReg.ANTIQUE_BOOKCASE, 3, BlockReg.ANTIQUE_BOOKCASE);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> ANTIQUE_BUREAU = registerStorage(
-                () -> BlockEntityReg.ANTIQUE_BUREAU, 6, BlockReg.ANTIQUE_BUREAU);
+                () -> BlockEntityReg.ANTIQUE_BUREAU, 3, BlockReg.ANTIQUE_BUREAU);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> ANTIQUE_CABINET = registerStorage(
                 () -> BlockEntityReg.ANTIQUE_CABINET, 6, BlockReg.ANTIQUE_CABINET);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> ANTIQUE_DESK = registerStorage(
@@ -433,23 +441,23 @@ public final class TDRegistry {
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> ANTIQUE_WALL_SHELF = registerStorage(
                 () -> BlockEntityReg.ANTIQUE_WALL_SHELF, 3, BlockReg.ANTIQUE_WALL_SHELF);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> BLUE_BOOKSHELF = registerStorage(
-                () -> BlockEntityReg.BLUE_BOOKSHELF, 6, BlockReg.BLUE_BOOKSHELF);
+                () -> BlockEntityReg.BLUE_BOOKSHELF, 3, BlockReg.BLUE_BOOKSHELF);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> BLUE_BUREAU = registerStorage(
                 () -> BlockEntityReg.BLUE_BUREAU, 6, BlockReg.BLUE_BUREAU);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> BLUE_CABINET = registerStorage(
                 () -> BlockEntityReg.BLUE_CABINET, 6, BlockReg.BLUE_CABINET);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> BLUE_DRESSER = registerStorage(
+                () -> BlockEntityReg.BLUE_DRESSER, 3, BlockReg.BLUE_DRESSER);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> BLUE_WARDROBE = registerStorage(
+                () -> BlockEntityReg.BLUE_WARDROBE, 6, BlockReg.BLUE_WARDROBE);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> CABANA_BOOKCASE = registerStorage(
-                () -> BlockEntityReg.CABANA_BOOKCASE, 6, BlockReg.CABANA_BOOKCASE);
+                () -> BlockEntityReg.CABANA_BOOKCASE, 3, BlockReg.CABANA_BOOKCASE);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> CABANA_DRESSER = registerStorage(
                 () -> BlockEntityReg.CABANA_DRESSER, 6, BlockReg.CABANA_DRESSER);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> CABANA_VANITY = registerStorage(
                 () -> BlockEntityReg.CABANA_VANITY, 3, BlockReg.CABANA_VANITY);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> CABANA_WARDROBE = registerStorage(
                 () -> BlockEntityReg.CABANA_WARDROBE, 6, BlockReg.CABANA_WARDROBE);
-        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> BLUE_DRESSER = registerStorage(
-                () -> BlockEntityReg.BLUE_DRESSER, 3, BlockReg.BLUE_DRESSER);
-        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> BLUE_WARDROBE = registerStorage(
-                () -> BlockEntityReg.BLUE_WARDROBE, 6, BlockReg.BLUE_WARDROBE);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> GORGEOUS_CHEST = registerStorage(
                 () -> BlockEntityReg.GORGEOUS_CHEST, 6, BlockReg.GORGEOUS_CHEST);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> GORGEOUS_CLOSET = registerStorage(
@@ -480,6 +488,8 @@ public final class TDRegistry {
                 () -> BlockEntityReg.REGAL_BOOKSHELF, 6, BlockReg.REGAL_BOOKSHELF);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> REGAL_DRESSER = registerStorage(
                 () -> BlockEntityReg.REGAL_DRESSER, 6, BlockReg.REGAL_DRESSER);
+        public static final RegistryObject<BlockEntityType<StorageBlockEntity>> REGAL_VANITY = registerStorage(
+                () -> BlockEntityReg.REGAL_VANITY, 3, BlockReg.REGAL_VANITY);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> SWEETS_CLOSET = registerStorage(
                 () -> BlockEntityReg.SWEETS_CLOSET, 6, BlockReg.SWEETS_CLOSET);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> SWEETS_DRESSER = registerStorage(
