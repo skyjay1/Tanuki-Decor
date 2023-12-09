@@ -6,7 +6,10 @@
 
 package tanukidecor.block.seat;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -31,6 +34,14 @@ public interface ISeatProvider {
      * @return the vertical offset of the seat entity, typically 2 pixels above the seating part of the model
      */
     double getSeatYOffset();
+
+    /**
+     * @param blockState the block state
+     * @param level the level
+     * @param blockPos the block position
+     * @return the horizontal direction toward the front of the seat
+     */
+    Direction getSeatDirection(BlockState blockState, Level level, BlockPos blockPos);
 
     /**
      * @param blockState the block state
@@ -73,7 +84,14 @@ public interface ISeatProvider {
             return false;
         }
         // add passenger
-        return player.startRiding(entity, true);
+        if(!player.startRiding(entity, true)) {
+            return false;
+        }
+        // update rotation
+        if(player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.connection.teleport(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), entity.getYRot(), serverPlayer.getXRot());
+        }
+        return true;
     }
 
     /**
@@ -106,8 +124,13 @@ public interface ISeatProvider {
         }
         // otherwise, create new entity
         final Vec3 seatPos = getSeatPosition(blockState, level, pos);
+        final Direction seatDirection = getSeatDirection(blockState, level, pos);
         final Pig entity = EntityType.PIG.create(level);
         if(entity != null) {
+            // entity position and rotation
+            final float rotation = seatDirection.toYRot();
+            entity.setYRot(rotation);
+            entity.setYHeadRot(rotation);
             entity.setPos(seatPos.add(0, -entity.getPassengersRidingOffset(), 0));
             // entity settings
             entity.setNoAi(true);
@@ -130,7 +153,7 @@ public interface ISeatProvider {
      * @return the entity to use as the seat, if one exists
      */
     default @Nullable Entity getSeat(Level level, BlockPos pos) {
-        final AABB aabb = new AABB(pos).inflate(0, 0.25D, 0);
+        final AABB aabb = new AABB(pos).inflate(-0.0625D, 0.25D, -0.0625D);
         final List<Entity> list = level.getEntitiesOfClass(Entity.class, aabb, IS_SEAT_ENTITY);
         if(!list.isEmpty()) {
             return list.get(0);

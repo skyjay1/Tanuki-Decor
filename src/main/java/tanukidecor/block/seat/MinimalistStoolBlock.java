@@ -15,48 +15,30 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalMultiblock;
-import tanukidecor.util.MultiblockHandler;
+import tanukidecor.block.HorizontalBlock;
 
 import java.util.Random;
 
-public class GorgeousSofaBlock extends HorizontalMultiblock implements ISeatProvider {
+public class MinimalistStoolBlock extends HorizontalBlock implements ISeatProvider {
 
-    public static final VoxelShape SHAPE_EAST = Shapes.or(
-            box(12, 0, 0, 14, 3, 2),
-            box(12, 0, 12, 14, 3, 14),
-            Shapes.join(
-                    Shapes.or(
-                            box(0, 3, 0, 14, 13, 14),
-                            box(0, 13, 0, 16, 16, 16)),
-                    box(0, 10, 0, 11, 16, 11),
-                    BooleanOp.ONLY_FIRST
-            ));
-    public static final VoxelShape SHAPE_WEST = Shapes.or(
-            box(2, 0, 0, 4, 3, 2),
-            box(2, 0, 12, 4, 3, 14),
-            Shapes.join(
-                    Shapes.or(
-                            box(2, 3, 0, 16, 13, 14),
-                            box(0, 13, 0, 16, 16, 16)),
-                    box(5, 10, 0, 16, 16, 11),
-                    BooleanOp.ONLY_FIRST
-            ));
+    public static final VoxelShape SHAPE = Shapes.or(
+            box(1, 0, 1, 3, 6, 3),
+            box(13, 0, 1, 15, 6, 3),
+            box(1, 0, 13, 3, 6, 15),
+            box(13, 0, 13, 15, 6, 15),
+            box(0, 6, 0, 16, 12, 16));
 
-    public GorgeousSofaBlock(Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X1X1,
-                HorizontalMultiblock.createEWShapeBuilder(SHAPE_EAST, SHAPE_WEST),
-                pProperties);
+    public MinimalistStoolBlock(Properties pProperties) {
+        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
     }
 
     //// SEAT PROVIDER ////
 
     @Override
     public double getSeatYOffset() {
-        return 12.0D / 16.0D;
+        return 14.0D / 16.0D;
     }
 
     @Override

@@ -23,30 +23,22 @@ import tanukidecor.util.MultiblockHandler;
 
 import java.util.Random;
 
-public class GorgeousSofaBlock extends HorizontalMultiblock implements ISeatProvider {
+public class GreenBenchBlock extends HorizontalMultiblock implements ISeatProvider {
 
     public static final VoxelShape SHAPE_EAST = Shapes.or(
-            box(12, 0, 0, 14, 3, 2),
-            box(12, 0, 12, 14, 3, 14),
-            Shapes.join(
-                    Shapes.or(
-                            box(0, 3, 0, 14, 13, 14),
-                            box(0, 13, 0, 16, 16, 16)),
-                    box(0, 10, 0, 11, 16, 11),
-                    BooleanOp.ONLY_FIRST
-            ));
+            box(11, 0, 2, 15, 1, 14),
+            box(12, 1, 5, 14, 6, 11),
+            box(0, 2, 7, 15, 5, 9),
+            box(0, 6, 1, 16, 8, 15),
+            box(0, 8, 13, 16, 16, 15));
     public static final VoxelShape SHAPE_WEST = Shapes.or(
-            box(2, 0, 0, 4, 3, 2),
-            box(2, 0, 12, 4, 3, 14),
-            Shapes.join(
-                    Shapes.or(
-                            box(2, 3, 0, 16, 13, 14),
-                            box(0, 13, 0, 16, 16, 16)),
-                    box(5, 10, 0, 16, 16, 11),
-                    BooleanOp.ONLY_FIRST
-            ));
+            box(1, 0, 2, 5, 1, 14),
+            box(2, 1, 5, 4, 6, 11),
+            box(1, 2, 7, 16, 5, 9),
+            box(0, 6, 1, 16, 8, 15),
+            box(0, 8, 13, 16, 16, 15));
 
-    public GorgeousSofaBlock(Properties pProperties) {
+    public GreenBenchBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X1X1,
                 HorizontalMultiblock.createEWShapeBuilder(SHAPE_EAST, SHAPE_WEST),
                 pProperties);
@@ -56,7 +48,7 @@ public class GorgeousSofaBlock extends HorizontalMultiblock implements ISeatProv
 
     @Override
     public double getSeatYOffset() {
-        return 12.0D / 16.0D;
+        return 10.0D / 16.0D;
     }
 
     @Override

@@ -14,42 +14,32 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalMultiblock;
-import tanukidecor.util.MultiblockHandler;
+import tanukidecor.block.HorizontalDoubleBlock;
 
 import java.util.Random;
 
-public class GorgeousSofaBlock extends HorizontalMultiblock implements ISeatProvider {
+public class BlueChairBlock extends HorizontalDoubleBlock implements ISeatProvider {
 
-    public static final VoxelShape SHAPE_EAST = Shapes.or(
-            box(12, 0, 0, 14, 3, 2),
-            box(12, 0, 12, 14, 3, 14),
-            Shapes.join(
-                    Shapes.or(
-                            box(0, 3, 0, 14, 13, 14),
-                            box(0, 13, 0, 16, 16, 16)),
-                    box(0, 10, 0, 11, 16, 11),
-                    BooleanOp.ONLY_FIRST
-            ));
-    public static final VoxelShape SHAPE_WEST = Shapes.or(
-            box(2, 0, 0, 4, 3, 2),
-            box(2, 0, 12, 4, 3, 14),
-            Shapes.join(
-                    Shapes.or(
-                            box(2, 3, 0, 16, 13, 14),
-                            box(0, 13, 0, 16, 16, 16)),
-                    box(5, 10, 0, 16, 16, 11),
-                    BooleanOp.ONLY_FIRST
-            ));
+    public static final VoxelShape UPPER_SHAPE = Shapes.join(
+            box(2, 0, 12, 14, 8, 14),
+            box(4, 7, 12, 12, 8, 14),
+            BooleanOp.ONLY_FIRST
+    );
+    public static final VoxelShape LOWER_SHAPE = Shapes.or(
+            box(3, 0, 3, 5, 8, 5),
+            box(11, 0, 3, 13, 8, 5),
+            box(3, 0, 11, 5, 8, 13),
+            box(11, 0, 11, 13, 8, 13),
+            box(2, 8, 2, 14, 10, 14),
+            box(2, 10, 12, 14, 16, 14));
 
-    public GorgeousSofaBlock(Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X1X1,
-                HorizontalMultiblock.createEWShapeBuilder(SHAPE_EAST, SHAPE_WEST),
-                pProperties);
+    public BlueChairBlock(Properties pProperties) {
+        super(pProperties, HorizontalDoubleBlock.createShapeBuilder(UPPER_SHAPE, LOWER_SHAPE));
     }
 
     //// SEAT PROVIDER ////
@@ -76,7 +66,8 @@ public class GorgeousSofaBlock extends HorizontalMultiblock implements ISeatProv
         if(pLevel.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
-        if(startSitting(pLevel.getBlockState(pPos), pLevel, pPos, pPlayer)) {
+        BlockPos seatPos = pState.getValue(HALF) == DoubleBlockHalf.UPPER ? pPos.below() : pPos;
+        if(startSitting(pLevel.getBlockState(seatPos), pLevel, seatPos, pPlayer)) {
             return InteractionResult.SUCCESS;
         }
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);

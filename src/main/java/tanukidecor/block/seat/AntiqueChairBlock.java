@@ -7,6 +7,7 @@
 package tanukidecor.block.seat;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -45,6 +46,11 @@ public class AntiqueChairBlock extends HorizontalDoubleBlock implements ISeatPro
     @Override
     public double getSeatYOffset() {
         return 12.0D / 16.0D;
+    }
+
+    @Override
+    public Direction getSeatDirection(BlockState blockState, Level level, BlockPos blockPos) {
+        return blockState.getValue(FACING);
     }
 
     //// METHODS ////
