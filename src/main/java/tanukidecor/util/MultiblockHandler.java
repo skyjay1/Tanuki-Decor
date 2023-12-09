@@ -38,42 +38,44 @@ public class MultiblockHandler {
     public static final Direction ORIGIN_DIRECTION = Direction.NORTH;
     public static final Vec3i CENTER_INDEX = Vec3i.ZERO;
 
-    private static final String WIDTH = "width";
-    private static final String HEIGHT = "height";
-    private static final String DEPTH = "depth";
+    protected static final String WIDTH = "width";
+    protected static final String HEIGHT = "height";
+    protected static final String DEPTH = "depth";
 
     /* The X index property */
-    private static final IntegerProperty WIDTH_1_2 = IntegerProperty.create(WIDTH, 1, 2);
-    private static final IntegerProperty WIDTH_0_2 = IntegerProperty.create(WIDTH, 0, 2);
+    protected static final IntegerProperty WIDTH_1_2 = IntegerProperty.create(WIDTH, 1, 2);
+    protected static final IntegerProperty WIDTH_0_2 = IntegerProperty.create(WIDTH, 0, 2);
     /* The Y index property */
-    private static final IntegerProperty HEIGHT_1_2 = IntegerProperty.create(HEIGHT, 1, 2);
-    private static final IntegerProperty HEIGHT_0_2 = IntegerProperty.create(HEIGHT, 0, 2);
+    protected static final IntegerProperty HEIGHT_1_2 = IntegerProperty.create(HEIGHT, 1, 2);
+    protected static final IntegerProperty HEIGHT_0_2 = IntegerProperty.create(HEIGHT, 0, 2);
     /* The Z index property */
-    private static final IntegerProperty DEPTH_1_2 = IntegerProperty.create(DEPTH, 1, 2);
-    private static final IntegerProperty DEPTH_0_2 = IntegerProperty.create(DEPTH, 0, 2);
-    
-    private static final IntegerProperty[] WIDTH_BY_MAX_VALUE = new IntegerProperty[] { null, WIDTH_1_2, WIDTH_0_2};
-    private static final IntegerProperty[] HEIGHT_BY_MAX_VALUE = new IntegerProperty[] { null, HEIGHT_1_2, HEIGHT_0_2};
-    private static final IntegerProperty[] DEPTH_BY_MAX_VALUE = new IntegerProperty[] { null, DEPTH_1_2, DEPTH_0_2};
+    protected static final IntegerProperty DEPTH_1_2 = IntegerProperty.create(DEPTH, 1, 2);
+    protected static final IntegerProperty DEPTH_0_2 = IntegerProperty.create(DEPTH, 0, 2);
+
+    protected static final IntegerProperty[] WIDTH_BY_MAX_VALUE = new IntegerProperty[] { null, WIDTH_1_2, WIDTH_0_2};
+    protected static final IntegerProperty[] HEIGHT_BY_MAX_VALUE = new IntegerProperty[] { null, HEIGHT_1_2, HEIGHT_0_2};
+    protected static final IntegerProperty[] DEPTH_BY_MAX_VALUE = new IntegerProperty[] { null, DEPTH_1_2, DEPTH_0_2};
 
     public static final MultiblockHandler MULTIBLOCK_3X3X3 = new MultiblockHandler(3, 3, 3);
     public static final MultiblockHandler MULTIBLOCK_3X3X1 = new MultiblockHandler(3, 3, 1);
     public static final MultiblockHandler MULTIBLOCK_3X2X1 = new MultiblockHandler(3, 2, 1);
     public static final MultiblockHandler MULTIBLOCK_3X1X1 = new MultiblockHandler(3, 1, 1);
+    public static final MultiblockHandler MULTIBLOCK_3X1X3 = new MultiblockHandler(3, 1, 3);
     public static final MultiblockHandler MULTIBLOCK_2X3X1 = new MultiblockHandler(2, 3, 1);
     public static final MultiblockHandler MULTIBLOCK_2X2X1 = new MultiblockHandler(2, 2, 1);
+    public static final MultiblockHandler MULTIBLOCK_2X1X2 = new MultiblockHandler(2, 1, 2);
     public static final MultiblockHandler MULTIBLOCK_2X1X1 = new MultiblockHandler(2, 1, 1);
     public static final MultiblockHandler MULTIBLOCK_1X3X1 = new MultiblockHandler(1, 3, 1);
     public static final MultiblockHandler MULTIBLOCK_1X1X2 = new MultiblockHandler(1, 1, 2);
 
-    private final @Nullable IntegerProperty widthProperty;
-    private final @Nullable IntegerProperty heightProperty;
-    private final @Nullable IntegerProperty depthProperty;
+    protected final @Nullable IntegerProperty widthProperty;
+    protected final @Nullable IntegerProperty heightProperty;
+    protected final @Nullable IntegerProperty depthProperty;
     
-    private final Vec3i dimensions;
-    private final Vec3i minIndex;
-    private final Vec3i maxIndex;
-    private final Map<Direction, BoundingBox> bounds;
+    protected final Vec3i dimensions;
+    protected final Vec3i minIndex;
+    protected final Vec3i maxIndex;
+    protected final Map<Direction, BoundingBox> bounds;
 
     public MultiblockHandler(final int width, final int height, final int depth) {
         // validate dimensions
@@ -276,7 +278,7 @@ public class MultiblockHandler {
         // determine center
         final BlockPos center = getCenterPos(pos, blockState, direction);
         // place multiblock
-        iterateIndices(minIndex, maxIndex, index -> {
+        iterateIndices(index -> {
             // skip center block
             if(index.equals(CENTER_INDEX)) return;
             // calculate block position
@@ -301,13 +303,8 @@ public class MultiblockHandler {
         final Level level = context.getLevel();
         // determine center
         final BlockPos center = context.getClickedPos();
-        // verify not outside world height
-        if(dimensions.getY() > 1 && (level.isOutsideBuildHeight(center.above(maxIndex.getY()))
-                || level.isOutsideBuildHeight(center.above(minIndex.getY())))) {
-            return null;
-        }
         // validate blocks can be placed
-        if(!allPositions(center, facing, p -> level.getBlockState(p).canBeReplaced(context))) {
+        if(!allPositions(center, facing, p -> level.isInWorldBounds(p) && level.getBlockState(p).canBeReplaced(context))) {
             return null;
         }
         // place block
@@ -334,10 +331,10 @@ public class MultiblockHandler {
      * @param player the player
      */
     public void preventCreativeDropFromCenterPart(Level level, BlockPos pos, BlockState blockState, Direction facing, Player player) {
-        final BlockPos center = getCenterPos(pos, blockState, facing);
-        final BlockState centerState = level.getBlockState(center);
-        if(centerState.is(blockState.getBlock()) && getIndex(centerState).equals(CENTER_INDEX)) {
-            level.setBlock(center, centerState.getFluidState().createLegacyBlock(), Block.UPDATE_SUPPRESS_DROPS | Block.UPDATE_ALL);
+        final BlockPos origin = getCenterPos(pos, blockState, facing);
+        final BlockState originState = level.getBlockState(origin);
+        if(originState.is(blockState.getBlock()) && getIndex(originState).equals(CENTER_INDEX)) {
+            level.setBlock(origin, originState.getFluidState().createLegacyBlock(), Block.UPDATE_SUPPRESS_DROPS | Block.UPDATE_ALL);
             //pLevel.levelEvent(pPlayer, LevelEvent.PARTICLES_DESTROY_BLOCK, center, Block.getId(blockState));
         }
     }
@@ -373,6 +370,22 @@ public class MultiblockHandler {
             }
         }
         return false;
+    }
+
+    /**
+     * Iterates all index values in each axis
+     * @param consumer the consumer to handle each index value
+     */
+    public void iterateIndices(final Consumer<Vec3i> consumer) {
+        // iterate index values in each axis
+        final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for(int x = minIndex.getX(); x <= maxIndex.getX(); x++) {
+            for(int y = minIndex.getY(); y <= maxIndex.getY(); y++) {
+                for(int z = minIndex.getZ(); z <= maxIndex.getZ(); z++) {
+                    consumer.accept(mutable.set(x, y, z));
+                }
+            }
+        }
     }
 
     /**
@@ -418,27 +431,5 @@ public class MultiblockHandler {
             case SOUTH: return new Vec3i(index.getX(), index.getY(), -index.getZ());
             case WEST: return new Vec3i(index.getZ(), index.getY(), index.getX());
         }
-    }
-
-    /**
-     * Iterates all index values in each axis
-     * @param minIndex the minimum index values
-     * @param maxIndex the maximum index values
-     * @param consumer the consumer to handle each index value
-     */
-    public static void iterateIndices(final Vec3i minIndex, final Vec3i maxIndex, final Consumer<Vec3i> consumer) {
-        // iterate index values in each axis
-        final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        for(int x = minIndex.getX(); x <= maxIndex.getX(); x++) {
-            for(int y = minIndex.getY(); y <= maxIndex.getY(); y++) {
-                for(int z = minIndex.getZ(); z <= maxIndex.getZ(); z++) {
-                    consumer.accept(mutable.set(x, y, z));
-                }
-            }
-        }
-    }
-
-    public static Vec3i rotateIndexForShape(final Vec3i index, final Direction direction) {
-        return index;
     }
 }

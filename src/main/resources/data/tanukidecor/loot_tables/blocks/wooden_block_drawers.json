@@ -11,8 +11,7 @@
           "block": "tanukidecor:wooden_block_drawers",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "width": 1,
-            "height": 1
+            "width": 1
           }
         }
       ],

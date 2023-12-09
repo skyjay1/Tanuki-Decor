@@ -137,7 +137,7 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         // assume if the block at the given position is not this one, this is a preemptive check
-        if(!pState.is(this)) {
+        if(!pLevel.getBlockState(pPos).is(this)) {
             return true;
         }
         // validate the multiblock is intact
@@ -155,6 +155,13 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
     @Override
     public PushReaction getPistonPushReaction(BlockState pState) {
         return PushReaction.BLOCK;
+    }
+
+    public void removeAll(final Level level, final BlockPos centerPos) {
+        final BlockPos.MutableBlockPos mutablePos = centerPos.mutable();
+        getMultiblockHandler().iterateIndices(index -> {
+            level.removeBlock(mutablePos.setWithOffset(centerPos, index), false);
+        });
     }
 
     //// FLUID ////
@@ -204,10 +211,10 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
     protected VoxelShape createMultiblockShape() {
         final BlockState blockState = multiblockHandler.getCenterState(defaultBlockState());
         final AtomicReference<VoxelShape> shape = new AtomicReference<>(Shapes.empty());
-        MultiblockHandler.iterateIndices(multiblockHandler.getMinIndex(), multiblockHandler.getMaxIndex(), index -> {
+        multiblockHandler.iterateIndices(index -> {
             BlockState b = multiblockHandler.getIndexedState(blockState, index);
             shape.set(ShapeUtils.orUnoptimized(shape.get(), blockShapes.computeIfAbsent(b, this.shapeBuilder)
-                    .move(-index.getX(), index.getY(), -index.getZ())
+                    .move(-index.getX(), index.getY(), index.getZ())
             ));
         });
         return shape.get().optimize();

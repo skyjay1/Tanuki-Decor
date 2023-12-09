@@ -20,6 +20,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import tanukidecor.TDRegistry.BlockReg;
 import tanukidecor.TDRegistry.BlockEntityReg;
 import tanukidecor.client.blockentity.clock.*;
+import tanukidecor.client.blockentity.misc.TrainSetBER;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +44,7 @@ public final class TDClientEvents {
 
         @SubscribeEvent
         public static void onRegisterEntityRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-            // CLOCKS //
+            // CLOCK //
             event.registerBlockEntityRenderer(BlockEntityReg.ALARM_CLOCK.get(), AlarmClockBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.ANNIVERSARY_CLOCK.get(), AnniversaryClockBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.ANTIQUE_CLOCK.get(), AntiqueClockBER::new);
@@ -74,12 +75,15 @@ public final class TDClientEvents {
             event.registerBlockEntityRenderer(BlockEntityReg.SLATE_CLOCK.get(), SlateClockBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.STATION_CLOCK.get(), StationClockBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.WOODEN_BLOCK_CLOCK.get(), WoodenBlockClockBER::new);
+            // MISC //
+            event.registerBlockEntityRenderer(BlockEntityReg.TRAIN_SET.get(), TrainSetBER::new);
         }
 
         @SubscribeEvent
         public static void onRegisterModels(final ModelRegistryEvent event) {
             // gather special models
             final Set<ResourceLocation> set = new HashSet<>();
+            // CLOCK //
             AlarmClockBER.addSpecialModels(set);
             AnniversaryClockBER.addSpecialModels(set);
             AntiqueClockBER.addSpecialModels(set);
@@ -110,6 +114,8 @@ public final class TDClientEvents {
             SlateClockBER.addSpecialModels(set);
             StationClockBER.addSpecialModels(set);
             WoodenBlockClockBER.addSpecialModels(set);
+            // MISC //
+            TrainSetBER.addSpecialModels(set);
             // register special models
             set.forEach(ForgeModelBakery::addSpecialModel);
         }
@@ -118,7 +124,7 @@ public final class TDClientEvents {
          * Register blocks that use something other than the solid render layer
          */
         private static void registerBlockRenderLayers() {
-            // CLOCKS //
+            // CLOCK //
             registerRenderLayer(BlockReg.ALARM_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.ANNIVERSARY_CLOCK.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.ANTIQUE_CLOCK.get(), RenderType.cutout());
@@ -149,6 +155,10 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.REGAL_VANITY.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SWEETS_CLOSET.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SWEETS_DRESSER.get(), RenderType.cutout());
+            // SEAT //
+
+            // MISC //
+            registerRenderLayer(BlockReg.TRAIN_SET.get(), RenderType.cutout());
         }
 
         private static void registerRenderLayer(final Block block, RenderType renderType) {

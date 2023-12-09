@@ -34,7 +34,8 @@ public class MultiblockItem extends BlockItem {
         final Direction direction = pContext.getHorizontalDirection();
         final MultiblockHandler multiblockHandler = ((HorizontalMultiblock) this.getBlock()).getMultiblockHandler();
         // determine the index of the clicked position and the desired center position
-        final Vec3i clickedIndex = new Vec3i(0, multiblockHandler.getMinIndex().getY(), -(multiblockHandler.getDimensions().getZ() / 2));
+        final Vec3i minIndex = multiblockHandler.getMinIndex();
+        final Vec3i clickedIndex = new Vec3i(0, minIndex.getY(), minIndex.getZ());
         final BlockPos center = MultiblockHandler.getCenterPos(pContext.getClickedPos(), clickedIndex, direction.getOpposite());
         // create a block place context at the center position
         return BlockPlaceContext.at(pContext, center, direction);

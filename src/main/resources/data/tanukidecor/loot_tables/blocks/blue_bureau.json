@@ -11,15 +11,14 @@
           "block": "tanukidecor:blue_bureau",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "width": 1,
-            "height": 1
+            "width": 1
           }
         }
       ],
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tanukidecor:blue_bureauf"
+          "name": "tanukidecor:blue_bureau"
         }
       ],
       "rolls": 1.0

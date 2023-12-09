@@ -4,21 +4,15 @@
  * under the GNU LGPLv3 license (https://www.gnu.org/licenses/lgpl-3.0.en.html)
  */
 
-package tanukidecor.block.seating;
+package tanukidecor.block.seat;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Pig;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Minecart;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -121,7 +115,7 @@ public interface ISeatProvider {
             entity.setNoGravity(true);
             entity.setInvisible(true);
             entity.setInvulnerable(true);
-            entity.setBaby(true);
+            entity.setAge(Integer.MIN_VALUE);
             entity.noPhysics = true;
             entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, Integer.MAX_VALUE, 0, false, false));
             // add entity to level

@@ -20,9 +20,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import tanukidecor.block.bed.DoubleBedBlock;
 import tanukidecor.block.clock.*;
 import tanukidecor.block.entity.*;
-import tanukidecor.block.seating.*;
+import tanukidecor.block.misc.TrainSetBlock;
+import tanukidecor.block.seat.*;
 import tanukidecor.block.storage.*;
 import tanukidecor.item.MultiblockItem;
 
@@ -289,11 +291,30 @@ public final class TDRegistry {
                 new WoodenBlockDrawersBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
         );
 
-        // SEATING //
+        // SEAT //
         public static final RegistryObject<Block> ANTIQUE_CHAIR = registerWithItem("antique_chair", () ->
                 new AntiqueChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
         );
+        public static final RegistryObject<Block> GORGEOUS_SEAT = registerWithItem("gorgeous_seat", () ->
+                new GorgeousSeatBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
+        );
+        public static final RegistryObject<Block> GORGEOUS_SOFA = registerWithMultiblockItem("gorgeous_sofa", () ->
+                new GorgeousSofaBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
+        );
 
+        // BED //
+        public static final RegistryObject<Block> ANTIQUE_BED = registerWithMultiblockItem("antique_bed", () ->
+                new DoubleBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.0F, 30.0F))
+        );
+
+        // MISC //
+        public static final RegistryObject<Block> TRAIN_SET = registerWithItem("train_set", () ->
+                new TrainSetBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 30.0F))
+        );
+
+
+
+        // HELPER METHODS //
 
         private static RegistryObject<Block> registerWithItem(final String name, final Supplier<Block> supplier) {
             return registerWithItem(name, supplier, ItemReg::registerBlockItem);
@@ -496,6 +517,11 @@ public final class TDRegistry {
                 () -> BlockEntityReg.SWEETS_DRESSER, 6, BlockReg.SWEETS_DRESSER);
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> WOODEN_BLOCK_DRAWERS = registerStorage(
                 () -> BlockEntityReg.WOODEN_BLOCK_DRAWERS, 6, BlockReg.WOODEN_BLOCK_DRAWERS);
+
+        // MISC //
+        public static final RegistryObject<BlockEntityType<TrainSetBlockEntity>> TRAIN_SET = BLOCK_ENTITY_TYPES.register("train_set", () -> BlockEntityType.Builder
+                .of((pos, state) -> new TrainSetBlockEntity(BlockEntityReg.TRAIN_SET.get(), pos, state), BlockReg.TRAIN_SET.get())
+                .build(null));
 
         /**
          * @param type the supplier for the block entity type registry object

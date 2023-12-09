@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "tanukidecor:alarm_clock",
     "tanukidecor:anniversary_clock",
@@ -14,6 +15,8 @@
     "tanukidecor:rococo_clock",
     "tanukidecor:slate_clock",
     "tanukidecor:small_clock_tower_dial",
-    "tanukidecor:station_clock"
+    "tanukidecor:station_clock",
+
+    "tanukidecor:train_set"
   ]
 }

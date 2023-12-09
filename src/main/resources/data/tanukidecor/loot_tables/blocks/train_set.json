@@ -8,17 +8,18 @@
           "condition": "minecraft:survives_explosion"
         },
         {
-          "block": "tanukidecor:antique_desk",
+          "block": "tanukidecor:train_set",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "width": 1
+            "width": 1,
+            "depth": 0
           }
         }
       ],
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tanukidecor:antique_desk"
+          "name": "tanukidecor:train_set"
         }
       ],
       "rolls": 1.0
