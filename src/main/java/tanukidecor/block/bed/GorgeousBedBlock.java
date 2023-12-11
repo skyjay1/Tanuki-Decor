@@ -103,14 +103,20 @@ public class GorgeousBedBlock extends HorizontalMultiblock implements IBedProvid
                 // width = 1
                 {
                     Shapes.empty(),
-                    Shapes.or(box(0, 0, 0, 16, 8, 16)),
-                    Shapes.or(box(0, 0, 0, 16, 8, 16))
+                    Shapes.or(box(14, 0, 0, 16, 16, 2),
+                            box(0, 3, 0, 14, 8, 16)),
+                    Shapes.or(box(14, 0, 14, 16, 16, 16),
+                            box(0, 3, 0, 14, 8, 16),
+                            box(0, 8, 14, 14, 16, 16))
                 },
                 // width = 2
                 {
                     Shapes.empty(),
-                    Shapes.or(box(0, 0, 0, 16, 8, 16)),
-                    Shapes.or(box(0, 0, 0, 16, 8, 16))
+                    Shapes.or(box(0, 0, 0, 2, 16, 2),
+                            box(2, 3, 0, 16, 8, 16)),
+                    Shapes.or(box(0, 0, 14, 2, 16, 16),
+                            box(2, 3, 0, 16, 8, 16),
+                            box(2, 8, 14, 16, 16, 16))
                 }
             },
             // height = 2
@@ -120,14 +126,22 @@ public class GorgeousBedBlock extends HorizontalMultiblock implements IBedProvid
                 // width = 1
                 {
                         Shapes.empty(),
-                        Shapes.or(box(0, 0, 0, 16, 8, 16)),
-                        Shapes.or(box(0, 0, 0, 16, 8, 16))
+                        Shapes.or(box(14, 0, 0, 16, 16, 2),
+                                box(0, 14, 0, 14, 15, 16)),
+                        Shapes.or(box(14, 0, 14, 16, 16, 16),
+                                box(10, 0, 14, 14, 3, 16),
+                                box(0, 0, 14, 6, 4, 16),
+                                box(0, 14, 0, 14, 15, 16))
                 },
                 // width = 2
                 {
                         Shapes.empty(),
-                        Shapes.or(box(0, 0, 0, 16, 8, 16)),
-                        Shapes.or(box(0, 0, 0, 16, 8, 16))
+                        Shapes.or(box(0, 0, 0, 2, 16, 2),
+                                box(2, 14, 0, 16, 15, 16)),
+                        Shapes.or(box(0, 0, 14, 2, 16, 16),
+                                box(2, 0, 14, 6, 3, 16),
+                                box(10, 0, 14, 16, 4, 16),
+                                box(2, 14, 0, 16, 15, 16))
                 }
             }
     };

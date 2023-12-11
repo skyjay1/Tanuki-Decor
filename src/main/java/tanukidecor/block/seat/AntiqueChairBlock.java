@@ -66,7 +66,7 @@ public class AntiqueChairBlock extends HorizontalDoubleBlock implements ISeatPro
             return InteractionResult.SUCCESS;
         }
         BlockPos seatPos = pState.getValue(HALF) == DoubleBlockHalf.UPPER ? pPos.below() : pPos;
-        if(startSitting(pLevel.getBlockState(seatPos), pLevel, seatPos, pPlayer)) {
+        if(!pPlayer.isShiftKeyDown() && startSitting(pLevel.getBlockState(seatPos), pLevel, seatPos, pPlayer)) {
             return InteractionResult.SUCCESS;
         }
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);

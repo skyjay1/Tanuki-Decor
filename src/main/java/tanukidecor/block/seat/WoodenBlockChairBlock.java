@@ -15,33 +15,26 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalMultiblock;
-import tanukidecor.util.MultiblockHandler;
+import tanukidecor.block.HorizontalBlock;
 
 import java.util.Random;
 
-public class GreenBenchBlock extends HorizontalMultiblock implements ISeatProvider {
+public class WoodenBlockChairBlock extends HorizontalBlock implements ISeatProvider {
 
-    public static final VoxelShape SHAPE_EAST = Shapes.or(
-            box(11, 0, 2, 15, 1, 14),
-            box(12, 1, 5, 14, 6, 11),
-            box(0, 2, 7, 15, 5, 9),
-            box(0, 6, 1, 16, 8, 15),
-            box(0, 8, 13, 16, 16, 15));
-    public static final VoxelShape SHAPE_WEST = Shapes.or(
-            box(1, 0, 2, 5, 1, 14),
-            box(2, 1, 5, 4, 6, 11),
-            box(1, 2, 7, 16, 5, 9),
-            box(0, 6, 1, 16, 8, 15),
-            box(0, 8, 13, 16, 16, 15));
+    public static final VoxelShape SHAPE = Shapes.or(
+            box(4, 0, 4, 6, 6, 6),
+            box(10, 0, 4, 12, 6, 6),
+            box(4, 0, 10, 6, 6, 12),
+            box(10, 0, 10, 12, 6, 12),
+            box(3, 6, 3, 13, 8, 13),
+            box(4, 8, 11, 6, 10, 13),
+            box(10, 8, 11, 12, 10, 13),
+            box(3, 10, 11, 13, 16, 13));
 
-    public GreenBenchBlock(Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X1X1,
-                HorizontalMultiblock.createEWShapeBuilder(SHAPE_EAST, SHAPE_WEST),
-                pProperties);
+    public WoodenBlockChairBlock(Properties pProperties) {
+        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
     }
 
     //// SEAT PROVIDER ////

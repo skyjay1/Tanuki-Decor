@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.HorizontalMultiblock;
@@ -23,22 +22,16 @@ import tanukidecor.util.MultiblockHandler;
 
 import java.util.Random;
 
-public class GreenBenchBlock extends HorizontalMultiblock implements ISeatProvider {
+public class WoodenBlockBenchBlock extends HorizontalMultiblock implements ISeatProvider {
 
     public static final VoxelShape SHAPE_EAST = Shapes.or(
-            box(11, 0, 2, 15, 1, 14),
-            box(12, 1, 5, 14, 6, 11),
-            box(0, 2, 7, 15, 5, 9),
-            box(0, 6, 1, 16, 8, 15),
-            box(0, 8, 13, 16, 16, 15));
+            box(13, 0, 2, 16, 12, 14),
+            box(0, 5, 3, 13, 7, 13));
     public static final VoxelShape SHAPE_WEST = Shapes.or(
-            box(1, 0, 2, 5, 1, 14),
-            box(2, 1, 5, 4, 6, 11),
-            box(1, 2, 7, 16, 5, 9),
-            box(0, 6, 1, 16, 8, 15),
-            box(0, 8, 13, 16, 16, 15));
+            box(0, 0, 2, 3, 12, 14),
+            box(3, 5, 3, 16, 7, 13));
 
-    public GreenBenchBlock(Properties pProperties) {
+    public WoodenBlockBenchBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X1X1,
                 HorizontalMultiblock.createEWShapeBuilder(SHAPE_EAST, SHAPE_WEST),
                 pProperties);
@@ -48,7 +41,7 @@ public class GreenBenchBlock extends HorizontalMultiblock implements ISeatProvid
 
     @Override
     public double getSeatYOffset() {
-        return 10.0D / 16.0D;
+        return 9.0D / 16.0D;
     }
 
     @Override

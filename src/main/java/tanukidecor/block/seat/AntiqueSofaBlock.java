@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.HorizontalMultiblock;
@@ -23,22 +22,26 @@ import tanukidecor.util.MultiblockHandler;
 
 import java.util.Random;
 
-public class GreenBenchBlock extends HorizontalMultiblock implements ISeatProvider {
+public class AntiqueSofaBlock extends HorizontalMultiblock implements ISeatProvider {
 
     public static final VoxelShape SHAPE_EAST = Shapes.or(
-            box(11, 0, 2, 15, 1, 14),
-            box(12, 1, 5, 14, 6, 11),
-            box(0, 2, 7, 15, 5, 9),
-            box(0, 6, 1, 16, 8, 15),
-            box(0, 8, 13, 16, 16, 15));
+            box(13, 1, 2, 15, 3, 4),
+            box(13, 0, 1, 16, 1, 4),
+            box(13, 1, 12, 15, 3, 14),
+            box(13, 0, 12, 16, 1, 15),
+            box(0, 3, 1, 16, 8, 15),
+            box(0, 8, 12, 16, 16, 15),
+            box(13, 8, 1, 16, 14, 15));
     public static final VoxelShape SHAPE_WEST = Shapes.or(
-            box(1, 0, 2, 5, 1, 14),
-            box(2, 1, 5, 4, 6, 11),
-            box(1, 2, 7, 16, 5, 9),
-            box(0, 6, 1, 16, 8, 15),
-            box(0, 8, 13, 16, 16, 15));
+            box(1, 1, 2, 3, 3, 4),
+            box(0, 0, 1, 3, 1, 4),
+            box(1, 1, 12, 3, 3, 14),
+            box(0, 0, 12, 3, 1, 15),
+            box(0, 3, 1, 16, 8, 15),
+            box(0, 8, 12, 16, 16, 15),
+            box(0, 8, 1, 3, 14, 15));
 
-    public GreenBenchBlock(Properties pProperties) {
+    public AntiqueSofaBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X1X1,
                 HorizontalMultiblock.createEWShapeBuilder(SHAPE_EAST, SHAPE_WEST),
                 pProperties);

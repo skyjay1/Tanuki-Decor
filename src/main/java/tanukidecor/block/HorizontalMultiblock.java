@@ -48,9 +48,9 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
     protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected final MultiblockHandler multiblockHandler;
-    private final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
-    private final Map<Direction, VoxelShape> centeredVisualShapes = new EnumMap<>(Direction.class);
-    private final Map<BlockState, VoxelShape> multiblockShapes = new HashMap<>();
+
+    protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
+    protected final Map<BlockState, VoxelShape> multiblockShapes = new HashMap<>();
 
     private final Function<BlockState, VoxelShape> shapeBuilder;
 
@@ -185,11 +185,10 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
 
     protected void precalculateShapes() {
         blockShapes.clear();
-        centeredVisualShapes.clear();
         multiblockShapes.clear();
         // calculate centered visual shapes
-        final VoxelShape centeredShape = createMultiblockShape();
-        centeredVisualShapes.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, centeredShape));
+        final Map<Direction, VoxelShape> centeredVisualShapes = new EnumMap<>(Direction.class);
+        centeredVisualShapes.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, createMultiblockShape()));
         // iterate all block states
         for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
             // cache the individual shape

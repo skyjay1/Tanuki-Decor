@@ -14,41 +14,39 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalMultiblock;
-import tanukidecor.util.MultiblockHandler;
+import tanukidecor.block.HorizontalDoubleBlock;
 
 import java.util.Random;
 
-public class GreenBenchBlock extends HorizontalMultiblock implements ISeatProvider {
+public class RegalChairBlock extends HorizontalDoubleBlock implements ISeatProvider {
 
-    public static final VoxelShape SHAPE_EAST = Shapes.or(
-            box(11, 0, 2, 15, 1, 14),
-            box(12, 1, 5, 14, 6, 11),
-            box(0, 2, 7, 15, 5, 9),
-            box(0, 6, 1, 16, 8, 15),
-            box(0, 8, 13, 16, 16, 15));
-    public static final VoxelShape SHAPE_WEST = Shapes.or(
-            box(1, 0, 2, 5, 1, 14),
-            box(2, 1, 5, 4, 6, 11),
-            box(1, 2, 7, 16, 5, 9),
-            box(0, 6, 1, 16, 8, 15),
-            box(0, 8, 13, 16, 16, 15));
+    public static final VoxelShape UPPER_SHAPE = box(2, 0, 12, 14, 8, 14);
+    public static final VoxelShape LOWER_SHAPE = Shapes.or(
+            box(3, 0, 3, 5, 8, 5),
+            box(11, 0, 3, 13, 8, 5),
+            box(3, 0, 11, 5, 8, 13),
+            box(11, 0, 11, 13, 8, 13),
+            box(5, 4, 3.5D, 11, 5, 4.5D),
+            box(5, 4, 11.5D, 11, 5, 12.5D),
+            box(3.5D, 4, 5, 4.5D, 5, 11),
+            box(11.5D, 4, 5, 12.5D, 5, 11),
+            box(2, 8, 2, 14, 10, 14),
+            box(2, 10, 12, 14, 16, 14),
+            box(4, 13, 13, 12, 16, 13));
 
-    public GreenBenchBlock(Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X1X1,
-                HorizontalMultiblock.createEWShapeBuilder(SHAPE_EAST, SHAPE_WEST),
-                pProperties);
+    public RegalChairBlock(Properties pProperties) {
+        super(pProperties, HorizontalDoubleBlock.createShapeBuilder(UPPER_SHAPE, LOWER_SHAPE));
     }
 
     //// SEAT PROVIDER ////
 
     @Override
     public double getSeatYOffset() {
-        return 10.0D / 16.0D;
+        return 12.0D / 16.0D;
     }
 
     @Override
@@ -68,7 +66,8 @@ public class GreenBenchBlock extends HorizontalMultiblock implements ISeatProvid
         if(pLevel.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
-        if(!pPlayer.isShiftKeyDown() && startSitting(pLevel.getBlockState(pPos), pLevel, pPos, pPlayer)) {
+        BlockPos seatPos = pState.getValue(HALF) == DoubleBlockHalf.UPPER ? pPos.below() : pPos;
+        if(!pPlayer.isShiftKeyDown() && startSitting(pLevel.getBlockState(seatPos), pLevel, seatPos, pPlayer)) {
             return InteractionResult.SUCCESS;
         }
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);

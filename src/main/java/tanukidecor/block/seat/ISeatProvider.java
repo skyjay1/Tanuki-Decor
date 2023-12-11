@@ -28,7 +28,7 @@ import java.util.function.Predicate;
 public interface ISeatProvider {
 
     public static final Predicate<Entity> IS_SEAT_ENTITY = e ->
-            e.getType() == EntityType.PIG && e.isSilent() && e.isInvulnerable() && e.isNoGravity();
+            e.getType() == EntityType.PIG && e.isSilent() && e.isInvisible() && e.isNoGravity();
 
     /**
      * @return the vertical offset of the seat entity, typically 2 pixels above the seating part of the model

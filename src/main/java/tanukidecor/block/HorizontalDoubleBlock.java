@@ -18,33 +18,103 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.storage.IDelegateProvider;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeUtils;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
-public class HorizontalDoubleBlock extends HorizontalBlock implements IDelegateProvider {
+public class HorizontalDoubleBlock  extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock, IDelegateProvider {
 
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
+    protected final Function<BlockState, VoxelShape> shapeBuilder;
+    protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
+    protected final Map<BlockState, VoxelShape> multiblockShapes = new HashMap<>();
 
     public HorizontalDoubleBlock(Properties pProperties, Function<BlockState, VoxelShape> shapeBuilder) {
-        super(pProperties, shapeBuilder);
+        super(pProperties);
+        this.shapeBuilder = shapeBuilder;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(WATERLOGGED, false)
                 .setValue(HALF, DoubleBlockHalf.LOWER));
         precalculateShapes();
+    }
+
+    //// SHAPE ////
+
+    protected void precalculateShapes() {
+        blockShapes.clear();
+        multiblockShapes.clear();
+        // create double block shape
+        final Map<Direction, VoxelShape> doubleBlockShapes = new EnumMap<>(Direction.class);
+        doubleBlockShapes.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, createDoubleBlockShape()));
+        // create shapes for all possible block states
+        for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
+            // calculate block shape
+            blockShapes.put(blockState, this.shapeBuilder.apply(blockState));
+            // calculate multiblock shape
+            double offset = blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? 0 : 1;
+            VoxelShape shape = doubleBlockShapes.get(blockState.getValue(FACING))
+                    .move(0, offset, 0);
+            multiblockShapes.put(blockState, shape);
+        }
+    }
+
+    /**
+     * @return a newly created multiblock {@link VoxelShape}, centered around the center block
+     */
+    protected VoxelShape createDoubleBlockShape() {
+        BlockState upperState = defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER);
+        BlockState lowerState = defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER);
+        return Shapes.or(
+                blockShapes.computeIfAbsent(upperState, this.shapeBuilder),
+                blockShapes.computeIfAbsent(lowerState, this.shapeBuilder).move(0, -1, 0));
+    }
+
+    /**
+     * @param blockState the block state
+     * @return the cached shape for the given block state
+     */
+    public VoxelShape getBlockShape(final BlockState blockState) {
+        return blockShapes.get(blockState);
+    }
+
+    /**
+     * @param blockState the block state
+     * @return the cached multiblock shape for the given block state
+     */
+    public VoxelShape getMultiblockShape(final BlockState blockState) {
+        return multiblockShapes.get(blockState);
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        return getBlockShape(pState);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        return getMultiblockShape(pState);
     }
 
     //// DELEGATE PROVIDER ////
@@ -79,6 +149,11 @@ public class HorizontalDoubleBlock extends HorizontalBlock implements IDelegateP
 
     @Override
     public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        // update fluid
+        if (pState.getValue(WATERLOGGED)) {
+            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+        }
+        // update half
         DoubleBlockHalf half = pState.getValue(HALF);
         if (pFacing.getAxis() == Direction.Axis.Y && half == DoubleBlockHalf.LOWER == (pFacing == Direction.UP)) {
             return pFacingState.is(this) && pFacingState.getValue(HALF) != half ? pState.setValue(FACING, pFacingState.getValue(FACING)) : getFluidState(pState).createLegacyBlock();
@@ -108,6 +183,11 @@ public class HorizontalDoubleBlock extends HorizontalBlock implements IDelegateP
     @Override
     public PushReaction getPistonPushReaction(BlockState pState) {
         return PushReaction.BLOCK;
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState pState) {
+        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
     public static Function<BlockState, VoxelShape> createShapeBuilder(final VoxelShape upperShape, final VoxelShape lowerShape) {

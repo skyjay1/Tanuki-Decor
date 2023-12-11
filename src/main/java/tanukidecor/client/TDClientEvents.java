@@ -6,12 +6,16 @@
 
 package tanukidecor.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,6 +23,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import tanukidecor.TDRegistry.BlockReg;
 import tanukidecor.TDRegistry.BlockEntityReg;
+import tanukidecor.block.seat.ISeatProvider;
 import tanukidecor.client.blockentity.clock.*;
 import tanukidecor.client.blockentity.misc.TrainSetBER;
 
@@ -33,6 +38,17 @@ public final class TDClientEvents {
     }
 
     public static final class ForgeHandler {
+
+        @SubscribeEvent
+        public static void onRenderOverlay(final RenderGameOverlayEvent.PreLayer event) {
+            final Player player = Minecraft.getInstance().player;
+            if(event.getOverlay() == ForgeIngameGui.MOUNT_HEALTH_ELEMENT
+                    && player != null && player.isPassenger()
+                    && ISeatProvider.IS_SEAT_ENTITY.test(player.getVehicle())) {
+                event.setCanceled(true);
+            }
+
+        }
     }
 
     public static final class ModHandler {
@@ -158,6 +174,8 @@ public final class TDClientEvents {
             // SEAT //
             registerRenderLayer(BlockReg.BLUE_BENCH.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.BLUE_CHAIR.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GORGEOUS_STOOL.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.REGAL_CHAIR.get(), RenderType.cutout());
             // BED //
             registerRenderLayer(BlockReg.GORGEOUS_BED.get(), RenderType.cutout());
             // MISC //

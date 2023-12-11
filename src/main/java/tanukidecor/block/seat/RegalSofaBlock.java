@@ -23,22 +23,18 @@ import tanukidecor.util.MultiblockHandler;
 
 import java.util.Random;
 
-public class GreenBenchBlock extends HorizontalMultiblock implements ISeatProvider {
+public class RegalSofaBlock extends HorizontalMultiblock implements ISeatProvider {
 
     public static final VoxelShape SHAPE_EAST = Shapes.or(
-            box(11, 0, 2, 15, 1, 14),
-            box(12, 1, 5, 14, 6, 11),
-            box(0, 2, 7, 15, 5, 9),
-            box(0, 6, 1, 16, 8, 15),
-            box(0, 8, 13, 16, 16, 15));
+            box(0, 0, 0, 16, 8, 16),
+            box(13, 8, 0, 16, 11, 16),
+            box(0, 8, 13, 13, 16, 16));
     public static final VoxelShape SHAPE_WEST = Shapes.or(
-            box(1, 0, 2, 5, 1, 14),
-            box(2, 1, 5, 4, 6, 11),
-            box(1, 2, 7, 16, 5, 9),
-            box(0, 6, 1, 16, 8, 15),
-            box(0, 8, 13, 16, 16, 15));
+            box(0, 0, 0, 16, 8, 16),
+            box(0, 8, 0, 3, 11, 16),
+            box(3, 8, 13, 16, 16, 16));
 
-    public GreenBenchBlock(Properties pProperties) {
+    public RegalSofaBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X1X1,
                 HorizontalMultiblock.createEWShapeBuilder(SHAPE_EAST, SHAPE_WEST),
                 pProperties);

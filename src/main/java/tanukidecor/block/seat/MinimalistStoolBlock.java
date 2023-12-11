@@ -58,7 +58,7 @@ public class MinimalistStoolBlock extends HorizontalBlock implements ISeatProvid
         if(pLevel.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
-        if(startSitting(pLevel.getBlockState(pPos), pLevel, pPos, pPlayer)) {
+        if(!pPlayer.isShiftKeyDown() && startSitting(pLevel.getBlockState(pPos), pLevel, pPos, pPlayer)) {
             return InteractionResult.SUCCESS;
         }
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);

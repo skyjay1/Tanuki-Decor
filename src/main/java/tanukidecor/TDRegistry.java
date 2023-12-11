@@ -209,6 +209,18 @@ public final class TDRegistry {
         // SEAT //
         public static final RegistryObject<Block> ANTIQUE_CHAIR = registerWithItem("antique_chair", () ->
                 new AntiqueChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> ANTIQUE_SOFA = registerWithMultiblockItem("antique_sofa", () ->
+                new AntiqueSofaBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> BLUE_BENCH = registerWithMultiblockItem("blue_bench", () ->
+                new BlueBenchBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> BLUE_CHAIR = registerWithItem("blue_chair", () ->
+                new BlueChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> GORGEOUS_SEAT = registerWithItem("gorgeous_seat", () ->
+                new GorgeousSeatBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> GORGEOUS_SOFA = registerWithMultiblockItem("gorgeous_sofa", () ->
+                new GorgeousSofaBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> GORGEOUS_STOOL = registerWithItem("gorgeous_stool", () ->
+                new GorgeousStoolBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GREEN_BENCH = registerWithMultiblockItem("green_bench", () ->
                 new GreenBenchBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_CHAIR = registerWithItem("green_chair", () ->
@@ -219,14 +231,14 @@ public final class TDRegistry {
                 new MinimalistCouchBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> MINIMALIST_STOOL = registerWithItem("minimalist_stool", () ->
                 new MinimalistStoolBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
-        public static final RegistryObject<Block> GORGEOUS_SEAT = registerWithItem("gorgeous_seat", () ->
-                new GorgeousSeatBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
-        public static final RegistryObject<Block> GORGEOUS_SOFA = registerWithMultiblockItem("gorgeous_sofa", () ->
-                new GorgeousSofaBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
-        public static final RegistryObject<Block> BLUE_BENCH = registerWithMultiblockItem("blue_bench", () ->
-                new BlueBenchBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
-        public static final RegistryObject<Block> BLUE_CHAIR = registerWithItem("blue_chair", () ->
-                new BlueChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> REGAL_CHAIR = registerWithItem("regal_chair", () ->
+                new RegalChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> REGAL_SOFA = registerWithMultiblockItem("regal_sofa", () ->
+                new RegalSofaBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> WOODEN_BLOCK_BENCH = registerWithMultiblockItem("wooden_block_bench", () ->
+                new WoodenBlockBenchBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> WOODEN_BLOCK_CHAIR = registerWithItem("wooden_block_chair", () ->
+                new WoodenBlockChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
 
         // BED //
         public static final RegistryObject<Block> ANTIQUE_BED = registerWithMultiblockItem("antique_bed", () ->
