@@ -32,10 +32,10 @@ public class GrandfatherClockBlock extends HorizontalMultiblock implements Entit
     protected final Supplier<SoundEvent> chimeSound;
     protected final Supplier<SoundEvent> tickSound;
 
-    public GrandfatherClockBlock(Supplier<SoundEvent> tickSound, Supplier<SoundEvent> chimeSound, Properties pProperties) {
+    public GrandfatherClockBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_1X3X1, GrandfatherClockBlock::buildShape, pProperties);
-        this.tickSound = tickSound;
-        this.chimeSound = chimeSound;
+        this.tickSound = TDRegistry.SoundReg.GRANDFATHER_CLOCK_TICK;
+        this.chimeSound = TDRegistry.SoundReg.GRANDFATHER_CLOCK_CHIME;
     }
 
     //// CHIME PROVIDER ////

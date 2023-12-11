@@ -31,10 +31,10 @@ public class SmallClockTowerDialBlock extends HorizontalMultiblock implements En
     protected final Supplier<SoundEvent> chimeSound;
     protected final Supplier<SoundEvent> tickSound;
 
-    public SmallClockTowerDialBlock(Supplier<SoundEvent> tickSound, Supplier<SoundEvent> chimeSound, Properties pProperties) {
+    public SmallClockTowerDialBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X2X1, SmallClockTowerDialBlock::buildShape, pProperties);
-        this.tickSound = tickSound;
-        this.chimeSound = chimeSound;
+        this.tickSound = TDRegistry.SoundReg.CLOCK_TOWER_TICK;
+        this.chimeSound = TDRegistry.SoundReg.CLOCK_TOWER_CHIME;
     }
 
     //// CHIME PROVIDER ////

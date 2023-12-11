@@ -6,15 +6,21 @@
 
 package tanukidecor;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -22,6 +28,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import tanukidecor.block.bed.AntiqueBedBlock;
 import tanukidecor.block.bed.DoubleBedBlock;
+import tanukidecor.block.bed.GorgeousBedBlock;
+import tanukidecor.block.bed.IBedProvider;
 import tanukidecor.block.clock.*;
 import tanukidecor.block.entity.*;
 import tanukidecor.block.misc.TrainSetBlock;
@@ -29,6 +37,7 @@ import tanukidecor.block.seat.*;
 import tanukidecor.block.storage.*;
 import tanukidecor.item.MultiblockItem;
 
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -65,274 +74,169 @@ public final class TDRegistry {
         // CLOCKS //
 
         public static final RegistryObject<Block> ALARM_CLOCK = registerWithItem("alarm_clock", () ->
-                new AlarmClockBlock(SoundReg.ALARM_CLOCK_TICK, SoundReg.ALARM_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new AlarmClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> ANNIVERSARY_CLOCK = registerWithItem("anniversary_clock", () ->
-                new AnniversaryClockBlock(SoundReg.POCKET_WATCH_TICK,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new AnniversaryClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> ANTIQUE_CLOCK = registerWithItem("antique_clock", () ->
-                new AntiqueClockBlock(SoundReg.GRANDFATHER_CLOCK_TICK, SoundReg.GRANDFATHER_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new AntiqueClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> BANJO_CLOCK = registerWithItem("banjo_clock", () ->
-                new BanjoClockBlock(SoundReg.MEDIUM_CLOCK_TICK, SoundReg.MEDIUM_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new BanjoClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> BLUE_CLOCK = registerWithItem("blue_clock", () ->
-                new BlueClockBlock(SoundReg.GRANDFATHER_CLOCK_TICK, SoundReg.GRANDFATHER_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new BlueClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> CARRIAGE_CLOCK = registerWithItem("carriage_clock", () ->
-                new CarriageClockBlock(SoundReg.POCKET_WATCH_TICK, SoundReg.SLATE_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 8.0F))
-        );
+                new CarriageClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 8.0F)) );
         public static final RegistryObject<Block> CRYSTAL_CLOCK = registerWithItem("crystal_clock", () ->
-                new CrystalClockBlock(SoundReg.MANTLE_CLOCK_TICK, SoundReg.LANTERN_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new CrystalClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> DISPLAY_WATCH = registerWithItem("display_watch", () ->
-                new DisplayWatchBlock(SoundReg.POCKET_WATCH_TICK,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new DisplayWatchBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> CUCKOO_CLOCK = registerWithItem("cuckoo_clock", () ->
-                new CuckooClockBlock(SoundReg.CUCKOO_CLOCK_TICK, SoundReg.CUCKOO_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new CuckooClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> EMBLEM_CLOCK = registerWithMultiblockItem("emblem_clock", () ->
-                new EmblemClockBlock(SoundReg.CLOCK_TOWER_TICK, SoundReg.CLOCK_TOWER_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 80.0F))
-        );
+                new EmblemClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 80.0F)) );
         public static final RegistryObject<Block> FOLIOT_CLOCK = registerWithItem("foliot_clock", () ->
-                new FoliotClockBlock(SoundReg.FOLIOT_CLOCK_TICK,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new FoliotClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GINGERBREAD_CLOCK = registerWithItem("gingerbread_clock", () ->
-                new GingerbreadClockBlock(SoundReg.MEDIUM_CLOCK_TICK, SoundReg.MEDIUM_CLOCK_CHIME2,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new GingerbreadClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GORGEOUS_CLOCK = registerWithItem("gorgeous_clock", () ->
-                new GorgeousClockBlock(SoundReg.MEDIUM_CLOCK_TICK, SoundReg.MEDIUM_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new GorgeousClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GRANDFATHER_CLOCK = registerWithMultiblockItem("grandfather_clock", () ->
-                new GrandfatherClockBlock(SoundReg.GRANDFATHER_CLOCK_TICK, SoundReg.GRANDFATHER_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 60.0F))
-        );
+                new GrandfatherClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 60.0F)) );
         public static final RegistryObject<Block> GREEN_CLOCK = registerWithItem("green_clock", () ->
-                new GreenClockBlock(SoundReg.ALARM_CLOCK_TICK,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new GreenClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> LANTERN_CLOCK = registerWithItem("lantern_clock", () ->
-                new LanternClockBlock(SoundReg.FOLIOT_CLOCK_TICK, SoundReg.LANTERN_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new LanternClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> LARGE_CLOCK_TOWER_DIAL = registerWithMultiblockItem("large_clock_tower_dial", () ->
-                new LargeClockTowerDialBlock(SoundReg.CLOCK_TOWER_TICK, SoundReg.CLOCK_TOWER_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 80.0F))
-        );
+                new LargeClockTowerDialBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 80.0F)) );
         public static final RegistryObject<Block> LIBRARY_CLOCK = registerWithMultiblockItem("library_clock", () ->
-                new LibraryClockBlock(SoundReg.GRANDFATHER_CLOCK_TICK, SoundReg.GRANDFATHER_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 60.0F))
-        );
+                new LibraryClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 60.0F)) );
         public static final RegistryObject<Block> MANTLE_CLOCK = registerWithItem("mantle_clock", () ->
-                new MantleClockBlock(SoundReg.MANTLE_CLOCK_TICK, SoundReg.MANTLE_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new MantleClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> MINIMALIST_CLOCK = registerWithItem("minimalist_clock", () ->
-                new MinimalistClockBlock(SoundReg.ALARM_CLOCK_TICK,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new MinimalistClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> OWL_CLOCK = registerWithItem("owl_clock", () ->
-                new OwlClockBlock(SoundReg.MEDIUM_CLOCK_TICK2,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new OwlClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> RECOGNIZABLE_CLOCK = registerWithItem("recognizable_clock", () ->
-                new RecognizableClockBlock(SoundReg.GRANDFATHER_CLOCK_TICK, SoundReg.RECOGNIZABLE_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new RecognizableClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> RED_CLOCK = registerWithItem("red_clock", () ->
-                new RedClockBlock(SoundReg.ALARM_CLOCK_TICK, SoundReg.ALARM_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new RedClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REED_CLOCK = registerWithItem("reed_clock", () ->
-                new ReedClockBlock(SoundReg.MEDIUM_CLOCK_TICK,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new ReedClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_CLOCK = registerWithItem("regal_clock", () ->
-                new RegalClockBlock(SoundReg.GRANDFATHER_CLOCK_TICK,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 12.0F))
-        );
+                new RegalClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 12.0F)) );
         public static final RegistryObject<Block> ROCOCO_CLOCK = registerWithItem("rococo_clock", () ->
-                new RococoClockBlock(SoundReg.MANTLE_CLOCK_TICK, SoundReg.LANTERN_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 6.0F))
-        );
+                new RococoClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 6.0F)) );
         public static final RegistryObject<Block> SLATE_CLOCK = registerWithItem("slate_clock", () ->
-                new SlateClockBlock(SoundReg.MANTLE_CLOCK_TICK, SoundReg.SLATE_CLOCK_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 6.0F))
-        );
+                new SlateClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 6.0F)) );
         public static final RegistryObject<Block> SMALL_CLOCK_TOWER_DIAL = registerWithMultiblockItem("small_clock_tower_dial", () ->
-                new SmallClockTowerDialBlock(SoundReg.CLOCK_TOWER_TICK, SoundReg.CLOCK_TOWER_CHIME,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 60.0F))
-        );
+                new SmallClockTowerDialBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 60.0F)) );
         public static final RegistryObject<Block> STATION_CLOCK = registerWithMultiblockItem("station_clock", () ->
-                new StationClockBlock(SoundReg.CLOCK_TOWER_TICK,
-                        BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 60.0F))
-        );
+                new StationClockBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(3.5F, 60.0F)) );
         public static final RegistryObject<Block> WOODEN_BLOCK_CLOCK = registerWithItem("wooden_block_clock", () ->
-                new WoodenBlockClockBlock(SoundReg.CUCKOO_CLOCK_TICK,
-                        BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 4.0F))
-        );
+                new WoodenBlockClockBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 4.0F)) );
 
         // STORAGE //
         public static final RegistryObject<Block> ANTIQUE_BOOKCASE = registerWithMultiblockItem("antique_bookcase", () ->
-                new AntiqueBookcaseBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new AntiqueBookcaseBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> ANTIQUE_BUREAU = registerWithItem("antique_bureau", () ->
-                new AntiqueBureauBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
-        );
+                new AntiqueBureauBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> ANTIQUE_CABINET = registerWithMultiblockItem("antique_cabinet", () ->
-                new AntiqueCabinetBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
-        );
+                new AntiqueCabinetBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> ANTIQUE_DESK = registerWithMultiblockItem("antique_desk", () ->
-                new AntiqueDeskBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new AntiqueDeskBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> ANTIQUE_MIRROR = registerWithMultiblockItem("antique_mirror", () ->
-                new AntiqueMirrorBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new AntiqueMirrorBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> ANTIQUE_WALL_SHELF = registerWithItem("antique_wall_shelf", () ->
-                new AntiqueWallShelfBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new AntiqueWallShelfBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> ANTIQUE_WARDROBE = registerWithMultiblockItem("antique_wardrobe", () ->
-                new AntiqueWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
-        );
+                new AntiqueWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> BLUE_BOOKSHELF = registerWithMultiblockItem("blue_bookshelf", () ->
-                new BlueBookshelfBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new BlueBookshelfBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> BLUE_BUREAU = registerWithMultiblockItem("blue_bureau", () ->
-                new BlueBureauBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new BlueBureauBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> BLUE_CABINET = registerWithItem("blue_cabinet", () ->
-                new BlueCabinetBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new BlueCabinetBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> BLUE_DRESSER = registerWithItem("blue_dresser", () ->
-                new BlueDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new BlueDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> BLUE_WARDROBE = registerWithItem("blue_wardrobe", () ->
-                new BlueWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new BlueWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> CABANA_BOOKCASE = registerWithMultiblockItem("cabana_bookcase", () ->
-                new CabanaBookcaseBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new CabanaBookcaseBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> CABANA_DRESSER = registerWithMultiblockItem("cabana_dresser", () ->
-                new CabanaDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new CabanaDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> CABANA_VANITY = registerWithItem("cabana_vanity", () ->
-                new CabanaVanityBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new CabanaVanityBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> CABANA_WARDROBE = registerWithMultiblockItem("cabana_wardrobe", () ->
-                new CabanaWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
-        );
+                new CabanaWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> GORGEOUS_CHEST = registerWithMultiblockItem("gorgeous_chest", () ->
-                new GorgeousChestBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new GorgeousChestBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GORGEOUS_CLOSET = registerWithMultiblockItem("gorgeous_closet", () ->
-                new GorgeousClosetBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
-        );
+                new GorgeousClosetBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> GORGEOUS_DESK = registerWithItem("gorgeous_desk", () ->
-                new GorgeousDeskBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new GorgeousDeskBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GORGEOUS_MINI_DRAWER = registerWithItem("gorgeous_mini_drawer", () ->
-                new GorgeousMiniDrawerBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new GorgeousMiniDrawerBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GREEN_DESK = registerWithItem("green_desk", () ->
-                new GreenDeskBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new GreenDeskBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GREEN_DRESSER = registerWithMultiblockItem("green_dresser", () ->
-                new GreenDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new GreenDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_MINI_DRAWER = registerWithItem("green_mini_drawer", () ->
-                new GreenMiniDrawerBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new GreenMiniDrawerBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GREEN_PANTRY = registerWithItem("green_pantry", () ->
-                new GreenPantryBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F))
-        );
+                new GreenPantryBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GREEN_WARDROBE = registerWithItem("green_wardrobe", () ->
-                new GreenWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new GreenWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> MINIMALIST_DRESSER = registerWithMultiblockItem("minimalist_dresser", () ->
-                new MinimalistDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new MinimalistDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> MINIMALIST_MIRROR = registerWithItem("minimalist_mirror", () ->
-                new MinimalistMirrorBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new MinimalistMirrorBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> MINIMALIST_WARDROBE = registerWithItem("minimalist_wardrobe", () ->
-                new MinimalistWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new MinimalistWardrobeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> REGAL_ARMOIRE = registerWithItem("regal_armoire", () ->
-                new RegalArmoireBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new RegalArmoireBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> REGAL_BOOKSHELF = registerWithMultiblockItem("regal_bookshelf", () ->
-                new RegalBookshelfBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
-        );
+                new RegalBookshelfBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> REGAL_DRESSER = registerWithMultiblockItem("regal_dresser", () ->
-                new RegalDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new RegalDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> REGAL_VANITY = registerWithItem("regal_vanity", () ->
-                new RegalVanityBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new RegalVanityBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> SWEETS_CLOSET = registerWithMultiblockItem("sweets_closet", () ->
-                new SweetsClosetBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F))
-        );
+                new SweetsClosetBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> SWEETS_DRESSER = registerWithMultiblockItem("sweets_dresser", () ->
-                new SweetsDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new SweetsDresserBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> WOODEN_BLOCK_DRAWERS = registerWithMultiblockItem("wooden_block_drawers", () ->
-                new WoodenBlockDrawersBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F))
-        );
+                new WoodenBlockDrawersBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
 
         // SEAT //
         public static final RegistryObject<Block> ANTIQUE_CHAIR = registerWithItem("antique_chair", () ->
-                new AntiqueChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
-        );
+                new AntiqueChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_BENCH = registerWithMultiblockItem("green_bench", () ->
-                new GreenBenchBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
-        );
+                new GreenBenchBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_CHAIR = registerWithItem("green_chair", () ->
-                new GreenChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
-        );
+                new GreenChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> MINIMALIST_CHAIR = registerWithItem("minimalist_chair", () ->
-                new MinimalistChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
-        );
+                new MinimalistChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> MINIMALIST_COUCH = registerWithMultiblockItem("minimalist_couch", () ->
-                new MinimalistCouchBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
-        );
+                new MinimalistCouchBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> MINIMALIST_STOOL = registerWithItem("minimalist_stool", () ->
-                new MinimalistStoolBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F))
-        );
+                new MinimalistStoolBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GORGEOUS_SEAT = registerWithItem("gorgeous_seat", () ->
-                new GorgeousSeatBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
-        );
+                new GorgeousSeatBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GORGEOUS_SOFA = registerWithMultiblockItem("gorgeous_sofa", () ->
-                new GorgeousSofaBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
-        );
+                new GorgeousSofaBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> BLUE_BENCH = registerWithMultiblockItem("blue_bench", () ->
-                new BlueBenchBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
-        );
+                new BlueBenchBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> BLUE_CHAIR = registerWithItem("blue_chair", () ->
-                new BlueChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F))
-        );
+                new BlueChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
 
         // BED //
         public static final RegistryObject<Block> ANTIQUE_BED = registerWithMultiblockItem("antique_bed", () ->
-                new AntiqueBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.0F, 30.0F))
-        );
+                new AntiqueBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.0F, 30.0F)) );
+        public static final RegistryObject<Block> GORGEOUS_BED = registerWithMultiblockItem("gorgeous_bed", () ->
+                new GorgeousBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
 
         // MISC //
         public static final RegistryObject<Block> TRAIN_SET = registerWithItem("train_set", () ->
-                new TrainSetBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 30.0F))
-        );
+                new TrainSetBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 30.0F)) );
 
 
 

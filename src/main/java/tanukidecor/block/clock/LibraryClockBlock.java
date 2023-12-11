@@ -29,10 +29,10 @@ public class LibraryClockBlock extends HorizontalMultiblock implements EntityBlo
     protected final Supplier<SoundEvent> chimeSound;
     protected final Supplier<SoundEvent> tickSound;
 
-    public LibraryClockBlock(Supplier<SoundEvent> tickSound, Supplier<SoundEvent> chimeSound, Properties pProperties) {
+    public LibraryClockBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X3X1, createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X3X1, LIBRARY_CLOCK_SHAPE), pProperties);
-        this.tickSound = tickSound;
-        this.chimeSound = chimeSound;
+        this.tickSound = TDRegistry.SoundReg.GRANDFATHER_CLOCK_TICK;
+        this.chimeSound = TDRegistry.SoundReg.GRANDFATHER_CLOCK_CHIME;
     }
 
     //// CHIME PROVIDER ////

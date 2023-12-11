@@ -30,9 +30,9 @@ public class StationClockBlock extends HorizontalMultiblock implements EntityBlo
 
     protected final Supplier<SoundEvent> tickSound;
 
-    public StationClockBlock(Supplier<SoundEvent> tickSound, Properties pProperties) {
+    public StationClockBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X2X1, StationClockBlock::buildShape, pProperties);
-        this.tickSound = tickSound;
+        this.tickSound = TDRegistry.SoundReg.CLOCK_TOWER_TICK;
     }
 
     //// CHIME PROVIDER ////

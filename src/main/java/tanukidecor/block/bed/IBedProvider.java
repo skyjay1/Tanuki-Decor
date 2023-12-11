@@ -45,6 +45,12 @@ public interface IBedProvider {
     BlockPos getHeadPos(BlockState blockState, Level level, BlockPos pos);
 
     /**
+     * @param blockState the block state
+     * @return true if the block state is the head part of the bed
+     */
+    boolean isHeadOfBed(BlockState blockState);
+
+    /**
      * Attempts to make the player start sleeping in the bed
      * @param blockState the block state
      * @param level the level

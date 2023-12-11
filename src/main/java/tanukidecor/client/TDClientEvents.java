@@ -158,6 +158,8 @@ public final class TDClientEvents {
             // SEAT //
             registerRenderLayer(BlockReg.BLUE_BENCH.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.BLUE_CHAIR.get(), RenderType.cutout());
+            // BED //
+            registerRenderLayer(BlockReg.GORGEOUS_BED.get(), RenderType.cutout());
             // MISC //
             registerRenderLayer(BlockReg.TRAIN_SET.get(), RenderType.cutout());
         }

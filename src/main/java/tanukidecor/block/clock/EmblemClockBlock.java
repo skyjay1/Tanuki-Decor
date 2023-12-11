@@ -31,10 +31,10 @@ public class EmblemClockBlock extends HorizontalMultiblock implements EntityBloc
     protected final Supplier<SoundEvent> chimeSound;
     protected final Supplier<SoundEvent> tickSound;
 
-    public EmblemClockBlock(Supplier<SoundEvent> tickSound, Supplier<SoundEvent> chimeSound, Properties pProperties) {
+    public EmblemClockBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_3X3X1, EmblemClockBlock::buildShape, pProperties);
-        this.tickSound = tickSound;
-        this.chimeSound = chimeSound;
+        this.tickSound = TDRegistry.SoundReg.CLOCK_TOWER_TICK;
+        this.chimeSound = TDRegistry.SoundReg.CLOCK_TOWER_CHIME;
     }
 
     //// CHIME PROVIDER ////

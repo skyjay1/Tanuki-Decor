@@ -12,7 +12,6 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -31,19 +30,17 @@ import tanukidecor.util.MultiblockHandler;
 import javax.annotation.Nullable;
 
 
-public class DoubleBedBlock extends HorizontalMultiblock implements IBedProvider {
+public class GorgeousBedBlock extends HorizontalMultiblock implements IBedProvider {
 
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
-    public DoubleBedBlock(final VoxelShape[][][] shape, Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X1X2, HorizontalMultiblock.createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X1X2, shape), pProperties);
+    public GorgeousBedBlock(Properties pProperties) {
+        super(MultiblockHandler.MULTIBLOCK_2X2X2, HorizontalMultiblock.createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X2X2, SHAPE), pProperties);
         this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
                 .setValue(WATERLOGGED, false)
                 .setValue(FACING, Direction.NORTH)
                 .setValue(OCCUPIED, false)));
     }
-
-    //// MULTIBLOCK ////
 
     @Override
     protected void createMultiblockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -57,9 +54,10 @@ public class DoubleBedBlock extends HorizontalMultiblock implements IBedProvider
         if(blockState.getBlock() != this) {
             return false;
         }
-        final Vec3i index = getMultiblockHandler().getIndex(blockState);
+        final Vec3i minIndex = getMultiblockHandler().getMinIndex();
         final Vec3i maxIndex = getMultiblockHandler().getMaxIndex();
-        return index.getZ() == maxIndex.getZ();
+        final Vec3i index = getMultiblockHandler().getIndex(blockState);
+        return index.getY() == minIndex.getY() && index.getZ() == maxIndex.getZ();
     }
 
     @Override
@@ -75,7 +73,9 @@ public class DoubleBedBlock extends HorizontalMultiblock implements IBedProvider
     @Override
     public BlockPos getHeadPos(BlockState blockState, Level level, BlockPos pos) {
         final Direction direction = blockState.getValue(FACING);
-        return pos.relative(direction.getOpposite(), getMultiblockHandler().getDimensions().getZ() - blockState.getValue(getMultiblockHandler().getDepthProperty()));
+        final Vec3i index = getMultiblockHandler().getIndex(blockState);
+        final Vec3i maxIndex = getMultiblockHandler().getMaxIndex();
+        return pos.below(-index.getY()).relative(direction.getOpposite(), maxIndex.getZ() - index.getZ());
     }
 
     @Override
@@ -88,8 +88,47 @@ public class DoubleBedBlock extends HorizontalMultiblock implements IBedProvider
         return state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
     }
 
-    @Override
-    public void setBedOccupied(BlockState blockState, Level level, BlockPos pos, LivingEntity sleeper, boolean occupied) {
-        level.setBlock(pos, blockState.setValue(OCCUPIED, occupied), Block.UPDATE_CLIENTS);
-    }
+    //// SHAPE ////
+
+    /**
+     * Shape data for each block in the default horizontal direction, ordered by index {@code [height][width][depth]}
+     **/
+    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][] {
+            // height = 0
+            {},
+            // height = 1
+            {
+                // width = 0
+                {},
+                // width = 1
+                {
+                    Shapes.empty(),
+                    Shapes.or(box(0, 0, 0, 16, 8, 16)),
+                    Shapes.or(box(0, 0, 0, 16, 8, 16))
+                },
+                // width = 2
+                {
+                    Shapes.empty(),
+                    Shapes.or(box(0, 0, 0, 16, 8, 16)),
+                    Shapes.or(box(0, 0, 0, 16, 8, 16))
+                }
+            },
+            // height = 2
+            {
+                // width = 0
+                {},
+                // width = 1
+                {
+                        Shapes.empty(),
+                        Shapes.or(box(0, 0, 0, 16, 8, 16)),
+                        Shapes.or(box(0, 0, 0, 16, 8, 16))
+                },
+                // width = 2
+                {
+                        Shapes.empty(),
+                        Shapes.or(box(0, 0, 0, 16, 8, 16)),
+                        Shapes.or(box(0, 0, 0, 16, 8, 16))
+                }
+            }
+    };
 }

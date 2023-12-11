@@ -62,6 +62,7 @@ public class MultiblockHandler {
     public static final MultiblockHandler MULTIBLOCK_3X1X1 = new MultiblockHandler(3, 1, 1);
     public static final MultiblockHandler MULTIBLOCK_3X1X3 = new MultiblockHandler(3, 1, 3);
     public static final MultiblockHandler MULTIBLOCK_2X3X1 = new MultiblockHandler(2, 3, 1);
+    public static final MultiblockHandler MULTIBLOCK_2X2X2 = new MultiblockHandler(2, 2, 2);
     public static final MultiblockHandler MULTIBLOCK_2X2X1 = new MultiblockHandler(2, 2, 1);
     public static final MultiblockHandler MULTIBLOCK_2X1X2 = new MultiblockHandler(2, 1, 2);
     public static final MultiblockHandler MULTIBLOCK_2X1X1 = new MultiblockHandler(2, 1, 1);
