@@ -20,6 +20,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import tanukidecor.block.bed.AntiqueBedBlock;
 import tanukidecor.block.bed.DoubleBedBlock;
 import tanukidecor.block.clock.*;
 import tanukidecor.block.entity.*;
@@ -325,7 +326,7 @@ public final class TDRegistry {
 
         // BED //
         public static final RegistryObject<Block> ANTIQUE_BED = registerWithMultiblockItem("antique_bed", () ->
-                new DoubleBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.0F, 30.0F))
+                new AntiqueBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.0F, 30.0F))
         );
 
         // MISC //

@@ -33,8 +33,8 @@ public class DoubleBedBlock extends HorizontalMultiblock implements IBedProvider
 
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
-    public DoubleBedBlock(Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X1X2, HorizontalMultiblock.createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X1X2, SHAPE), pProperties);
+    public DoubleBedBlock(final VoxelShape[][][] shape, Properties pProperties) {
+        super(MultiblockHandler.MULTIBLOCK_2X1X2, HorizontalMultiblock.createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X1X2, shape), pProperties);
         this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
                 .setValue(WATERLOGGED, false)
                 .setValue(FACING, Direction.NORTH)
