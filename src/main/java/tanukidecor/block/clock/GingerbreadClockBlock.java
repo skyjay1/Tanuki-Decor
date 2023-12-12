@@ -10,7 +10,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.TDRegistry;
 
-public class GingerbreadClockBlock extends DoubleClockBlock {
+public class GingerbreadClockBlock extends TallClockBlock {
 
     public static final VoxelShape UPPER_SHAPE = box(4, 0, 7, 12, 3, 10);
     public static final VoxelShape LOWER_SHAPE = Shapes.or(

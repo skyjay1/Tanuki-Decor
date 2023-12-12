@@ -31,9 +31,12 @@ public interface ISeatProvider {
             e.getType() == EntityType.PIG && e.isSilent() && e.isInvisible() && e.isNoGravity();
 
     /**
+     * @param blockState the block state
+     * @param level the level
+     * @param blockPos the block position
      * @return the vertical offset of the seat entity, typically 2 pixels above the seating part of the model
      */
-    double getSeatYOffset();
+    double getSeatYOffset(BlockState blockState, Level level, BlockPos blockPos);
 
     /**
      * @param blockState the block state
@@ -50,7 +53,7 @@ public interface ISeatProvider {
      * @return the position of the seat entity
      */
     default Vec3 getSeatPosition(BlockState blockState, Level level, BlockPos blockPos) {
-        return new Vec3(blockPos.getX() + 0.5D, blockPos.getY() + getSeatYOffset(), blockPos.getZ() + 0.5D);
+        return new Vec3(blockPos.getX() + 0.5D, blockPos.getY() + getSeatYOffset(blockState, level, blockPos), blockPos.getZ() + 0.5D);
     }
 
     /**

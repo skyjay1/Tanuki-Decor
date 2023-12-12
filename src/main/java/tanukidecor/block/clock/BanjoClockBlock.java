@@ -10,7 +10,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.TDRegistry;
 
-public class BanjoClockBlock extends DoubleClockBlock {
+public class BanjoClockBlock extends TallClockBlock {
 
     public static final VoxelShape UPPER_SHAPE = Shapes.or(
             box(4, 0, 11, 12, 8, 16),

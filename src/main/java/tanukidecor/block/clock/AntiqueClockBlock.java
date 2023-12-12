@@ -11,7 +11,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.TDRegistry;
 
-public class AntiqueClockBlock extends DoubleClockBlock {
+public class AntiqueClockBlock extends TallClockBlock {
 
     public static final VoxelShape UPPER_SHAPE = Shapes.or(
             box(1, 0, 1, 15, 12, 15),

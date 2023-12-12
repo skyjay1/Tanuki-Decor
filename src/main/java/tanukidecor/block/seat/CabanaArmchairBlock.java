@@ -9,19 +9,20 @@ package tanukidecor.block.seat;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class WoodenBlockChairBlock extends ChairBlock {
+public class CabanaArmchairBlock extends ChairBlock {
 
     public static final VoxelShape SHAPE = Shapes.or(
-            box(4, 0, 4, 6, 6, 6),
-            box(10, 0, 4, 12, 6, 6),
-            box(4, 0, 10, 6, 6, 12),
-            box(10, 0, 10, 12, 6, 12),
-            box(3, 6, 3, 13, 8, 13),
-            box(4, 8, 11, 6, 10, 13),
-            box(10, 8, 11, 12, 10, 13),
-            box(3, 10, 11, 13, 16, 13));
+            box(1, 0, 1, 3, 2, 3),
+            box(13, 0, 1, 15, 2, 3),
+            box(1, 0, 13, 3, 2, 15),
+            box(13, 0, 13, 15, 2, 15),
+            box(0, 2, 0, 16, 5, 16),
+            box(0, 5, 13, 16, 16, 16),
+            box(2, 5, 1, 14, 8, 13),
+            box(0, 5, 0, 2, 10, 13),
+            box(14, 5, 0, 16, 10, 13));
 
-    public WoodenBlockChairBlock(Properties pProperties) {
+    public CabanaArmchairBlock(Properties pProperties) {
         super(SHAPE, 10.0D / 16.0D, pProperties);
     }
 }

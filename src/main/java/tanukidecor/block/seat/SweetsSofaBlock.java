@@ -9,14 +9,13 @@ package tanukidecor.block.seat;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class GorgeousStoolBlock extends ChairBlock {
+public class SweetsSofaBlock extends WideChairBlock {
 
     public static final VoxelShape SHAPE = Shapes.or(
-            box(5, 0, 5, 11, 2, 11),
-            box(7, 2, 7, 9, 9, 9),
-            box(2, 9, 2, 14, 12, 14));
+            box(0, 0, 2, 16, 8, 14),
+            box(0, 8, 9, 16, 16, 16));
 
-    public GorgeousStoolBlock(Properties pProperties) {
-        super(SHAPE, 14.0D / 16.0D, pProperties);
+    public SweetsSofaBlock(Properties pProperties) {
+        super(SHAPE, SHAPE, 10.0D / 16.0D, pProperties);
     }
 }

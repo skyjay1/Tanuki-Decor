@@ -22,7 +22,7 @@ import tanukidecor.block.HorizontalDoubleBlock;
 
 import java.util.Random;
 
-public class RegalChairBlock extends HorizontalDoubleBlock implements ISeatProvider {
+public class RegalChairBlock extends TallChairBlock {
 
     public static final VoxelShape UPPER_SHAPE = box(2, 0, 12, 14, 8, 14);
     public static final VoxelShape LOWER_SHAPE = Shapes.or(
@@ -39,43 +39,6 @@ public class RegalChairBlock extends HorizontalDoubleBlock implements ISeatProvi
             box(4, 13, 13, 12, 16, 13));
 
     public RegalChairBlock(Properties pProperties) {
-        super(pProperties, HorizontalDoubleBlock.createShapeBuilder(UPPER_SHAPE, LOWER_SHAPE));
-    }
-
-    //// SEAT PROVIDER ////
-
-    @Override
-    public double getSeatYOffset() {
-        return 12.0D / 16.0D;
-    }
-
-    @Override
-    public Direction getSeatDirection(BlockState blockState, Level level, BlockPos blockPos) {
-        return blockState.getValue(FACING);
-    }
-
-    //// METHODS ////
-
-    @Override
-    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom) {
-        despawnSeat(pState, pLevel, pPos, false);
-    }
-
-    @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pLevel.isClientSide()) {
-            return InteractionResult.SUCCESS;
-        }
-        BlockPos seatPos = pState.getValue(HALF) == DoubleBlockHalf.UPPER ? pPos.below() : pPos;
-        if(!pPlayer.isShiftKeyDown() && startSitting(pLevel.getBlockState(seatPos), pLevel, seatPos, pPlayer)) {
-            return InteractionResult.SUCCESS;
-        }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
-    }
-
-    @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        despawnSeat(pState, pLevel, pPos, true);
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        super(UPPER_SHAPE, LOWER_SHAPE, 12.0D / 16.0D, pProperties);
     }
 }

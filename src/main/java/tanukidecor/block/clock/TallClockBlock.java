@@ -24,7 +24,7 @@ import tanukidecor.block.entity.ClockBlockEntity;
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-public class DoubleClockBlock extends HorizontalDoubleBlock implements EntityBlock, IChimeProvider {
+public class TallClockBlock extends HorizontalDoubleBlock implements EntityBlock, IChimeProvider {
 
     protected final Supplier<SoundEvent> tickSound;
     protected final Supplier<SoundEvent> chimeSound;
@@ -44,10 +44,10 @@ public class DoubleClockBlock extends HorizontalDoubleBlock implements EntityBlo
      * @param blockEntity the block entity type supplier
      * @param pProperties the block properties
      */
-    public DoubleClockBlock(@Nonnull Supplier<SoundEvent> tickSound, @Nonnull Supplier<SoundEvent> chimeSound,
-                            VoxelShape upperShape, VoxelShape lowerShape,
-                            @Nonnull Supplier<BlockEntityType<ClockBlockEntity>> blockEntity,
-                            Properties pProperties) {
+    public TallClockBlock(@Nonnull Supplier<SoundEvent> tickSound, @Nonnull Supplier<SoundEvent> chimeSound,
+                          VoxelShape upperShape, VoxelShape lowerShape,
+                          @Nonnull Supplier<BlockEntityType<ClockBlockEntity>> blockEntity,
+                          Properties pProperties) {
         super(pProperties, HorizontalDoubleBlock.createShapeBuilder(upperShape, lowerShape));
         this.tickSound = tickSound;
         this.chimeSound = chimeSound;

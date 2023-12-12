@@ -6,24 +6,11 @@
 
 package tanukidecor.block.seat;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalDoubleBlock;
 
-import java.util.Random;
-
-public class GorgeousSeatBlock extends HorizontalDoubleBlock implements ISeatProvider {
+public class GorgeousSeatBlock extends TallChairBlock {
 
     public static final VoxelShape UPPER_SHAPE = Shapes.or(
             box(0, 0, 9, 3, 5, 16),
@@ -47,43 +34,6 @@ public class GorgeousSeatBlock extends HorizontalDoubleBlock implements ISeatPro
             ));
 
     public GorgeousSeatBlock(Properties pProperties) {
-        super(pProperties, HorizontalDoubleBlock.createShapeBuilder(UPPER_SHAPE, LOWER_SHAPE));
-    }
-
-    //// SEAT PROVIDER ////
-
-    @Override
-    public double getSeatYOffset() {
-        return 12.0D / 16.0D;
-    }
-
-    @Override
-    public Direction getSeatDirection(BlockState blockState, Level level, BlockPos blockPos) {
-        return blockState.getValue(FACING);
-    }
-
-    //// METHODS ////
-
-    @Override
-    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom) {
-        despawnSeat(pState, pLevel, pPos, false);
-    }
-
-    @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pLevel.isClientSide()) {
-            return InteractionResult.SUCCESS;
-        }
-        BlockPos seatPos = pState.getValue(HALF) == DoubleBlockHalf.UPPER ? pPos.below() : pPos;
-        if(!pPlayer.isShiftKeyDown() && startSitting(pLevel.getBlockState(seatPos), pLevel, seatPos, pPlayer)) {
-            return InteractionResult.SUCCESS;
-        }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
-    }
-
-    @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        despawnSeat(pState, pLevel, pPos, true);
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        super(UPPER_SHAPE, LOWER_SHAPE, 12.0D / 16.0D, pProperties);
     }
 }

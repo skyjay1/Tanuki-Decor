@@ -21,7 +21,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.TDRegistry;
 
-public class GorgeousClockBlock extends DoubleClockBlock {
+public class GorgeousClockBlock extends TallClockBlock {
 
     public static final VoxelShape UPPER_SHAPE = box(2, 0, 9, 14, 12, 16);
     public static final VoxelShape LOWER_SHAPE = box(4, 4, 11, 12, 16, 16);
