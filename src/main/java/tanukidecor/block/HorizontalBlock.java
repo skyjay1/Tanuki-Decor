@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeUtils;
 
@@ -76,7 +78,10 @@ public class HorizontalBlock extends HorizontalDirectionalBlock implements Simpl
         if (pState.getValue(WATERLOGGED)) {
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
-
+        if(pLevel.getBlockState(pCurrentPos).is(this) && !pState.canSurvive(pLevel, pCurrentPos)) {
+            pLevel.destroyBlock(pCurrentPos, true);
+            return pState.getFluidState().createLegacyBlock();
+        }
         return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
     }
 
@@ -90,5 +95,38 @@ public class HorizontalBlock extends HorizontalDirectionalBlock implements Simpl
             final Direction facing =  blockState.getValue(FACING);
             return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);
         };
+    }
+
+    //// HELPER METHODS ////
+
+    /**
+     * @param context the block place context
+     * @return the {@link BlockState} of the block only if it was placed against a horizontal face
+     */
+    @Nullable
+    public BlockState getStateForWallPlacement(BlockPlaceContext context) {
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        boolean waterlogged = fluidstate.getType() == Fluids.WATER;
+        if (context.getClickedFace().getAxis() != Direction.Axis.Y) {
+            return this.defaultBlockState()
+                    .setValue(FACING, context.getClickedFace())
+                    .setValue(WATERLOGGED, waterlogged);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param state the block state
+     * @param level the level
+     * @param pos the block position
+     * @return true if the block behind this one has a solid face
+     * @see BlockState#isFaceSturdy(BlockGetter, BlockPos, Direction)
+     */
+    public boolean canSurviveOnWall(BlockState state, LevelReader level, BlockPos pos) {
+        final Direction facing = state.getValue(FACING);
+        final BlockPos supportingPos = pos.relative(facing.getOpposite());
+        final BlockState supportingState = level.getBlockState(supportingPos);
+        return supportingState.isFaceSturdy(level, supportingPos, facing);
     }
 }

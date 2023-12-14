@@ -88,6 +88,17 @@ public class GorgeousBedBlock extends HorizontalMultiblock implements IBedProvid
         return state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
     }
 
+    @Override
+    public void fallOn(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, float pFallDistance) {
+        super.fallOn(pLevel, pState, pPos, pEntity, pFallDistance * 0.5F);
+    }
+
+    @Override
+    public void updateEntityAfterFallOn(BlockGetter pLevel, Entity pEntity) {
+        // this bed is not bouncy
+        super.updateEntityAfterFallOn(pLevel, pEntity);
+    }
+
     //// SHAPE ////
 
     /**

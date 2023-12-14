@@ -49,6 +49,33 @@
     "tanukidecor:regal_vanity",
     "tanukidecor:sweets_closet",
     "tanukidecor:sweets_dresser",
-    "tanukidecor:wooden_block_drawers"
+    "tanukidecor:wooden_block_drawers",
+
+    "tanukidecor:antique_chair",
+    "tanukidecor:antique_sofa",
+    "tanukidecor:blue_bench",
+    "tanukidecor:blue_chair",
+    "tanukidecor:cabana_armchair",
+    "tanukidecor:cabana_chair",
+    "tanukidecor:gorgeous_seat",
+    "tanukidecor:gorgeous_sofa",
+    "tanukidecor:gorgeous_stool",
+    "tanukidecor:green_bench",
+    "tanukidecor:green_chair",
+    "tanukidecor:minimalist_chair",
+    "tanukidecor:minimalist_couch",
+    "tanukidecor:minimalist_stool",
+    "tanukidecor:regal_chair",
+    "tanukidecor:regal_sofa",
+    "tanukidecor:sweets_chair",
+    "tanukidecor:sweets_sofa",
+    "tanukidecor:wooden_block_bench",
+    "tanukidecor:wooden_block_chair",
+    "tanukidecor:wooden_block_stool",
+
+    "tanukidecor:antique_bed",
+    "tanukidecor:gorgeous_bed",
+
+    "tanukidecor:holiday_tree"
   ]
 }

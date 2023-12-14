@@ -30,11 +30,6 @@ public class TallClockBlock extends HorizontalDoubleBlock implements EntityBlock
     protected final Supplier<SoundEvent> chimeSound;
     protected final  Supplier<BlockEntityType<ClockBlockEntity>> blockEntitySupplier;
 
-    public static final VoxelShape UPPER_SHAPE = Shapes.or(
-            box(2, 0, 2, 14, 14, 14),
-            box(4, 14, 2, 12, 16, 14));
-    public static final VoxelShape LOWER_SHAPE = box(2, 0, 2, 14, 16, 14);
-
     /**
      * Simple constructor for a clock that takes up two blocks
      * @param tickSound the tick sound supplier, use {@link ClockBlock#NO_SOUND} to skip

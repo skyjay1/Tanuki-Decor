@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -108,5 +109,15 @@ public interface IBedProvider {
             list.get(0).stopSleeping();
             return true;
         }
+    }
+
+    // copied from BedBlock#bounceUp
+    public static void bounceUp(Entity pEntity) {
+        Vec3 vec3 = pEntity.getDeltaMovement();
+        if (vec3.y < 0.0D) {
+            double d0 = pEntity instanceof LivingEntity ? 1.0D : 0.8D;
+            pEntity.setDeltaMovement(vec3.x, -vec3.y * (double)0.66F * d0, vec3.z);
+        }
+
     }
 }

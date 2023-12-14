@@ -92,4 +92,18 @@ public class DoubleBedBlock extends HorizontalMultiblock implements IBedProvider
     public void setBedOccupied(BlockState blockState, Level level, BlockPos pos, LivingEntity sleeper, boolean occupied) {
         level.setBlock(pos, blockState.setValue(OCCUPIED, occupied), Block.UPDATE_CLIENTS);
     }
+
+    @Override
+    public void fallOn(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, float pFallDistance) {
+        super.fallOn(pLevel, pState, pPos, pEntity, pFallDistance * 0.5F);
+    }
+
+    @Override
+    public void updateEntityAfterFallOn(BlockGetter pLevel, Entity pEntity) {
+        if (pEntity.isSuppressingBounce()) {
+            super.updateEntityAfterFallOn(pLevel, pEntity);
+        } else {
+            IBedProvider.bounceUp(pEntity);
+        }
+    }
 }

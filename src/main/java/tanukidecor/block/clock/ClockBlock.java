@@ -80,37 +80,4 @@ public class ClockBlock extends HorizontalBlock implements EntityBlock, IChimePr
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return !pLevel.isClientSide() ? (BlockEntityTicker<T>) (BlockEntityTicker<ClockBlockEntity>) (ClockBlockEntity::tick) : null;
     }
-
-    //// HELPER METHODS ////
-
-    /**
-     * @param context the block place context
-     * @return the {@link BlockState} of the block only if it was placed against a horizontal face
-     */
-    @Nullable
-    public BlockState getStateForWallPlacement(BlockPlaceContext context) {
-        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-        boolean waterlogged = fluidstate.getType() == Fluids.WATER;
-        if (context.getClickedFace().getAxis() != Direction.Axis.Y) {
-            return this.defaultBlockState()
-                    .setValue(FACING, context.getClickedFace())
-                    .setValue(WATERLOGGED, waterlogged);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @param state the block state
-     * @param level the level
-     * @param pos the block position
-     * @return true if the block behind this one has a solid face
-     * @see BlockState#isFaceSturdy(BlockGetter, BlockPos, Direction)
-     */
-    public boolean canSurviveOnWall(BlockState state, LevelReader level, BlockPos pos) {
-        final Direction facing = state.getValue(FACING);
-        final BlockPos supportingPos = pos.relative(facing.getOpposite());
-        final BlockState supportingState = level.getBlockState(supportingPos);
-        return supportingState.isFaceSturdy(level, supportingPos, facing);
-    }
 }

@@ -15,14 +15,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import tanukidecor.block.DoubleBlock;
+import tanukidecor.block.HorizontalBlock;
 import tanukidecor.block.bed.*;
 import tanukidecor.block.clock.*;
 import tanukidecor.block.entity.*;
+import tanukidecor.block.light.*;
 import tanukidecor.block.misc.*;
 import tanukidecor.block.seat.*;
 import tanukidecor.block.storage.*;
@@ -210,7 +214,7 @@ public final class TDRegistry {
         public static final RegistryObject<Block> CABANA_CHAIR = registerWithItem("cabana_chair", () ->
                 new CabanaChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> EGYPTIAN_CHAIR = registerWithItem("egyptian_chair", () ->
-                new EgyptianChairBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+                new EgyptianChairBlock(BlockBehaviour.Properties.of(Material.METAL).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GORGEOUS_SEAT = registerWithItem("gorgeous_seat", () ->
                 new GorgeousSeatBlock(BlockBehaviour.Properties.of(Material.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GORGEOUS_SOFA = registerWithMultiblockItem("gorgeous_sofa", () ->
@@ -245,10 +249,39 @@ public final class TDRegistry {
         // BED //
         public static final RegistryObject<Block> ANTIQUE_BED = registerWithMultiblockItem("antique_bed", () ->
                 new AntiqueBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.0F, 30.0F)) );
+        public static final RegistryObject<Block> BLUE_BED = registerWithMultiblockItem("blue_bed", () ->
+                new BlueBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> CABANA_BED = registerWithMultiblockItem("cabana_bed", () ->
+                new CabanaBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.0F, 30.0F)) );
+        public static final RegistryObject<Block> EGYPTIAN_BED = registerWithMultiblockItem("egyptian_bed", () ->
+                new EgyptianBedBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> GREEN_BED = registerWithMultiblockItem("green_bed", () ->
+                new GreenBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GORGEOUS_BED = registerWithMultiblockItem("gorgeous_bed", () ->
-                new GorgeousBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
+                new GorgeousBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.0F, 30.0F)) );
+        public static final RegistryObject<Block> MINIMALIST_BED = registerWithMultiblockItem("minimalist_bed", () ->
+                new MinimalistBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> REGAL_BED = registerWithMultiblockItem("regal_bed", () ->
+                new RegalBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.0F, 30.0F)) );
+        public static final RegistryObject<Block> SWEETS_BED = registerWithMultiblockItem("sweets_bed", () ->
+                new SweetsBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.0F, 30.0F)) );
+        public static final RegistryObject<Block> WOODEN_BLOCK_BED = registerWithMultiblockItem("wooden_block_bed", () ->
+                new WoodenBlockBedBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+
+        // LIGHT //
+        public static final RegistryObject<Block> ANTIQUE_WALL_OIL_LAMP = registerWithItem("antique_wall_oil_lamp", () ->
+                new AntiqueWallOilLamp(BlockBehaviour.Properties.of(Material.METAL).lightLevel(b -> b.getValue(HorizontalBlock.WATERLOGGED) ? 0 : 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> MINIMALIST_LAMP = registerWithItem("minimalist_lamp", () ->
+                new MinimalistLampBlock(BlockBehaviour.Properties.of(Material.WOOD).lightLevel(b -> b.getValue(DoubleBlock.HALF) == DoubleBlockHalf.UPPER ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
+
 
         // MISC //
+        public static final RegistryObject<Block> HOLIDAY_TREE = registerWithItem("holiday_tree", () ->
+                new HolidayTreeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> HOURGLASS = registerWithItem("hourglass", () ->
+                new HourglassBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> SHIP_IN_A_BOTTLE = registerWithItem("ship_in_a_bottle", () ->
+                new ShipInABottleBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> TRAIN_SET = registerWithItem("train_set", () ->
                 new TrainSetBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 30.0F)) );
 
@@ -459,6 +492,9 @@ public final class TDRegistry {
                 () -> BlockEntityReg.WOODEN_BLOCK_DRAWERS, 6, BlockReg.WOODEN_BLOCK_DRAWERS);
 
         // MISC //
+        public static final RegistryObject<BlockEntityType<HourglassBlockEntity>> HOURGLASS = BLOCK_ENTITY_TYPES.register("hourglass", () -> BlockEntityType.Builder
+                .of((pos, state) -> new HourglassBlockEntity(BlockEntityReg.HOURGLASS.get(), pos, state), BlockReg.HOURGLASS.get())
+                .build(null));
         public static final RegistryObject<BlockEntityType<TrainSetBlockEntity>> TRAIN_SET = BLOCK_ENTITY_TYPES.register("train_set", () -> BlockEntityType.Builder
                 .of((pos, state) -> new TrainSetBlockEntity(BlockEntityReg.TRAIN_SET.get(), pos, state), BlockReg.TRAIN_SET.get())
                 .build(null));

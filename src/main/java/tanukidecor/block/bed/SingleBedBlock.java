@@ -23,19 +23,22 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.HorizontalMultiblock;
 import tanukidecor.util.MultiblockHandler;
+import tanukidecor.util.ShapeUtils;
 
 import javax.annotation.Nullable;
+import java.util.function.Function;
 
 
 public class SingleBedBlock extends HorizontalMultiblock implements IBedProvider {
 
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
-    public SingleBedBlock(final VoxelShape[][][] shape, Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_1X1X2, HorizontalMultiblock.createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_1X1X2, shape), pProperties);
+    public SingleBedBlock(final VoxelShape northShape, final VoxelShape southShape, Properties pProperties) {
+        super(MultiblockHandler.MULTIBLOCK_1X1X2, createShapeBuilder(northShape, southShape), pProperties);
         this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
                 .setValue(WATERLOGGED, false)
                 .setValue(FACING, Direction.NORTH)
@@ -90,5 +93,28 @@ public class SingleBedBlock extends HorizontalMultiblock implements IBedProvider
     @Override
     public void setBedOccupied(BlockState blockState, Level level, BlockPos pos, LivingEntity sleeper, boolean occupied) {
         level.setBlock(pos, blockState.setValue(OCCUPIED, occupied), Block.UPDATE_CLIENTS);
+    }
+
+    @Override
+    public void fallOn(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, float pFallDistance) {
+        super.fallOn(pLevel, pState, pPos, pEntity, pFallDistance * 0.5F);
+    }
+
+    @Override
+    public void updateEntityAfterFallOn(BlockGetter pLevel, Entity pEntity) {
+        if (pEntity.isSuppressingBounce()) {
+            super.updateEntityAfterFallOn(pLevel, pEntity);
+        } else {
+            IBedProvider.bounceUp(pEntity);
+        }
+    }
+
+    public static Function<BlockState, VoxelShape> createShapeBuilder(final VoxelShape northShape, final VoxelShape southShape) {
+        return b -> {
+            final Vec3i index = MultiblockHandler.MULTIBLOCK_1X1X2.getIndex(b);
+            final Direction direction = b.getValue(FACING);
+            final VoxelShape shape = index.getZ() == 0 ? northShape : southShape;
+            return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, direction, shape);
+        };
     }
 }
