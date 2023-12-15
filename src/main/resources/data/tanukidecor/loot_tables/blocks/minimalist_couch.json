@@ -11,7 +11,7 @@
           "block": "tanukidecor:minimalist_couch",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "width": 1
+            "side": "left"
           }
         }
       ],

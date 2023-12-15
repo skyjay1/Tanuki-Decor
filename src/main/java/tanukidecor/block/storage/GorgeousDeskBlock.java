@@ -17,15 +17,14 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.HorizontalBlock;
+import tanukidecor.block.RotatingBlock;
 import tanukidecor.block.entity.StorageBlockEntity;
 
-public class GorgeousDeskBlock extends HorizontalBlock implements EntityBlock {
+public class GorgeousDeskBlock extends RotatingBlock implements EntityBlock {
 
     public static final VoxelShape SHAPE = Shapes.or(
             box(5, 11, 2, 11, 14, 14),
@@ -38,7 +37,7 @@ public class GorgeousDeskBlock extends HorizontalBlock implements EntityBlock {
             box(12, 0, 12, 14, 10, 14));
 
     public GorgeousDeskBlock(Properties pProperties) {
-        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
+        super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
     //// CONTAINER ////

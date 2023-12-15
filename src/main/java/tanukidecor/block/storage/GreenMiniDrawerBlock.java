@@ -21,10 +21,10 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.HorizontalBlock;
+import tanukidecor.block.RotatingBlock;
 import tanukidecor.block.entity.StorageBlockEntity;
 
-public class GreenMiniDrawerBlock extends HorizontalBlock implements EntityBlock {
+public class GreenMiniDrawerBlock extends RotatingBlock implements EntityBlock {
 
     public static final VoxelShape SHAPE = Shapes.or(
             box(0, 1, 0, 16, 16, 16),
@@ -34,7 +34,7 @@ public class GreenMiniDrawerBlock extends HorizontalBlock implements EntityBlock
             box(13, 0, 13, 16, 1, 16));
 
     public GreenMiniDrawerBlock(Properties pProperties) {
-        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
+        super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
     //// CONTAINER ////

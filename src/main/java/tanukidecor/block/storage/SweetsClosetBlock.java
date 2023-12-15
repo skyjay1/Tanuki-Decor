@@ -17,21 +17,20 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.HorizontalBlock;
-import tanukidecor.block.HorizontalMultiblock;
+import tanukidecor.block.RotatingBlock;
+import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.block.entity.StorageBlockEntity;
 import tanukidecor.util.MultiblockHandler;
 
-public class SweetsClosetBlock extends HorizontalMultiblock implements EntityBlock {
+public class SweetsClosetBlock extends RotatingMultiblock implements EntityBlock {
 
     public static final VoxelShape SHAPE = box(0, 0, 1, 16, 16, 15);
 
     public SweetsClosetBlock(Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X2X1, HorizontalBlock.createShapeBuilder(SHAPE), pProperties);
+        super(MultiblockHandler.MULTIBLOCK_2X2X1, RotatingBlock.createShapeBuilder(SHAPE), pProperties);
     }
 
     //// CONTAINER ////

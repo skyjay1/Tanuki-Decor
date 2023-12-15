@@ -17,15 +17,14 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.HorizontalBlock;
+import tanukidecor.block.RotatingBlock;
 import tanukidecor.block.entity.StorageBlockEntity;
 
-public class GorgeousMiniDrawerBlock extends HorizontalBlock implements EntityBlock {
+public class GorgeousMiniDrawerBlock extends RotatingBlock implements EntityBlock {
 
     public static final VoxelShape SHAPE = Shapes.or(
             box(0, 3, 2, 16, 5, 16),
@@ -37,7 +36,7 @@ public class GorgeousMiniDrawerBlock extends HorizontalBlock implements EntityBl
             box(12, 0, 11, 14, 3, 13));
 
     public GorgeousMiniDrawerBlock(Properties pProperties) {
-        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
+        super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
     //// CONTAINER ////

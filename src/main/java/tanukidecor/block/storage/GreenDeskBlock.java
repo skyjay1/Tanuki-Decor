@@ -22,10 +22,10 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.HorizontalBlock;
+import tanukidecor.block.RotatingBlock;
 import tanukidecor.block.entity.StorageBlockEntity;
 
-public class GreenDeskBlock extends HorizontalBlock implements EntityBlock {
+public class GreenDeskBlock extends RotatingBlock implements EntityBlock {
 
     public static final VoxelShape SHAPE = Shapes.or(
             box(1, 0, 5, 3, 8, 7),
@@ -40,7 +40,7 @@ public class GreenDeskBlock extends HorizontalBlock implements EntityBlock {
                     BooleanOp.ONLY_FIRST));
 
     public GreenDeskBlock(Properties pProperties) {
-        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
+        super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
     //// CONTAINER ////

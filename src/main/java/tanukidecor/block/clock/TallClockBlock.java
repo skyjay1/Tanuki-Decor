@@ -15,16 +15,15 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import tanukidecor.block.HorizontalDoubleBlock;
+import tanukidecor.block.RotatingTallBlock;
 import tanukidecor.block.entity.ClockBlockEntity;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-public class TallClockBlock extends HorizontalDoubleBlock implements EntityBlock, IChimeProvider {
+public class TallClockBlock extends RotatingTallBlock implements EntityBlock, IChimeProvider {
 
     protected final Supplier<SoundEvent> tickSound;
     protected final Supplier<SoundEvent> chimeSound;
@@ -43,7 +42,7 @@ public class TallClockBlock extends HorizontalDoubleBlock implements EntityBlock
                           VoxelShape upperShape, VoxelShape lowerShape,
                           @Nonnull Supplier<BlockEntityType<ClockBlockEntity>> blockEntity,
                           Properties pProperties) {
-        super(pProperties, HorizontalDoubleBlock.createShapeBuilder(upperShape, lowerShape));
+        super(pProperties, RotatingTallBlock.createShapeBuilder(upperShape, lowerShape));
         this.tickSound = tickSound;
         this.chimeSound = chimeSound;
         this.blockEntitySupplier = blockEntity;

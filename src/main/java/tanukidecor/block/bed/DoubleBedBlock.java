@@ -23,20 +23,19 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalMultiblock;
+import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.util.MultiblockHandler;
 
 import javax.annotation.Nullable;
 
 
-public class DoubleBedBlock extends HorizontalMultiblock implements IBedProvider {
+public class DoubleBedBlock extends RotatingMultiblock implements IBedProvider {
 
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
     public DoubleBedBlock(final VoxelShape[][][] shape, Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X1X2, HorizontalMultiblock.createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X1X2, shape), pProperties);
+        super(MultiblockHandler.MULTIBLOCK_2X1X2, RotatingMultiblock.createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X1X2, shape), pProperties);
         this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
                 .setValue(WATERLOGGED, false)
                 .setValue(FACING, Direction.NORTH)

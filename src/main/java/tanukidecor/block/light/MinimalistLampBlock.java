@@ -8,9 +8,9 @@ package tanukidecor.block.light;
 
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.DoubleBlock;
+import tanukidecor.block.TallBlock;
 
-public class MinimalistLampBlock extends DoubleBlock {
+public class MinimalistLampBlock extends TallBlock {
 
     public static final VoxelShape SHAPE_UPPER = Shapes.or(
             box(3, 8, 3, 13, 16, 13),

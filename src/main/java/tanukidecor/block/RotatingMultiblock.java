@@ -18,12 +18,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
@@ -43,8 +43,9 @@ import java.util.function.Function;
 /**
  * Handles waterloggable, horizontally directional, variable size multiblocks
  */
-public class HorizontalMultiblock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock, IDelegateProvider {
+public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock, IDelegateProvider {
 
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected final MultiblockHandler multiblockHandler;
@@ -54,9 +55,9 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
 
     private final Function<BlockState, VoxelShape> shapeBuilder;
 
-    protected HorizontalMultiblock(MultiblockHandler multiblockHandler,
-                                   Function<BlockState, VoxelShape> shapeBuilder,
-                                   Properties pProperties) {
+    protected RotatingMultiblock(MultiblockHandler multiblockHandler,
+                                 Function<BlockState, VoxelShape> shapeBuilder,
+                                 Properties pProperties) {
         super(pProperties.dynamicShape());
         this.multiblockHandler = multiblockHandler;
         this.shapeBuilder = shapeBuilder;
@@ -157,6 +158,8 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
         return PushReaction.BLOCK;
     }
 
+    // TODO custom #rotation and #mirror implementations
+
     public void removeAll(final Level level, final BlockPos centerPos) {
         final BlockPos.MutableBlockPos mutablePos = centerPos.mutable();
         getMultiblockHandler().iterateIndices(index -> {
@@ -254,20 +257,6 @@ public class HorizontalMultiblock extends HorizontalDirectionalBlock implements 
                     [heightIndex]
                     [widthIndex]
                     [depthIndex];
-            return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);
-        };
-    }
-
-    /**
-     * @param shapeEast the shape for the east half
-     * @param shapeWest the shape for the west half
-     * @return a shape builder hardcoded to support {@link MultiblockHandler#MULTIBLOCK_2X1X1} and the {@link #FACING} property
-     */
-    public static Function<BlockState, VoxelShape> createEWShapeBuilder(final VoxelShape shapeEast, final VoxelShape shapeWest) {
-        return blockState -> {
-            final Direction facing = blockState.getValue(FACING);
-            final int width = blockState.getValue(MultiblockHandler.MULTIBLOCK_2X1X1.getWidthProperty());
-            final VoxelShape shape = width == 1 ? shapeEast : shapeWest;
             return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);
         };
     }

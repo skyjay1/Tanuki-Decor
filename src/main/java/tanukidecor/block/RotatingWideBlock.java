@@ -17,8 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -41,22 +39,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class HorizontalDoubleBlock  extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock, IDelegateProvider {
+public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, IDelegateProvider {
 
-    public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Side> SIDE = EnumProperty.create("side", Side.class);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected final Function<BlockState, VoxelShape> shapeBuilder;
     protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
     protected final Map<BlockState, VoxelShape> multiblockShapes = new HashMap<>();
 
-    public HorizontalDoubleBlock(Properties pProperties, Function<BlockState, VoxelShape> shapeBuilder) {
+    public RotatingWideBlock(VoxelShape eastShape, VoxelShape westShape, Properties pProperties) {
         super(pProperties);
-        this.shapeBuilder = shapeBuilder;
+        this.shapeBuilder = createShapeBuilder(eastShape, westShape);
         this.registerDefaultState(this.stateDefinition.any()
-                .setValue(FACING, Direction.NORTH)
                 .setValue(WATERLOGGED, false)
-                .setValue(HALF, DoubleBlockHalf.LOWER));
+                .setValue(FACING, Direction.NORTH)
+                .setValue(SIDE, Side.LEFT));
         precalculateShapes();
     }
 
@@ -70,12 +69,13 @@ public class HorizontalDoubleBlock  extends HorizontalDirectionalBlock implement
         doubleBlockShapes.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, createDoubleBlockShape()));
         // create shapes for all possible block states
         for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
-            // calculate block shape
+            // cache the individual shape
             blockShapes.put(blockState, this.shapeBuilder.apply(blockState));
             // calculate multiblock shape
-            double offset = blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? 0 : 1;
-            VoxelShape shape = doubleBlockShapes.get(blockState.getValue(FACING))
-                    .move(0, offset, 0);
+            Direction facing = blockState.getValue(FACING);
+            Direction direction = facing.getClockWise();
+            double offset = blockState.getValue(SIDE) == Side.LEFT ? 0 : 1;
+            VoxelShape shape = doubleBlockShapes.get(facing).move(offset * direction.getStepX(), 0, offset * direction.getStepZ());
             multiblockShapes.put(blockState, shape);
         }
     }
@@ -84,11 +84,12 @@ public class HorizontalDoubleBlock  extends HorizontalDirectionalBlock implement
      * @return a newly created multiblock {@link VoxelShape}, centered around the center block
      */
     protected VoxelShape createDoubleBlockShape() {
-        BlockState upperState = defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER);
-        BlockState lowerState = defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER);
+        BlockState leftState = defaultBlockState().setValue(SIDE, Side.LEFT);
+        BlockState rightState = defaultBlockState().setValue(SIDE, Side.RIGHT);
         return Shapes.or(
-                blockShapes.computeIfAbsent(upperState, this.shapeBuilder),
-                blockShapes.computeIfAbsent(lowerState, this.shapeBuilder).move(0, -1, 0));
+                blockShapes.computeIfAbsent(leftState, this.shapeBuilder),
+                blockShapes.computeIfAbsent(rightState, this.shapeBuilder).move(-1, 0, 0));
+
     }
 
     /**
@@ -121,7 +122,7 @@ public class HorizontalDoubleBlock  extends HorizontalDirectionalBlock implement
 
     @Override
     public BlockPos getDelegatePos(BlockState blockState, BlockPos blockPos) {
-        return blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? blockPos : blockPos.above();
+        return getLeftSide(blockState, blockPos);
     }
 
     //// METHODS ////
@@ -132,11 +133,13 @@ public class HorizontalDoubleBlock  extends HorizontalDirectionalBlock implement
         Level level = pContext.getLevel();
         FluidState fluidstate = pContext.getLevel().getFluidState(pContext.getClickedPos());
         boolean waterlogged = fluidstate.getType() == Fluids.WATER;
-        if (blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(pContext)) {
+        Direction direction = pContext.getHorizontalDirection().getOpposite();
+        BlockPos sidePos = blockpos.relative(direction.getCounterClockWise());
+        if (level.getBlockState(sidePos).canBeReplaced(pContext)) {
             return this.defaultBlockState()
-                    .setValue(FACING, pContext.getHorizontalDirection().getOpposite())
+                    .setValue(FACING, direction)
                     .setValue(WATERLOGGED, waterlogged)
-                    .setValue(HALF, DoubleBlockHalf.LOWER);
+                    .setValue(SIDE, Side.LEFT);
         } else {
             return null;
         }
@@ -144,7 +147,7 @@ public class HorizontalDoubleBlock  extends HorizontalDirectionalBlock implement
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING).add(WATERLOGGED).add(HALF);
+        pBuilder.add(WATERLOGGED).add(SIDE).add(FACING);
     }
 
     @Override
@@ -153,29 +156,36 @@ public class HorizontalDoubleBlock  extends HorizontalDirectionalBlock implement
         if (pState.getValue(WATERLOGGED)) {
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
+        final Side side = pState.getValue(SIDE);
+        final BlockPos oppositePos = getOppositeSide(pState, pCurrentPos);
+        final BlockState oppositeState = pLevel.getBlockState(oppositePos);
         // update half
-        DoubleBlockHalf half = pState.getValue(HALF);
-        if (pFacing.getAxis() == Direction.Axis.Y && half == DoubleBlockHalf.LOWER == (pFacing == Direction.UP)) {
-            return pFacingState.is(this) && pFacingState.getValue(HALF) != half ? pState.setValue(FACING, pFacingState.getValue(FACING)) : getFluidState(pState).createLegacyBlock();
+        if(!oppositeState.is(this) || oppositeState.getValue(SIDE) == side || !pState.canSurvive(pLevel, pCurrentPos)) {
+            return pState.getFluidState().createLegacyBlock();
         }
-        return half == DoubleBlockHalf.LOWER && pFacing == Direction.DOWN && !pState.canSurvive(pLevel, pCurrentPos) ? getFluidState(pState).createLegacyBlock() : super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+        return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
     }
 
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
-        boolean waterlogged = pLevel.getFluidState(pPos.above()).getType() == Fluids.WATER;
-        pLevel.setBlock(pPos.above(), pState.setValue(HALF, DoubleBlockHalf.UPPER).setValue(WATERLOGGED, waterlogged), Block.UPDATE_ALL);
+        BlockPos sidePos = getRightSide(pState, pPos);
+        boolean waterlogged = pLevel.getFluidState(sidePos).getType() == Fluids.WATER;
+        pLevel.setBlock(sidePos, pState.setValue(SIDE, Side.RIGHT).setValue(WATERLOGGED, waterlogged), Block.UPDATE_ALL);
     }
 
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        return pState.getValue(HALF) == DoubleBlockHalf.LOWER || pLevel.getBlockState(pPos.below()).is(this);
+        // assume if the block at the given position is not this one, this is a preemptive check
+        if(!pLevel.getBlockState(pPos).is(this)) {
+            return true;
+        }
+        return pState.getValue(SIDE) == Side.LEFT || pLevel.getBlockState(getOppositeSide(pState, pPos)).is(this);
     }
 
     @Override
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (!pLevel.isClientSide && pPlayer.isCreative()) {
-            DoublePlantBlock.preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
+            preventCreativeDropFromLeftPart(pLevel, pPos, pState, pPlayer);
         }
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
@@ -185,17 +195,66 @@ public class HorizontalDoubleBlock  extends HorizontalDirectionalBlock implement
         return PushReaction.BLOCK;
     }
 
+    // TODO custom #rotation and #mirror implementations
+
+    //// FLUID ////
+
     @Override
     public FluidState getFluidState(BlockState pState) {
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
-    public static Function<BlockState, VoxelShape> createShapeBuilder(final VoxelShape upperShape, final VoxelShape lowerShape) {
+    //// HELPER METHODS ////
+
+    /**
+     * @param shapeEast the shape for the east half
+     * @param shapeWest the shape for the west half
+     * @return a shape builder hardcoded to support {@link #SIDE} and {@link #FACING} properties
+     */
+    public static Function<BlockState, VoxelShape> createShapeBuilder(final VoxelShape shapeEast, final VoxelShape shapeWest) {
         return blockState -> {
-            final Direction facing =  blockState.getValue(FACING);
-            final DoubleBlockHalf half = blockState.getValue(HALF);
-            final VoxelShape shape = half == DoubleBlockHalf.UPPER ? upperShape : lowerShape;
+            final Direction facing = blockState.getValue(FACING);
+            final Side side = blockState.getValue(SIDE);
+            final VoxelShape shape = side == Side.LEFT ? shapeEast : shapeWest;
             return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);
         };
     }
+
+    /**
+     * Removes the left block without allowing loot drops. This prevents the item from dropping, intended for use in creative mode.
+     * @param level the level
+     * @param pos the block position
+     * @param blockState the block state
+     * @param player the player
+     */
+    public void preventCreativeDropFromLeftPart(Level level, BlockPos pos, BlockState blockState, Player player) {
+        final BlockPos origin = getLeftSide(blockState, pos);
+        final BlockState originState = level.getBlockState(origin);
+        if(originState.is(blockState.getBlock()) && originState.getValue(SIDE) == Side.LEFT) {
+            level.setBlock(origin, originState.getFluidState().createLegacyBlock(), Block.UPDATE_SUPPRESS_DROPS | Block.UPDATE_ALL);
+        }
+    }
+
+    public static BlockPos getLeftSide(final BlockState blockState, final BlockPos pos) {
+        if(blockState.getValue(SIDE) == Side.LEFT) {
+            return pos;
+        }
+        Direction facing = blockState.getValue(FACING);
+        return pos.relative(facing.getClockWise());
+    }
+
+    public static BlockPos getRightSide(final BlockState blockState, final BlockPos pos) {
+        if(blockState.getValue(SIDE) == Side.RIGHT) {
+            return pos;
+        }
+        Direction facing = blockState.getValue(FACING);
+        return pos.relative(facing.getCounterClockWise());
+    }
+
+    public static BlockPos getOppositeSide(final BlockState blockState, final BlockPos pos) {
+        Direction facing = blockState.getValue(FACING);
+        Direction direction = blockState.getValue(SIDE) == Side.LEFT ? facing.getCounterClockWise() : facing.getClockWise();
+        return pos.relative(direction);
+    }
+
 }

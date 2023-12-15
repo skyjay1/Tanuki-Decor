@@ -20,14 +20,14 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.HorizontalMultiblock;
+import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.block.entity.ClockBlockEntity;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeUtils;
 
 import java.util.function.Supplier;
 
-public class GrandfatherClockBlock extends HorizontalMultiblock implements EntityBlock, IChimeProvider {
+public class GrandfatherClockBlock extends RotatingMultiblock implements EntityBlock, IChimeProvider {
 
     protected final Supplier<SoundEvent> chimeSound;
     protected final Supplier<SoundEvent> tickSound;

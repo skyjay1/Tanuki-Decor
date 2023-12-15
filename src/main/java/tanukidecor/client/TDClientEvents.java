@@ -106,7 +106,14 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.REGAL_BED.get(), RenderType.cutout());
             // LIGHT //
             registerRenderLayer(BlockReg.ANTIQUE_WALL_OIL_LAMP.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.GORGEOUS_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.MINIMALIST_LAMP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.NEON_CLUB_SIGN.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.NEON_DIAMOND_SIGN.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.NEON_HEART_SIGN.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.NEON_SPADE_SIGN.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.REGAL_LAMP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.SMALL_FIREPLACE.get(), RenderType.cutout());
             // MISC //
             registerRenderLayer(BlockReg.HOLIDAY_TREE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.HOURGLASS.get(), RenderType.cutout());

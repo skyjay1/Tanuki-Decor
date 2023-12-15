@@ -12,10 +12,8 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.phys.Vec3;
-import tanukidecor.block.HorizontalMultiblock;
+import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.util.MultiblockHandler;
-import tanukidecor.util.ShapeUtils;
 
 import javax.annotation.Nullable;
 
@@ -23,7 +21,7 @@ public class MultiblockItem extends BlockItem {
 
     public MultiblockItem(Block pBlock, Properties pProperties) {
         super(pBlock, pProperties);
-        if(!(pBlock instanceof HorizontalMultiblock)) {
+        if(!(pBlock instanceof RotatingMultiblock)) {
             throw new IllegalArgumentException("MultiblockItem is only valid for HorizontalMultiblock, not " + pBlock.getClass().getName());
         }
     }
@@ -32,7 +30,7 @@ public class MultiblockItem extends BlockItem {
     @Nullable
     public BlockPlaceContext updatePlacementContext(BlockPlaceContext pContext) {
         final Direction direction = pContext.getHorizontalDirection();
-        final MultiblockHandler multiblockHandler = ((HorizontalMultiblock) this.getBlock()).getMultiblockHandler();
+        final MultiblockHandler multiblockHandler = ((RotatingMultiblock) this.getBlock()).getMultiblockHandler();
         // determine the index of the clicked position and the desired center position
         final Vec3i minIndex = multiblockHandler.getMinIndex();
         final Vec3i clickedIndex = new Vec3i(0, minIndex.getY(), minIndex.getZ());

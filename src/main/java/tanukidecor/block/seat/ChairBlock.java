@@ -17,11 +17,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalBlock;
+import tanukidecor.block.RotatingBlock;
 
 import java.util.Random;
 
-public class ChairBlock extends HorizontalBlock implements ISeatProvider {
+public class ChairBlock extends RotatingBlock implements ISeatProvider {
 
     public static final VoxelShape SHAPE = Shapes.or(
             box(0, 0, 3, 4, 5, 13),
@@ -30,7 +30,7 @@ public class ChairBlock extends HorizontalBlock implements ISeatProvider {
     private double seatYOffset;
 
     public ChairBlock(final VoxelShape shape, final double seatYOffset, Properties pProperties) {
-        super(pProperties, HorizontalBlock.createShapeBuilder(shape));
+        super(pProperties, RotatingBlock.createShapeBuilder(shape));
         this.seatYOffset = seatYOffset;
     }
 

@@ -17,11 +17,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalDoubleBlock;
+import tanukidecor.block.RotatingTallBlock;
 
 import java.util.Random;
 
-public class TallChairBlock extends HorizontalDoubleBlock implements ISeatProvider {
+public class TallChairBlock extends RotatingTallBlock implements ISeatProvider {
 
     private double seatYOffset;
 
@@ -32,7 +32,7 @@ public class TallChairBlock extends HorizontalDoubleBlock implements ISeatProvid
      * @param pProperties the block properties
      */
     public TallChairBlock(final VoxelShape upperShape, final VoxelShape lowerShape, final double seatYOffset, Properties pProperties) {
-        super(pProperties.randomTicks(), HorizontalDoubleBlock.createShapeBuilder(upperShape, lowerShape));
+        super(pProperties.randomTicks(), RotatingTallBlock.createShapeBuilder(upperShape, lowerShape));
         this.seatYOffset = seatYOffset;
     }
 

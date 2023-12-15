@@ -36,7 +36,7 @@ import tanukidecor.block.storage.IDelegateProvider;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DoubleBlock extends Block implements SimpleWaterloggedBlock, IDelegateProvider {
+public class TallBlock extends Block implements SimpleWaterloggedBlock, IDelegateProvider {
 
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -45,7 +45,7 @@ public class DoubleBlock extends Block implements SimpleWaterloggedBlock, IDeleg
     protected final VoxelShape lowerShape;
     protected final Map<BlockState, VoxelShape> multiblockShapes = new HashMap<>();
 
-    public DoubleBlock(VoxelShape upperShape, VoxelShape lowerShape, Properties pProperties) {
+    public TallBlock(VoxelShape upperShape, VoxelShape lowerShape, Properties pProperties) {
         super(pProperties);
         this.upperShape = upperShape;
         this.lowerShape = lowerShape;

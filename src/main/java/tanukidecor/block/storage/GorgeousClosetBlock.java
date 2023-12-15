@@ -21,14 +21,14 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.HorizontalMultiblock;
+import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.block.entity.StorageBlockEntity;
 import tanukidecor.util.MultiblockHandler;
 
-public class GorgeousClosetBlock extends HorizontalMultiblock implements EntityBlock {
+public class GorgeousClosetBlock extends RotatingMultiblock implements EntityBlock {
 
     public GorgeousClosetBlock(Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X2X1, HorizontalMultiblock.createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X2X1, SHAPE), pProperties);
+        super(MultiblockHandler.MULTIBLOCK_2X2X1, RotatingMultiblock.createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X2X1, SHAPE), pProperties);
     }
 
     //// CONTAINER ////

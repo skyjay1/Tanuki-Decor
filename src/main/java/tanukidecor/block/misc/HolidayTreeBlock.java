@@ -7,14 +7,14 @@
 package tanukidecor.block.misc;
 
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalDoubleBlock;
+import tanukidecor.block.RotatingTallBlock;
 
-public class HolidayTreeBlock extends HorizontalDoubleBlock {
+public class HolidayTreeBlock extends RotatingTallBlock {
 
     public static final VoxelShape SHAPE_UPPER = box(4.5D, 0, 4.5D, 11.5D, 16, 11.5D);
     public static final VoxelShape SHAPE_LOWER = box(2.5D, 0, 2.5D, 13.5D, 16, 13.5D);
 
     public HolidayTreeBlock(Properties pProperties) {
-        super(pProperties, HorizontalDoubleBlock.createShapeBuilder(SHAPE_UPPER, SHAPE_LOWER));
+        super(pProperties, RotatingTallBlock.createShapeBuilder(SHAPE_UPPER, SHAPE_LOWER));
     }
 }

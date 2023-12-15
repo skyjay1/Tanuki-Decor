@@ -25,15 +25,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.HorizontalBlock;
+import tanukidecor.block.RotatingBlock;
 import tanukidecor.block.entity.StorageBlockEntity;
 
-public class AntiqueWallShelfBlock extends HorizontalBlock implements EntityBlock {
+public class AntiqueWallShelfBlock extends RotatingBlock implements EntityBlock {
 
     public static final VoxelShape SHAPE = box(0, 1, 4, 16, 15, 16);
 
     public AntiqueWallShelfBlock(Properties pProperties) {
-        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
+        super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
     //// PLACEMENT ////

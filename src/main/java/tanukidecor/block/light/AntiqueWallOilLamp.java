@@ -17,11 +17,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalBlock;
+import tanukidecor.block.RotatingBlock;
 
 import java.util.Random;
 
-public class AntiqueWallOilLamp extends HorizontalBlock {
+public class AntiqueWallOilLamp extends RotatingBlock {
 
     public static final VoxelShape SHAPE = Shapes.or(
             box(6, 1, 15, 10, 9, 16),
@@ -36,7 +36,7 @@ public class AntiqueWallOilLamp extends HorizontalBlock {
                     BooleanOp.ONLY_FIRST));
 
     public AntiqueWallOilLamp(Properties pProperties) {
-        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
+        super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
     //// PLACEMENT ////

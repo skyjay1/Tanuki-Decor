@@ -16,12 +16,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalMultiblock;
+import tanukidecor.block.RotatingMultiblock;
+import tanukidecor.block.RotatingWideBlock;
 import tanukidecor.util.MultiblockHandler;
 
 import java.util.Random;
 
-public class WideChairBlock extends HorizontalMultiblock implements ISeatProvider {
+public class WideChairBlock extends RotatingWideBlock implements ISeatProvider {
 
     private double seatYOffset;
 
@@ -32,9 +33,7 @@ public class WideChairBlock extends HorizontalMultiblock implements ISeatProvide
      * @param pProperties the block properties
      */
     public WideChairBlock(final VoxelShape eastShape, final VoxelShape westShape, final double seatYOffset, Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X1X1,
-                HorizontalMultiblock.createEWShapeBuilder(eastShape, westShape),
-                pProperties.randomTicks());
+        super(eastShape, westShape, pProperties.randomTicks());
         this.seatYOffset = seatYOffset;
     }
 

@@ -23,9 +23,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalMultiblock;
+import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeUtils;
 
@@ -33,7 +32,7 @@ import javax.annotation.Nullable;
 import java.util.function.Function;
 
 
-public class SingleBedBlock extends HorizontalMultiblock implements IBedProvider {
+public class SingleBedBlock extends RotatingMultiblock implements IBedProvider {
 
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 

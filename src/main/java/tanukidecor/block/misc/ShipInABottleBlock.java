@@ -8,9 +8,9 @@ package tanukidecor.block.misc;
 
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.HorizontalBlock;
+import tanukidecor.block.RotatingBlock;
 
-public class ShipInABottleBlock extends HorizontalBlock {
+public class ShipInABottleBlock extends RotatingBlock {
 
     public static final VoxelShape SHAPE = Shapes.or(
             box(3, 0, 4, 13, 3, 12),
@@ -19,6 +19,6 @@ public class ShipInABottleBlock extends HorizontalBlock {
             box(16.5D, 6, 6, 18.5D, 10, 10));
 
     public ShipInABottleBlock(Properties pProperties) {
-        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
+        super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 }

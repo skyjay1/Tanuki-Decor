@@ -25,13 +25,13 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.HorizontalMultiblock;
+import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.util.MultiblockHandler;
 
 import java.util.function.Consumer;
 
 
-public class TrainSetBlock extends HorizontalMultiblock implements EntityBlock {
+public class TrainSetBlock extends RotatingMultiblock implements EntityBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -81,7 +81,7 @@ public class TrainSetBlock extends HorizontalMultiblock implements EntityBlock {
     };
 
     public TrainSetBlock(Properties pProperties) {
-        super(HOLLOW_MULTIBLOCK_HANDLER, HorizontalMultiblock.createHorizontalShapeBuilder(HOLLOW_MULTIBLOCK_HANDLER, SHAPE), pProperties);
+        super(HOLLOW_MULTIBLOCK_HANDLER, RotatingMultiblock.createHorizontalShapeBuilder(HOLLOW_MULTIBLOCK_HANDLER, SHAPE), pProperties);
         this.registerDefaultState(this.multiblockHandler.getIndexedState(this.stateDefinition.any(), DEFAULT_INDEX)
                 .setValue(WATERLOGGED, false)
                 .setValue(FACING, Direction.NORTH));

@@ -7,28 +7,22 @@
 package tanukidecor.block.clock;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import tanukidecor.block.HorizontalBlock;
+import tanukidecor.block.RotatingBlock;
 import tanukidecor.block.entity.ClockBlockEntity;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-public class ClockBlock extends HorizontalBlock implements EntityBlock, IChimeProvider {
+public class ClockBlock extends RotatingBlock implements EntityBlock, IChimeProvider {
 
     public static final Supplier<SoundEvent> NO_SOUND = () -> null;
 
@@ -47,7 +41,7 @@ public class ClockBlock extends HorizontalBlock implements EntityBlock, IChimePr
     public ClockBlock(@Nonnull Supplier<SoundEvent> tickSound, @Nonnull Supplier<SoundEvent> chimeSound,
                       VoxelShape shape, @Nonnull Supplier<BlockEntityType<ClockBlockEntity>> blockEntity,
                       Properties pProperties) {
-        super(pProperties, HorizontalBlock.createShapeBuilder(shape));
+        super(pProperties, RotatingBlock.createShapeBuilder(shape));
         this.tickSound = tickSound;
         this.chimeSound = chimeSound;
         this.blockEntitySupplier = blockEntity;

@@ -21,10 +21,10 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.HorizontalBlock;
+import tanukidecor.block.RotatingBlock;
 import tanukidecor.block.entity.StorageBlockEntity;
 
-public class BlueDresserBlock extends HorizontalBlock implements EntityBlock {
+public class BlueDresserBlock extends RotatingBlock implements EntityBlock {
 
     public static final VoxelShape SHAPE = Shapes.or(
             box(0, 0, 1, 2, 2, 3),
@@ -34,7 +34,7 @@ public class BlueDresserBlock extends HorizontalBlock implements EntityBlock {
             box(0, 2, 1, 16, 16, 15));
 
     public BlueDresserBlock(Properties pProperties) {
-        super(pProperties, HorizontalBlock.createShapeBuilder(SHAPE));
+        super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
     //// CONTAINER ////

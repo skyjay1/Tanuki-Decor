@@ -31,14 +31,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public class HorizontalBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
     protected final Function<BlockState, VoxelShape> shapeBuilder;
 
-    public HorizontalBlock(Properties pProperties, Function<BlockState, VoxelShape> shapeBuilder) {
+    public RotatingBlock(Properties pProperties, Function<BlockState, VoxelShape> shapeBuilder) {
         super(pProperties);
         this.shapeBuilder = shapeBuilder;
         this.registerDefaultState(this.stateDefinition.any()
