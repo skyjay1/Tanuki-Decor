@@ -25,7 +25,9 @@ import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.RotatingWideBlock;
 import tanukidecor.block.entity.StorageBlockEntity;
+import tanukidecor.util.ShapeBuilder;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class WideStorageBlock extends RotatingWideBlock implements EntityBlock {
@@ -33,15 +35,13 @@ public class WideStorageBlock extends RotatingWideBlock implements EntityBlock {
     private Supplier<BlockEntityType<StorageBlockEntity>> blockEntitySupplier;
     private final SoundEvent openSound;
 
-    public WideStorageBlock(final VoxelShape eastShape, final VoxelShape westShape,
-                            final Supplier<BlockEntityType<StorageBlockEntity>> blockEntity, Properties pProperties) {
-        this(eastShape, westShape, blockEntity, SoundEvents.BARREL_OPEN, pProperties);
+    public WideStorageBlock(final Supplier<BlockEntityType<StorageBlockEntity>> blockEntity, final ShapeBuilder shapeBuilder, Properties pProperties) {
+        this(blockEntity, shapeBuilder, SoundEvents.BARREL_OPEN, pProperties);
     }
 
-    public WideStorageBlock(final VoxelShape eastShape, final VoxelShape westShape,
-                            final Supplier<BlockEntityType<StorageBlockEntity>> blockEntity,
+    public WideStorageBlock(final Supplier<BlockEntityType<StorageBlockEntity>> blockEntity, final ShapeBuilder shapeBuilder,
                             final SoundEvent openSound, Properties pProperties) {
-        super(eastShape, westShape, pProperties);
+        super(pProperties, shapeBuilder);
         this.blockEntitySupplier = blockEntity;
         this.openSound = openSound;
     }

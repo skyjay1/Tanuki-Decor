@@ -11,6 +11,6 @@ import tanukidecor.TDRegistry;
 public class CabanaBookcaseBlock extends WideStorageBlock {
 
     public CabanaBookcaseBlock(Properties pProperties) {
-        super(CabanaDresserBlock.SHAPE_EAST, CabanaDresserBlock.SHAPE_WEST, TDRegistry.BlockEntityReg.CABANA_BOOKCASE, pProperties);
+        super(TDRegistry.BlockEntityReg.CABANA_BOOKCASE, createShapeBuilder(CabanaDresserBlock.SHAPE_EAST, CabanaDresserBlock.SHAPE_WEST), pProperties);
     }
 }

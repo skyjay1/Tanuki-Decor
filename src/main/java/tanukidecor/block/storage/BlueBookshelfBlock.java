@@ -7,10 +7,11 @@
 package tanukidecor.block.storage;
 
 import tanukidecor.TDRegistry;
+import tanukidecor.block.RotatingWideBlock;
 
 public class BlueBookshelfBlock extends WideStorageBlock {
 
     public BlueBookshelfBlock(Properties pProperties) {
-        super(BlueBureauBlock.SHAPE_EAST, BlueBureauBlock.SHAPE_WEST, TDRegistry.BlockEntityReg.BLUE_BOOKSHELF, pProperties);
+        super(TDRegistry.BlockEntityReg.BLUE_BOOKSHELF, RotatingWideBlock.createShapeBuilder(BlueBureauBlock.SHAPE_EAST, BlueBureauBlock.SHAPE_WEST), pProperties);
     }
 }

@@ -15,6 +15,6 @@ public class WoodenBlockDrawersBlock extends WideStorageBlock {
     public static final VoxelShape SHAPE_WEST = box(0, 0, 2, 16, 16, 16);
 
     public WoodenBlockDrawersBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, TDRegistry.BlockEntityReg.WOODEN_BLOCK_DRAWERS, pProperties);
+        super(TDRegistry.BlockEntityReg.WOODEN_BLOCK_DRAWERS, createShapeBuilder(SHAPE_EAST, SHAPE_WEST), pProperties);
     }
 }

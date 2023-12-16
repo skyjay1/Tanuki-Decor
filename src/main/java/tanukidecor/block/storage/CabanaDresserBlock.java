@@ -22,6 +22,6 @@ public class CabanaDresserBlock extends WideStorageBlock {
             box(0, 2, 0, 16, 16, 16));
 
     public CabanaDresserBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, TDRegistry.BlockEntityReg.CABANA_DRESSER, pProperties);
+        super(TDRegistry.BlockEntityReg.CABANA_DRESSER, createShapeBuilder(SHAPE_EAST, SHAPE_WEST), pProperties);
     }
 }

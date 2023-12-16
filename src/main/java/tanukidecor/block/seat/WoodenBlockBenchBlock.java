@@ -19,6 +19,6 @@ public class WoodenBlockBenchBlock extends WideChairBlock {
             box(3, 5, 3, 16, 7, 13));
 
     public WoodenBlockBenchBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, 9.0D / 16.0D, pProperties);
+        super(createShapeBuilder(SHAPE_EAST, SHAPE_WEST), 9.0D / 16.0D, pProperties);
     }
 }

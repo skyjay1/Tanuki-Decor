@@ -15,6 +15,6 @@ public class RegalDresserBlock extends WideStorageBlock {
     public static final VoxelShape SHAPE_WEST = box(0, 0, 1, 16, 16, 15);
 
     public RegalDresserBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, TDRegistry.BlockEntityReg.REGAL_DRESSER, pProperties);
+        super(TDRegistry.BlockEntityReg.REGAL_DRESSER, createShapeBuilder(SHAPE_EAST, SHAPE_WEST), pProperties);
     }
 }

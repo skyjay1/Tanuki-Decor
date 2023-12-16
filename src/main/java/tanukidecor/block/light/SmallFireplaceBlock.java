@@ -33,7 +33,7 @@ public class SmallFireplaceBlock extends RotatingWideBlock {
             box(0, 14, 0, 16, 16, 16));
 
     public SmallFireplaceBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, pProperties);
+        super(pProperties, createShapeBuilder(SHAPE_EAST, SHAPE_WEST));
     }
 
     //// ANIMATE ////

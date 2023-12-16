@@ -14,6 +14,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import org.slf4j.Logger;
 import tanukidecor.client.TDClientEvents;
+import tanukidecor.network.TDNetwork;
 
 @Mod(TanukiDecor.MODID)
 public class TanukiDecor {
@@ -34,6 +35,8 @@ public class TanukiDecor {
         // TODO
         // register client config
         // TODO
+        // register network
+        TDNetwork.register();
         // register registry objects
         TDRegistry.register();
         // register client events

@@ -29,6 +29,6 @@ public class AntiqueSofaBlock extends WideChairBlock {
             box(0, 8, 1, 3, 14, 15));
 
     public AntiqueSofaBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, 10.0D / 16.0D, pProperties);
+        super(createShapeBuilder(SHAPE_EAST, SHAPE_WEST), 10.0D / 16.0D, pProperties);
     }
 }

@@ -34,6 +34,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.storage.IDelegateProvider;
 import tanukidecor.util.MultiblockHandler;
+import tanukidecor.util.ShapeBuilder;
 import tanukidecor.util.ShapeUtils;
 
 import java.util.EnumMap;
@@ -46,11 +47,11 @@ public class RotatingTallBlock extends HorizontalDirectionalBlock implements Sim
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    protected final Function<BlockState, VoxelShape> shapeBuilder;
+    protected final ShapeBuilder shapeBuilder;
     protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
     protected final Map<BlockState, VoxelShape> multiblockShapes = new HashMap<>();
 
-    public RotatingTallBlock(Properties pProperties, Function<BlockState, VoxelShape> shapeBuilder) {
+    public RotatingTallBlock(Properties pProperties, ShapeBuilder shapeBuilder) {
         super(pProperties);
         this.shapeBuilder = shapeBuilder;
         this.registerDefaultState(this.stateDefinition.any()
@@ -190,7 +191,7 @@ public class RotatingTallBlock extends HorizontalDirectionalBlock implements Sim
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
-    public static Function<BlockState, VoxelShape> createShapeBuilder(final VoxelShape upperShape, final VoxelShape lowerShape) {
+    public static ShapeBuilder createShapeBuilder(final VoxelShape upperShape, final VoxelShape lowerShape) {
         return blockState -> {
             final Direction facing =  blockState.getValue(FACING);
             final DoubleBlockHalf half = blockState.getValue(HALF);

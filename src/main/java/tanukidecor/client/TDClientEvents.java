@@ -7,6 +7,7 @@
 package tanukidecor.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -21,12 +22,14 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import tanukidecor.TDRegistry;
 import tanukidecor.TDRegistry.BlockReg;
 import tanukidecor.TDRegistry.BlockEntityReg;
 import tanukidecor.block.seat.ISeatProvider;
 import tanukidecor.client.blockentity.clock.*;
 import tanukidecor.client.blockentity.misc.HourglassBER;
 import tanukidecor.client.blockentity.misc.TrainSetBER;
+import tanukidecor.client.menu.DIYWorkbenchScreen;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -57,6 +60,11 @@ public final class TDClientEvents {
         @SubscribeEvent
         public static void onCommonSetup(final FMLCommonSetupEvent event) {
             event.enqueueWork(ModHandler::registerBlockRenderLayers);
+            event.enqueueWork(ModHandler::registerMenuScreens);
+        }
+
+        private static void registerMenuScreens() {
+            MenuScreens.register(TDRegistry.MenuReg.DIY_WORKBENCH.get(), DIYWorkbenchScreen::new);
         }
 
         /**
@@ -115,6 +123,7 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.REGAL_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SMALL_FIREPLACE.get(), RenderType.cutout());
             // MISC //
+            registerRenderLayer(BlockReg.DIY_WORKBENCH.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.HOLIDAY_TREE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.HOURGLASS.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SHIP_IN_A_BOTTLE.get(), RenderType.cutout());

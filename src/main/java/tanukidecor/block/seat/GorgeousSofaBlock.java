@@ -34,6 +34,6 @@ public class GorgeousSofaBlock extends WideChairBlock {
             ));
 
     public GorgeousSofaBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, 12.0D / 16.0D, pProperties);
+        super(createShapeBuilder(SHAPE_EAST, SHAPE_WEST), 12.0D / 16.0D, pProperties);
     }
 }

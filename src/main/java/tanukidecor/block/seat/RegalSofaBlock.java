@@ -21,6 +21,6 @@ public class RegalSofaBlock extends WideChairBlock {
             box(3, 8, 13, 16, 16, 16));
 
     public RegalSofaBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, 10.0D / 16.0D, pProperties);
+        super(createShapeBuilder(SHAPE_EAST, SHAPE_WEST), 10.0D / 16.0D, pProperties);
     }
 }

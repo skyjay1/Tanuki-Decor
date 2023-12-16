@@ -22,6 +22,6 @@ public class GreenDresserBlock extends WideStorageBlock {
             box(0, 0, 12, 6, 1, 16));
 
     public GreenDresserBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, TDRegistry.BlockEntityReg.GREEN_DRESSER, pProperties);
+        super(TDRegistry.BlockEntityReg.GREEN_DRESSER, createShapeBuilder(SHAPE_EAST, SHAPE_WEST), pProperties);
     }
 }

@@ -9,6 +9,7 @@ package tanukidecor.block.storage;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.TDRegistry;
+import tanukidecor.block.RotatingWideBlock;
 
 public class BlueBureauBlock extends WideStorageBlock {
 
@@ -22,6 +23,6 @@ public class BlueBureauBlock extends WideStorageBlock {
             box(0, 0, 13, 2, 2, 15));
 
     public BlueBureauBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, TDRegistry.BlockEntityReg.BLUE_BUREAU, pProperties);
+        super(TDRegistry.BlockEntityReg.BLUE_BUREAU, createShapeBuilder(SHAPE_EAST, SHAPE_WEST), pProperties);
     }
 }

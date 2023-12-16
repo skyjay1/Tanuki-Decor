@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -32,12 +31,12 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.storage.IDelegateProvider;
 import tanukidecor.util.MultiblockHandler;
+import tanukidecor.util.ShapeBuilder;
 import tanukidecor.util.ShapeUtils;
 
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, IDelegateProvider {
 
@@ -45,13 +44,13 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
     public static final EnumProperty<Side> SIDE = EnumProperty.create("side", Side.class);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    protected final Function<BlockState, VoxelShape> shapeBuilder;
+    protected final ShapeBuilder shapeBuilder;
     protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
     protected final Map<BlockState, VoxelShape> multiblockShapes = new HashMap<>();
 
-    public RotatingWideBlock(VoxelShape eastShape, VoxelShape westShape, Properties pProperties) {
+    public RotatingWideBlock(Properties pProperties, ShapeBuilder shapeBuilder) {
         super(pProperties);
-        this.shapeBuilder = createShapeBuilder(eastShape, westShape);
+        this.shapeBuilder = shapeBuilder;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(WATERLOGGED, false)
                 .setValue(FACING, Direction.NORTH)
@@ -211,7 +210,7 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
      * @param shapeWest the shape for the west half
      * @return a shape builder hardcoded to support {@link #SIDE} and {@link #FACING} properties
      */
-    public static Function<BlockState, VoxelShape> createShapeBuilder(final VoxelShape shapeEast, final VoxelShape shapeWest) {
+    public static ShapeBuilder createShapeBuilder(final VoxelShape shapeEast, final VoxelShape shapeWest) {
         return blockState -> {
             final Direction facing = blockState.getValue(FACING);
             final Side side = blockState.getValue(SIDE);

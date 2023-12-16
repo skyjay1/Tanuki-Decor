@@ -26,6 +26,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.util.MultiblockHandler;
+import tanukidecor.util.ShapeBuilder;
 import tanukidecor.util.ShapeUtils;
 
 import javax.annotation.Nullable;
@@ -108,7 +109,7 @@ public class SingleBedBlock extends RotatingMultiblock implements IBedProvider {
         }
     }
 
-    public static Function<BlockState, VoxelShape> createShapeBuilder(final VoxelShape northShape, final VoxelShape southShape) {
+    public static ShapeBuilder createShapeBuilder(final VoxelShape northShape, final VoxelShape southShape) {
         return b -> {
             final Vec3i index = MultiblockHandler.MULTIBLOCK_1X1X2.getIndex(b);
             final Direction direction = b.getValue(FACING);

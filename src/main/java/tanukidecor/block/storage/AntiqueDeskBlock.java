@@ -9,6 +9,7 @@ package tanukidecor.block.storage;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.TDRegistry;
+import tanukidecor.block.RotatingWideBlock;
 
 public class AntiqueDeskBlock extends WideStorageBlock {
 
@@ -28,6 +29,6 @@ public class AntiqueDeskBlock extends WideStorageBlock {
             box(0, 14, 0, 16, 16, 16));
 
     public AntiqueDeskBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, TDRegistry.BlockEntityReg.ANTIQUE_DESK, pProperties);
+        super(TDRegistry.BlockEntityReg.ANTIQUE_DESK, createShapeBuilder(SHAPE_EAST, SHAPE_WEST), pProperties);
     }
 }

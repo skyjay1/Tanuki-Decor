@@ -25,6 +25,6 @@ public class MinimalistCouchBlock extends WideChairBlock {
             box(1, 0, 13, 3, 3, 15));
 
     public MinimalistCouchBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, 10.0D / 16.0D, pProperties);
+        super(createShapeBuilder(SHAPE_EAST, SHAPE_WEST), 10.0D / 16.0D, pProperties);
     }
 }

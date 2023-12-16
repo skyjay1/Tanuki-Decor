@@ -22,6 +22,6 @@ public class MinimalistDresserBlock extends WideStorageBlock {
             box(1, 0, 12, 3, 2, 14));
 
     public MinimalistDresserBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, TDRegistry.BlockEntityReg.MINIMALIST_DRESSER, pProperties);
+        super(TDRegistry.BlockEntityReg.MINIMALIST_DRESSER, createShapeBuilder(SHAPE_EAST, SHAPE_WEST), pProperties);
     }
 }

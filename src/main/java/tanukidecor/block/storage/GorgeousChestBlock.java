@@ -26,6 +26,6 @@ public class GorgeousChestBlock extends WideStorageBlock {
             box(0, 14, 1, 16, 16, 15));
 
     public GorgeousChestBlock(Properties pProperties) {
-        super(SHAPE_EAST, SHAPE_WEST, TDRegistry.BlockEntityReg.GORGEOUS_CHEST, pProperties);
+        super(TDRegistry.BlockEntityReg.GORGEOUS_CHEST, createShapeBuilder(SHAPE_EAST, SHAPE_WEST), pProperties);
     }
 }

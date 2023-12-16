@@ -6,18 +6,25 @@
 
 package tanukidecor;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -29,9 +36,11 @@ import tanukidecor.block.clock.*;
 import tanukidecor.block.entity.*;
 import tanukidecor.block.light.*;
 import tanukidecor.block.misc.*;
+import tanukidecor.block.recipe.DIYRecipe;
 import tanukidecor.block.seat.*;
 import tanukidecor.block.storage.*;
 import tanukidecor.item.MultiblockItem;
+import tanukidecor.menu.DIYWorkbenchMenu;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -45,6 +54,9 @@ public final class TDRegistry {
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MODID);
     private static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
+    private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MODID);
+    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, MODID);
+    private static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
 
     // NOTE first priority is clocks, then storage, seating, bedding, lighting, and misc
     // NOTE the following blocks are re-categorized from the specs:
@@ -59,6 +71,8 @@ public final class TDRegistry {
         ItemReg.register();
         BlockEntityReg.register();
         SoundReg.register();
+        RecipeReg.register();
+        MenuReg.register();
     }
 
     public static final class BlockReg {
@@ -294,6 +308,8 @@ public final class TDRegistry {
 
 
         // MISC //
+        public static final RegistryObject<Block> DIY_WORKBENCH = registerWithItem("diy_workbench", () ->
+                new DIYWorkbenchBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 30.0F)) );
         public static final RegistryObject<Block> HOLIDAY_TREE = registerWithItem("holiday_tree", () ->
                 new HolidayTreeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> HOURGLASS = registerWithItem("hourglass", () ->
@@ -435,7 +451,8 @@ public final class TDRegistry {
                         BlockReg.MINIMALIST_DRESSER.get(), BlockReg.MINIMALIST_MIRROR.get(), BlockReg.MINIMALIST_WARDROBE.get(),
                         BlockReg.REGAL_ARMOIRE.get(), BlockReg.REGAL_BOOKSHELF.get(), BlockReg.REGAL_DRESSER.get(), BlockReg.REGAL_VANITY.get(),
                         BlockReg.SWEETS_CLOSET.get(), BlockReg.SWEETS_DRESSER.get(),
-                        BlockReg.WOODEN_BLOCK_DRAWERS.get())
+                        BlockReg.WOODEN_BLOCK_DRAWERS.get(),
+                        BlockReg.DIY_WORKBENCH.get())
                 .build(null));
 
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> ANTIQUE_BOOKCASE = registerStorage(
@@ -510,6 +527,9 @@ public final class TDRegistry {
                 () -> BlockEntityReg.WOODEN_BLOCK_DRAWERS, 6, BlockReg.WOODEN_BLOCK_DRAWERS);
 
         // MISC //
+        public static final RegistryObject<BlockEntityType<DIYWorkbenchBlockEntity>> DIY_WORKBENCH = BLOCK_ENTITY_TYPES.register("diy_workbench", () -> BlockEntityType.Builder
+                .of((pos, state) -> new DIYWorkbenchBlockEntity(BlockEntityReg.DIY_WORKBENCH.get(), pos, state), BlockReg.DIY_WORKBENCH.get())
+                .build(null));
         public static final RegistryObject<BlockEntityType<HourglassBlockEntity>> HOURGLASS = BLOCK_ENTITY_TYPES.register("hourglass", () -> BlockEntityType.Builder
                 .of((pos, state) -> new HourglassBlockEntity(BlockEntityReg.HOURGLASS.get(), pos, state), BlockReg.HOURGLASS.get())
                 .build(null));
@@ -578,5 +598,37 @@ public final class TDRegistry {
         private static RegistryObject<SoundEvent> register(final String name) {
             return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(TanukiDecor.MODID, name)));
         }
+    }
+
+    public static final class RecipeReg {
+
+        private static void register() {
+            RECIPE_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+            RECIPE_SERIALIZERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        }
+
+        public static final RegistryObject<RecipeSerializer<DIYRecipe>> DIY_SERIALIZER = RECIPE_SERIALIZERS.register(DIYRecipe.Serializer.CATEGORY, () -> new DIYRecipe.Serializer());
+
+        public static final RegistryObject<RecipeType<DIYRecipe>> DIY = RECIPE_TYPES.register(DIYRecipe.Serializer.CATEGORY, () -> new RecipeType<>() {
+            @Override
+            public String toString() {
+                return DIYRecipe.Serializer.CATEGORY;
+            }
+        });
+    }
+
+    public static final class MenuReg {
+
+        private static void register() {
+            MENU_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        }
+
+        public static final RegistryObject<MenuType<DIYWorkbenchMenu>> DIY_WORKBENCH = MENU_TYPES.register("diy_workbench", () ->
+                IForgeMenuType.create((windowId, inv, data) -> {
+                    BlockPos pos = data.readBlockPos();
+                    Container container = (Container) inv.player.level.getBlockEntity(pos);
+                    return new DIYWorkbenchMenu(windowId, inv, pos, container);
+                })
+        );
     }
 }

@@ -25,6 +25,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.util.MultiblockHandler;
+import tanukidecor.util.ShapeBuilder;
 import tanukidecor.util.ShapeUtils;
 
 import java.util.HashMap;
@@ -36,9 +37,9 @@ public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleW
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
-    protected final Function<BlockState, VoxelShape> shapeBuilder;
+    protected final ShapeBuilder shapeBuilder;
 
-    public RotatingBlock(Properties pProperties, Function<BlockState, VoxelShape> shapeBuilder) {
+    public RotatingBlock(Properties pProperties, ShapeBuilder shapeBuilder) {
         super(pProperties);
         this.shapeBuilder = shapeBuilder;
         this.registerDefaultState(this.stateDefinition.any()
@@ -90,7 +91,7 @@ public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleW
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
-    public static Function<BlockState, VoxelShape> createShapeBuilder(final VoxelShape shape) {
+    public static ShapeBuilder createShapeBuilder(final VoxelShape shape) {
         return blockState -> {
             final Direction facing =  blockState.getValue(FACING);
             return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);

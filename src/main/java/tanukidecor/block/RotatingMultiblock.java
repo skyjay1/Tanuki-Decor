@@ -32,6 +32,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.storage.IDelegateProvider;
 import tanukidecor.util.MultiblockHandler;
+import tanukidecor.util.ShapeBuilder;
 import tanukidecor.util.ShapeUtils;
 
 import java.util.EnumMap;
@@ -53,10 +54,10 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
     protected final Map<BlockState, VoxelShape> multiblockShapes = new HashMap<>();
 
-    private final Function<BlockState, VoxelShape> shapeBuilder;
+    private final ShapeBuilder shapeBuilder;
 
     protected RotatingMultiblock(MultiblockHandler multiblockHandler,
-                                 Function<BlockState, VoxelShape> shapeBuilder,
+                                 ShapeBuilder shapeBuilder,
                                  Properties pProperties) {
         super(pProperties.dynamicShape());
         this.multiblockHandler = multiblockHandler;
@@ -245,7 +246,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
      * @param template the array of voxel shapes ordered by {@code [height][width][depth]}
      * @return a shape builder for the given handler that uses the {@link #FACING} property to rotate shapes
      */
-    public static Function<BlockState, VoxelShape> createHorizontalShapeBuilder(final MultiblockHandler handler, final VoxelShape[][][] template) {
+    public static ShapeBuilder createHorizontalShapeBuilder(final MultiblockHandler handler, final VoxelShape[][][] template) {
         return blockState -> {
             final Vec3i index = handler.getIndex(blockState);
             final Vec3i dimensions = handler.getDimensions();

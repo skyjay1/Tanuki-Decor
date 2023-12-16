@@ -19,6 +19,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.block.RotatingWideBlock;
 import tanukidecor.util.MultiblockHandler;
+import tanukidecor.util.ShapeBuilder;
 
 import java.util.Random;
 
@@ -27,13 +28,12 @@ public class WideChairBlock extends RotatingWideBlock implements ISeatProvider {
     private double seatYOffset;
 
     /**
-     * @param eastShape the shape of the east half
-     * @param westShape the shape of the west half
+     * @param shapeBuilder the shape builder function
      * @param seatYOffset the y offset of the seat in block units, generally 2 pixels above the seat part of the model
      * @param pProperties the block properties
      */
-    public WideChairBlock(final VoxelShape eastShape, final VoxelShape westShape, final double seatYOffset, Properties pProperties) {
-        super(eastShape, westShape, pProperties.randomTicks());
+    public WideChairBlock(final ShapeBuilder shapeBuilder, final double seatYOffset, Properties pProperties) {
+        super(pProperties.randomTicks(), shapeBuilder);
         this.seatYOffset = seatYOffset;
     }
 

@@ -8,6 +8,7 @@ package tanukidecor.block.seat;
 
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import tanukidecor.block.RotatingBlock;
 
 public class SweetsSofaBlock extends WideChairBlock {
 
@@ -16,6 +17,6 @@ public class SweetsSofaBlock extends WideChairBlock {
             box(0, 8, 9, 16, 16, 16));
 
     public SweetsSofaBlock(Properties pProperties) {
-        super(SHAPE, SHAPE, 10.0D / 16.0D, pProperties);
+        super(RotatingBlock.createShapeBuilder(SHAPE), 10.0D / 16.0D, pProperties);
     }
 }
