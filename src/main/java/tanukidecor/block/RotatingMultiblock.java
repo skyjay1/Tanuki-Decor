@@ -39,7 +39,6 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 
 /**
  * Handles waterloggable, horizontally directional, variable size multiblocks
@@ -90,10 +89,15 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
 
     //// STATE PROPERTIES ////
 
+    /**
+     * @param pBuilder the state definition builder
+     * @deprecated use and override {@link #createMultiblockStateDefinition(StateDefinition.Builder)}
+     */
     @Override
+    @Deprecated
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         // note: this method is called from the super constructor before the multiblockHandler is assigned
-        super.createBlockStateDefinition(pBuilder);
+        super.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
     }
 
     protected void createMultiblockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -246,7 +250,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
      * @param template the array of voxel shapes ordered by {@code [height][width][depth]}
      * @return a shape builder for the given handler that uses the {@link #FACING} property to rotate shapes
      */
-    public static ShapeBuilder createHorizontalShapeBuilder(final MultiblockHandler handler, final VoxelShape[][][] template) {
+    public static ShapeBuilder createMultiblockShapeBuilder(final MultiblockHandler handler, final VoxelShape[][][] template) {
         return blockState -> {
             final Vec3i index = handler.getIndex(blockState);
             final Vec3i dimensions = handler.getDimensions();

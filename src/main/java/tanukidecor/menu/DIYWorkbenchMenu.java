@@ -155,9 +155,9 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
     //// CONTAINER LISTENER ////
 
     private void onTakeResult(Player player, ItemStack result, int count) {
-        if(this.inventory.player.level.isClientSide()) {
+        //if(this.inventory.player.level.isClientSide()) {
             //return;
-        }
+        //}
         // remove items
         for(int i = 0; i < CONTAINER_SLOTS; i++) {
             this.container.removeItem(i, count);

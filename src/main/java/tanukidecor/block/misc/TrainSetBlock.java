@@ -81,7 +81,7 @@ public class TrainSetBlock extends RotatingMultiblock implements EntityBlock {
     };
 
     public TrainSetBlock(Properties pProperties) {
-        super(HOLLOW_MULTIBLOCK_HANDLER, RotatingMultiblock.createHorizontalShapeBuilder(HOLLOW_MULTIBLOCK_HANDLER, SHAPE), pProperties);
+        super(HOLLOW_MULTIBLOCK_HANDLER, RotatingMultiblock.createMultiblockShapeBuilder(HOLLOW_MULTIBLOCK_HANDLER, SHAPE), pProperties);
         this.registerDefaultState(this.multiblockHandler.getIndexedState(this.stateDefinition.any(), DEFAULT_INDEX)
                 .setValue(WATERLOGGED, false)
                 .setValue(FACING, Direction.NORTH));

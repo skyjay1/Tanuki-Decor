@@ -35,7 +35,7 @@ public class DoubleBedBlock extends RotatingMultiblock implements IBedProvider {
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
     public DoubleBedBlock(final VoxelShape[][][] shape, Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X1X2, RotatingMultiblock.createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X1X2, shape), pProperties);
+        super(MultiblockHandler.MULTIBLOCK_2X1X2, RotatingMultiblock.createMultiblockShapeBuilder(MultiblockHandler.MULTIBLOCK_2X1X2, shape), pProperties);
         this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
                 .setValue(WATERLOGGED, false)
                 .setValue(FACING, Direction.NORTH)

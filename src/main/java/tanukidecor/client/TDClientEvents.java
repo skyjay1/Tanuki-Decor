@@ -114,7 +114,12 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.REGAL_BED.get(), RenderType.cutout());
             // LIGHT //
             registerRenderLayer(BlockReg.ANTIQUE_WALL_OIL_LAMP.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.BLUE_LAMP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.CABANA_LAMP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.EGYPTIAN_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.GORGEOUS_LAMP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GREEN_LAMP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.LARGE_FIREPLACE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.MINIMALIST_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.NEON_CLUB_SIGN.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.NEON_DIAMOND_SIGN.get(), RenderType.cutout());
@@ -122,6 +127,7 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.NEON_SPADE_SIGN.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.REGAL_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SMALL_FIREPLACE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.SWEETS_MINI_LAMP.get(), RenderType.cutout());
             // MISC //
             registerRenderLayer(BlockReg.DIY_WORKBENCH.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.HOLIDAY_TREE.get(), RenderType.cutout());

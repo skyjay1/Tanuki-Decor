@@ -30,7 +30,7 @@ public class LibraryClockBlock extends RotatingMultiblock implements EntityBlock
     protected final Supplier<SoundEvent> tickSound;
 
     public LibraryClockBlock(Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X3X1, createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X3X1, LIBRARY_CLOCK_SHAPE), pProperties);
+        super(MultiblockHandler.MULTIBLOCK_2X3X1, createMultiblockShapeBuilder(MultiblockHandler.MULTIBLOCK_2X3X1, LIBRARY_CLOCK_SHAPE), pProperties);
         this.tickSound = TDRegistry.SoundReg.GRANDFATHER_CLOCK_TICK;
         this.chimeSound = TDRegistry.SoundReg.GRANDFATHER_CLOCK_CHIME;
     }

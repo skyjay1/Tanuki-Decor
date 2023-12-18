@@ -28,7 +28,7 @@ import tanukidecor.util.MultiblockHandler;
 public class AntiqueWardrobeBlock extends RotatingMultiblock implements EntityBlock {
 
     public AntiqueWardrobeBlock(Properties pProperties) {
-        super(MultiblockHandler.MULTIBLOCK_2X2X1, RotatingMultiblock.createHorizontalShapeBuilder(MultiblockHandler.MULTIBLOCK_2X2X1, SHAPE), pProperties);
+        super(MultiblockHandler.MULTIBLOCK_2X2X1, RotatingMultiblock.createMultiblockShapeBuilder(MultiblockHandler.MULTIBLOCK_2X2X1, SHAPE), pProperties);
     }
 
     //// CONTAINER ////

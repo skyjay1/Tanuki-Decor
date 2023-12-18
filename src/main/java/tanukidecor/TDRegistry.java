@@ -287,18 +287,32 @@ public final class TDRegistry {
         // LIGHT //
         public static final RegistryObject<Block> ANTIQUE_WALL_OIL_LAMP = registerWithItem("antique_wall_oil_lamp", () ->
                 new AntiqueWallOilLamp(BlockBehaviour.Properties.of(Material.METAL).lightLevel(b -> b.getValue(RotatingBlock.WATERLOGGED) ? 0 : 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> BLUE_LAMP = registerWithItem("blue_lamp", () ->
+                new BlueLampBlock(BlockBehaviour.Properties.of(Material.WOOD).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> CABANA_LAMP = registerWithItem("cabana_lamp", () ->
+                new CabanaLampBlock(BlockBehaviour.Properties.of(Material.WOOD).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> EGYPTIAN_LAMP = registerWithItem("egyptian_lamp", () ->
+                new EgyptianLampBlock(2, BlockBehaviour.Properties.of(Material.METAL).lightLevel(b -> !b.getValue(TallBlock.WATERLOGGED) ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GORGEOUS_LAMP = registerWithItem("gorgeous_lamp", () ->
                 new GorgeousLampBlock(BlockBehaviour.Properties.of(Material.WOOD).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> GREEN_LAMP = registerWithItem("green_lamp", () ->
+                new GreenLampBlock(BlockBehaviour.Properties.of(Material.WOOD).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> LARGE_FIREPLACE = registerWithMultiblockItem("large_fireplace", () ->
+                new LargeFireplaceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_RED).lightLevel(b -> b.getValue(RotatingBlock.WATERLOGGED) ? 0 : 14).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> MINIMALIST_LAMP = registerWithItem("minimalist_lamp", () ->
                 new MinimalistLampBlock(BlockBehaviour.Properties.of(Material.WOOD).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> NEON_CLUB_SIGN = registerWithItem("neon_club_sign", () ->
-                new NeonSign(BlockBehaviour.Properties.of(Material.METAL).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+                new NeonSignBlock(BlockBehaviour.Properties.of(Material.METAL).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> NEON_DIAMOND_SIGN = registerWithItem("neon_diamond_sign", () ->
-                new NeonSign(BlockBehaviour.Properties.of(Material.METAL).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+                new NeonSignBlock(BlockBehaviour.Properties.of(Material.METAL).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> NEON_HEART_SIGN = registerWithItem("neon_heart_sign", () ->
-                new NeonSign(BlockBehaviour.Properties.of(Material.METAL).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+                new NeonSignBlock(BlockBehaviour.Properties.of(Material.METAL).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> NEON_SPADE_SIGN = registerWithItem("neon_spade_sign", () ->
-                new NeonSign(BlockBehaviour.Properties.of(Material.METAL).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+                new NeonSignBlock(BlockBehaviour.Properties.of(Material.METAL).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> SWEETS_MINI_LAMP = registerWithItem("sweets_mini_lamp", () ->
+                new SweetsMiniLampBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> SWEETS_WALL_LAMP = registerWithItem("sweets_wall_lamp", () ->
+                new SweetsWallLampBlock(BlockBehaviour.Properties.of(Material.WOOD).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_LAMP = registerWithItem("regal_lamp", () ->
                 new RegalLampBlock(BlockBehaviour.Properties.of(Material.WOOD).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_WALL_LAMP = registerWithItem("regal_wall_lamp", () ->

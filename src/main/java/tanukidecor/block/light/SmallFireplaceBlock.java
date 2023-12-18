@@ -28,7 +28,7 @@ public class SmallFireplaceBlock extends RotatingWideBlock {
             box(0, 0, 0, 16, 2, 16),
             box(0, 14, 0, 16, 16, 16));
     public static final VoxelShape SHAPE_WEST = Shapes.or(
-            box(2, 2, 2, 16, 14, 12),
+            box(2, 2, 2, 16, 14, 16),
             box(0, 0, 0, 16, 2, 16),
             box(0, 14, 0, 16, 16, 16));
 

@@ -15,11 +15,16 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingBlock;
 
-public class NeonSign extends RotatingBlock {
+public class SweetsWallLampBlock extends RotatingBlock {
 
-    public static final VoxelShape SHAPE = box(0, 0, 15, 16, 16, 16);
+    public static final VoxelShape SHAPE = Shapes.or(
+            box(5, 3, 14, 11, 9, 16),
+            box(7, 0, 10, 9, 3, 12),
+            box(6, 3, 9, 10, 10, 13),
+            box(5.5D, 10, 8.5D, 10.5D, 13, 13.5D),
+            box(6.5D, 13, 8.5D, 11.5D, 15, 13.5D));
 
-    public NeonSign(Properties pProperties) {
+    public SweetsWallLampBlock(Properties pProperties) {
         super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
