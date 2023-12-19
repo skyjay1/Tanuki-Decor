@@ -14,6 +14,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -50,8 +51,14 @@ public class EgyptianLampBlock extends TallBlock {
     }
 
     @Override
+    public boolean isBurning(BlockState state, BlockGetter level, BlockPos pos) {
+        return state.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER && !state.getValue(WATERLOGGED);
+    }
+
+    @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         if (!pEntity.fireImmune() && pState.getValue(HALF) == DoubleBlockHalf.UPPER && !pState.getValue(WATERLOGGED)
+                && !(pEntity.position().y() < pPos.getY())
                 && pEntity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)pEntity)) {
             pEntity.hurt(DamageSource.IN_FIRE, this.fireDamage);
         }
@@ -61,7 +68,7 @@ public class EgyptianLampBlock extends TallBlock {
 
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, Random pRandom) {
-        if(pState.getValue(HALF) != DoubleBlockHalf.UPPER || pState.getValue(WATERLOGGED)) {
+        if(!pState.isBurning(pLevel, pPos)) {
             return;
         }
         // play sound

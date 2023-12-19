@@ -28,6 +28,7 @@ import tanukidecor.TDRegistry.BlockEntityReg;
 import tanukidecor.block.seat.ISeatProvider;
 import tanukidecor.client.blockentity.clock.*;
 import tanukidecor.client.blockentity.misc.HourglassBER;
+import tanukidecor.client.blockentity.misc.PhonographBER;
 import tanukidecor.client.blockentity.misc.TrainSetBER;
 import tanukidecor.client.menu.DIYWorkbenchScreen;
 
@@ -129,9 +130,13 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.SMALL_FIREPLACE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SWEETS_MINI_LAMP.get(), RenderType.cutout());
             // MISC //
+            registerRenderLayer(BlockReg.ANTIQUE_PHONE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.BLUE_TABLE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.DIY_WORKBENCH.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GUMBALL_MACHINE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.HOLIDAY_TREE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.HOURGLASS.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.PHONOGRAPH.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SHIP_IN_A_BOTTLE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.TRAIN_SET.get(), RenderType.cutout());
         }
@@ -175,6 +180,7 @@ public final class TDClientEvents {
             event.registerBlockEntityRenderer(BlockEntityReg.WOODEN_BLOCK_CLOCK.get(), WoodenBlockClockBER::new);
             // MISC //
             event.registerBlockEntityRenderer(BlockEntityReg.HOURGLASS.get(), HourglassBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.PHONOGRAPH.get(), PhonographBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.TRAIN_SET.get(), TrainSetBER::new);
         }
 
@@ -215,6 +221,7 @@ public final class TDClientEvents {
             WoodenBlockClockBER.addSpecialModels(set);
             // MISC //
             HourglassBER.addSpecialModels(set);
+            PhonographBER.addSpecialModels(set);
             TrainSetBER.addSpecialModels(set);
             // register special models
             set.forEach(ForgeModelBakery::addSpecialModel);

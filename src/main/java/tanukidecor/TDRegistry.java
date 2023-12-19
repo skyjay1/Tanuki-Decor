@@ -322,16 +322,43 @@ public final class TDRegistry {
 
 
         // MISC //
+        public static final RegistryObject<Block> ANTIQUE_PHONE = registerWithItem("antique_phone", () ->
+                new AntiquePhoneBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> ANTIQUE_RADIO = registerWithItem("antique_radio", () ->
+                new AntiqueRadioBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> ANTIQUE_SMALL_TABLE = registerWithItem("antique_small_table", () ->
+                new AntiqueSmallTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> ANTIQUE_SMALL_TABLE_WITH_DOILY = registerWithItem("antique_small_table_with_doily", () ->
+                new AntiqueSmallTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
+        // TODO antique table (split up model)
+        public static final RegistryObject<Block> BLUE_TABLE = registerWithMultiblockItem("blue_table", () ->
+                new BlueTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> DIY_WORKBENCH = registerWithItem("diy_workbench", () ->
                 new DIYWorkbenchBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 30.0F)) );
+        public static final RegistryObject<Block> GREEN_COUNTER = registerWithItem("green_counter", () ->
+                new GreenCounterBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> GREEN_TABLE = registerWithMultiblockItem("green_table", () ->
+                new GreenTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> GUMBALL_MACHINE = registerWithItem("gumball_machine", () ->
+                new GumballMachineBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> HOLIDAY_TREE = registerWithItem("holiday_tree", () ->
                 new HolidayTreeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> HOURGLASS = registerWithItem("hourglass", () ->
                 new HourglassBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> MINIMALIST_SMALL_TABLE = registerWithItem("minimalist_small_table", () ->
+                new MinimalistSmallTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> MINIMALIST_TABLE = registerWithItem("minimalist_table", () ->
+                new MinimalistTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> PHONOGRAPH = registerWithItem("phonograph", () ->
+                new PhonographBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> SHIP_IN_A_BOTTLE = registerWithItem("ship_in_a_bottle", () ->
                 new ShipInABottleBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> TRAIN_SET = registerWithItem("train_set", () ->
                 new TrainSetBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 30.0F)) );
+        public static final RegistryObject<Block> WOODEN_BLOCK_BOOKSHELF = registerWithItem("wooden_block_bookshelf", () ->
+                new WoodenBlockBookshelfBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 30.0F)) );
+        public static final RegistryObject<Block> WOODEN_BLOCK_TABLE = registerWithMultiblockItem("wooden_block_table", () ->
+                new WoodenBlockTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
 
 
 
@@ -466,7 +493,7 @@ public final class TDRegistry {
                         BlockReg.REGAL_ARMOIRE.get(), BlockReg.REGAL_BOOKSHELF.get(), BlockReg.REGAL_DRESSER.get(), BlockReg.REGAL_VANITY.get(),
                         BlockReg.SWEETS_CLOSET.get(), BlockReg.SWEETS_DRESSER.get(),
                         BlockReg.WOODEN_BLOCK_DRAWERS.get(),
-                        BlockReg.DIY_WORKBENCH.get())
+                        BlockReg.DIY_WORKBENCH.get(), BlockReg.PHONOGRAPH.get())
                 .build(null));
 
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> ANTIQUE_BOOKCASE = registerStorage(
@@ -546,6 +573,9 @@ public final class TDRegistry {
                 .build(null));
         public static final RegistryObject<BlockEntityType<HourglassBlockEntity>> HOURGLASS = BLOCK_ENTITY_TYPES.register("hourglass", () -> BlockEntityType.Builder
                 .of((pos, state) -> new HourglassBlockEntity(BlockEntityReg.HOURGLASS.get(), pos, state), BlockReg.HOURGLASS.get())
+                .build(null));
+        public static final RegistryObject<BlockEntityType<PhonographBlockEntity>> PHONOGRAPH = BLOCK_ENTITY_TYPES.register("phonograph", () -> BlockEntityType.Builder
+                .of((pos, state) -> new PhonographBlockEntity(BlockEntityReg.PHONOGRAPH.get(), pos, state), BlockReg.PHONOGRAPH.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<TrainSetBlockEntity>> TRAIN_SET = BLOCK_ENTITY_TYPES.register("train_set", () -> BlockEntityType.Builder
                 .of((pos, state) -> new TrainSetBlockEntity(BlockEntityReg.TRAIN_SET.get(), pos, state), BlockReg.TRAIN_SET.get())
