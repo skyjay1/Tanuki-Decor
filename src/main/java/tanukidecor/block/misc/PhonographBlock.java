@@ -47,9 +47,8 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
     public static final BooleanProperty HAS_RECORD = BlockStateProperties.HAS_RECORD;
 
     public static final VoxelShape SHAPE_UPPER = Shapes.or(
-            box(7, -1, 14, 9, 1, 16),
-            box(7, 0, 12, 9, 2, 14),
-            box(7, 1, 10, 9, 3, 12),
+            box(7, -2, 13, 9, 0, 15),
+            box(7, -1, 10, 9, 1, 13),
             box(5, -1, 3, 11, 4, 10));
     public static final VoxelShape SHAPE_LOWER = Shapes.or(
             box(1, 0, 1, 15, 2, 15),

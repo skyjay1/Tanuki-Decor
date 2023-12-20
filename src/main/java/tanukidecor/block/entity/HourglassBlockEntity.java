@@ -132,11 +132,6 @@ public class HourglassBlockEntity extends BlockEntity {
         return tag;
     }
 
-    @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        super.handleUpdateTag(tag);
-    }
-
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {

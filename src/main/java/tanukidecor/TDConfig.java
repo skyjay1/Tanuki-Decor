@@ -11,8 +11,14 @@ import net.minecraftforge.common.ForgeConfigSpec;
 public class TDConfig {
 
     public final ForgeConfigSpec.BooleanValue isDIYWorkbenchEnabled;
+    public final ForgeConfigSpec.DoubleValue slotMachineJackboxChance;
 
     public TDConfig(final ForgeConfigSpec.Builder builder) {
-        isDIYWorkbenchEnabled = builder.define("enable_diy_workbench", true);
+        isDIYWorkbenchEnabled = builder
+                .comment("True to allow the DIY Workbench to craft items, false to disable")
+                .define("enable_diy_workbench", true);
+        slotMachineJackboxChance = builder
+                .comment("The percent chance of an instant jackpot, in addition to the natural 6.25% chance")
+                .defineInRange("slot_machine_jackbox_chance", 15.0D, 0.0D, 100.0D);
     }
 }

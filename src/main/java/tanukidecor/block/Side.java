@@ -21,6 +21,13 @@ public enum Side implements StringRepresentable {
         this.name = name;
     }
 
+    public Side getOpposite() {
+        if(this == LEFT) {
+            return RIGHT;
+        }
+        return LEFT;
+    }
+
     @Override
     public String getSerializedName() {
         return this.name;

@@ -29,6 +29,7 @@ import tanukidecor.block.seat.ISeatProvider;
 import tanukidecor.client.blockentity.clock.*;
 import tanukidecor.client.blockentity.misc.HourglassBER;
 import tanukidecor.client.blockentity.misc.PhonographBER;
+import tanukidecor.client.blockentity.misc.SlotMachineBER;
 import tanukidecor.client.blockentity.misc.TrainSetBER;
 import tanukidecor.client.menu.DIYWorkbenchScreen;
 
@@ -131,14 +132,36 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.SWEETS_MINI_LAMP.get(), RenderType.cutout());
             // MISC //
             registerRenderLayer(BlockReg.ANTIQUE_PHONE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.CASH_REGISTER.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.BLUE_TABLE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.DIY_WORKBENCH.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GORGEOUS_COUNTER.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.GUMBALL_MACHINE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.HOLIDAY_TREE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.HOURGLASS.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.NARROW_BLUE_STREAMER.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.NARROW_GREEN_STREAMER.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.NARROW_RED_STREAMER.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.NARROW_YELLOW_STREAMER.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.NARROW_STRING_LIGHTS.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.PHONOGRAPH.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SHIP_IN_A_BOTTLE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.SLOT_MACHINE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.BLUE_STALL_TARP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GREEN_STALL_TARP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.RED_STALL_TARP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.YELLOW_STALL_TARP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.SWEETS_MINI_TABLE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.TRAIN_SET.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.BLUE_WALL_TARP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GREEN_WALL_TARP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.RED_WALL_TARP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.YELLOW_WALL_TARP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.WIDE_BLUE_STREAMER.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.WIDE_GREEN_STREAMER.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.WIDE_RED_STREAMER.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.WIDE_YELLOW_STREAMER.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.WIDE_STRING_LIGHTS.get(), RenderType.cutout());
         }
 
         private static void registerRenderLayer(final Block block, RenderType renderType) {
@@ -181,6 +204,7 @@ public final class TDClientEvents {
             // MISC //
             event.registerBlockEntityRenderer(BlockEntityReg.HOURGLASS.get(), HourglassBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.PHONOGRAPH.get(), PhonographBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.SLOT_MACHINE.get(), SlotMachineBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.TRAIN_SET.get(), TrainSetBER::new);
         }
 
@@ -222,6 +246,7 @@ public final class TDClientEvents {
             // MISC //
             HourglassBER.addSpecialModels(set);
             PhonographBER.addSpecialModels(set);
+            SlotMachineBER.addSpecialModels(set);
             TrainSetBER.addSpecialModels(set);
             // register special models
             set.forEach(ForgeModelBakery::addSpecialModel);
