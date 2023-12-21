@@ -333,10 +333,26 @@ public final class TDRegistry {
         // TODO antique table (split up model)
         public static final RegistryObject<Block> BLUE_TABLE = registerWithMultiblockItem("blue_table", () ->
                 new BlueTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> CABANA_SCREEN = registerWithMultiblockItem("cabana_screen", () ->
+                new CabanaScreenBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> CABANA_TABLE = registerWithItem("cabana_table", () ->
+                new CabanaTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> CASH_REGISTER = registerWithItem("cash_register", () ->
                 new CashRegisterBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> DESSERT_CASE = registerWithMultiblockItem("dessert_case", () ->
+                new DessertCaseBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> DISPLAY_CASE = registerWithItem("display_case", () ->
+                new DisplayCaseBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).noOcclusion().strength(1.5F, 30.0F)) );
+        public static final RegistryObject<Block> LONG_DISPLAY_CASE = registerWithItem("long_display_case", () ->
+                new LongDisplayCaseBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).noOcclusion().strength(2.0F, 30.0F)) );
         public static final RegistryObject<Block> DIY_WORKBENCH = registerWithItem("diy_workbench", () ->
                 new DIYWorkbenchBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 30.0F)) );
+        public static final RegistryObject<Block> EGYPTIAN_CREST = registerWithItem("egyptian_crest", () ->
+                new EgyptianCrestBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> EGYPTIAN_TABLE = registerWithItem("egyptian_table", () ->
+                new EgyptianTableBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> FIREWOOD = registerWithItem("firewood", () ->
+                new FirewoodBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 1.5F)) );
         public static final RegistryObject<Block> GREEN_COUNTER = registerWithItem("green_counter", () ->
                 new GreenCounterBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_TABLE = registerWithMultiblockItem("green_table", () ->
@@ -351,10 +367,14 @@ public final class TDRegistry {
                 new HolidayTreeBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> HOURGLASS = registerWithItem("hourglass", () ->
                 new HourglassBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> METRONOME = registerWithItem("metronome", () ->
+                new MetronomeBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> MINIMALIST_SMALL_TABLE = registerWithItem("minimalist_small_table", () ->
                 new MinimalistSmallTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> MINIMALIST_TABLE = registerWithItem("minimalist_table", () ->
                 new MinimalistTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> MAYORAL_MINI_FIGURE = registerWithItem("mayoral_mini_figure", () ->
+                new MiniFigureBlock(BlockBehaviour.Properties.of(Material.WOOL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_BLUE_STREAMER = registerWithItem("narrow_blue_streamer", () ->
                 new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_GREEN_STREAMER = registerWithItem("narrow_green_streamer", () ->
@@ -367,6 +387,8 @@ public final class TDRegistry {
                 new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).lightLevel(b -> 14).noCollission().noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> PHONOGRAPH = registerWithItem("phonograph", () ->
                 new PhonographBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> PIANO = registerWithMultiblockItem("piano", () ->
+                new PianoBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> REGAL_SMALL_TABLE = registerWithItem("regal_small_table", () ->
                 new RegalSmallTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_TABLE = registerWithItem("regal_table", () ->
@@ -375,6 +397,8 @@ public final class TDRegistry {
                 new ShipInABottleBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> SLOT_MACHINE = registerWithItem("slot_machine", () ->
                 new SlotMachineBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> SNOWGLOBE = registerWithItem("snowglobe", () ->
+                new SnowglobeBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> BLUE_STALL_TARP = registerWithWallMultiblockItem("blue_stall_tarp", () ->
                 new StallTarpBlock(BlockBehaviour.Properties.of(Material.WOOL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_STALL_TARP = registerWithWallMultiblockItem("green_stall_tarp", () ->
@@ -405,6 +429,18 @@ public final class TDRegistry {
                 new WallTarpBlock(BlockBehaviour.Properties.of(Material.WOOL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> YELLOW_WALL_TARP = registerWithWallMultiblockItem("yellow_wall_tarp", () ->
                 new WallTarpBlock(BlockBehaviour.Properties.of(Material.WOOL).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> CLASSIC_VASE = registerWithItem("classic_vase", () ->
+                new VaseBlock(VaseBlock.CLASSIC_SHAPE, BlockBehaviour.Properties.of(Material.STONE).noOcclusion().strength(2.0F, 30.0F)) );
+        public static final RegistryObject<Block> FANCY_VASE = registerWithItem("fancy_vase", () ->
+                new VaseBlock(VaseBlock.FANCY_SHAPE, BlockBehaviour.Properties.of(Material.STONE).noOcclusion().strength(2.0F, 30.0F)) );
+        public static final RegistryObject<Block> LARGE_FANCY_VASE = registerWithItem("large_fancy_vase", () ->
+                new LargeVaseBlock(LargeVaseBlock.LARGE_FANCY_SHAPE_UPPER, LargeVaseBlock.LARGE_FANCY_SHAPE_LOWER, BlockBehaviour.Properties.of(Material.STONE).noOcclusion().strength(2.0F, 30.0F)) );
+        public static final RegistryObject<Block> LARGE_STRIPED_VASE = registerWithItem("large_striped_vase", () ->
+                new LargeVaseBlock(LargeVaseBlock.LARGE_STRIPED_SHAPE_UPPER, LargeVaseBlock.LARGE_STRIPED_SHAPE_LOWER, BlockBehaviour.Properties.of(Material.STONE).noOcclusion().strength(2.0F, 30.0F)) );
+        public static final RegistryObject<Block> SMALL_FANCY_VASE = registerWithItem("small_fancy_vase", () ->
+                new VaseBlock(VaseBlock.SMALL_FANCY_SHAPE, BlockBehaviour.Properties.of(Material.STONE).noOcclusion().strength(2.0F, 30.0F)) );
+        public static final RegistryObject<Block> SMALL_STRIPED_VASE = registerWithItem("small_striped_vase", () ->
+                new VaseBlock(VaseBlock.SMALL_STRIPED_SHAPE, BlockBehaviour.Properties.of(Material.STONE).noOcclusion().strength(2.0F, 30.0F)) );
         public static final RegistryObject<Block> WIDE_BLUE_STREAMER = registerWithItem("wide_blue_streamer", () ->
                 new WideStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> WIDE_GREEN_STREAMER = registerWithItem("wide_green_streamer", () ->
@@ -552,7 +588,8 @@ public final class TDRegistry {
                         BlockReg.REGAL_ARMOIRE.get(), BlockReg.REGAL_BOOKSHELF.get(), BlockReg.REGAL_DRESSER.get(), BlockReg.REGAL_VANITY.get(),
                         BlockReg.SWEETS_CLOSET.get(), BlockReg.SWEETS_DRESSER.get(),
                         BlockReg.WOODEN_BLOCK_DRAWERS.get(),
-                        BlockReg.DIY_WORKBENCH.get(), BlockReg.PHONOGRAPH.get())
+                        BlockReg.DIY_WORKBENCH.get(), BlockReg.PHONOGRAPH.get(), BlockReg.LARGE_FANCY_VASE.get(), BlockReg.LARGE_STRIPED_VASE.get(),
+                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get())
                 .build(null));
 
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> ANTIQUE_BOOKCASE = registerStorage(
@@ -627,11 +664,18 @@ public final class TDRegistry {
                 () -> BlockEntityReg.WOODEN_BLOCK_DRAWERS, 6, BlockReg.WOODEN_BLOCK_DRAWERS);
 
         // MISC //
+        public static final RegistryObject<BlockEntityType<DisplayCaseBlockEntity>> DISPLAY_CASE = BLOCK_ENTITY_TYPES.register("display_case", () -> BlockEntityType.Builder
+                .of((pos, state) -> new DisplayCaseBlockEntity(BlockEntityReg.DISPLAY_CASE.get(), pos, state),
+                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get())
+                .build(null));
         public static final RegistryObject<BlockEntityType<DIYWorkbenchBlockEntity>> DIY_WORKBENCH = BLOCK_ENTITY_TYPES.register("diy_workbench", () -> BlockEntityType.Builder
                 .of((pos, state) -> new DIYWorkbenchBlockEntity(BlockEntityReg.DIY_WORKBENCH.get(), pos, state), BlockReg.DIY_WORKBENCH.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<HourglassBlockEntity>> HOURGLASS = BLOCK_ENTITY_TYPES.register("hourglass", () -> BlockEntityType.Builder
                 .of((pos, state) -> new HourglassBlockEntity(BlockEntityReg.HOURGLASS.get(), pos, state), BlockReg.HOURGLASS.get())
+                .build(null));
+        public static final RegistryObject<BlockEntityType<MetronomeBlockEntity>> METRONOME = BLOCK_ENTITY_TYPES.register("metronome", () -> BlockEntityType.Builder
+                .of((pos, state) -> new MetronomeBlockEntity(BlockEntityReg.METRONOME.get(), pos, state), BlockReg.METRONOME.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<PhonographBlockEntity>> PHONOGRAPH = BLOCK_ENTITY_TYPES.register("phonograph", () -> BlockEntityType.Builder
                 .of((pos, state) -> new PhonographBlockEntity(BlockEntityReg.PHONOGRAPH.get(), pos, state), BlockReg.PHONOGRAPH.get())
@@ -641,6 +685,11 @@ public final class TDRegistry {
                 .build(null));
         public static final RegistryObject<BlockEntityType<TrainSetBlockEntity>> TRAIN_SET = BLOCK_ENTITY_TYPES.register("train_set", () -> BlockEntityType.Builder
                 .of((pos, state) -> new TrainSetBlockEntity(BlockEntityReg.TRAIN_SET.get(), pos, state), BlockReg.TRAIN_SET.get())
+                .build(null));
+        public static final RegistryObject<BlockEntityType<SingleSlotBlockEntity>> VASE = BLOCK_ENTITY_TYPES.register("vase", () -> BlockEntityType.Builder
+                .of((pos, state) -> new SingleSlotBlockEntity(BlockEntityReg.VASE.get(), pos, state),
+                        BlockReg.CLASSIC_VASE.get(), BlockReg.FANCY_VASE.get(), BlockReg.LARGE_FANCY_VASE.get(),
+                        BlockReg.LARGE_STRIPED_VASE.get(), BlockReg.SMALL_FANCY_VASE.get(), BlockReg.SMALL_STRIPED_VASE.get())
                 .build(null));
 
         /**

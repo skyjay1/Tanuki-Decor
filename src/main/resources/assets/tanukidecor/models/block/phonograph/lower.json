@@ -84,8 +84,8 @@
     },
     {
       "name": "phonograph_3",
-      "from": [7, 13, 13],
-      "to": [9, 14, 15],
+      "from": [6.99, 13, 12.99],
+      "to": [9.01, 14, 15.01],
       "faces": {
         "north": {"uv": [0.5, 13.75, 0, 14], "texture": "#phonograph"},
         "east": {"uv": [0, 13.75, 0.5, 14], "texture": "#phonograph"},

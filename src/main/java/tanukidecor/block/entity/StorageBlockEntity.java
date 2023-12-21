@@ -44,7 +44,7 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
         this(pType, pPos, pBlockState, rows, rows * 9);
     }
 
-    protected StorageBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, int rows, int slots) {
+    public StorageBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, int rows, int slots) {
         super(pType, pPos, pBlockState);
         this.rows = rows;
         this.slots = slots;

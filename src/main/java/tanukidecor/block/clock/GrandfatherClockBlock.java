@@ -42,18 +42,18 @@ public class GrandfatherClockBlock extends RotatingMultiblock implements EntityB
 
     @Nullable
     @Override
-    public SoundEvent getChimeSound() {
+    public SoundEvent getChimeSound(BlockState blockState) {
         return this.chimeSound.get();
     }
 
     @Nullable
     @Override
-    public SoundEvent getTickSound() {
+    public SoundEvent getTickSound(BlockState blockState) {
         return this.tickSound.get();
     }
 
     @Override
-    public int getTickSoundInterval() {
+    public int getTickSoundInterval(BlockState blockState) {
         return 40;
     }
 

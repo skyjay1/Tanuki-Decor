@@ -6,6 +6,7 @@
 
 package tanukidecor.block.clock;
 
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.TDRegistry;
 
@@ -21,7 +22,7 @@ public class RedClockBlock extends ClockBlock {
     //// CHIME PROVIDER ////
 
     @Override
-    public boolean isTimeToChime(long dayTime) {
+    public boolean isTimeToChime(BlockState blockState, long dayTime) {
         return dayTime == DAWN;
     }
 }

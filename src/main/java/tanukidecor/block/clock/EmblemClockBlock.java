@@ -41,23 +41,23 @@ public class EmblemClockBlock extends RotatingMultiblock implements EntityBlock,
 
     @Nullable
     @Override
-    public SoundEvent getChimeSound() {
+    public SoundEvent getChimeSound(BlockState blockState) {
         return this.chimeSound.get();
     }
 
     @Nullable
     @Override
-    public SoundEvent getTickSound() {
+    public SoundEvent getTickSound(BlockState blockState) {
         return this.tickSound.get();
     }
 
     @Override
-    public float getChimeVolume(Random random, long dayTime) {
+    public float getChimeVolume(BlockState blockState, Random random, long dayTime) {
         return 4.0F;
     }
 
     @Override
-    public float getTickVolume(Random random, long dayTime) {
+    public float getTickVolume(BlockState blockState, Random random, long dayTime) {
         return 1.5F;
     }
 

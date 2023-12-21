@@ -66,10 +66,10 @@ public class ClockBlockEntity extends BlockEntity {
         final long dayTime = level.getDayTime() % 24000L;
         final Random random = level.getRandom();
         // attempt to play tick sound
-        final SoundEvent tickSound = chimeProvider.getTickSound();
-        if(tickSound != null && gameTime % chimeProvider.getTickSoundInterval() == 0) {
-            final float pitch = chimeProvider.getTickPitch(random, dayTime);
-            final float volume = chimeProvider.getTickVolume(random, dayTime);
+        final SoundEvent tickSound = chimeProvider.getTickSound(blockState);
+        if(tickSound != null && gameTime % chimeProvider.getTickSoundInterval(blockState) == 0) {
+            final float pitch = chimeProvider.getTickPitch(blockState, random, dayTime);
+            final float volume = chimeProvider.getTickVolume(blockState, random, dayTime);
             level.playSound(null, blockPos, tickSound, SoundSource.BLOCKS, volume, pitch);
         }
     }
@@ -86,10 +86,10 @@ public class ClockBlockEntity extends BlockEntity {
         final long dayTime = level.getDayTime() % 24000L;
         final Random random = level.getRandom();
         // attempt to play chime sound
-        final SoundEvent chimeSound = chimeProvider.getChimeSound();
-        if(chimeSound != null && this.chimeProvider.isTimeToChime(dayTime)) {
-            final float pitch = chimeProvider.getChimePitch(random, dayTime);
-            final float volume = chimeProvider.getChimeVolume(random, dayTime);
+        final SoundEvent chimeSound = chimeProvider.getChimeSound(blockState);
+        if(chimeSound != null && this.chimeProvider.isTimeToChime(blockState, dayTime)) {
+            final float pitch = chimeProvider.getChimePitch(blockState, random, dayTime);
+            final float volume = chimeProvider.getChimeVolume(blockState, random, dayTime);
             level.playSound(null, blockPos, chimeSound, SoundSource.BLOCKS, volume, pitch);
         }
     }
@@ -124,6 +124,6 @@ public class ClockBlockEntity extends BlockEntity {
 
     @Override
     public AABB getRenderBoundingBox() {
-        return super.getRenderBoundingBox().inflate(1);
+        return new AABB(getBlockPos()).inflate(1);
     }
 }

@@ -6,6 +6,7 @@
 
 package tanukidecor.block.clock;
 
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -37,7 +38,7 @@ public class AntiqueClockBlock extends TallClockBlock {
     //// CHIME PROVIDER ////
 
     @Override
-    public int getTickSoundInterval() {
+    public int getTickSoundInterval(BlockState blockState) {
         return 40;
     }
 }

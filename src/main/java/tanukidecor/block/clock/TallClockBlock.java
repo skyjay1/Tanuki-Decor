@@ -52,13 +52,13 @@ public class TallClockBlock extends RotatingTallBlock implements EntityBlock, IC
 
     @Nullable
     @Override
-    public SoundEvent getTickSound() {
+    public SoundEvent getTickSound(BlockState blockState) {
         return this.tickSound.get();
     }
 
     @Nullable
     @Override
-    public SoundEvent getChimeSound() {
+    public SoundEvent getChimeSound(BlockState blockState) {
         return this.chimeSound.get();
     }
 

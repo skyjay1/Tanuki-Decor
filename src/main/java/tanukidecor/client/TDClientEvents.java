@@ -27,7 +27,9 @@ import tanukidecor.TDRegistry.BlockReg;
 import tanukidecor.TDRegistry.BlockEntityReg;
 import tanukidecor.block.seat.ISeatProvider;
 import tanukidecor.client.blockentity.clock.*;
+import tanukidecor.client.blockentity.misc.DisplayCaseBER;
 import tanukidecor.client.blockentity.misc.HourglassBER;
+import tanukidecor.client.blockentity.misc.MetronomeBER;
 import tanukidecor.client.blockentity.misc.PhonographBER;
 import tanukidecor.client.blockentity.misc.SlotMachineBER;
 import tanukidecor.client.blockentity.misc.TrainSetBER;
@@ -132,9 +134,15 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.SWEETS_MINI_LAMP.get(), RenderType.cutout());
             // MISC //
             registerRenderLayer(BlockReg.ANTIQUE_PHONE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.CASH_REGISTER.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.BLUE_TABLE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.CABANA_SCREEN.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.CABANA_TABLE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.CASH_REGISTER.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.DESSERT_CASE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.DISPLAY_CASE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.LONG_DISPLAY_CASE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.DIY_WORKBENCH.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.EGYPTIAN_CREST.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.GORGEOUS_COUNTER.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.GUMBALL_MACHINE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.HOLIDAY_TREE.get(), RenderType.cutout());
@@ -144,9 +152,13 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.NARROW_RED_STREAMER.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.NARROW_YELLOW_STREAMER.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.NARROW_STRING_LIGHTS.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.MAYORAL_MINI_FIGURE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.METRONOME.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.PHONOGRAPH.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.PIANO.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SHIP_IN_A_BOTTLE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SLOT_MACHINE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.SNOWGLOBE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.BLUE_STALL_TARP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.GREEN_STALL_TARP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.RED_STALL_TARP.get(), RenderType.cutout());
@@ -202,7 +214,9 @@ public final class TDClientEvents {
             event.registerBlockEntityRenderer(BlockEntityReg.STATION_CLOCK.get(), StationClockBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.WOODEN_BLOCK_CLOCK.get(), WoodenBlockClockBER::new);
             // MISC //
+            event.registerBlockEntityRenderer(BlockEntityReg.DISPLAY_CASE.get(), DisplayCaseBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.HOURGLASS.get(), HourglassBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.METRONOME.get(), MetronomeBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.PHONOGRAPH.get(), PhonographBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.SLOT_MACHINE.get(), SlotMachineBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.TRAIN_SET.get(), TrainSetBER::new);
@@ -245,6 +259,7 @@ public final class TDClientEvents {
             WoodenBlockClockBER.addSpecialModels(set);
             // MISC //
             HourglassBER.addSpecialModels(set);
+            MetronomeBER.addSpecialModels(set);
             PhonographBER.addSpecialModels(set);
             SlotMachineBER.addSpecialModels(set);
             TrainSetBER.addSpecialModels(set);

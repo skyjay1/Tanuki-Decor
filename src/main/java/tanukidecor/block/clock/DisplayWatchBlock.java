@@ -6,6 +6,7 @@
 
 package tanukidecor.block.clock;
 
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.TDRegistry;
@@ -27,7 +28,7 @@ public class DisplayWatchBlock extends ClockBlock {
     //// CHIME PROVIDER ////
 
     @Override
-    public float getTickVolume(Random random, long dayTime) {
+    public float getTickVolume(BlockState blockState, Random random, long dayTime) {
         return 0.4F;
     }
 }

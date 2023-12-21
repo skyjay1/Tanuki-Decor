@@ -7,6 +7,7 @@
 package tanukidecor.block.clock;
 
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -18,62 +19,81 @@ public interface IChimeProvider {
     public static final long MIDNIGHT = 18000L;
     public static final long MIN_CHIME_INTERVAL = 40L;
 
-    /** @return the chime sound, if any **/
-    @Nullable default SoundEvent getChimeSound() {
+    /**
+     * @param blockState the block state
+     * @return the chime sound, if any
+     **/
+    @Nullable default SoundEvent getChimeSound(BlockState blockState) {
         return null;
     }
 
-    /** @return the tick sound, if any **/
-    @Nullable default SoundEvent getTickSound() {
+    /**
+     * @param blockState the block state
+     * @return the tick sound, if any
+     **/
+    @Nullable default SoundEvent getTickSound(BlockState blockState) {
         return null;
     }
 
-    /** @return the number of ticks to wait before playing the next tick sound **/
-    default int getTickSoundInterval() {
+    /**
+     * @param blockState the block state
+     * @return the number of ticks to wait before playing the next tick sound
+     **/
+    default int getTickSoundInterval(BlockState blockState) {
         return 20;
     }
 
     /**
+     *
+     * @param blockState the block state
      * @param dayTime the day time
      * @return true to play a chime sound in this tick
      */
-    default boolean isTimeToChime(final long dayTime) {
+    default boolean isTimeToChime(BlockState blockState, final long dayTime) {
         return dayTime == NOON || dayTime == (NOON + MIN_CHIME_INTERVAL) || dayTime == MIDNIGHT;
     }
 
     /**
+     *
+     * @param blockState the block state
      * @param random the random instance
      * @param dayTime the day time from 0 to 24000
      * @return the volume of the chime sound
      */
-    default float getChimeVolume(Random random, long dayTime) {
+    default float getChimeVolume(BlockState blockState, Random random, long dayTime) {
         return 1.0F;
     }
 
     /**
+     *
+     * @param blockState the block state
      * @param random the random instance
      * @param dayTime the day time from 0 to 24000
      * @return the pitch of the chime sound
      */
-    default float getChimePitch(Random random, long dayTime) {
+    default float getChimePitch(BlockState blockState, Random random, long dayTime) {
         return 1.0F;
     }
 
     /**
+     *
+     * @param blockState the block state
      * @param random the random instance
      * @param dayTime the day time from 0 to 24000
      * @return the volume of the tick sound
      */
-    default float getTickVolume(Random random, long dayTime) {
+    default float getTickVolume(BlockState blockState, Random random, long dayTime) {
         return 0.6F;
     }
 
     /**
+     *
+     * @param blockState the block state
      * @param random the random instance
      * @param dayTime the day time from 0 to 24000
      * @return the pitch of the tick sound
      */
-    default float getTickPitch(Random random, long dayTime) {
+    default float getTickPitch(BlockState blockState, Random random, long dayTime) {
         return 1.0F;
     }
 }

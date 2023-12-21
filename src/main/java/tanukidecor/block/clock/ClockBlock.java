@@ -51,13 +51,13 @@ public class ClockBlock extends RotatingBlock implements EntityBlock, IChimeProv
 
     @Nullable
     @Override
-    public SoundEvent getTickSound() {
+    public SoundEvent getTickSound(BlockState blockState) {
         return this.tickSound.get();
     }
 
     @Nullable
     @Override
-    public SoundEvent getChimeSound() {
+    public SoundEvent getChimeSound(BlockState blockState) {
         return this.chimeSound.get();
     }
 
