@@ -27,14 +27,8 @@ public class TanukiDecor {
     public static final TDConfig CONFIG = new TDConfig(CONFIG_BUILDER);
 
     public TanukiDecor() {
-        // TODO remove tests when done
-        TDUnitTests.run();
-        // register config
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CONFIG_BUILDER.build());
         // register common config
-        // TODO
-        // register client config
-        // TODO
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CONFIG_BUILDER.build());
         // register network
         TDNetwork.register();
         // register registry objects

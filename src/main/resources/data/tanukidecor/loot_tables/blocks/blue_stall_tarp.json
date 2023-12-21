@@ -12,7 +12,7 @@
           "condition": "minecraft:block_state_property",
           "properties": {
             "width": 1,
-            "height": 1
+            "depth": 1
           }
         }
       ],

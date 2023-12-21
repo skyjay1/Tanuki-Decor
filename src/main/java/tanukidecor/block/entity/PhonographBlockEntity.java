@@ -41,8 +41,15 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
         }
         // drop recording, if any
         if(blockEntity.hasRecord()) {
-            // drop record item
-            blockEntity.dropContents();
+            ItemStack record = blockEntity.getRecord();
+            // remove item
+            blockEntity.clearContent();
+            // give to player
+            if(player.getItemInHand(hand).isEmpty()) {
+                player.setItemInHand(hand, record);
+            } else if(!player.getInventory().add(record)) {
+                player.drop(record, false);
+            }
             // stop playing sound
             level.levelEvent(LevelEvent.SOUND_PLAY_RECORDING, pos, 0);
             // update block

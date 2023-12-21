@@ -93,8 +93,8 @@ public class SingleSlotBlockEntity extends BlockEntity implements Container, Cle
             return InteractionResult.SUCCESS;
         } else if(!heldItem.isEmpty()) {
             // play sound
-            level.playSound(null, pos, SoundEvents.STONE_HIT, SoundSource.BLOCKS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
-            return InteractionResult.SUCCESS;
+            //level.playSound(null, pos, SoundEvents.STONE_HIT, SoundSource.BLOCKS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
+            return InteractionResult.FAIL;
         }
         return InteractionResult.CONSUME;
     }

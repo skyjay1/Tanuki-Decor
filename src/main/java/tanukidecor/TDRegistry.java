@@ -376,15 +376,15 @@ public final class TDRegistry {
         public static final RegistryObject<Block> MAYORAL_MINI_FIGURE = registerWithItem("mayoral_mini_figure", () ->
                 new MiniFigureBlock(BlockBehaviour.Properties.of(Material.WOOL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_BLUE_STREAMER = registerWithItem("narrow_blue_streamer", () ->
-                new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(1.5F, 6.0F)) );
+                new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_GREEN_STREAMER = registerWithItem("narrow_green_streamer", () ->
-                new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(1.5F, 6.0F)) );
+                new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_RED_STREAMER = registerWithItem("narrow_red_streamer", () ->
-                new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(1.5F, 6.0F)) );
+                new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_YELLOW_STREAMER = registerWithItem("narrow_yellow_streamer", () ->
-                new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(1.5F, 6.0F)) );
+                new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_STRING_LIGHTS = registerWithItem("narrow_string_lights", () ->
-                new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).lightLevel(b -> 14).noCollission().noOcclusion().strength(1.5F, 6.0F)) );
+                new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).lightLevel(b -> 14).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
         public static final RegistryObject<Block> PHONOGRAPH = registerWithItem("phonograph", () ->
                 new PhonographBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> PIANO = registerWithMultiblockItem("piano", () ->
@@ -394,7 +394,7 @@ public final class TDRegistry {
         public static final RegistryObject<Block> REGAL_TABLE = registerWithItem("regal_table", () ->
                 new RegalTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> SHIP_IN_A_BOTTLE = registerWithItem("ship_in_a_bottle", () ->
-                new ShipInABottleBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
+                new ShipInABottleBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> SLOT_MACHINE = registerWithItem("slot_machine", () ->
                 new SlotMachineBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> SNOWGLOBE = registerWithItem("snowglobe", () ->
@@ -420,7 +420,7 @@ public final class TDRegistry {
         public static final RegistryObject<Block> WOODEN_BLOCK_TABLE = registerWithMultiblockItem("wooden_block_table", () ->
                 new WoodenBlockTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> WOODEN_BLOCK_TOYS = registerWithItem("wooden_block_toys", () ->
-                new WoodenBlockToysBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(1.5F, 6.0F)) );
+                new WoodenBlockToysBlock(BlockBehaviour.Properties.of(Material.METAL).noCollission().noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> BLUE_WALL_TARP = registerWithWallMultiblockItem("blue_wall_tarp", () ->
                 new WallTarpBlock(BlockBehaviour.Properties.of(Material.WOOL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_WALL_TARP = registerWithWallMultiblockItem("green_wall_tarp", () ->
@@ -442,15 +442,15 @@ public final class TDRegistry {
         public static final RegistryObject<Block> SMALL_STRIPED_VASE = registerWithItem("small_striped_vase", () ->
                 new VaseBlock(VaseBlock.SMALL_STRIPED_SHAPE, BlockBehaviour.Properties.of(Material.STONE).noOcclusion().strength(2.0F, 30.0F)) );
         public static final RegistryObject<Block> WIDE_BLUE_STREAMER = registerWithItem("wide_blue_streamer", () ->
-                new WideStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(2.0F, 10.0F)) );
+                new WideStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
         public static final RegistryObject<Block> WIDE_GREEN_STREAMER = registerWithItem("wide_green_streamer", () ->
-                new WideStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(2.0F, 10.0F)) );
+                new WideStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
         public static final RegistryObject<Block> WIDE_RED_STREAMER = registerWithItem("wide_red_streamer", () ->
-                new WideStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(2.0F, 10.0F)) );
+                new WideStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
         public static final RegistryObject<Block> WIDE_YELLOW_STREAMER = registerWithItem("wide_yellow_streamer", () ->
-                new WideStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(2.0F, 10.0F)) );
+                new WideStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
         public static final RegistryObject<Block> WIDE_STRING_LIGHTS = registerWithItem("wide_string_lights", () ->
-                new WideStreamerBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).lightLevel(b -> 14).noCollission().noOcclusion().strength(2.0F, 10.0F)) );
+                new WideStreamerBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).lightLevel(b -> 14).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
 
 
         // HELPER METHODS //

@@ -13,7 +13,7 @@ import tanukidecor.util.MultiblockHandler;
 
 public class CabanaScreenBlock extends RotatingMultiblock {
 
-    public static final VoxelShape SHAPE = box(0, 0, 5, 16, 16, 7);
+    public static final VoxelShape SHAPE = box(0, 0, 6, 16, 16, 8);
 
     public CabanaScreenBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X2X1, RotatingBlock.createShapeBuilder(SHAPE), pProperties);

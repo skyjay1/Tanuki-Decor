@@ -59,7 +59,7 @@ public class AntiqueWallOilLamp extends RotatingBlock {
             return;
         }
         final Direction direction = pState.getValue(FACING);
-        final Vec3 offset = new Vec3(-2.0D / 16.0D * direction.getStepX(), 11 / 16.0D, -2.0D / 16.0D * direction.getStepZ()); // TODO rotate around origin
+        final Vec3 offset = new Vec3(-2.0D / 16.0D * direction.getStepX(), 11 / 16.0D, -2.0D / 16.0D * direction.getStepZ());
         final Vec3 pos = Vec3.atBottomCenterOf(pPos).add(offset);
         pLevel.addParticle(ParticleTypes.SMOKE, pos.x(), pos.y(), pos.z(), 0.0D, 0.0D, 0.0D);
     }

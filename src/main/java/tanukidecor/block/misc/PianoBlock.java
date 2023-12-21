@@ -69,7 +69,7 @@ public class PianoBlock extends RotatingMultiblock {
                 .add(0, 0.7D, 0);
         serverLevel.sendParticles(player, ParticleTypes.NOTE, true,
                 vec.x(), vec.y(), vec.z(),
-                1, 0, 0, 0, note / 24.0D);
+                1, 0.25F, 0, 0, note / 24.0D);
     }
 
     //// SHAPE ////

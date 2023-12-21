@@ -17,6 +17,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -26,6 +28,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.RotatingMultiblock;
+import tanukidecor.block.entity.SlotMachineBlockEntity;
+import tanukidecor.block.entity.TrainSetBlockEntity;
 import tanukidecor.util.MultiblockHandler;
 
 import java.util.function.Consumer;
@@ -104,6 +108,12 @@ public class TrainSetBlock extends RotatingMultiblock implements EntityBlock {
             return TDRegistry.BlockEntityReg.TRAIN_SET.get().create(pPos, pState);
         }
         return null;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return !pLevel.isClientSide() ? (BlockEntityTicker<T>) (BlockEntityTicker<TrainSetBlockEntity>) (TrainSetBlockEntity::tick) : null;
     }
 
     //// SHAPE ////

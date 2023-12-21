@@ -124,6 +124,7 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.GORGEOUS_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.GREEN_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.LARGE_FIREPLACE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.MAYORAL_MINI_FIGURE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.MINIMALIST_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.NEON_CLUB_SIGN.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.NEON_DIAMOND_SIGN.get(), RenderType.cutout());

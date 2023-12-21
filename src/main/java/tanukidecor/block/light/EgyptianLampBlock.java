@@ -57,8 +57,8 @@ public class EgyptianLampBlock extends TallBlock {
 
     @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
-        if (!pEntity.fireImmune() && pState.getValue(HALF) == DoubleBlockHalf.UPPER && !pState.getValue(WATERLOGGED)
-                && !(pEntity.position().y() < pPos.getY())
+        if (pState.getValue(HALF) == DoubleBlockHalf.UPPER && !pState.getValue(WATERLOGGED)
+                && !pEntity.fireImmune() && !((pEntity.position().y() + 3.0D / 16.0D) < pPos.getY())
                 && pEntity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)pEntity)) {
             pEntity.hurt(DamageSource.IN_FIRE, this.fireDamage);
         }

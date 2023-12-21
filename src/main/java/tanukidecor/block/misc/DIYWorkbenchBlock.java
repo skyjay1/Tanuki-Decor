@@ -8,6 +8,7 @@ package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -61,7 +62,8 @@ public class DIYWorkbenchBlock extends RotatingTallBlock implements EntityBlock 
         }
         // check config settings
         if(!TanukiDecor.CONFIG.isDIYWorkbenchEnabled.get()) {
-            // TODO display message to user
+            // display message to user
+            pPlayer.displayClientMessage(new TranslatableComponent("message." + getDescriptionId() + ".disabled"), true);
             return InteractionResult.SUCCESS;
         }
         // determine block entity position

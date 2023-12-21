@@ -185,6 +185,8 @@
   "block.tanukidecor.yellow_stall_tarp": "Yellow Stall Tarp",
   "block.tanukidecor.yellow_wall_tarp": "Yellow Wall Tarp",
 
+  "message.block.tanukidecor.diy_workbench.disabled": "DIY crafting is disabled",
+
   "subtitle.block.tanukidecor.alarm_clock.tick": "Alarm clock ticks",
   "subtitle.block.tanukidecor.alarm_clock.chime": "Alarm clock rings",
   "subtitle.block.tanukidecor.clock_tower.tick": "Clock tower ticks",

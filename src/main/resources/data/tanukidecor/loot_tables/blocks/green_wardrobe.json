@@ -11,8 +11,7 @@
           "block": "tanukidecor:green_wardrobe",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "width": 1,
-            "height": 1
+            "half": "lower"
           }
         }
       ],
