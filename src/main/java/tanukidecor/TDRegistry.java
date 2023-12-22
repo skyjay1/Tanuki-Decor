@@ -330,7 +330,8 @@ public final class TDRegistry {
                 new AntiqueSmallTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> ANTIQUE_SMALL_TABLE_WITH_DOILY = registerWithItem("antique_small_table_with_doily", () ->
                 new AntiqueSmallTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
-        // TODO antique table (split up model)
+        public static final RegistryObject<Block> ANTIQUE_TABLE = registerWithMultiblockItem("antique_table", () ->
+                new AntiqueTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> BLUE_TABLE = registerWithMultiblockItem("blue_table", () ->
                 new BlueTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> CABANA_SCREEN = registerWithMultiblockItem("cabana_screen", () ->
@@ -728,6 +729,7 @@ public final class TDRegistry {
 
         public static final RegistryObject<SoundEvent> ALARM_CLOCK_TICK = register("block.alarm_clock.tick");
         public static final RegistryObject<SoundEvent> ALARM_CLOCK_CHIME = register("block.alarm_clock.chime");
+        public static final RegistryObject<SoundEvent> CASH_REGISTER_RING = register("block.cash_register.ring");
         public static final RegistryObject<SoundEvent> CLOCK_TOWER_TICK = register("block.clock_tower.tick");
         public static final RegistryObject<SoundEvent> CLOCK_TOWER_CHIME = register("block.clock_tower.chime");
         public static final RegistryObject<SoundEvent> CUCKOO_CLOCK_TICK = register("block.cuckoo_clock.tick");
@@ -742,6 +744,8 @@ public final class TDRegistry {
         public static final RegistryObject<SoundEvent> MEDIUM_CLOCK_TICK2 = register("block.medium_clock.tick2");
         public static final RegistryObject<SoundEvent> MEDIUM_CLOCK_CHIME = register("block.medium_clock.chime");
         public static final RegistryObject<SoundEvent> MEDIUM_CLOCK_CHIME2 = register("block.medium_clock.chime2");
+        public static final RegistryObject<SoundEvent> METRONOME_TICK = register("block.metronome.tick");
+        public static final RegistryObject<SoundEvent> MINI_FIGURE_SQUEAK = register("block.mini_figure.squeak");
         public static final RegistryObject<SoundEvent> POCKET_WATCH_TICK = register("block.pocket_watch.tick");
         public static final RegistryObject<SoundEvent> RECOGNIZABLE_CLOCK_CHIME = register("block.recognizable_clock.chime");
         public static final RegistryObject<SoundEvent> SLATE_CLOCK_CHIME = register("block.slate_clock.chime");

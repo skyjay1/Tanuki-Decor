@@ -7,6 +7,8 @@
 package tanukidecor.menu;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -166,6 +168,9 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         result.onCraftedBy(player.level, player, count);
         slotsChanged(this.container);
         slotsChanged(this.resultContainer);
+        // play sound
+        player.level.playSound(player, blockPos, SoundEvents.VILLAGER_WORK_MASON, SoundSource.PLAYERS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
+        player.level.playSound(player, blockPos, SoundEvents.VILLAGER_WORK_TOOLSMITH, SoundSource.PLAYERS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
     }
 
     //// PLAYER INVENTORY ////

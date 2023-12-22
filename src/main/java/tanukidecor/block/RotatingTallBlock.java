@@ -110,7 +110,7 @@ public class RotatingTallBlock extends HorizontalDirectionalBlock implements Sim
 
     @Override
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return getBlockShape(pState);
+        return this.hasCollision ? getBlockShape(pState) : Shapes.empty();
     }
 
     @Override

@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import tanukidecor.TDRegistry;
 import tanukidecor.block.misc.PhonographBlock;
 
 public class PhonographBlockEntity extends SingleSlotBlockEntity {
@@ -70,13 +71,25 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
         return InteractionResult.CONSUME;
     }
 
+    public static void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (level.getBlockEntity(pos) instanceof PhonographBlockEntity blockEntity) {
+            // drop contents and stop music
+            if(blockEntity.hasRecord()) {
+                level.levelEvent(LevelEvent.SOUND_PLAY_RECORDING, pos, 0);
+                blockEntity.dropContents();
+            }
+            // send redstone update
+            level.updateNeighbourForOutputSignal(pos, blockState.getBlock());
+        }
+    }
+
     //// CONTAINER ////
 
     @Override
     public void setChanged() {
         super.setChanged();
         // send updates
-        if(getLevel() != null && !getLevel().isClientSide()) {
+        if(getLevel() != null && !getLevel().isClientSide() && getLevel().getBlockState(getBlockPos()).is(TDRegistry.BlockReg.PHONOGRAPH.get())) {
             final boolean hasRecord = this.hasRecord();
             final boolean blockHasRecord = getBlockState().getValue(PhonographBlock.HAS_RECORD);
             if(hasRecord && !blockHasRecord) {

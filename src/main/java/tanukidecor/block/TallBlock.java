@@ -94,7 +94,7 @@ public class TallBlock extends Block implements SimpleWaterloggedBlock, IDelegat
 
     @Override
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return getBlockShape(pState);
+        return this.hasCollision ? getBlockShape(pState) : Shapes.empty();
     }
 
     @Override

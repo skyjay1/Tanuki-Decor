@@ -6,13 +6,21 @@
 
 package tanukidecor.client.menu.widget;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Transformation;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.StringUtil;
 import net.minecraft.world.item.ItemStack;
 import tanukidecor.block.recipe.DIYRecipe;
 import tanukidecor.client.menu.DIYWorkbenchScreen;
+
+import java.util.List;
 
 public class DIYRecipeButton extends ImageButton {
 
@@ -26,14 +34,19 @@ public class DIYRecipeButton extends ImageButton {
 
     protected ItemStack itemStack;
     protected DIYRecipe recipe;
-    protected float textScale;
+    protected Component text;
 
-    public DIYRecipeButton(int pX, int pY, final ItemRenderer itemRenderer, final Font fontRenderer, OnPress pOnPress) {
-        super(pX, pY, WIDTH, HEIGHT, 0, 216, DIYWorkbenchScreen.TEXTURE, pOnPress);
+    public DIYRecipeButton(int pX, int pY, final ItemRenderer itemRenderer, final Font fontRenderer,
+                           OnPress pOnPress, OnTooltip onTooltip) {
+        super(pX, pY, WIDTH, HEIGHT, 0, 216, HEIGHT, DIYWorkbenchScreen.TEXTURE, 256, 256, pOnPress, onTooltip, new TextComponent(""));
         this.itemRenderer = itemRenderer;
         this.fontRenderer = fontRenderer;
         this.recipe = null;
         this.itemStack = ItemStack.EMPTY;
+    }
+
+    public ItemStack getItemStack() {
+        return this.itemStack;
     }
 
     public DIYRecipe getRecipe() {
@@ -44,11 +57,8 @@ public class DIYRecipeButton extends ImageButton {
         this.recipe = recipe;
         this.itemStack = recipe.getResultItem();
         this.setMessage(this.itemStack.getHoverName());
-        // determine text scale
-        this.textScale = 1.0F;
-        if(this.fontRenderer.width(this.getMessage()) > TEXT_WIDTH) {
-            this.textScale = 0.5F;
-        }
+        final String message = StringUtil.truncateStringIfNecessary(this.itemStack.getHoverName().getString(), (int)(TEXT_WIDTH / 5.5F), true);
+        this.text = new TextComponent(message).withStyle(this.getMessage().getStyle());
     }
 
     @Override
@@ -62,10 +72,7 @@ public class DIYRecipeButton extends ImageButton {
             // render text
             x += 16 + 2;
             y = this.y + (this.fontRenderer.lineHeight) / 2;
-            pPoseStack.pushPose();
-            pPoseStack.scale(textScale, textScale, textScale);
-            this.fontRenderer.drawWordWrap(this.getMessage(), (int) (x / textScale), (int) (y / textScale), (int) (TEXT_WIDTH / textScale), 0);
-            pPoseStack.popPose();
+            this.fontRenderer.draw(pPoseStack, this.text, x, y, 0x404040);
         }
     }
 }

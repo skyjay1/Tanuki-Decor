@@ -11,6 +11,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -85,6 +87,9 @@ public class HourglassBlockEntity extends BlockEntity {
             getLevel().sendBlockUpdated(getBlockPos(), newState, newState, Block.UPDATE_ALL);
             // update redstone
             getLevel().updateNeighbourForOutputSignal(getBlockPos(), newState.getBlock());
+            // play sound
+            getLevel().playSound(null, getBlockPos(), SoundEvents.GLASS_HIT, SoundSource.BLOCKS, 1.0F, 0.8F + 0.4F * getLevel().getRandom().nextFloat());
+            getLevel().playSound(null, getBlockPos(), SoundEvents.SAND_PLACE, SoundSource.BLOCKS, 1.0F, 0.8F + 0.4F * getLevel().getRandom().nextFloat());
         }
     }
 

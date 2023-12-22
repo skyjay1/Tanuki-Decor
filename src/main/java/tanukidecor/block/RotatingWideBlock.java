@@ -109,7 +109,7 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
 
     @Override
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return getBlockShape(pState);
+        return this.hasCollision ? getBlockShape(pState) : Shapes.empty();
     }
 
     @Override

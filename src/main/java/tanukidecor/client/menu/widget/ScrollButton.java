@@ -71,15 +71,19 @@ public class ScrollButton extends Button {
 
     @Override
     public void onClick(double mouseX, double mouseY) {
-        this.dragging = true;
-        setValueFromMouse(mouseX, mouseY);
-        super.onClick(mouseX, mouseY);
+        if(isActive()) {
+            this.dragging = true;
+            setValueFromMouse(mouseX, mouseY);
+            super.onClick(mouseX, mouseY);
+        }
     }
 
     @Override
     public void onDrag(double mouseX, double mouseY, double dragX, double dragY) {
-        this.dragging = true;
-        setValueFromMouse(mouseX, mouseY);
+        if(isActive()) {
+            this.dragging = true;
+            setValueFromMouse(mouseX, mouseY);
+        }
     }
 
     @Override

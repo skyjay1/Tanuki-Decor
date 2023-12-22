@@ -127,6 +127,6 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
      * @return the pendulum angle in radians
      */
     public static float getPendulumRotation(final float speed, final float maximumAngle, final long time, final float partialTick) {
-        return Mth.sin(ClockBlockEntity.getSecond(time, partialTick) * speed * Mth.TWO_PI) * maximumAngle;
+        return Mth.sin(ClockBlockEntity.getSecond(time % 24000L, partialTick) * speed * Mth.TWO_PI) * maximumAngle;
     }
 }

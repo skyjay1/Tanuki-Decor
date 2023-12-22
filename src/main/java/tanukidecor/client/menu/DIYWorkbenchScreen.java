@@ -15,6 +15,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -59,6 +60,7 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
     private ScrollButton scrollButton;
     private EditBox editBox;
     private int scrollOffset;
+    private Component resultCountText;
 
     public DIYWorkbenchScreen(DIYWorkbenchMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -96,8 +98,9 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         //this.editBox.setEditable(false);
         // recipe buttons
         final Button.OnPress recipeButtonOnPress = b -> getMenu().selectRecipe(((DIYRecipeButton)b).getRecipe());
+        final Button.OnTooltip recipeButtonOnTooltip = (b, p, mx, my) -> renderTooltip(p, ((DIYRecipeButton)b).getItemStack(), mx, my);
         for(int i = 0, x = this.leftPos + RECIPE_X, y = this.topPos + RECIPE_Y; i < RECIPE_BUTTON_COUNT_Y; i++) {
-            this.recipeButtons.add(this.addRenderableWidget(new DIYRecipeButton(x, y + i * DIYRecipeButton.HEIGHT, this.itemRenderer, this.font, recipeButtonOnPress)));
+            this.recipeButtons.add(this.addRenderableWidget(new DIYRecipeButton(x, y + i * DIYRecipeButton.HEIGHT, this.itemRenderer, this.font, recipeButtonOnPress, recipeButtonOnTooltip)));
         }
         updateRecipes("");
         updateRecipeButtons();
@@ -137,8 +140,13 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
 
     @Override
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+        // render background
         this.renderBackground(pPoseStack);
+        // render labels and widgets
         super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        // render result count text
+        this.font.draw(pPoseStack, resultCountText, this.leftPos + SEARCH_X + SEARCH_WIDTH + 4, this.topPos + SEARCH_Y + (SEARCH_HEIGHT - font.lineHeight) / 2.0F, 0x404040);
+        // render tooltips
         this.renderTooltip(pPoseStack, pMouseX, pMouseY);
     }
 
@@ -180,6 +188,9 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         this.scrollButton.setScrollAmountMultiplier(1.0F / Math.max(1, sortedRecipes.size() - RECIPE_BUTTON_COUNT_Y));
         this.scrollButton.setScrollPercent(0);
         this.scrollButton.active = this.sortedRecipes.size() > RECIPE_BUTTON_COUNT_Y;
+        // update count text
+        this.resultCountText = new TextComponent("" + sortedRecipes.size());
+        // update recipe buttons
         this.updateRecipeButtons();
     }
 
@@ -191,7 +202,7 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
                 button.visible = button.active = false;
                 continue;
             }
-            button.visible = true;
+            button.visible = button.active = true;
             button.setRecipe(sortedRecipes.get(index).getValue());
         }
     }

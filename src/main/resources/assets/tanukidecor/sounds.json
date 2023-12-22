@@ -11,6 +11,10 @@
     "sounds": [ "tanukidecor:clock_tower_tick" ],
     "subtitle": "subtitle.block.tanukidecor.clock_tower.tick"
   },
+  "block.cash_register.ring": {
+    "sounds": [ "tanukidecor:cash_register_ring" ],
+    "subtitle": "subtitle.block.tanukidecor.cash_register.ring"
+  },
   "block.clock_tower.chime": {
     "sounds": [ "tanukidecor:clock_tower_chime" ],
     "subtitle": "subtitle.block.tanukidecor.clock_tower.chime"
@@ -62,6 +66,14 @@
   "block.medium_clock.chime2": {
     "sounds": [ "tanukidecor:medium_clock_chime_2" ],
     "subtitle": "subtitle.block.tanukidecor.medium_clock.chime"
+  },
+  "block.metronome.tick": {
+    "sounds": [ "tanukidecor:metronome_tick" ],
+    "subtitle": "subtitle.block.tanukidecor.metronome.tick"
+  },
+  "block.mini_figure.squeak": {
+    "sounds": [ "tanukidecor:mini_figure_squeak" ],
+    "subtitle": "subtitle.block.tanukidecor.mini_figure.squeak"
   },
   "block.pocket_watch.tick": {
     "sounds": [ "tanukidecor:pocket_watch_tick" ],

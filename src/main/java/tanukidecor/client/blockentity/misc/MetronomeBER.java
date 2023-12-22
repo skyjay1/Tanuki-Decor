@@ -58,7 +58,7 @@ public class MetronomeBER implements BlockEntityRenderer<MetronomeBlockEntity> {
             pendulumRotation = 0;
         } else {
             final int tickInterval = ((IChimeProvider)blockState.getBlock()).getTickSoundInterval(blockState);
-            final float time = ((pBlockEntity.getLevel().getGameTime() - tickInterval / 2) % 12000L) + pPartialTick;
+            final float time = ((pBlockEntity.getLevel().getGameTime()) % 12000L) + pPartialTick;
             final float speed = Mth.PI / (float) tickInterval;
             final float angle = 30.0F * Mth.DEG_TO_RAD;
             pendulumRotation = pBlockEntity.getBias() * Mth.sin(time * speed) * angle;

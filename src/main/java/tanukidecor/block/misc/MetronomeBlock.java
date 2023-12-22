@@ -47,7 +47,7 @@ public class MetronomeBlock extends RotatingBlock implements EntityBlock, IChime
 
     public MetronomeBlock(Properties pProperties) {
         super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
-        this.tickSound = TDRegistry.SoundReg.POCKET_WATCH_TICK;
+        this.tickSound = TDRegistry.SoundReg.METRONOME_TICK;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(SPEED, 1)
@@ -79,7 +79,7 @@ public class MetronomeBlock extends RotatingBlock implements EntityBlock, IChime
     @Nullable
     @Override
     public SoundEvent getTickSound(BlockState blockState) {
-        return blockState.getValue(SPEED) > 0 ? SoundEvents.STONE_BUTTON_CLICK_ON : null;
+        return blockState.getValue(SPEED) > 0 ? this.tickSound.get() : null;
     }
 
     @Override

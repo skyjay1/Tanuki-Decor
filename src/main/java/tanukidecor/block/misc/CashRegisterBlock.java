@@ -38,11 +38,8 @@ public class CashRegisterBlock extends RotatingBlock {
         if(pPlayer.isShiftKeyDown()) {
             return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
         }
-        if (pLevel.isClientSide()) {
-            return InteractionResult.SUCCESS;
-        }
         // play sound
-        pLevel.playSound(null, pPos, TDRegistry.SoundReg.LANTERN_CLOCK_CHIME.get(), SoundSource.BLOCKS, 1.0F, 0.8F + pPlayer.getRandom().nextFloat() * 0.4F);
+        pLevel.playSound(pPlayer, pPos, TDRegistry.SoundReg.CASH_REGISTER_RING.get(), SoundSource.BLOCKS, 1.0F, 0.95F + pPlayer.getRandom().nextFloat() * 0.1F);
         return InteractionResult.SUCCESS;
     }
 

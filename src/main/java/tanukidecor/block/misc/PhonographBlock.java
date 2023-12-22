@@ -77,6 +77,10 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
         // determine positions to update
         final BlockPos delegatePos = block.getDelegatePos(level.getBlockState(pos), pos);
         final BlockPos otherPos = delegatePos.above();
+        // check if block exists
+        if(!(level.getBlockState(delegatePos).is(TDRegistry.BlockReg.PHONOGRAPH.get()) && level.getBlockState(otherPos).is(TDRegistry.BlockReg.PHONOGRAPH.get()))) {
+            return;
+        }
         // update blocks
         level.setBlock(otherPos, level.getBlockState(otherPos).setValue(HAS_RECORD, hasRecord), Block.UPDATE_CLIENTS);
         level.setBlock(delegatePos, level.getBlockState(delegatePos).setValue(HAS_RECORD, hasRecord), Block.UPDATE_ALL);

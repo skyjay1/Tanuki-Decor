@@ -4,7 +4,8 @@
   "render_type": "minecraft:cutout",
   "texture_size": [64, 64],
   "textures": {
-    "lamp": "tanukidecor:block/blue_dresser"
+    "lamp": "tanukidecor:block/blue_dresser",
+    "particle": "#lamp"
   },
   "elements": [
     {

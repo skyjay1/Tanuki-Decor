@@ -4,7 +4,8 @@
   "render_type": "minecraft:cutout",
   "texture_size": [64, 64],
   "textures": {
-    "1": "tanukidecor:block/regal_clock"
+    "1": "tanukidecor:block/regal_clock",
+    "particle": "#1"
   },
   "elements": [
     {
