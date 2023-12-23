@@ -58,7 +58,7 @@ public class SmallClockTowerDialBlock extends RotatingMultiblock implements Enti
 
     @Override
     public float getTickVolume(BlockState blockState, Random random, long dayTime) {
-        return 1.5F;
+        return 1.25F;
     }
 
     @Override

@@ -46,8 +46,8 @@ public class HourglassBER implements BlockEntityRenderer<HourglassBlockEntity> {
         final Minecraft mc = Minecraft.getInstance();
         final BlockState blockState = pBlockEntity.getBlockState();
         final float percentage = pBlockEntity.getPercentageComplete(pPartialTick);
-        float scale = 1.0F - percentage;
         double dy = 9.5D / 16.0D;
+        float scale;
 
         final RenderType renderType = RenderType.cutout();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);

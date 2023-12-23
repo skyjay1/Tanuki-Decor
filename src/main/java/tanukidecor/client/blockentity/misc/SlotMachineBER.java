@@ -92,7 +92,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         dz = 4.0D / 16.0D;
         xRot = 90.0F * rotations.getX();
         if(pBlockEntity.isActive() && duration < 0.58F) {
-            xRot += (360 * 20) * Math.pow(8.0D, -10.0D * (duration - 0.18D));
+            xRot += (360 * 10) * Math.pow(8.0D, -10.0D * (duration - 0.18D));
         }
         pPoseStack.pushPose();
         pPoseStack.translate(0, 0, 0);
@@ -106,7 +106,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         // render slot 1
         xRot = 90.0F * rotations.getY();
         if(pBlockEntity.isActive() && duration < 0.78F) {
-            xRot += (360 * 40) * Math.pow(8.0D, -10.0D * (duration - 0.35D));
+            xRot += (360 * 20) * Math.pow(8.0D, -10.0D * (duration - 0.35D));
         }
         pPoseStack.pushPose();
         pPoseStack.translate(-2.0D / 16.0D, 0, 0);
@@ -120,7 +120,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         // render slot 2
         xRot = 90.0F * rotations.getZ();
         if(pBlockEntity.isActive() && duration < 0.99F) {
-            xRot += (360 * 60) * Math.pow(8.0D, -10.0D * (duration - 0.56D));
+            xRot += (360 * 30) * Math.pow(8.0D, -10.0D * (duration - 0.56D));
         }
         pPoseStack.translate(-4.0D / 16.0D, 0, 0);
         pPoseStack.pushPose();

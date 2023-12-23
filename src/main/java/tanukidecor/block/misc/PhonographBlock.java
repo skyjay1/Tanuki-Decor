@@ -13,33 +13,24 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.RecordItem;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.JukeboxBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.RotatingTallBlock;
-import tanukidecor.block.entity.DIYWorkbenchBlockEntity;
-import tanukidecor.block.entity.HourglassBlockEntity;
 import tanukidecor.block.entity.PhonographBlockEntity;
 
 public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
@@ -69,25 +60,6 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
     }
 
     //// METHODS ////
-
-    public static void setHasRecordAndUpdate(final Level level, final BlockState blockState, final BlockPos pos, final boolean hasRecord) {
-        if(!(blockState.getBlock() instanceof PhonographBlock block)) {
-            return;
-        }
-        // determine positions to update
-        final BlockPos delegatePos = block.getDelegatePos(level.getBlockState(pos), pos);
-        final BlockPos otherPos = delegatePos.above();
-        // check if block exists
-        if(!(level.getBlockState(delegatePos).is(TDRegistry.BlockReg.PHONOGRAPH.get()) && level.getBlockState(otherPos).is(TDRegistry.BlockReg.PHONOGRAPH.get()))) {
-            return;
-        }
-        // update blocks
-        level.setBlock(otherPos, level.getBlockState(otherPos).setValue(HAS_RECORD, hasRecord), Block.UPDATE_CLIENTS);
-        level.setBlock(delegatePos, level.getBlockState(delegatePos).setValue(HAS_RECORD, hasRecord), Block.UPDATE_ALL);
-        // send redstone update
-        level.updateNeighbourForOutputSignal(delegatePos, block);
-        level.updateNeighbourForOutputSignal(otherPos, block);
-    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -126,15 +98,27 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);
     }
 
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        if(pBlockEntityType == TDRegistry.BlockEntityReg.PHONOGRAPH.get() && pState.getValue(HAS_RECORD)) {
+            return (BlockEntityTicker<T>) (BlockEntityTicker<PhonographBlockEntity>) (PhonographBlockEntity::tick);
+        }
+        return null;
+    }
+
     //// REDSTONE ////
 
     @Override
+    public boolean isSignalSource(BlockState pState) {
+        return true;
+    }
+
+    @Override
     public int getSignal(BlockState pBlockState, BlockGetter pBlockAccess, BlockPos pPos, Direction pSide) {
-        BlockEntity blockentity = pBlockAccess.getBlockEntity(getDelegatePos(pBlockState, pPos));
-        if (blockentity instanceof PhonographBlockEntity blockEntity) {
-            Item item = blockEntity.getRecord().getItem();
-            if (item instanceof RecordItem) {
-                return ((RecordItem)item).getAnalogOutput();
+        if (pBlockAccess.getBlockEntity(getDelegatePos(pBlockState, pPos)) instanceof PhonographBlockEntity blockEntity) {
+            if (blockEntity.isRecordPlaying()) {
+                return 15;
             }
         }
         return 0;
@@ -147,9 +131,8 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
 
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        BlockEntity blockentity = level.getBlockEntity(getDelegatePos(state, pos));
-        if (blockentity instanceof PhonographBlockEntity blockEntity) {
-            Item item = blockEntity.getRecord().getItem();
+        if (level.getBlockEntity(getDelegatePos(state, pos)) instanceof PhonographBlockEntity blockEntity) {
+            Item item = blockEntity.getFirstItem().getItem();
             if (item instanceof RecordItem) {
                 return ((RecordItem)item).getAnalogOutput();
             }
