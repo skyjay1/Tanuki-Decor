@@ -7,13 +7,13 @@
 package tanukidecor;
 
 import com.mojang.logging.LogUtils;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.util.thread.EffectiveSide;
 import org.slf4j.Logger;
-import tanukidecor.client.TDClientEvents;
 import tanukidecor.network.TDNetwork;
 
 @Mod(TanukiDecor.MODID)
@@ -34,8 +34,6 @@ public class TanukiDecor {
         // register registry objects
         TDRegistry.register();
         // register client events
-        if(EffectiveSide.get().isClient()) {
-            TDClientEvents.register();
-        }
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> tanukidecor.client.TDClientEvents::register);
     }
 }

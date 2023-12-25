@@ -415,7 +415,7 @@ public final class TDRegistry {
         public static final RegistryObject<Block> SWEETS_TABLE = registerWithItem("sweets_table", () ->
                 new SweetsTableBlock(BlockBehaviour.Properties.of(Material.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> TRAIN_SET = registerWithItem("train_set", () ->
-                new TrainSetBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 30.0F)) );
+                new TrainSetBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().noCollission().strength(2.0F, 30.0F)) );
         public static final RegistryObject<Block> WOODEN_BLOCK_BOOKSHELF = registerWithItem("wooden_block_bookshelf", () ->
                 new WoodenBlockBookshelfBlock(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> WOODEN_BLOCK_TABLE = registerWithMultiblockItem("wooden_block_table", () ->
