@@ -188,6 +188,8 @@
 
   "message.block.tanukidecor.diy_workbench.disabled": "DIY crafting is disabled",
 
+  "jei.recipe.category.tanukidecor.diy": "DIY Crafting",
+
   "subtitle.block.tanukidecor.alarm_clock.tick": "Alarm clock ticks",
   "subtitle.block.tanukidecor.alarm_clock.chime": "Alarm clock rings",
   "subtitle.block.tanukidecor.clock_tower.tick": "Clock tower ticks",
