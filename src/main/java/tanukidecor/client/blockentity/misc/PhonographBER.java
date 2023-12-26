@@ -19,9 +19,8 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
-import tanukidecor.block.entity.HourglassBlockEntity;
 import tanukidecor.block.entity.PhonographBlockEntity;
 import tanukidecor.block.misc.PhonographBlock;
 
@@ -65,7 +64,7 @@ public class PhonographBER implements BlockEntityRenderer<PhonographBlockEntity>
         pPoseStack.mulPose(Vector3f.YN.rotation(yRot));
         pPoseStack.translate(-dx, -dy, -dz);
         blockRenderer.getModelRenderer().renderModel(pPoseStack.last(), vertexConsumer, blockState, model,
-                1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, EmptyModelData.INSTANCE);
+                1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, ModelData.EMPTY, renderType);
         pPoseStack.popPose();
 
 

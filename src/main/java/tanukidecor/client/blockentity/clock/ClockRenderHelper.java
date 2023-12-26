@@ -15,11 +15,13 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.model.data.ModelData;
 
 public class ClockRenderHelper {
+    private RandomSource random;
     private PoseStack poseStack;
     private RenderType renderType;
     private VertexConsumer vertexConsumer;
@@ -59,8 +61,10 @@ public class ClockRenderHelper {
         poseStack.translate(pivotPoint.x(), pivotPoint.y(), pivotPoint.z());
         poseStack.mulPose(Vector3f.ZP.rotation(rotZ));
         poseStack.translate(-pivotPoint.x(), -pivotPoint.y(), -pivotPoint.z());
-        blockRenderer.getModelRenderer().renderModel(poseStack.last(), vertexConsumer, blockState, model,
-                1.0F, 1.0F, 1.0F, packedLight, packedOverlay, EmptyModelData.INSTANCE);
+        for(RenderType renderType : model.getRenderTypes(blockState, random, ModelData.EMPTY)) {
+            blockRenderer.getModelRenderer().renderModel(poseStack.last(), vertexConsumer, blockState, model,
+                    1.0F, 1.0F, 1.0F, packedLight, packedOverlay, ModelData.EMPTY, renderType);
+        }
         poseStack.popPose();
     }
 
@@ -68,6 +72,11 @@ public class ClockRenderHelper {
 
     public ClockRenderHelper withPoseStack(final PoseStack poseStack) {
         this.poseStack = poseStack;
+        return this;
+    }
+
+    public ClockRenderHelper withRandom(final RandomSource random) {
+        this.random = random;
         return this;
     }
 

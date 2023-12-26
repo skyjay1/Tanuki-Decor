@@ -7,6 +7,7 @@
 package tanukidecor.block.clock;
 
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
@@ -60,7 +61,7 @@ public interface IChimeProvider {
      * @param dayTime the day time from 0 to 24000
      * @return the volume of the chime sound
      */
-    default float getChimeVolume(BlockState blockState, Random random, long dayTime) {
+    default float getChimeVolume(BlockState blockState, RandomSource random, long dayTime) {
         return 1.0F;
     }
 
@@ -71,7 +72,7 @@ public interface IChimeProvider {
      * @param dayTime the day time from 0 to 24000
      * @return the pitch of the chime sound
      */
-    default float getChimePitch(BlockState blockState, Random random, long dayTime) {
+    default float getChimePitch(BlockState blockState, RandomSource random, long dayTime) {
         return 1.0F;
     }
 
@@ -82,7 +83,7 @@ public interface IChimeProvider {
      * @param dayTime the day time from 0 to 24000
      * @return the volume of the tick sound
      */
-    default float getTickVolume(BlockState blockState, Random random, long dayTime) {
+    default float getTickVolume(BlockState blockState, RandomSource random, long dayTime) {
         return 0.6F;
     }
 
@@ -93,7 +94,7 @@ public interface IChimeProvider {
      * @param dayTime the day time from 0 to 24000
      * @return the pitch of the tick sound
      */
-    default float getTickPitch(BlockState blockState, Random random, long dayTime) {
+    default float getTickPitch(BlockState blockState, RandomSource random, long dayTime) {
         return 1.0F;
     }
 }

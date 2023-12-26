@@ -17,7 +17,6 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import tanukidecor.TDRegistry;
@@ -48,7 +47,7 @@ public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
                 .setTextureSize(128, 64)
                 .build();
         this.icon = guiHelper.createDrawableItemStack(new ItemStack(TDRegistry.BlockReg.DIY_WORKBENCH.get()));
-        this.title = new TranslatableComponent(Util.makeDescriptionId("jei.recipe.category", UID));
+        this.title = Component.translatable(Util.makeDescriptionId("jei.recipe.category", UID));
     }
 
     @Override
@@ -92,15 +91,5 @@ public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
     @Override
     public RecipeType<DIYRecipe> getRecipeType() {
         return RECIPE_TYPE;
-    }
-
-    @Override
-    public ResourceLocation getUid() {
-        return getRecipeType().getUid();
-    }
-
-    @Override
-    public Class<? extends DIYRecipe> getRecipeClass() {
-        return getRecipeType().getRecipeClass();
     }
 }

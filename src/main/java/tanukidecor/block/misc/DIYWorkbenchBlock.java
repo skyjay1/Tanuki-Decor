@@ -7,14 +7,11 @@
 package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
@@ -29,7 +26,6 @@ import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.RotatingTallBlock;
 import tanukidecor.block.entity.DIYWorkbenchBlockEntity;
-import tanukidecor.block.entity.StorageBlockEntity;
 
 public class DIYWorkbenchBlock extends RotatingTallBlock implements EntityBlock {
 
@@ -63,7 +59,7 @@ public class DIYWorkbenchBlock extends RotatingTallBlock implements EntityBlock 
         // check config settings
         if(!TanukiDecor.CONFIG.isDIYWorkbenchEnabled.get()) {
             // display message to user
-            pPlayer.displayClientMessage(new TranslatableComponent("message." + getDescriptionId() + ".disabled"), true);
+            pPlayer.displayClientMessage(Component.translatable("message." + getDescriptionId() + ".disabled"), true);
             return InteractionResult.SUCCESS;
         }
         // determine block entity position
@@ -71,7 +67,7 @@ public class DIYWorkbenchBlock extends RotatingTallBlock implements EntityBlock 
         // open menu
         if(!pPlayer.isShiftKeyDown() && pPlayer instanceof ServerPlayer serverPlayer
             && pLevel.getBlockEntity(pos) instanceof MenuProvider menuProvider) {
-            NetworkHooks.openGui(serverPlayer, menuProvider, buf -> buf.writeBlockPos(pos));
+            NetworkHooks.openScreen(serverPlayer, menuProvider, buf -> buf.writeBlockPos(pos));
             return InteractionResult.SUCCESS;
         }
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);

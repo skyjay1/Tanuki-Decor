@@ -14,10 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -27,12 +26,7 @@ import tanukidecor.TDRegistry.BlockReg;
 import tanukidecor.TDRegistry.BlockEntityReg;
 import tanukidecor.block.seat.ISeatProvider;
 import tanukidecor.client.blockentity.clock.*;
-import tanukidecor.client.blockentity.misc.DisplayCaseBER;
-import tanukidecor.client.blockentity.misc.HourglassBER;
-import tanukidecor.client.blockentity.misc.MetronomeBER;
-import tanukidecor.client.blockentity.misc.PhonographBER;
-import tanukidecor.client.blockentity.misc.SlotMachineBER;
-import tanukidecor.client.blockentity.misc.TrainSetBER;
+import tanukidecor.client.blockentity.misc.*;
 import tanukidecor.client.menu.DIYWorkbenchScreen;
 
 import java.util.HashSet;
@@ -48,9 +42,9 @@ public final class TDClientEvents {
     public static final class ForgeHandler {
 
         @SubscribeEvent
-        public static void onRenderOverlay(final RenderGameOverlayEvent.PreLayer event) {
+        public static void onRenderOverlay(final RenderGuiOverlayEvent.Pre event) {
             final Player player = Minecraft.getInstance().player;
-            if(event.getOverlay() == ForgeIngameGui.MOUNT_HEALTH_ELEMENT
+            if(event.getOverlay().id().equals(VanillaGuiOverlay.MOUNT_HEALTH.id())
                     && player != null && player.isPassenger()
                     && ISeatProvider.IS_SEAT_ENTITY.test(player.getVehicle())) {
                 event.setCanceled(true);
@@ -63,122 +57,11 @@ public final class TDClientEvents {
 
         @SubscribeEvent
         public static void onCommonSetup(final FMLCommonSetupEvent event) {
-            event.enqueueWork(ModHandler::registerBlockRenderLayers);
             event.enqueueWork(ModHandler::registerMenuScreens);
         }
 
         private static void registerMenuScreens() {
             MenuScreens.register(TDRegistry.MenuReg.DIY_WORKBENCH.get(), DIYWorkbenchScreen::new);
-        }
-
-        /**
-         * Register blocks that use something other than the solid render layer
-         */
-        private static void registerBlockRenderLayers() {
-            // CLOCK //
-            registerRenderLayer(BlockReg.ALARM_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.ANNIVERSARY_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.ANTIQUE_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.BANJO_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.BLUE_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.CARRIAGE_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.CRYSTAL_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.DISPLAY_WATCH.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.FOLIOT_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GINGERBREAD_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GORGEOUS_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GRANDFATHER_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.LANTERN_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.LIBRARY_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.RECOGNIZABLE_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.RED_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.ROCOCO_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.SLATE_CLOCK.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.WOODEN_BLOCK_CLOCK.get(), RenderType.cutout());
-            // STORAGE //
-            registerRenderLayer(BlockReg.ANTIQUE_BOOKCASE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.ANTIQUE_CABINET.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.ANTIQUE_WALL_SHELF.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GREEN_PANTRY.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.REGAL_ARMOIRE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.REGAL_BOOKSHELF.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.REGAL_DRESSER.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.REGAL_VANITY.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.SWEETS_CLOSET.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.SWEETS_DRESSER.get(), RenderType.cutout());
-            // SEAT //
-            registerRenderLayer(BlockReg.BLUE_BENCH.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.BLUE_CHAIR.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GORGEOUS_STOOL.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.REGAL_CHAIR.get(), RenderType.cutout());
-            // BED //
-            registerRenderLayer(BlockReg.BLUE_BED.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.EGYPTIAN_BED.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GORGEOUS_BED.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.REGAL_BED.get(), RenderType.cutout());
-            // LIGHT //
-            registerRenderLayer(BlockReg.ANTIQUE_WALL_OIL_LAMP.get(), RenderType.translucent());
-            registerRenderLayer(BlockReg.BLUE_LAMP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.CABANA_LAMP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.EGYPTIAN_LAMP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GORGEOUS_LAMP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GREEN_LAMP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.LARGE_FIREPLACE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.MAYORAL_MINI_FIGURE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.MINIMALIST_LAMP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.NEON_CLUB_SIGN.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.NEON_DIAMOND_SIGN.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.NEON_HEART_SIGN.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.NEON_SPADE_SIGN.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.REGAL_LAMP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.SMALL_FIREPLACE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.SWEETS_MINI_LAMP.get(), RenderType.cutout());
-            // MISC //
-            registerRenderLayer(BlockReg.ANTIQUE_PHONE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.BLUE_TABLE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.CABANA_SCREEN.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.CABANA_TABLE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.CASH_REGISTER.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.DESSERT_CASE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.DISPLAY_CASE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.LONG_DISPLAY_CASE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.DIY_WORKBENCH.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.EGYPTIAN_CREST.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GORGEOUS_COUNTER.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GUMBALL_MACHINE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.HOLIDAY_TREE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.HOURGLASS.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.NARROW_BLUE_STREAMER.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.NARROW_GREEN_STREAMER.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.NARROW_RED_STREAMER.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.NARROW_YELLOW_STREAMER.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.NARROW_STRING_LIGHTS.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.MAYORAL_MINI_FIGURE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.METRONOME.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.PHONOGRAPH.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.PIANO.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.SHIP_IN_A_BOTTLE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.SLOT_MACHINE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.SNOWGLOBE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.BLUE_STALL_TARP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GREEN_STALL_TARP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.RED_STALL_TARP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.YELLOW_STALL_TARP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.SWEETS_MINI_TABLE.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.TRAIN_SET.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.BLUE_WALL_TARP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.GREEN_WALL_TARP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.RED_WALL_TARP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.YELLOW_WALL_TARP.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.WIDE_BLUE_STREAMER.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.WIDE_GREEN_STREAMER.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.WIDE_RED_STREAMER.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.WIDE_YELLOW_STREAMER.get(), RenderType.cutout());
-            registerRenderLayer(BlockReg.WIDE_STRING_LIGHTS.get(), RenderType.cutout());
-        }
-
-        private static void registerRenderLayer(final Block block, RenderType renderType) {
-            ItemBlockRenderTypes.setRenderLayer(block, renderType);
         }
 
         @SubscribeEvent
@@ -224,7 +107,7 @@ public final class TDClientEvents {
         }
 
         @SubscribeEvent
-        public static void onRegisterModels(final ModelRegistryEvent event) {
+        public static void onRegisterModels(final ModelEvent.RegisterAdditional event) {
             // gather special models
             final Set<ResourceLocation> set = new HashSet<>();
             // CLOCK //
@@ -265,7 +148,7 @@ public final class TDClientEvents {
             SlotMachineBER.addSpecialModels(set);
             TrainSetBER.addSpecialModels(set);
             // register special models
-            set.forEach(ForgeModelBakery::addSpecialModel);
+            set.forEach(event::register);
         }
     }
 }

@@ -11,16 +11,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingMultiblock;
-import tanukidecor.block.Side;
 import tanukidecor.util.MultiblockHandler;
-
-import java.util.Random;
 
 public class LargeFireplaceBlock extends RotatingMultiblock {
 
@@ -31,7 +29,7 @@ public class LargeFireplaceBlock extends RotatingMultiblock {
     //// ANIMATE ////
 
     @Override
-    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, Random pRandom) {
+    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
         if(pState.getValue(WATERLOGGED) || !getMultiblockHandler().isCenterState(pState)) {
             return;
         }

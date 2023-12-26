@@ -75,6 +75,7 @@ public class MetronomeBER implements BlockEntityRenderer<MetronomeBlockEntity> {
                 .withPackedLight(pPackedLight)
                 .withPackedOverlay(pPackedOverlay)
                 .withPartialTick(pPartialTick)
+                .withRandom(pBlockEntity.getLevel().getRandom())
                 .withRotationZ(0);
 
         // rotate pose stack
