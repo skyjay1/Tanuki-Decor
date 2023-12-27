@@ -10,18 +10,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
-import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.block.clock.IChimeProvider;
-
-import java.util.Random;
 
 public class ClockBlockEntity extends BlockEntity {
 
@@ -64,7 +61,7 @@ public class ClockBlockEntity extends BlockEntity {
         }
         final long gameTime = level.getGameTime();
         final long dayTime = level.getDayTime() % 24000L;
-        final Random random = level.getRandom();
+        final RandomSource random = level.getRandom();
         // attempt to play tick sound
         final SoundEvent tickSound = chimeProvider.getTickSound(blockState);
         if(tickSound != null && gameTime % chimeProvider.getTickSoundInterval(blockState) == 0) {
@@ -84,7 +81,7 @@ public class ClockBlockEntity extends BlockEntity {
             return;
         }
         final long dayTime = level.getDayTime() % 24000L;
-        final Random random = level.getRandom();
+        final RandomSource random = level.getRandom();
         // attempt to play chime sound
         final SoundEvent chimeSound = chimeProvider.getChimeSound(blockState);
         if(chimeSound != null && this.chimeProvider.isTimeToChime(blockState, dayTime)) {

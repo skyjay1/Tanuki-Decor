@@ -7,25 +7,21 @@
 package tanukidecor.block.bed;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public interface IBedProvider {
@@ -82,7 +78,7 @@ public interface IBedProvider {
         // attempt to eject villager sleeping in the bed
         if (headState.getValue(BlockStateProperties.OCCUPIED)) {
             if (!kickVillagerOutOfBed(level, headPos)) {
-                player.displayClientMessage(new TranslatableComponent("block.minecraft.bed.occupied"), true);
+                player.displayClientMessage(Component.translatable("block.minecraft.bed.occupied"), true);
             }
 
             return InteractionResult.SUCCESS;

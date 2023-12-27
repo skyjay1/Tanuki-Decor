@@ -8,7 +8,6 @@ package tanukidecor.client.blockentity.misc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -16,16 +15,11 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.HourglassBlockEntity;
-import tanukidecor.block.entity.TrainSetBlockEntity;
 
 import java.util.Set;
 
@@ -49,7 +43,7 @@ public class HourglassBER implements BlockEntityRenderer<HourglassBlockEntity> {
         double dy = 9.5D / 16.0D;
         float scale;
 
-        final RenderType renderType = RenderType.cutout();
+        final RenderType renderType = RenderType.solid();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);
         final BakedModel model = mc.getModelManager().getModel(SAND);
 
@@ -65,7 +59,7 @@ public class HourglassBER implements BlockEntityRenderer<HourglassBlockEntity> {
             pPoseStack.scale(1.0F, scale, 1.0F);
             pPoseStack.translate(0, -dy, 0);
             blockRenderer.getModelRenderer().renderModel(pPoseStack.last(), vertexConsumer, blockState, model,
-                    1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, EmptyModelData.INSTANCE);
+                    1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, ModelData.EMPTY, renderType);
             pPoseStack.popPose();
         }
 
@@ -77,7 +71,7 @@ public class HourglassBER implements BlockEntityRenderer<HourglassBlockEntity> {
         pPoseStack.translate(0, -dy, 0);
         pPoseStack.translate(0, (-7.51D / 16.0D) / scale, 0);
         blockRenderer.getModelRenderer().renderModel(pPoseStack.last(), vertexConsumer, blockState, model,
-                1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, EmptyModelData.INSTANCE);
+                1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, ModelData.EMPTY, renderType);
         pPoseStack.popPose();
 
 

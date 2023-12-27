@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -18,8 +19,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingWideBlock;
 import tanukidecor.block.Side;
-
-import java.util.Random;
 
 public class SmallFireplaceBlock extends RotatingWideBlock {
 
@@ -39,7 +38,7 @@ public class SmallFireplaceBlock extends RotatingWideBlock {
     //// ANIMATE ////
 
     @Override
-    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, Random pRandom) {
+    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
         if(pState.getValue(WATERLOGGED) || pState.getValue(SIDE) != Side.LEFT) {
             return;
         }

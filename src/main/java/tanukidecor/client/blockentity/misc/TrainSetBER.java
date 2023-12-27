@@ -22,7 +22,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.TrainSetBlockEntity;
 
@@ -66,7 +66,7 @@ public class TrainSetBER implements BlockEntityRenderer<TrainSetBlockEntity> {
         pPoseStack.mulPose(Vector3f.YP.rotation(rotation));
         pPoseStack.translate(-0.5D, 0, -0.5D);
         blockRenderer.getModelRenderer().renderModel(pPoseStack.last(), vertexConsumer, blockState, model,
-                1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, EmptyModelData.INSTANCE);
+                1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, ModelData.EMPTY, renderType);
 
         // finish rendering
         pPoseStack.popPose();

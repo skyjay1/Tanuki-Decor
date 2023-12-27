@@ -1,10 +1,10 @@
 modLoader="javafml"
-loaderVersion="[40,)"
+loaderVersion="[43,)"
 license="GNU LGPLv3"
 
 [[mods]]
     modId="tanukidecor"
-    version="18.2.1.1"
+    version="19.2.0.0"
     displayName="Tanuki Decor"
     authors="skyjay1"
     credits=""
@@ -13,12 +13,12 @@ license="GNU LGPLv3"
 [[dependencies.tanukidecor]]
     modId="forge"
     mandatory=true
-    versionRange="[40,)"
+    versionRange="[43,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.tanukidecor]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.2,)"
+    versionRange="[1.19.2,)"
     ordering="NONE"
     side="BOTH"

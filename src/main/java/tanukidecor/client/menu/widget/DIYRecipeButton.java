@@ -6,21 +6,15 @@
 
 package tanukidecor.client.menu.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Transformation;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.item.ItemStack;
 import tanukidecor.block.recipe.DIYRecipe;
 import tanukidecor.client.menu.DIYWorkbenchScreen;
-
-import java.util.List;
 
 public class DIYRecipeButton extends ImageButton {
 
@@ -38,7 +32,7 @@ public class DIYRecipeButton extends ImageButton {
 
     public DIYRecipeButton(int pX, int pY, final ItemRenderer itemRenderer, final Font fontRenderer,
                            OnPress pOnPress, OnTooltip onTooltip) {
-        super(pX, pY, WIDTH, HEIGHT, 0, 216, HEIGHT, DIYWorkbenchScreen.TEXTURE, 256, 256, pOnPress, onTooltip, new TextComponent(""));
+        super(pX, pY, WIDTH, HEIGHT, 0, 216, HEIGHT, DIYWorkbenchScreen.TEXTURE, 256, 256, pOnPress, onTooltip, Component.empty());
         this.itemRenderer = itemRenderer;
         this.fontRenderer = fontRenderer;
         this.recipe = null;
@@ -58,7 +52,7 @@ public class DIYRecipeButton extends ImageButton {
         this.itemStack = recipe.getResultItem();
         this.setMessage(this.itemStack.getHoverName());
         final String message = StringUtil.truncateStringIfNecessary(this.itemStack.getHoverName().getString(), (int)(TEXT_WIDTH / 5.5F), true);
-        this.text = new TextComponent(message).withStyle(this.getMessage().getStyle());
+        this.text = Component.literal(message).withStyle(this.getMessage().getStyle());
     }
 
     @Override
