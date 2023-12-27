@@ -75,7 +75,7 @@ public class DIYRecipe implements Recipe<Container> {
 
     //// SERIALIZER ////
 
-    public static class Serializer implements RecipeSerializer<DIYRecipe> {
+    public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DIYRecipe> {
 
         public static final String CATEGORY = "diy";
         private static final String KEY_RESULT = "result";

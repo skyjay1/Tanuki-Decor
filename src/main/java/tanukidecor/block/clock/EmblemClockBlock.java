@@ -9,7 +9,6 @@ package tanukidecor.block.clock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -24,6 +23,7 @@ import tanukidecor.block.entity.ClockBlockEntity;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeUtils;
 
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class EmblemClockBlock extends RotatingMultiblock implements EntityBlock, IChimeProvider {
@@ -52,12 +52,12 @@ public class EmblemClockBlock extends RotatingMultiblock implements EntityBlock,
     }
 
     @Override
-    public float getChimeVolume(BlockState blockState, RandomSource random, long dayTime) {
+    public float getChimeVolume(BlockState blockState, Random random, long dayTime) {
         return 4.0F;
     }
 
     @Override
-    public float getTickVolume(BlockState blockState, RandomSource random, long dayTime) {
+    public float getTickVolume(BlockState blockState, Random random, long dayTime) {
         return 1.5F;
     }
 

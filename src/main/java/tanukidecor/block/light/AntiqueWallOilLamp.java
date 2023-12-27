@@ -9,7 +9,6 @@ package tanukidecor.block.light;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -55,7 +54,7 @@ public class AntiqueWallOilLamp extends RotatingBlock {
     //// ANIMATION ////
 
     @Override
-    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
+    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, Random pRandom) {
         if(pState.getValue(WATERLOGGED)) {
             return;
         }

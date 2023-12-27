@@ -9,7 +9,7 @@ package tanukidecor.client.menu.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
@@ -33,7 +33,7 @@ public class ScrollButton extends Button {
     public ScrollButton(int x, int y, int width, int height, ResourceLocation resourceLocation,
                         int iconU, int iconV, int iconWidth, int iconHeight, int iconDeltaV, boolean isVertical,
                         final float scrollAmountMultiplier, final IScrollListener listener) {
-        super(x, y, Math.max(1, width), Math.max(1, height), Component.empty(), b -> {});
+        super(x, y, Math.max(1, width), Math.max(1, height), new TextComponent(""), b -> {});
         this.resourceLocation = resourceLocation;
         this.iconU = iconU;
         this.iconV = iconV;

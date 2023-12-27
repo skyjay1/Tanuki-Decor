@@ -15,6 +15,8 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -84,7 +86,7 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
                 TEXTURE, 244, 0, 12, 15, 15, true, 1.0F, this));
         // edit box
         this.getMinecraft().keyboardHandler.setSendRepeatsToGui(true);
-        this.editBox = this.addRenderableWidget(new EditBox(this.font, this.leftPos + SEARCH_X, this.topPos + SEARCH_Y, SEARCH_WIDTH, SEARCH_HEIGHT, Component.translatable("container.search")));
+        this.editBox = this.addRenderableWidget(new EditBox(this.font, this.leftPos + SEARCH_X, this.topPos + SEARCH_Y, SEARCH_WIDTH, SEARCH_HEIGHT, new TranslatableComponent("container.search")));
         this.editBox.setCanLoseFocus(false);
         this.editBox.setTextColor(-1);
         this.editBox.setTextColorUneditable(-1);
@@ -187,7 +189,7 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         this.scrollButton.setScrollPercent(0);
         this.scrollButton.active = this.sortedRecipes.size() > RECIPE_BUTTON_COUNT_Y;
         // update count text
-        this.resultCountText = Component.literal("" + sortedRecipes.size());
+        this.resultCountText = new TextComponent("" + sortedRecipes.size());
         // update recipe buttons
         this.updateRecipeButtons();
     }

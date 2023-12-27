@@ -16,7 +16,6 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -25,10 +24,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TanukiDecor;
+
+import java.util.Random;
 
 public class SlotMachineBlockEntity extends BlockEntity {
 
@@ -128,7 +130,7 @@ public class SlotMachineBlockEntity extends BlockEntity {
 
     //// SLOT ////
 
-    public Vec3i createSlotRotations(final RandomSource random) {
+    public Vec3i createSlotRotations(final Random random) {
         // customizable chance of jackpot
         final double jackboxChance = TanukiDecor.CONFIG.slotMachineJackboxChance.get();
         if((random.nextDouble() * 100.0D) < jackboxChance) {
