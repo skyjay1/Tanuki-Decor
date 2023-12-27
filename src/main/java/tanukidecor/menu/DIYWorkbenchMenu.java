@@ -148,9 +148,13 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         }
         // update recipe
         this.updateMaxCraftCount();
-        // update result item
         this.resultContainer.setRecipeUsed(recipe);
-        this.resultContainer.setItem(0, recipe.assemble(this.container));
+        // update result item
+        if(maxCraftCount > 0) {
+            this.resultContainer.setItem(0, recipe.assemble(this.container));
+        } else {
+            this.resultContainer.clearContent();
+        }
         this.slotsChanged(this.resultContainer);
     }
 
