@@ -71,7 +71,8 @@ public interface IBedProvider {
         // create explosion when bed cannot be used
         if (!BedBlock.canSetSpawn(level)) {
             removeBed(level, headPos, headState);
-            level.explode(null, DamageSource.badRespawnPointExplosion(), null, headPos.getX() + 0.5D, headPos.getY() + 0.5D, headPos.getZ() + 0.5D, 5.0F, true, Explosion.BlockInteraction.DESTROY);
+            Vec3 explosionPos = Vec3.atCenterOf(headPos);
+            level.explode(null, level.damageSources().badRespawnPointExplosion(explosionPos), null, explosionPos.x(), explosionPos.y(), explosionPos.z(), 5.0F, true, Level.ExplosionInteraction.BLOCK);
             return InteractionResult.SUCCESS;
         }
 

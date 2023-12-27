@@ -7,7 +7,7 @@
 package tanukidecor.client.blockentity.clock;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -91,7 +91,7 @@ public class StationClockBER extends ClockBER {
 
             renderAdditional(this.clockRenderHelper, pBlockEntity, pBufferSource);
 
-            pPoseStack.mulPose(Vector3f.YP.rotation(Mth.PI));
+            pPoseStack.mulPose(Axis.YP.rotation(Mth.PI));
             pPoseStack.translate(0, 0, -13.0D / 16.0D);
         }
 

@@ -7,7 +7,7 @@
 package tanukidecor.client.menu.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +33,7 @@ public class ScrollButton extends Button {
     public ScrollButton(int x, int y, int width, int height, ResourceLocation resourceLocation,
                         int iconU, int iconV, int iconWidth, int iconHeight, int iconDeltaV, boolean isVertical,
                         final float scrollAmountMultiplier, final IScrollListener listener) {
-        super(x, y, Math.max(1, width), Math.max(1, height), Component.empty(), b -> {});
+        super(x, y, Math.max(1, width), Math.max(1, height), Component.empty(), b -> {}, Button.DEFAULT_NARRATION);
         this.resourceLocation = resourceLocation;
         this.iconU = iconU;
         this.iconV = iconV;
@@ -47,26 +47,23 @@ public class ScrollButton extends Button {
     }
 
     @Override
-    public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-        if (this.visible) {
-            RenderSystem.setShaderTexture(0, resourceLocation);
-            // determine v coordinate
-            int v = iconV;
-            if(!isActive()) {
-                v += iconDeltaV;
-            }
-            // determine icon position
-            int renderX = this.x;
-            int renderY = this.y;
-            if(isVertical) {
-                renderY += Mth.floor((float) (height - iconHeight) * scrollPercent);
-            } else {
-                renderX += Mth.floor((float) (width - iconWidth) * scrollPercent);
-            }
-            // draw button icon
-            fill(poseStack, renderX, renderY, renderX + iconWidth, renderY + iconHeight, 0xFFFF00);
-            blit(poseStack, renderX, renderY, iconU, v, iconWidth, iconHeight);
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        RenderSystem.setShaderTexture(0, resourceLocation);
+        // determine v coordinate
+        int v = iconV;
+        if(!isActive()) {
+            v += iconDeltaV;
         }
+        // determine icon position
+        int renderX = this.getX();
+        int renderY = this.getY();
+        if(isVertical) {
+            renderY += Mth.floor((float) (height - iconHeight) * scrollPercent);
+        } else {
+            renderX += Mth.floor((float) (width - iconWidth) * scrollPercent);
+        }
+        // draw button icon
+        this.renderTexture(guiGraphics, this.resourceLocation, renderX, renderY, iconU, v, 0, iconWidth, iconHeight, 256, 256);
     }
 
     @Override
@@ -107,7 +104,7 @@ public class ScrollButton extends Button {
     }
 
     protected void setValueFromMouse(final double mouseX, final double mouseY) {
-        float scrollPercent = (float) ((isVertical ? (mouseY - this.y) : (mouseX - this.x)) / (float) height);
+        float scrollPercent = (float) ((isVertical ? (mouseY - this.getY()) : (mouseX - this.getX())) / (float) height);
         this.setScrollPercent(Mth.clamp(scrollPercent, 0.0F, 1.0F));
     }
 

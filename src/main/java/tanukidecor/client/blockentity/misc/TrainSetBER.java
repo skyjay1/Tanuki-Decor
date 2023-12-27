@@ -8,7 +8,7 @@ package tanukidecor.client.blockentity.misc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -58,12 +58,12 @@ public class TrainSetBER implements BlockEntityRenderer<TrainSetBlockEntity> {
 
         // rotate for direction
         pPoseStack.translate(0.5D, 0, 0.5D);
-        pPoseStack.mulPose(Vector3f.YN.rotation(yRot));
+        pPoseStack.mulPose(Axis.YN.rotation(yRot));
         pPoseStack.translate(-0.5D, 0, -0.5D);
 
         pPoseStack.translate(0, 0, 1.0D);
         pPoseStack.translate(0.5D, 0, 0.5D);
-        pPoseStack.mulPose(Vector3f.YP.rotation(rotation));
+        pPoseStack.mulPose(Axis.YP.rotation(rotation));
         pPoseStack.translate(-0.5D, 0, -0.5D);
         blockRenderer.getModelRenderer().renderModel(pPoseStack.last(), vertexConsumer, blockState, model,
                 1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, ModelData.EMPTY, renderType);

@@ -7,6 +7,7 @@
 package tanukidecor.block.recipe;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -44,7 +45,7 @@ public class DIYRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack assemble(Container pContainer) {
+    public ItemStack assemble(Container pContainer, RegistryAccess registryAccess) {
         return this.result.copy();
     }
 
@@ -54,7 +55,7 @@ public class DIYRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return this.result;
     }
 
@@ -94,7 +95,7 @@ public class DIYRecipe implements Recipe<Container> {
 
         @Override
         public void toNetwork(FriendlyByteBuf buffer, DIYRecipe recipe) {
-            buffer.writeItemStack(recipe.getResultItem(), false);
+            buffer.writeItemStack(recipe.result, false);
         }
     }
 }

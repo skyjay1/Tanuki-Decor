@@ -63,7 +63,7 @@ public class PianoBlock extends RotatingMultiblock {
     protected void playNoteAt(ServerLevel serverLevel, ServerPlayer player, BlockPos blockPos, int note) {
         // play sound
         float noteData = ((float) Math.pow(2.0D, (note - 12.0D) / 12.0D));
-        serverLevel.playSound(null, blockPos, NoteBlockInstrument.PLING.getSoundEvent(), SoundSource.RECORDS, 3.0F, noteData);
+        serverLevel.playSound(null, blockPos, NoteBlockInstrument.PLING.getSoundEvent().get(), SoundSource.RECORDS, 3.0F, noteData);
         // send particles
         final Vec3 vec = Vec3.atCenterOf(blockPos)
                 .add(0, 0.7D, 0);

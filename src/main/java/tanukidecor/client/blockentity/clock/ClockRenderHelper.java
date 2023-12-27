@@ -8,7 +8,7 @@ package tanukidecor.client.blockentity.clock;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -46,7 +46,7 @@ public class ClockRenderHelper {
     public void rotateForDirection(final Direction direction) {
         final float yRot = (direction.getOpposite().toYRot()) * Mth.DEG_TO_RAD;
         poseStack.translate(pivotPoint.x(), pivotPoint.y(), pivotPoint.z());
-        poseStack.mulPose(Vector3f.YN.rotation(yRot));
+        poseStack.mulPose(Axis.YN.rotation(yRot));
         poseStack.translate(-pivotPoint.x(), -pivotPoint.y(), -pivotPoint.z());
         poseStack.translate(position.x(), position.y(), position.z());
     }
@@ -59,7 +59,7 @@ public class ClockRenderHelper {
         poseStack.pushPose();
         poseStack.translate(position.x(), position.y(), position.z());
         poseStack.translate(pivotPoint.x(), pivotPoint.y(), pivotPoint.z());
-        poseStack.mulPose(Vector3f.ZP.rotation(rotZ));
+        poseStack.mulPose(Axis.ZP.rotation(rotZ));
         poseStack.translate(-pivotPoint.x(), -pivotPoint.y(), -pivotPoint.z());
         for(RenderType renderType : model.getRenderTypes(blockState, random, ModelData.EMPTY)) {
             blockRenderer.getModelRenderer().renderModel(poseStack.last(), vertexConsumer, blockState, model,

@@ -7,8 +7,11 @@
 package tanukidecor.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -29,8 +32,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import tanukidecor.TDRegistry;
+import tanukidecor.block.RotatingTallBlock;
 import tanukidecor.block.misc.PhonographBlock;
 
 import javax.annotation.Nullable;
@@ -40,41 +45,13 @@ import java.util.Objects;
 
 public class PhonographBlockEntity extends SingleSlotBlockEntity {
 
-    private static final Map<ResourceLocation, Integer> RECORD_LENGTH_MAP = new HashMap<>();
-
-    static {
-        addRecord(SoundEvents.MUSIC_DISC_13, 3560);
-        addRecord(SoundEvents.MUSIC_DISC_CAT, 3700);
-        addRecord(SoundEvents.MUSIC_DISC_BLOCKS, 6900);
-        addRecord(SoundEvents.MUSIC_DISC_CHIRP, 3700);
-        addRecord(SoundEvents.MUSIC_DISC_FAR, 3480);
-        addRecord(SoundEvents.MUSIC_DISC_MALL, 3940);
-        addRecord(SoundEvents.MUSIC_DISC_MELLOHI, 1920);
-        addRecord(SoundEvents.MUSIC_DISC_STAL, 3000);
-        addRecord(SoundEvents.MUSIC_DISC_STRAD, 3760);
-        addRecord(SoundEvents.MUSIC_DISC_WARD, 5020);
-        addRecord(SoundEvents.MUSIC_DISC_11, 1420);
-        addRecord(SoundEvents.MUSIC_DISC_WAIT, 4760);
-        addRecord(SoundEvents.MUSIC_DISC_OTHERSIDE, 3900);
-        addRecord(SoundEvents.MUSIC_DISC_PIGSTEP, 2960);
-    }
-
     protected boolean isPlaying;
     protected long recordStartedTick;
     protected long tickCount;
+    protected int ticksSinceLastEvent;
 
     public PhonographBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
-    }
-
-    //// RECORD LENGTH ////
-
-    public static void addRecord(final SoundEvent soundEvent, final int length) {
-        addRecord(ForgeRegistries.SOUND_EVENTS.getKey(soundEvent), length);
-    }
-
-    public static void addRecord(final ResourceLocation soundEvent, final int length) {
-        RECORD_LENGTH_MAP.put(soundEvent, length);
     }
 
     //// METHODS ////
@@ -104,7 +81,7 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
                 Block.popResource(level, pos.above(), record);
             }
             // stop playing sound
-            level.levelEvent(LevelEvent.SOUND_PLAY_RECORDING, pos, 0);
+            level.levelEvent(LevelEvent.SOUND_STOP_JUKEBOX_SONG, pos, 0);
             blockEntity.setHasRecordBlockState(player, false);
             return InteractionResult.SUCCESS;
         }
@@ -126,22 +103,32 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
         if (level.getBlockEntity(pos) instanceof PhonographBlockEntity blockEntity) {
             // drop contents and stop music
             if(!blockEntity.isEmpty()) {
-                level.levelEvent(LevelEvent.SOUND_PLAY_RECORDING, pos, 0);
+                level.levelEvent(LevelEvent.SOUND_STOP_JUKEBOX_SONG, pos, 0);
                 blockEntity.dropContents();
             }
         }
     }
 
     protected void phonographTick(Level level, BlockPos blockPos, BlockState blockState) {
+        ++this.ticksSinceLastEvent;
         if (this.isRecordPlaying()) {
             Item item = this.getFirstItem().getItem();
             if (item instanceof RecordItem record) {
                 if (this.shouldRecordStopPlaying(record)) {
                     this.stopPlaying();
+                } else if (this.shouldSendJukeboxPlayingEvent()) {
+                    // TODO Allay#shouldStopDancing is hardcoded to check for a jukebox at the given position
+                    this.ticksSinceLastEvent = 0;
+                    //level.gameEvent(GameEvent.JUKEBOX_PLAY, blockPos, GameEvent.Context.of(blockState));
+                    this.spawnMusicParticles(level, blockPos.above());
                 }
             }
         }
         ++this.tickCount;
+    }
+
+    protected boolean shouldSendJukeboxPlayingEvent() {
+        return this.ticksSinceLastEvent >= 20;
     }
 
     protected void setHasRecordBlockState(@Nullable Entity entity, boolean hasRecord) {
@@ -151,6 +138,16 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
             this.level.setBlock(this.getBlockPos().above(), this.level.getBlockState(this.getBlockPos().above()).setValue(PhonographBlock.HAS_RECORD, hasRecord), Block.UPDATE_CLIENTS);
             this.level.gameEvent(entity, GameEvent.BLOCK_CHANGE, this.getBlockPos().above());
         }
+    }
+
+    protected void spawnMusicParticles(Level pLevel, BlockPos pPos) {
+        if (pLevel instanceof ServerLevel serverlevel) {
+            Direction direction = getBlockState().getValue(RotatingTallBlock.FACING);
+            Vec3 vec3 = Vec3.atCenterOf(pPos).add(0.4D * direction.getStepX(), -0.125D, 0.4D * direction.getStepZ());
+            float f = (float)pLevel.getRandom().nextInt(4) / 24.0F;
+            serverlevel.sendParticles(ParticleTypes.NOTE, vec3.x(), vec3.y(), vec3.z(), 0, (double)f, 0.0D, 0.0D, 1.0D);
+        }
+
     }
 
     //// CONTAINER ////
@@ -204,19 +201,19 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
         this.recordStartedTick = this.tickCount;
         this.isPlaying = true;
         this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
-        this.level.levelEvent(null, LevelEvent.SOUND_PLAY_RECORDING, this.getBlockPos(), Item.getId(this.getFirstItem().getItem()));
+        this.level.levelEvent(null, LevelEvent.SOUND_PLAY_JUKEBOX_SONG, this.getBlockPos(), Item.getId(this.getFirstItem().getItem()));
         this.setChanged();
     }
 
     protected void stopPlaying() {
         this.isPlaying = false;
         this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
-        this.level.levelEvent(LevelEvent.SOUND_PLAY_RECORDING, this.getBlockPos(), 0);
+        this.level.levelEvent(LevelEvent.SOUND_STOP_JUKEBOX_SONG, this.getBlockPos(), 0);
         this.setChanged();
     }
 
     protected long getRecordLengthInTicks(final RecordItem recordItem) {
-        return RECORD_LENGTH_MAP.getOrDefault(ForgeRegistries.SOUND_EVENTS.getKey(recordItem.getSound()), 9000);
+        return recordItem.getLengthInTicks();
     }
 
     protected boolean shouldRecordStopPlaying(RecordItem recordItem) {

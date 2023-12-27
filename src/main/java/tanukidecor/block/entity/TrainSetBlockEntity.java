@@ -51,7 +51,7 @@ public class TrainSetBlockEntity extends BlockEntity {
             }
             // play whistle
             if(level.getRandom().nextInt(600) == 0) {
-                level.playSound(null, blockPos, SoundEvents.NOTE_BLOCK_FLUTE, SoundSource.BLOCKS, 0.5F, 0.95F + level.getRandom().nextFloat() * 0.1F);
+                level.playSound(null, blockPos, SoundEvents.NOTE_BLOCK_FLUTE.get(), SoundSource.BLOCKS, 0.5F, 0.95F + level.getRandom().nextFloat() * 0.1F);
             }
         }
     }

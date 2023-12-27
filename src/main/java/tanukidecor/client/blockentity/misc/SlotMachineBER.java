@@ -8,7 +8,7 @@ package tanukidecor.client.blockentity.misc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -69,7 +69,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
 
         final float yRot = (direction.getOpposite().toYRot()) * Mth.DEG_TO_RAD;
         pPoseStack.translate(dx, dy, dz);
-        pPoseStack.mulPose(Vector3f.YN.rotation(yRot));
+        pPoseStack.mulPose(Axis.YN.rotation(yRot));
         pPoseStack.translate(-dx, -dy, -dz);
         pPoseStack.translate(0, 0, 0);
 
@@ -78,7 +78,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         xRot = Math.max(0, 1.0F - Math.abs((duration - 0.025F) * 40.0F)) * 67.5F;
         pPoseStack.pushPose();
         pPoseStack.translate(dx, dy, dz);
-        pPoseStack.mulPose(Vector3f.XN.rotationDegrees(xRot));
+        pPoseStack.mulPose(Axis.XN.rotationDegrees(xRot));
         pPoseStack.translate(-dx, -dy, -dz);
         blockRenderer.getModelRenderer().renderModel(pPoseStack.last(), vertexConsumer, blockState, leverModel,
                 1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, ModelData.EMPTY, renderType);
@@ -94,7 +94,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         pPoseStack.pushPose();
         pPoseStack.translate(0, 0, 0);
         pPoseStack.translate(dx, dy, dz);
-        pPoseStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(xRot));
         pPoseStack.translate(-dx, -dy, -dz);
         blockRenderer.getModelRenderer().renderModel(pPoseStack.last(), vertexConsumer, blockState, slotModel,
                 1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, ModelData.EMPTY, renderType);
@@ -108,7 +108,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         pPoseStack.pushPose();
         pPoseStack.translate(-2.0D / 16.0D, 0, 0);
         pPoseStack.translate(dx, dy, dz);
-        pPoseStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(xRot));
         pPoseStack.translate(-dx, -dy, -dz);
         blockRenderer.getModelRenderer().renderModel(pPoseStack.last(), vertexConsumer, blockState, slotModel,
                 1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, ModelData.EMPTY, renderType);
@@ -122,7 +122,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         pPoseStack.translate(-4.0D / 16.0D, 0, 0);
         pPoseStack.pushPose();
         pPoseStack.translate(dx, dy, dz);
-        pPoseStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(xRot));
         pPoseStack.translate(-dx, -dy, -dz);
         blockRenderer.getModelRenderer().renderModel(pPoseStack.last(), vertexConsumer, blockState, slotModel,
                 1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, ModelData.EMPTY, renderType);

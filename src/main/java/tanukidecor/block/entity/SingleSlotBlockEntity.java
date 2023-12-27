@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.ticks.ContainerSingleItem;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -37,7 +38,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 
-public class SingleSlotBlockEntity extends BlockEntity implements Container, Clearable, Nameable {
+public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingleItem, Clearable, Nameable {
 
     protected NonNullList<ItemStack> inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     protected LazyOptional<?> itemHandler = LazyOptional.of(() -> createUnSidedHandler());
@@ -161,16 +162,6 @@ public class SingleSlotBlockEntity extends BlockEntity implements Container, Cle
     @Override
     public void setChanged() {
         super.setChanged();
-    }
-
-    @Override
-    public int getContainerSize() {
-        return 1;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.inventory.get(0).isEmpty();
     }
 
     @Override

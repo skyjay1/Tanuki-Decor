@@ -6,16 +6,15 @@
 
 package tanukidecor.integration;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -65,12 +64,7 @@ public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
         y += SLOT_SIZE + ARROW_HEIGHT;
         builder.addSlot(RecipeIngredientRole.OUTPUT, x, y)
                 .setSlotName("output")
-                .addItemStack(recipe.getResultItem());
-    }
-
-    @Override
-    public void draw(DIYRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-        // nothing
+                .addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
     }
 
     @Override

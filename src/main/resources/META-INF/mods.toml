@@ -1,24 +1,28 @@
 modLoader="javafml"
-loaderVersion="[43,)"
-license="GNU LGPLv3"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/skyjay1/Tanuki-Decor/issues"
 
 [[mods]]
-    modId="tanukidecor"
-    version="19.2.0.0"
-    displayName="Tanuki Decor"
-    authors="skyjay1"
-    credits=""
-    description='''Large furniture mod'''
+    modId="${mod_id}"
+    version="${mod_version}"
+    displayName="${mod_name}"
+    #updateJSONURL="https://change.me.example.invalid/updates.json"
+    displayURL="https://www.curseforge.com/minecraft/mc-mods/tanukidecor"
+    credits="${mod_credits}"
+    authors="${mod_authors}"
+    displayTest="MATCH_VERSION"
+    description='''${mod_description}'''
 
-[[dependencies.tanukidecor]]
+[[dependencies.${mod_id}]]
     modId="forge"
     mandatory=true
-    versionRange="[43,)"
+    versionRange="${forge_version_range}"
     ordering="NONE"
     side="BOTH"
-[[dependencies.tanukidecor]]
+[[dependencies.${mod_id}]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.2,)"
+    versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"

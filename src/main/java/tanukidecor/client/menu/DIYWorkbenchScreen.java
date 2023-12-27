@@ -10,11 +10,16 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -83,7 +88,6 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         this.scrollButton = this.addRenderableWidget(new ScrollButton(this.leftPos + SCROLL_X, this.topPos + SCROLL_Y, 12, SCROLL_HEIGHT,
                 TEXTURE, 244, 0, 12, 15, 15, true, 1.0F, this));
         // edit box
-        this.getMinecraft().keyboardHandler.setSendRepeatsToGui(true);
         this.editBox = this.addRenderableWidget(new EditBox(this.font, this.leftPos + SEARCH_X, this.topPos + SEARCH_Y, SEARCH_WIDTH, SEARCH_HEIGHT, Component.translatable("container.search")));
         this.editBox.setCanLoseFocus(false);
         this.editBox.setTextColor(-1);
@@ -96,11 +100,11 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         //this.editBox.setEditable(false);
         // recipe buttons
         final Button.OnPress recipeButtonOnPress = b -> getMenu().selectRecipe(((DIYRecipeButton)b).getRecipe());
-        final Button.OnTooltip recipeButtonOnTooltip = (b, p, mx, my) -> renderTooltip(p, ((DIYRecipeButton)b).getItemStack(), mx, my);
+        final ItemRenderer itemRenderer = this.getMinecraft().getItemRenderer();
         for(int i = 0, x = this.leftPos + RECIPE_X, y = this.topPos + RECIPE_Y; i < RECIPE_BUTTON_COUNT_Y; i++) {
-            this.recipeButtons.add(this.addRenderableWidget(new DIYRecipeButton(x, y + i * DIYRecipeButton.HEIGHT, this.itemRenderer, this.font, recipeButtonOnPress, recipeButtonOnTooltip)));
+            this.recipeButtons.add(this.addRenderableWidget(new DIYRecipeButton(x, y + i * DIYRecipeButton.HEIGHT, itemRenderer, this.font, recipeButtonOnPress)));
         }
-        updateRecipes("");
+        updateRecipes(editBox.getValue());
         updateRecipeButtons();
     }
 
@@ -112,12 +116,6 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
     }
 
     @Override
-    public void removed() {
-        super.removed();
-        this.getMinecraft().keyboardHandler.setSendRepeatsToGui(false);
-    }
-
-    @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
         if (pKeyCode == 256) {
             this.getMenu().getInventory().player.closeContainer();
@@ -126,26 +124,30 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         return this.editBox.keyPressed(pKeyCode, pScanCode, pModifiers) || this.editBox.canConsumeInput() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 
+    @Override
+    public void containerTick() {
+        super.containerTick();
+        this.editBox.tick();
+    }
+
     //// RENDER ////
 
     @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        this.blit(pPoseStack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+        RenderSystem.enableDepthTest();
+        guiGraphics.blit(TEXTURE, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         // render background
-        this.renderBackground(pPoseStack);
+        this.renderBackground(guiGraphics);
         // render labels and widgets
-        super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
         // render result count text
-        this.font.draw(pPoseStack, resultCountText, this.leftPos + SEARCH_X + SEARCH_WIDTH + 4, this.topPos + SEARCH_Y + (SEARCH_HEIGHT - font.lineHeight) / 2.0F, 0x404040);
+        guiGraphics.drawString(this.font, resultCountText.getVisualOrderText(), this.leftPos + SEARCH_X + SEARCH_WIDTH + 4, this.topPos + SEARCH_Y + (SEARCH_HEIGHT - font.lineHeight) / 2, 0x404040, false);
         // render tooltips
-        this.renderTooltip(pPoseStack, pMouseX, pMouseY);
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
     //// RECIPES ////
@@ -157,9 +159,9 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         // create map builder
         final ImmutableMap.Builder<String, DIYRecipe> builder = ImmutableMap.builder();
         // add all recipes with the name of the result item as the key
-        final Collection<DIYRecipe> recipes = getMenu().getInventory().player.level.getRecipeManager().getAllRecipesFor(TDRegistry.RecipeReg.DIY.get());
+        final Collection<DIYRecipe> recipes = getMenu().getInventory().player.level().getRecipeManager().getAllRecipesFor(TDRegistry.RecipeReg.DIY.get());
         for(DIYRecipe recipe : recipes) {
-            builder.put(recipe.getResultItem().getHoverName().getString().toLowerCase(Locale.ENGLISH), recipe);
+            builder.put(recipe.getResultItem(getMenu().getRegistryAccess()).getHoverName().getString().toLowerCase(Locale.ENGLISH), recipe);
         }
         return builder.build();
     }
@@ -228,5 +230,22 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
     public void onScroll(ScrollButton button, float percent) {
         this.scrollOffset = Mth.floor(Math.max(0, percent * Math.max(0, sortedRecipes.size() - RECIPE_BUTTON_COUNT_Y)));
         updateRecipeButtons();
+    }
+
+    //// TOOLTIP ////
+
+    public static Tooltip createTooltip(final List<Component> list) {
+        MutableComponent component = Component.empty();
+        // add each component, separated by a newline
+        for(Component c : list) {
+            component.getSiblings().add(c);
+            component.getSiblings().add(Component.literal("\n"));
+        }
+        // remove trailing newline
+        if(component.getSiblings().size() > 1) {
+            component.getSiblings().remove(component.getSiblings().size() - 1);
+        }
+        // create the tooltip
+        return Tooltip.create(component);
     }
 }

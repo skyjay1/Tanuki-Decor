@@ -7,6 +7,7 @@
 package tanukidecor.menu;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -34,6 +35,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
 
     private final BlockPos blockPos;
     private final Inventory inventory;
+    private final RegistryAccess registryAccess;
     private final Container container;
     private final ResultContainer resultContainer;
 
@@ -43,6 +45,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         super(TDRegistry.MenuReg.DIY_WORKBENCH.get(), pContainerId);
         this.inventory = inventory;
         this.blockPos = blockPos;
+        this.registryAccess = inventory.player.level().registryAccess();
         this.container = container;
         this.resultContainer = new ResultContainer();
         checkContainerSize(this.container, CONTAINER_SLOTS);
@@ -63,6 +66,10 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
 
     public int getMaxCraftCount() {
         return this.maxCraftCount;
+    }
+
+    public RegistryAccess getRegistryAccess() {
+        return this.registryAccess;
     }
 
     @Override
@@ -111,7 +118,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         }
         if(pContainer == this.resultContainer) {
             if (this.maxCraftCount > 0 && this.resultContainer.isEmpty() && this.resultContainer.getRecipeUsed() instanceof DIYRecipe recipe) {
-                this.resultContainer.setItem(0, recipe.assemble(this.container));
+                this.resultContainer.setItem(0, recipe.assemble(this.container, this.registryAccess));
                 slotsChanged(this.resultContainer);
             }
         }
@@ -121,7 +128,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         this.maxCraftCount = 127;
         // init at max stack size
         if(this.resultContainer.getRecipeUsed() != null) {
-            this.maxCraftCount = this.resultContainer.getRecipeUsed().getResultItem().getMaxStackSize();
+            this.maxCraftCount = this.resultContainer.getRecipeUsed().getResultItem(this.registryAccess).getMaxStackSize();
         }
         // reduce to min stack size of any input
         for(int i = 0; i < CONTAINER_SLOTS; i++) {
@@ -135,7 +142,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
     public void selectRecipe(final DIYRecipe recipe) {
         this.resultContainer.setRecipeUsed(recipe);
         // send packet from client to server
-        if(inventory.player.level.isClientSide() && recipe != null) {
+        if(inventory.player.level().isClientSide() && recipe != null) {
             TDNetwork.CHANNEL.sendToServer(new ServerBoundSelectDIYRecipePacket(recipe.getId()));
         }
     }
@@ -151,7 +158,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         this.resultContainer.setRecipeUsed(recipe);
         // update result item
         if(maxCraftCount > 0) {
-            this.resultContainer.setItem(0, recipe.assemble(this.container));
+            this.resultContainer.setItem(0, recipe.assemble(this.container, this.registryAccess));
         } else {
             this.resultContainer.clearContent();
         }
@@ -169,12 +176,12 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
             this.container.removeItem(i, count);
         }
         // crafting trigger
-        result.onCraftedBy(player.level, player, count);
+        result.onCraftedBy(player.level(), player, count);
         slotsChanged(this.container);
         slotsChanged(this.resultContainer);
         // play sound
-        player.level.playSound(player, blockPos, SoundEvents.VILLAGER_WORK_MASON, SoundSource.PLAYERS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
-        player.level.playSound(player, blockPos, SoundEvents.VILLAGER_WORK_TOOLSMITH, SoundSource.PLAYERS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
+        player.level().playSound(player, blockPos, SoundEvents.VILLAGER_WORK_MASON, SoundSource.PLAYERS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
+        player.level().playSound(player, blockPos, SoundEvents.VILLAGER_WORK_TOOLSMITH, SoundSource.PLAYERS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
     }
 
     //// PLAYER INVENTORY ////

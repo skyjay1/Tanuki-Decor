@@ -65,7 +65,7 @@ public class ServerBoundSelectDIYRecipePacket {
                     return;
                 }
                 // validate recipe
-                final Optional<? extends Recipe<?>> oRecipe = player.level.getRecipeManager().byKey(message.recipeId);
+                final Optional<? extends Recipe<?>> oRecipe = player.level().getRecipeManager().byKey(message.recipeId);
                 if(oRecipe.isEmpty() || !(oRecipe.get() instanceof DIYRecipe recipe)) {
                     return;
                 }

@@ -7,13 +7,10 @@
 package tanukidecor.client.blockentity.misc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -25,6 +22,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,6 +30,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import org.joml.Matrix4f;
 import tanukidecor.block.entity.DisplayCaseBlockEntity;
 
 public class DisplayCaseBER implements BlockEntityRenderer<DisplayCaseBlockEntity> {
@@ -71,12 +70,12 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayCaseBlockEntit
 
         final float yRot = (direction.getOpposite().toYRot()) * Mth.DEG_TO_RAD;
         pPoseStack.translate(dx, dy, dz);
-        pPoseStack.mulPose(Vector3f.YN.rotation(yRot));
+        pPoseStack.mulPose(Axis.YN.rotation(yRot));
         pPoseStack.translate(-dx, -dy, -dz);
         pPoseStack.translate(0.5D, 0.5D, 0.5D);
 
         // render item
-        this.itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.FIXED, pPackedLight, OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, 0);
+        this.itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, pPackedLight, OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, pBlockEntity.getLevel(), 0);
 
         // finish rendering
         pPoseStack.popPose();
@@ -90,11 +89,12 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayCaseBlockEntit
     protected boolean shouldRenderNameTag(final BlockEntity blockEntity) {
         final Minecraft mc = Minecraft.getInstance();
         final Vec3 pos = Vec3.atCenterOf(blockEntity.getBlockPos());
-        final double distance = mc.player.getReachDistance();
+        final double distance = mc.player.getBlockReach();
         if(this.entityRenderDispatcher.distanceToSqr(pos.x, pos.y, pos.z) < (distance * distance)
                 && mc.hitResult != null
                 && mc.hitResult.getType() == HitResult.Type.BLOCK) {
-            BlockPos blockPos = new BlockPos(mc.hitResult.getLocation());
+            Vec3 hitLocation = mc.hitResult.getLocation();
+            BlockPos blockPos = new BlockPos((int) hitLocation.x(), (int) hitLocation.y(), (int) hitLocation.z());
             BlockState blockState = blockEntity.getLevel().getBlockState(blockPos);
             return blockPos.equals(blockEntity.getBlockPos()) && blockState.is(blockEntity.getBlockState().getBlock());
         }
@@ -103,17 +103,20 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayCaseBlockEntit
 
     protected void renderNameTag(BlockEntity blockEntity, Component text, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         float height = (float) blockEntity.getBlockState().getShape(blockEntity.getLevel(), blockEntity.getBlockPos(), CollisionContext.empty()).max(Direction.Axis.Y);
+
         poseStack.pushPose();
 
-        poseStack.translate(0.5D, 0.5D + height, 0.5D);
-        poseStack.mulPose(this.blockEntityRenderDispatcher.camera.rotation());
+        poseStack.translate(0.0F, 0.5F + height, 0.0F);
+        poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
         poseStack.scale(-0.025F, -0.025F, 0.025F);
         Matrix4f matrix4f = poseStack.last().pose();
-        float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
-        int j = (int)(f1 * 255.0F) << 24;
-        float f2 = (float)(-this.font.width(text) / 2);
-        this.font.drawInBatch(text, f2, 0.0F, 553648127, false, matrix4f, multiBufferSource, true, j, packedLight);
-        this.font.drawInBatch(text, f2, 0.0F, -1, false, matrix4f, multiBufferSource, false, 0, packedLight);
+
+        float opacityFactor = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
+        int opacity = (int)(opacityFactor * 255.0F) << 24;
+        float x = (float)(-font.width(text) / 2);
+
+        font.drawInBatch(text, x, 0.0F, 553648127, false, matrix4f, multiBufferSource, Font.DisplayMode.SEE_THROUGH, opacity, packedLight);
+        font.drawInBatch(text, x, 0.0F, -1, false, matrix4f, multiBufferSource, Font.DisplayMode.NORMAL, 0, packedLight);
 
         poseStack.popPose();
     }

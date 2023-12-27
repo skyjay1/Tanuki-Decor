@@ -8,7 +8,7 @@ package tanukidecor.client.blockentity.misc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -61,7 +61,7 @@ public class PhonographBER implements BlockEntityRenderer<PhonographBlockEntity>
         float yRot = time * 0.085F;
         pPoseStack.pushPose();
         pPoseStack.translate(dx, dy, dz);
-        pPoseStack.mulPose(Vector3f.YN.rotation(yRot));
+        pPoseStack.mulPose(Axis.YN.rotation(yRot));
         pPoseStack.translate(-dx, -dy, -dz);
         blockRenderer.getModelRenderer().renderModel(pPoseStack.last(), vertexConsumer, blockState, model,
                 1.0F, 1.0F, 1.0F, pPackedLight, pPackedOverlay, ModelData.EMPTY, renderType);
