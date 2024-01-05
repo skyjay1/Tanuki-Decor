@@ -18,8 +18,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.ForgeRegistries;
 import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.recipe.DIYRecipe;
@@ -28,7 +31,6 @@ import tanukidecor.client.menu.widget.ScrollButton;
 import tanukidecor.menu.DIYWorkbenchMenu;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -36,6 +38,8 @@ import java.util.Map;
 public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu> implements ScrollButton.IScrollListener {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(TanukiDecor.MODID, "textures/gui/diy_workbench.png");
+
+    private static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = ForgeRegistries.ITEMS.tags().createTagKey(new ResourceLocation(TanukiDecor.MODID, "diy_blacklist"));
 
     public static final int WIDTH = 182;
     public static final int HEIGHT = 216;
@@ -153,16 +157,17 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
     //// RECIPES ////
 
     private Map<String, DIYRecipe> populateRecipes() {
+        // verify config allows recipes
         if(!TanukiDecor.CONFIG.isDIYWorkbenchEnabled.get()) {
             return ImmutableMap.of();
         }
-        // create map builder
         final ImmutableMap.Builder<String, DIYRecipe> builder = ImmutableMap.builder();
-        // add all recipes with the name of the result item as the key
-        final Collection<DIYRecipe> recipes = getMenu().getInventory().player.level.getRecipeManager().getAllRecipesFor(TDRegistry.RecipeReg.DIY.get());
-        for(DIYRecipe recipe : recipes) {
-            builder.put(recipe.getResultItem().getHoverName().getString().toLowerCase(Locale.ENGLISH), recipe);
-        }
+        // map recipes with the string name as the key and the recipe as the value
+        getMenu().getInventory().player.level.getRecipeManager()
+                .getAllRecipesFor(TDRegistry.RecipeReg.DIY.get())
+                .stream()
+                .filter(recipe -> !recipe.getResultItem().is(DIY_BLACKLIST_TAG_KEY))
+                .forEach(recipe -> builder.put(recipe.getResultItem().getHoverName().getString().toLowerCase(Locale.ENGLISH), recipe));
         return builder.build();
     }
 

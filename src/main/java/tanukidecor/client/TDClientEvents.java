@@ -27,12 +27,7 @@ import tanukidecor.TDRegistry.BlockReg;
 import tanukidecor.TDRegistry.BlockEntityReg;
 import tanukidecor.block.seat.ISeatProvider;
 import tanukidecor.client.blockentity.clock.*;
-import tanukidecor.client.blockentity.misc.DisplayCaseBER;
-import tanukidecor.client.blockentity.misc.HourglassBER;
-import tanukidecor.client.blockentity.misc.MetronomeBER;
-import tanukidecor.client.blockentity.misc.PhonographBER;
-import tanukidecor.client.blockentity.misc.SlotMachineBER;
-import tanukidecor.client.blockentity.misc.TrainSetBER;
+import tanukidecor.client.blockentity.misc.*;
 import tanukidecor.client.menu.DIYWorkbenchScreen;
 
 import java.util.HashSet;
@@ -157,6 +152,14 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.METRONOME.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.PHONOGRAPH.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.PIANO.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.PLASMA_BALL.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GREEN_ROCKET_LAMP.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.BLUE_ROCKET_LAMP.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.PINK_ROCKET_LAMP.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.PURPLE_ROCKET_LAMP.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.RED_ROCKET_LAMP.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.TURQUOISE_ROCKET_LAMP.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.YELLOW_ROCKET_LAMP.get(), RenderType.translucent());
             registerRenderLayer(BlockReg.SHIP_IN_A_BOTTLE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SLOT_MACHINE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SNOWGLOBE.get(), RenderType.cutout());
@@ -219,8 +222,10 @@ public final class TDClientEvents {
             event.registerBlockEntityRenderer(BlockEntityReg.HOURGLASS.get(), HourglassBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.METRONOME.get(), MetronomeBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.PHONOGRAPH.get(), PhonographBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.ROCKET_LAMP.get(), RocketLampBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.SLOT_MACHINE.get(), SlotMachineBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.TRAIN_SET.get(), TrainSetBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.PLASMA_BALL.get(), PlasmaBallBER::new);
         }
 
         @SubscribeEvent
@@ -262,6 +267,7 @@ public final class TDClientEvents {
             HourglassBER.addSpecialModels(set);
             MetronomeBER.addSpecialModels(set);
             PhonographBER.addSpecialModels(set);
+            RocketLampBER.addSpecialModels(set);
             SlotMachineBER.addSpecialModels(set);
             TrainSetBER.addSpecialModels(set);
             // register special models
