@@ -20,21 +20,20 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import tanukidecor.block.entity.DisplayCaseBlockEntity;
+import tanukidecor.block.entity.DisplayBlockEntity;
 
-public class DisplayCaseBER implements BlockEntityRenderer<DisplayCaseBlockEntity> {
+public class DisplayCaseBER implements BlockEntityRenderer<DisplayBlockEntity> {
 
     protected final BlockEntityRenderDispatcher blockEntityRenderDispatcher;
     protected final ItemRenderer itemRenderer;
@@ -49,31 +48,37 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayCaseBlockEntit
     }
 
     @Override
-    public void render(DisplayCaseBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+    public void render(DisplayBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         // load values
+        final Level level = pBlockEntity.getLevel();
         final BlockState blockState = pBlockEntity.getBlockState();
-        final Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+        final BlockPos blockPos = pBlockEntity.getBlockPos();
         final ItemStack itemStack = pBlockEntity.getItem(0);
         // validate item stack
         if(itemStack.isEmpty()) {
             return;
         }
-        // prepare to render
-        final Minecraft mc = Minecraft.getInstance();
-        final BakedModel itemModel = this.itemRenderer.getModel(itemStack, pBlockEntity.getLevel(), null, 0);
 
         double dx = 0.5D;
-        double dy = 0.0D;
+        double dy = 0.5D;
         double dz = 0.5D;
+        final Vector3f translation = new Vector3f(0.5F, 0.5F, 0.5F);
+        translation.add(pBlockEntity.getDisplayTranslation(level, blockState, blockPos, itemStack, pPartialTick));
+        final Vector3f rotation = pBlockEntity.getDisplayRotation(level, blockState, blockPos, itemStack, pPartialTick);
+        final Vector3f scale = pBlockEntity.getDisplayScale(level, blockState, blockPos, itemStack, pPartialTick);
+
+        Quaternion quaternion = Vector3f.XP.rotationDegrees(rotation.x());
+        quaternion.mul(Vector3f.YP.rotationDegrees(rotation.y()));
+        quaternion.mul(Vector3f.ZP.rotationDegrees(rotation.z()));
 
         // start rendering
         pPoseStack.pushPose();
 
-        final float yRot = (direction.getOpposite().toYRot()) * Mth.DEG_TO_RAD;
         pPoseStack.translate(dx, dy, dz);
-        pPoseStack.mulPose(Vector3f.YN.rotation(yRot));
+        pPoseStack.mulPose(quaternion);
         pPoseStack.translate(-dx, -dy, -dz);
-        pPoseStack.translate(0.5D, 0.5D, 0.5D);
+        pPoseStack.translate(translation.x(), translation.y(), translation.z());
+        pPoseStack.scale(scale.x(), scale.y(), scale.z());
 
         // render item
         this.itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.FIXED, pPackedLight, OverlayTexture.NO_OVERLAY, pPoseStack, pBufferSource, 0);

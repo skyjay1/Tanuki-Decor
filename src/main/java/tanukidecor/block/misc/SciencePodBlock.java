@@ -8,10 +8,11 @@ package tanukidecor.block.misc;
 
 import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
@@ -22,23 +23,16 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
-import tanukidecor.block.RotatingTallBlock;
+import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.block.entity.SingleSlotBlockEntity;
+import tanukidecor.util.MultiblockHandler;
 
-public class DisplayCaseBlock extends RotatingTallBlock implements EntityBlock, IDisplayProvider {
+public class SciencePodBlock extends RotatingMultiblock implements EntityBlock, IDisplayProvider {
 
-    public static final VoxelShape SHAPE_UPPER = box(0.01D, 0, 0.01D, 15.99D, 15.99D, 15.99D);
-    public static final VoxelShape SHAPE_LOWER = Shapes.or(
-            box(0, 6, 0, 16, 8, 16),
-            box(1, 8, 1, 15, 14, 15),
-            box(0, 14, 0, 16, 16, 16),
-            box(1, 0, 1, 3, 6, 3),
-            box(1, 0, 13, 3, 6, 15),
-            box(13, 0, 1, 15, 6, 3),
-            box(13, 0, 13, 15, 6, 15));
+    private static final Vector3f DISPLAY_SCALE = new Vector3f(0.725F, 0.725F, 0.725F);
 
-    public DisplayCaseBlock(Properties pProperties) {
-        super(pProperties, RotatingTallBlock.createShapeBuilder(SHAPE_UPPER, SHAPE_LOWER));
+    public SciencePodBlock(Properties pProperties) {
+        super(MultiblockHandler.MULTIBLOCK_1X3X1, SciencePodBlock::buildShape, pProperties);
     }
 
     @Override
@@ -62,26 +56,50 @@ public class DisplayCaseBlock extends RotatingTallBlock implements EntityBlock, 
         return new Vector3f(0, blockState.getValue(FACING).getOpposite().toYRot(), 0);
     }
 
+    @Override
+    public Vector3f getDisplayTranslation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, float partialTick) {
+        final float time = (int) (level.getGameTime() + Math.abs(blockState.getSeed(blockPos)) % 96000L) + partialTick;
+        final float dy = Mth.sin(time * 0.032F) * 0.09F;
+        return new Vector3f(0, dy, 0);
+    }
+
+    @Override
+    public Vector3f getDisplayScale(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, float partialTick) {
+        return DISPLAY_SCALE;
+    }
+
     //// BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pPos.equals(getDelegatePos(pState, pPos))) {
+        if(this.getMultiblockHandler().isCenterState(pState)) {
             return TDRegistry.BlockEntityReg.DISPLAY_CASE.get().create(pPos, pState);
         }
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);
     }
 
-    //// REDSTONE ////
+    //// SHAPE ////
 
-    @Override
-    public boolean hasAnalogOutputSignal(BlockState state) {
-        return true;
-    }
+    public static final VoxelShape SHAPE_LOWER = Shapes.or(
+            box(1, 0, 1, 15, 3, 15),
+            box(0, 0, 5, 16, 4, 11),
+            box(5, 0, 0, 11, 4, 16),
+            box(2, 6, 2, 14, 16, 14));
+    public static final VoxelShape SHAPE_MIDDLE = box(2, 0, 2, 14, 16, 14);
+    public static final VoxelShape SHAPE_UPPER = Shapes.or(
+            box(1, 13, 1, 15, 16, 15),
+            box(0, 12, 5, 16, 16, 11),
+            box(5, 12, 0, 11, 16, 16),
+            box(2, 0, 2, 14, 10, 14));
 
-    @Override
-    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
+    public static VoxelShape buildShape(final BlockState blockState) {
+        final Vec3i index = MultiblockHandler.MULTIBLOCK_1X3X1.getIndex(blockState);
+        switch (index.getY()) {
+            case -1: return SHAPE_LOWER;
+            case 0: return SHAPE_MIDDLE;
+            case 1: return SHAPE_UPPER;
+            default: return Shapes.block();
+        }
     }
 }

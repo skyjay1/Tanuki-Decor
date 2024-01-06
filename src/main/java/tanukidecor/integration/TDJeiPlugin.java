@@ -46,7 +46,10 @@ public class TDJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         final List<DIYRecipe> recipes = Minecraft.getInstance().level.getRecipeManager()
-                .getAllRecipesFor(TDRegistry.RecipeReg.DIY.get());
+                .getAllRecipesFor(TDRegistry.RecipeReg.DIY.get())
+                .stream()
+                .filter(recipe -> !recipe.getResultItem().is(DIY_BLACKLIST_TAG_KEY))
+                .toList();
         registration.addRecipes(JeiDIYRecipeCategory.RECIPE_TYPE, recipes);
     }
 
@@ -61,6 +64,8 @@ public class TDJeiPlugin implements IModPlugin {
                 .stream()
                 .map(ItemStack::new)
                 .collect(Collectors.toSet());
-        jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, blacklistItems);
+        if(!blacklistItems.isEmpty()) {
+            jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, blacklistItems);
+        }
     }
 }

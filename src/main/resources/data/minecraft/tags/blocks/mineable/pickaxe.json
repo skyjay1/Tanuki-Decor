@@ -23,6 +23,7 @@
 
     "tanukidecor:antique_wall_oil_lamp",
     "tanukidecor:egyptian_lamp",
+    "tanukidecor:glowing_moss_jar",
     "tanukidecor:large_fireplace",
     "tanukidecor:neon_club_sign",
     "tanukidecor:neon_diamond_sign",
@@ -50,6 +51,18 @@
     "tanukidecor:sweets_mini_table",
     "tanukidecor:train_set",
 
-    "tanukidecor:plasma_ball"
+    "tanukidecor:plasma_ball",
+    "tanukidecor:blue_rocket_lamp",
+    "tanukidecor:green_rocket_lamp",
+    "tanukidecor:pink_rocket_lamp",
+    "tanukidecor:purple_rocket_lamp",
+    "tanukidecor:red_rocket_lamp",
+    "tanukidecor:turquoise_rocket_lamp",
+    "tanukidecor:yellow_rocket_lamp",
+    "tanukidecor:blue_science_pod",
+    "tanukidecor:green_science_pod",
+    "tanukidecor:orange_science_pod",
+    "tanukidecor:red_science_pod",
+    "tanukidecor:gear_tower"
   ]
 }

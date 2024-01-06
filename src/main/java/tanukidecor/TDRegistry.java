@@ -296,6 +296,8 @@ public final class TDRegistry {
                 new CabanaLampBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> EGYPTIAN_LAMP = registerWithItem("egyptian_lamp", () ->
                 new EgyptianLampBlock(2, BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).lightLevel(b -> !b.getValue(TallBlock.WATERLOGGED) ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> GLOWING_MOSS_JAR = registerWithItem("glowing_moss_jar", () ->
+                new GlowingMossJarBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GORGEOUS_LAMP = registerWithItem("gorgeous_lamp", () ->
                 new GorgeousLampBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GREEN_LAMP = registerWithItem("green_lamp", () ->
@@ -357,6 +359,8 @@ public final class TDRegistry {
                 new EgyptianTableBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> FIREWOOD = registerWithItem("firewood", () ->
                 new FirewoodBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 1.5F)) );
+        public static final RegistryObject<Block> GEAR_TOWER = registerWithItem("gear_tower", () ->
+                new GearTowerBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_COUNTER = registerWithItem("green_counter", () ->
                 new GreenCounterBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_TABLE = registerWithMultiblockItem("green_table", () ->
@@ -397,6 +401,14 @@ public final class TDRegistry {
                 new RegalSmallTableBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_TABLE = registerWithItem("regal_table", () ->
                 new RegalTableBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> BLUE_SCIENCE_POD = registerWithMultiblockItem("blue_science_pod", () ->
+                new SciencePodBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> GREEN_SCIENCE_POD = registerWithMultiblockItem("green_science_pod", () ->
+                new SciencePodBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> ORANGE_SCIENCE_POD = registerWithMultiblockItem("orange_science_pod", () ->
+                new SciencePodBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> RED_SCIENCE_POD = registerWithMultiblockItem("red_science_pod", () ->
+                new SciencePodBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> SHIP_IN_A_BOTTLE = registerWithItem("ship_in_a_bottle", () ->
                 new ShipInABottleBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> SLOT_MACHINE = registerWithItem("slot_machine", () ->
@@ -611,7 +623,8 @@ public final class TDRegistry {
                         BlockReg.SWEETS_CLOSET.get(), BlockReg.SWEETS_DRESSER.get(),
                         BlockReg.WOODEN_BLOCK_DRAWERS.get(),
                         BlockReg.DIY_WORKBENCH.get(), BlockReg.PHONOGRAPH.get(), BlockReg.LARGE_FANCY_VASE.get(), BlockReg.LARGE_STRIPED_VASE.get(),
-                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get())
+                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get(),
+                        BlockReg.BLUE_SCIENCE_POD.get(), BlockReg.GREEN_SCIENCE_POD.get(), BlockReg.ORANGE_SCIENCE_POD.get(), BlockReg.RED_SCIENCE_POD.get())
                 .build(null));
 
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> ANTIQUE_BOOKCASE = registerStorage(
@@ -686,12 +699,16 @@ public final class TDRegistry {
                 () -> BlockEntityReg.WOODEN_BLOCK_DRAWERS, 6, BlockReg.WOODEN_BLOCK_DRAWERS);
 
         // MISC //
-        public static final RegistryObject<BlockEntityType<DisplayCaseBlockEntity>> DISPLAY_CASE = BLOCK_ENTITY_TYPES.register("display_case", () -> BlockEntityType.Builder
-                .of((pos, state) -> new DisplayCaseBlockEntity(BlockEntityReg.DISPLAY_CASE.get(), pos, state),
-                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get())
+        public static final RegistryObject<BlockEntityType<DisplayBlockEntity>> DISPLAY_CASE = BLOCK_ENTITY_TYPES.register("display_case", () -> BlockEntityType.Builder
+                .of((pos, state) -> new DisplayBlockEntity(BlockEntityReg.DISPLAY_CASE.get(), pos, state),
+                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get(),
+                        BlockReg.BLUE_SCIENCE_POD.get(), BlockReg.GREEN_SCIENCE_POD.get(), BlockReg.ORANGE_SCIENCE_POD.get(), BlockReg.RED_SCIENCE_POD.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<DIYWorkbenchBlockEntity>> DIY_WORKBENCH = BLOCK_ENTITY_TYPES.register("diy_workbench", () -> BlockEntityType.Builder
                 .of((pos, state) -> new DIYWorkbenchBlockEntity(BlockEntityReg.DIY_WORKBENCH.get(), pos, state), BlockReg.DIY_WORKBENCH.get())
+                .build(null));
+        public static final RegistryObject<BlockEntityType<GearTowerBlockEntity>> GEAR_TOWER = BLOCK_ENTITY_TYPES.register("gear_tower", () -> BlockEntityType.Builder
+                .of((pos, state) -> new GearTowerBlockEntity(BlockEntityReg.GEAR_TOWER.get(), pos, state), BlockReg.GEAR_TOWER.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<HourglassBlockEntity>> HOURGLASS = BLOCK_ENTITY_TYPES.register("hourglass", () -> BlockEntityType.Builder
                 .of((pos, state) -> new HourglassBlockEntity(BlockEntityReg.HOURGLASS.get(), pos, state), BlockReg.HOURGLASS.get())
@@ -701,6 +718,15 @@ public final class TDRegistry {
                 .build(null));
         public static final RegistryObject<BlockEntityType<PhonographBlockEntity>> PHONOGRAPH = BLOCK_ENTITY_TYPES.register("phonograph", () -> BlockEntityType.Builder
                 .of((pos, state) -> new PhonographBlockEntity(BlockEntityReg.PHONOGRAPH.get(), pos, state), BlockReg.PHONOGRAPH.get())
+                .build(null));
+        public static final RegistryObject<BlockEntityType<PlasmaBallBlockEntity>> PLASMA_BALL = BLOCK_ENTITY_TYPES.register("plasma_ball", () -> BlockEntityType.Builder
+                .of((pos, state) -> new PlasmaBallBlockEntity(BlockEntityReg.PLASMA_BALL.get(), pos, state), BlockReg.PLASMA_BALL.get())
+                .build(null));
+        public static final RegistryObject<BlockEntityType<RocketLampBlockEntity>> ROCKET_LAMP = BLOCK_ENTITY_TYPES.register("rocket_lamp", () -> BlockEntityType.Builder
+                .of((pos, state) -> new RocketLampBlockEntity(BlockEntityReg.ROCKET_LAMP.get(), pos, state),
+                        BlockReg.BLUE_ROCKET_LAMP.get(), BlockReg.GREEN_ROCKET_LAMP.get(), BlockReg.PINK_ROCKET_LAMP.get(),
+                        BlockReg.PURPLE_ROCKET_LAMP.get(), BlockReg.RED_ROCKET_LAMP.get(), BlockReg.TURQUOISE_ROCKET_LAMP.get(),
+                        BlockReg.YELLOW_ROCKET_LAMP.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<SlotMachineBlockEntity>> SLOT_MACHINE = BLOCK_ENTITY_TYPES.register("slot_machine", () -> BlockEntityType.Builder
                 .of((pos, state) -> new SlotMachineBlockEntity(BlockEntityReg.SLOT_MACHINE.get(), pos, state), BlockReg.SLOT_MACHINE.get())
@@ -712,17 +738,6 @@ public final class TDRegistry {
                 .of((pos, state) -> new SingleSlotBlockEntity(BlockEntityReg.VASE.get(), pos, state),
                         BlockReg.CLASSIC_VASE.get(), BlockReg.FANCY_VASE.get(), BlockReg.LARGE_FANCY_VASE.get(),
                         BlockReg.LARGE_STRIPED_VASE.get(), BlockReg.SMALL_FANCY_VASE.get(), BlockReg.SMALL_STRIPED_VASE.get())
-                .build(null));
-
-        // SPECIAL //
-        public static final RegistryObject<BlockEntityType<PlasmaBallBlockEntity>> PLASMA_BALL = BLOCK_ENTITY_TYPES.register("plasma_ball", () -> BlockEntityType.Builder
-                .of((pos, state) -> new PlasmaBallBlockEntity(BlockEntityReg.PLASMA_BALL.get(), pos, state), BlockReg.PLASMA_BALL.get())
-                .build(null));
-        public static final RegistryObject<BlockEntityType<RocketLampBlockEntity>> ROCKET_LAMP = BLOCK_ENTITY_TYPES.register("rocket_lamp", () -> BlockEntityType.Builder
-                .of((pos, state) -> new RocketLampBlockEntity(BlockEntityReg.ROCKET_LAMP.get(), pos, state),
-                        BlockReg.BLUE_ROCKET_LAMP.get(), BlockReg.GREEN_ROCKET_LAMP.get(), BlockReg.PINK_ROCKET_LAMP.get(),
-                        BlockReg.PURPLE_ROCKET_LAMP.get(), BlockReg.RED_ROCKET_LAMP.get(), BlockReg.TURQUOISE_ROCKET_LAMP.get(),
-                        BlockReg.YELLOW_ROCKET_LAMP.get())
                 .build(null));
 
         /**

@@ -1,0 +1,41 @@
+{
+  "credit": "Made by skyjay1",
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:solid",
+  "elements": [
+    {
+      "name": "stem",
+      "from": [7, 0, 7],
+      "to": [9, 14, 9],
+      "rotation": {"angle": 0, "axis": "z", "origin": [8, 0, 8]},
+      "faces": {
+        "north": {"uv": [0, 2, 2, 16], "texture": "#stem"},
+        "east": {"uv": [2, 2, 4, 16], "texture": "#stem"},
+        "south": {"uv": [4, 2, 6, 16], "texture": "#stem"},
+        "west": {"uv": [6, 2, 8, 16], "texture": "#stem"},
+        "up": {"uv": [8, 2, 10, 4], "texture": "#stem"},
+        "down": {"uv": [8, 2, 10, 4], "texture": "#inside"}
+      }
+    },
+    {
+      "name": "stem",
+      "from": [6, 14, 7],
+      "to": [8, 16, 9],
+      "faces": {
+        "north": {"uv": [0, 0, 2, 2], "texture": "#stem"},
+        "east": {"uv": [2, 0, 4, 2], "texture": "#stem"},
+        "south": {"uv": [4, 0, 6, 2], "texture": "#stem"},
+        "west": {"uv": [6, 0, 8, 2], "texture": "#stem"},
+        "down": {"uv": [8, 0, 10, 2], "texture": "#stem"}
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "bottom",
+      "origin": [0, 0, 0],
+      "color": 0,
+      "children": [0, 1]
+    }
+  ]
+}

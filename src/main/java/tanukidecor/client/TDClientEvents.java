@@ -116,6 +116,7 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.BLUE_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.CABANA_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.EGYPTIAN_LAMP.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.GLOWING_MOSS_JAR.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.GORGEOUS_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.GREEN_LAMP.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.LARGE_FIREPLACE.get(), RenderType.cutout());
@@ -160,6 +161,10 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.RED_ROCKET_LAMP.get(), RenderType.translucent());
             registerRenderLayer(BlockReg.TURQUOISE_ROCKET_LAMP.get(), RenderType.translucent());
             registerRenderLayer(BlockReg.YELLOW_ROCKET_LAMP.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.BLUE_SCIENCE_POD.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.GREEN_SCIENCE_POD.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.ORANGE_SCIENCE_POD.get(), RenderType.translucent());
+            registerRenderLayer(BlockReg.RED_SCIENCE_POD.get(), RenderType.translucent());
             registerRenderLayer(BlockReg.SHIP_IN_A_BOTTLE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SLOT_MACHINE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.SNOWGLOBE.get(), RenderType.cutout());
@@ -219,6 +224,7 @@ public final class TDClientEvents {
             event.registerBlockEntityRenderer(BlockEntityReg.WOODEN_BLOCK_CLOCK.get(), WoodenBlockClockBER::new);
             // MISC //
             event.registerBlockEntityRenderer(BlockEntityReg.DISPLAY_CASE.get(), DisplayCaseBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.GEAR_TOWER.get(), GearTowerBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.HOURGLASS.get(), HourglassBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.METRONOME.get(), MetronomeBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.PHONOGRAPH.get(), PhonographBER::new);
@@ -264,6 +270,7 @@ public final class TDClientEvents {
             StationClockBER.addSpecialModels(set);
             WoodenBlockClockBER.addSpecialModels(set);
             // MISC //
+            GearTowerBER.addSpecialModels(set);
             HourglassBER.addSpecialModels(set);
             MetronomeBER.addSpecialModels(set);
             PhonographBER.addSpecialModels(set);
