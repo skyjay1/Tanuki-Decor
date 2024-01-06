@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "half=lower,waterlogged=true": { "model": "tanukidecor:block/gear_tower/lower" },
-    "half=lower,waterlogged=false": { "model": "tanukidecor:block/gear_tower/lower" },
-    "half=upper,waterlogged=true": { "model": "tanukidecor:block/gear_tower/upper" },
-    "half=upper,waterlogged=false": { "model": "tanukidecor:block/gear_tower/upper" }
-  }
-}

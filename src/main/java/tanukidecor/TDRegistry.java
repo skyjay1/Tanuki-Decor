@@ -359,8 +359,6 @@ public final class TDRegistry {
                 new EgyptianTableBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> FIREWOOD = registerWithItem("firewood", () ->
                 new FirewoodBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 1.5F)) );
-        public static final RegistryObject<Block> GEAR_TOWER = registerWithItem("gear_tower", () ->
-                new GearTowerBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_COUNTER = registerWithItem("green_counter", () ->
                 new GreenCounterBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_TABLE = registerWithMultiblockItem("green_table", () ->
@@ -706,9 +704,6 @@ public final class TDRegistry {
                 .build(null));
         public static final RegistryObject<BlockEntityType<DIYWorkbenchBlockEntity>> DIY_WORKBENCH = BLOCK_ENTITY_TYPES.register("diy_workbench", () -> BlockEntityType.Builder
                 .of((pos, state) -> new DIYWorkbenchBlockEntity(BlockEntityReg.DIY_WORKBENCH.get(), pos, state), BlockReg.DIY_WORKBENCH.get())
-                .build(null));
-        public static final RegistryObject<BlockEntityType<GearTowerBlockEntity>> GEAR_TOWER = BLOCK_ENTITY_TYPES.register("gear_tower", () -> BlockEntityType.Builder
-                .of((pos, state) -> new GearTowerBlockEntity(BlockEntityReg.GEAR_TOWER.get(), pos, state), BlockReg.GEAR_TOWER.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<HourglassBlockEntity>> HOURGLASS = BLOCK_ENTITY_TYPES.register("hourglass", () -> BlockEntityType.Builder
                 .of((pos, state) -> new HourglassBlockEntity(BlockEntityReg.HOURGLASS.get(), pos, state), BlockReg.HOURGLASS.get())

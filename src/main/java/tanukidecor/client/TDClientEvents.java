@@ -224,7 +224,6 @@ public final class TDClientEvents {
             event.registerBlockEntityRenderer(BlockEntityReg.WOODEN_BLOCK_CLOCK.get(), WoodenBlockClockBER::new);
             // MISC //
             event.registerBlockEntityRenderer(BlockEntityReg.DISPLAY_CASE.get(), DisplayCaseBER::new);
-            event.registerBlockEntityRenderer(BlockEntityReg.GEAR_TOWER.get(), GearTowerBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.HOURGLASS.get(), HourglassBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.METRONOME.get(), MetronomeBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.PHONOGRAPH.get(), PhonographBER::new);
@@ -270,7 +269,6 @@ public final class TDClientEvents {
             StationClockBER.addSpecialModels(set);
             WoodenBlockClockBER.addSpecialModels(set);
             // MISC //
-            GearTowerBER.addSpecialModels(set);
             HourglassBER.addSpecialModels(set);
             MetronomeBER.addSpecialModels(set);
             PhonographBER.addSpecialModels(set);
