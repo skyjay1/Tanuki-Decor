@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -45,6 +46,7 @@ import tanukidecor.block.storage.*;
 import tanukidecor.item.*;
 import tanukidecor.menu.DIYWorkbenchMenu;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -244,16 +246,30 @@ public final class TDRegistry {
                 new GreenBenchBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_CHAIR = registerWithItem("green_chair", () ->
                 new GreenChairBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> LOG_BENCH = registerWithItem("log_bench", () ->
+                new LogBenchBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> LOG_STOOL = registerWithItem("log_stool", () ->
+                new LogStoolBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> MINIMALIST_CHAIR = registerWithItem("minimalist_chair", () ->
                 new MinimalistChairBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> MINIMALIST_COUCH = registerWithItem("minimalist_couch", () ->
                 new MinimalistCouchBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> MINIMALIST_STOOL = registerWithItem("minimalist_stool", () ->
                 new MinimalistStoolBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> BROWN_MUSHROOM_LOG_STOOL = registerWithItem("brown_mushroom_log_stool", () ->
+                new LogStoolBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> RED_MUSHROOM_LOG_STOOL = registerWithItem("red_mushroom_log_stool", () ->
+                new LogStoolBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> BROWN_MUSHROOM_STOOL = registerWithItem("brown_mushroom_stool", () ->
+                new MushroomStoolBlock(BlockBehaviour.Properties.of(Material.SPONGE).sound(SoundType.FUNGUS).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> RED_MUSHROOM_STOOL = registerWithItem("red_mushroom_stool", () ->
+                new MushroomStoolBlock(BlockBehaviour.Properties.of(Material.SPONGE).sound(SoundType.FUNGUS).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_CHAIR = registerWithItem("regal_chair", () ->
                 new RegalChairBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> REGAL_SOFA = registerWithItem("regal_sofa", () ->
                 new RegalSofaBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> ROUGH_LOG_BENCH = registerWithItem("rough_log_bench", () ->
+                new RoughLogBenchBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> SWEETS_CHAIR = registerWithItem("sweets_chair", () ->
                 new SweetsChairBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> SWEETS_SOFA = registerWithItem("sweets_sofa", () ->
@@ -280,6 +296,10 @@ public final class TDRegistry {
                 new GorgeousBedBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.0F, 30.0F)) );
         public static final RegistryObject<Block> MINIMALIST_BED = registerWithMultiblockItem("minimalist_bed", () ->
                 new MinimalistBedBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> BROWN_MUSHROOM_BED = registerWithMultiblockItem("brown_mushroom_bed", () ->
+                new MushroomBedBlock(BlockBehaviour.Properties.of(Material.SPONGE).sound(SoundType.FUNGUS).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> RED_MUSHROOM_BED = registerWithMultiblockItem("red_mushroom_bed", () ->
+                new MushroomBedBlock(BlockBehaviour.Properties.of(Material.SPONGE).sound(SoundType.FUNGUS).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> REGAL_BED = registerWithMultiblockItem("regal_bed", () ->
                 new RegalBedBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.0F, 30.0F)) );
         public static final RegistryObject<Block> SWEETS_BED = registerWithMultiblockItem("sweets_bed", () ->
@@ -306,6 +326,10 @@ public final class TDRegistry {
                 new LargeFireplaceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_RED).sound(SoundType.STONE).lightLevel(b -> b.getValue(RotatingBlock.WATERLOGGED) ? 0 : 14).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> MINIMALIST_LAMP = registerWithItem("minimalist_lamp", () ->
                 new MinimalistLampBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> BROWN_MUSHROOM_LAMP = registerWithItem("brown_mushroom_lamp", () ->
+                new MushroomLampBlock(BlockBehaviour.Properties.of(Material.SPONGE).sound(SoundType.FUNGUS).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> RED_MUSHROOM_LAMP = registerWithItem("red_mushroom_lamp", () ->
+                new MushroomLampBlock(BlockBehaviour.Properties.of(Material.SPONGE).sound(SoundType.FUNGUS).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> NEON_CLUB_SIGN = registerWithItem("neon_club_sign", () ->
                 new NeonSignBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> NEON_DIAMOND_SIGN = registerWithItem("neon_diamond_sign", () ->
@@ -322,9 +346,22 @@ public final class TDRegistry {
                 new RegalLampBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_WALL_LAMP = registerWithItem("regal_wall_lamp", () ->
                 new RegalWallLampBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> BLUE_ROCKET_LAMP = registerWithItem("blue_rocket_lamp", () ->
+                new RocketLampBlock("blue", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> GREEN_ROCKET_LAMP = registerWithItem("green_rocket_lamp", () ->
+                new RocketLampBlock("green", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> PINK_ROCKET_LAMP = registerWithItem("pink_rocket_lamp", () ->
+                new RocketLampBlock("pink", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> PURPLE_ROCKET_LAMP = registerWithItem("purple_rocket_lamp", () ->
+                new RocketLampBlock("purple", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> RED_ROCKET_LAMP = registerWithItem("red_rocket_lamp", () ->
+                new RocketLampBlock("red", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> TURQUOISE_ROCKET_LAMP = registerWithItem("turquoise_rocket_lamp", () ->
+                new RocketLampBlock("turquoise", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> YELLOW_ROCKET_LAMP = registerWithItem("yellow_rocket_lamp", () ->
+                new RocketLampBlock("yellow", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> SMALL_FIREPLACE = registerWithItem("small_fireplace", () ->
                 new SmallFireplaceBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_RED).sound(SoundType.STONE).lightLevel(b -> b.getValue(RotatingBlock.WATERLOGGED) ? 0 : 14).noOcclusion().strength(2.0F, 10.0F)) );
-
 
         // MISC //
         public static final RegistryObject<Block> ANTIQUE_PHONE = registerWithItem("antique_phone", () ->
@@ -369,8 +406,10 @@ public final class TDRegistry {
                 new GorgeousTableBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GUMBALL_MACHINE = registerWithItem("gumball_machine", () ->
                 new GumballMachineBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> GLOBE = registerWithItem("globe", () ->
+                new GlobeBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> HOLIDAY_TREE = registerWithItem("holiday_tree", () ->
-                new HolidayTreeBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+                new HolidayTreeBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> HOURGLASS = registerWithItem("hourglass", () ->
                 new HourglassBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> METRONOME = registerWithItem("metronome", () ->
@@ -379,8 +418,16 @@ public final class TDRegistry {
                 new MinimalistSmallTableBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> MINIMALIST_TABLE = registerWithItem("minimalist_table", () ->
                 new MinimalistTableBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> DEVELOPER_MINI_FIGURE = registerWithItem("developer_mini_figure", () ->
+                new MiniFigureBlock(() -> SoundEvents.CAT_AMBIENT, BlockBehaviour.Properties.of(Material.WOOL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> MAYORAL_MINI_FIGURE = registerWithItem("mayoral_mini_figure", () ->
                 new MiniFigureBlock(BlockBehaviour.Properties.of(Material.WOOL).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> BROWN_MUSHROOM_TABLE = registerWithMultiblockItem("brown_mushroom_table", () ->
+                new MushroomTableBlock(BlockBehaviour.Properties.of(Material.SPONGE).sound(SoundType.FUNGUS).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> RED_MUSHROOM_TABLE = registerWithMultiblockItem("red_mushroom_table", () ->
+                new MushroomTableBlock(BlockBehaviour.Properties.of(Material.SPONGE).sound(SoundType.FUNGUS).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> NEWTONS_CRADLE = registerWithItem("newtons_cradle", () ->
+                new NewtonsCradleBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_BLUE_STREAMER = registerWithItem("narrow_blue_streamer", () ->
                 new NarrowStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_GREEN_STREAMER = registerWithItem("narrow_green_streamer", () ->
@@ -395,6 +442,8 @@ public final class TDRegistry {
                 new PhonographBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> PIANO = registerWithMultiblockItem("piano", () ->
                 new PianoBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> PLASMA_BALL = registerWithItem("plasma_ball", () ->
+                new PlasmaBallBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER && b.getValue(PlasmaBallBlock.ENABLED) ? 14 : 0).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_SMALL_TABLE = registerWithItem("regal_small_table", () ->
                 new RegalSmallTableBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_TABLE = registerWithItem("regal_table", () ->
@@ -465,25 +514,6 @@ public final class TDRegistry {
                 new WideStreamerBlock(BlockBehaviour.Properties.of(Material.WOOL).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
         public static final RegistryObject<Block> WIDE_STRING_LIGHTS = registerWithItem("wide_string_lights", () ->
                 new WideStreamerBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).lightLevel(b -> 14).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
-
-        
-        // SPECIAL //
-        public static final RegistryObject<Block> PLASMA_BALL = registerWithItem("plasma_ball", () ->
-                new PlasmaBallBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER && b.getValue(PlasmaBallBlock.ENABLED) ? 14 : 0).noOcclusion().strength(1.5F, 6.0F)) );
-        public static final RegistryObject<Block> BLUE_ROCKET_LAMP = registerWithItem("blue_rocket_lamp", () ->
-                new RocketLampBlock("blue", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
-        public static final RegistryObject<Block> GREEN_ROCKET_LAMP = registerWithItem("green_rocket_lamp", () ->
-                new RocketLampBlock("green", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
-        public static final RegistryObject<Block> PINK_ROCKET_LAMP = registerWithItem("pink_rocket_lamp", () ->
-                new RocketLampBlock("pink", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
-        public static final RegistryObject<Block> PURPLE_ROCKET_LAMP = registerWithItem("purple_rocket_lamp", () ->
-                new RocketLampBlock("purple", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
-        public static final RegistryObject<Block> RED_ROCKET_LAMP = registerWithItem("red_rocket_lamp", () ->
-                new RocketLampBlock("red", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
-        public static final RegistryObject<Block> TURQUOISE_ROCKET_LAMP = registerWithItem("turquoise_rocket_lamp", () ->
-                new RocketLampBlock("turquoise", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
-        public static final RegistryObject<Block> YELLOW_ROCKET_LAMP = registerWithItem("yellow_rocket_lamp", () ->
-                new RocketLampBlock("yellow", BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
 
         // HELPER METHODS //
 
@@ -705,11 +735,17 @@ public final class TDRegistry {
         public static final RegistryObject<BlockEntityType<DIYWorkbenchBlockEntity>> DIY_WORKBENCH = BLOCK_ENTITY_TYPES.register("diy_workbench", () -> BlockEntityType.Builder
                 .of((pos, state) -> new DIYWorkbenchBlockEntity(BlockEntityReg.DIY_WORKBENCH.get(), pos, state), BlockReg.DIY_WORKBENCH.get())
                 .build(null));
+        public static final RegistryObject<BlockEntityType<GlobeBlockEntity>> GLOBE = BLOCK_ENTITY_TYPES.register("globe", () -> BlockEntityType.Builder
+                .of((pos, state) -> new GlobeBlockEntity(BlockEntityReg.GLOBE.get(), pos, state), BlockReg.GLOBE.get())
+                .build(null));
         public static final RegistryObject<BlockEntityType<HourglassBlockEntity>> HOURGLASS = BLOCK_ENTITY_TYPES.register("hourglass", () -> BlockEntityType.Builder
                 .of((pos, state) -> new HourglassBlockEntity(BlockEntityReg.HOURGLASS.get(), pos, state), BlockReg.HOURGLASS.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<MetronomeBlockEntity>> METRONOME = BLOCK_ENTITY_TYPES.register("metronome", () -> BlockEntityType.Builder
                 .of((pos, state) -> new MetronomeBlockEntity(BlockEntityReg.METRONOME.get(), pos, state), BlockReg.METRONOME.get())
+                .build(null));
+        public static final RegistryObject<BlockEntityType<NewtonsCradleBlockEntity>> NEWTONS_CRADLE = BLOCK_ENTITY_TYPES.register("newtons_cradle", () -> BlockEntityType.Builder
+                .of((pos, state) -> new NewtonsCradleBlockEntity(BlockEntityReg.NEWTONS_CRADLE.get(), pos, state), BlockReg.NEWTONS_CRADLE.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<PhonographBlockEntity>> PHONOGRAPH = BLOCK_ENTITY_TYPES.register("phonograph", () -> BlockEntityType.Builder
                 .of((pos, state) -> new PhonographBlockEntity(BlockEntityReg.PHONOGRAPH.get(), pos, state), BlockReg.PHONOGRAPH.get())

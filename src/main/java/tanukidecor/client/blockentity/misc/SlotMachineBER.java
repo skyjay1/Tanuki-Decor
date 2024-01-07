@@ -95,7 +95,6 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
             xRot += (360 * 10) * Math.pow(8.0D, -10.0D * (duration - 0.18D));
         }
         pPoseStack.pushPose();
-        pPoseStack.translate(0, 0, 0);
         pPoseStack.translate(dx, dy, dz);
         pPoseStack.mulPose(Vector3f.XP.rotationDegrees(xRot));
         pPoseStack.translate(-dx, -dy, -dz);

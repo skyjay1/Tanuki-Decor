@@ -1,7 +1,7 @@
 {
   "credit": "Made by skyjay1",
   "parent": "minecraft:block/block",
-  "render_type": "minecraft:solid",
+  "render_type": "minecraft:cutout",
   "elements": [
     {
       "name": "stem",

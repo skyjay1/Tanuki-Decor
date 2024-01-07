@@ -4,11 +4,11 @@ license="GNU LGPLv3"
 
 [[mods]]
     modId="tanukidecor"
-    version="18.2.1.1"
+    version="18.2.2.0"
     displayName="Tanuki Decor"
     authors="skyjay1"
     credits=""
-    description='''Large furniture mod'''
+    description='''Animal Crossing inspired furniture mod'''
 
 [[dependencies.tanukidecor]]
     modId="forge"

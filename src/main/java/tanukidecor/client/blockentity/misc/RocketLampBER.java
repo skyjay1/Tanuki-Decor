@@ -106,7 +106,7 @@ public class RocketLampBER implements BlockEntityRenderer<RocketLampBlockEntity>
         final float dy = y + range * smoothstep(biasFactor + (0.5F + amplitudeFactor) * Mth.sin(time * frequencyFactor));
         // calculate scale
         float scaleFactor = 0.34F + 0.31F * (float) Mth.smoothstep(Mth.sin(time * 0.053F) * 0.9F + 0.5F);
-        scaleFactor *= (0.5F + 0.5F * Mth.cos(time * frequencyFactor));
+        scaleFactor *= (0.5F + 0.5F * Math.abs(Mth.cos(time * frequencyFactor)));
         final float scaleX = 0.4F + 0.6F * (1.0F - scaleFactor);
         final float scaleY = 0.8F + 0.5F * scaleFactor;
         final float scaleZ = 0.4F + 0.6F * (1.0F - scaleFactor);

@@ -1,0 +1,61 @@
+{
+  "parent": "minecraft:block/block",
+  "texture_size": [32, 32],
+  "textures": {
+    "0": "tanukidecor:block/globe",
+    "particle": "tanukidecor:block/globe"
+  },
+  "elements": [
+    {
+      "name": "top_axis",
+      "from": [7.5, 13, 7.5],
+      "to": [8.5, 14, 8.5],
+      "faces": {
+        "north": {"uv": [0, 8.5, 0.5, 9], "texture": "#0"},
+        "east": {"uv": [0, 8.5, 0.5, 9], "texture": "#0"},
+        "south": {"uv": [0, 8.5, 0.5, 9], "texture": "#0"},
+        "west": {"uv": [0, 8.5, 0.5, 9], "texture": "#0"}
+      }
+    },
+    {
+      "name": "globe",
+      "from": [4, 5, 4],
+      "to": [12, 13, 12],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+      "faces": {
+        "north": {"uv": [4, 4, 8, 8], "texture": "#0"},
+        "east": {"uv": [0, 4, 4, 8], "texture": "#0"},
+        "south": {"uv": [12, 4, 16, 8], "texture": "#0"},
+        "west": {"uv": [8, 4, 12, 8], "texture": "#0"},
+        "up": {"uv": [4, 0, 8, 4], "rotation": 180, "texture": "#0"},
+        "down": {"uv": [4, 8, 8, 12], "rotation": 180, "texture": "#0"}
+      }
+    },
+    {
+      "name": "bottom_axis",
+      "from": [7.5, 4, 7.5],
+      "to": [8.5, 5, 8.5],
+      "faces": {
+        "north": {"uv": [0, 8.5, 0.5, 9], "texture": "#0"},
+        "east": {"uv": [0, 8.5, 0.5, 9], "texture": "#0"},
+        "south": {"uv": [0, 8.5, 0.5, 9], "texture": "#0"},
+        "west": {"uv": [0, 8.5, 0.5, 9], "texture": "#0"}
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "globe",
+      "origin": [0, 0, 0],
+      "color": 0,
+      "children": [
+        {
+          "name": "globe",
+          "origin": [0, 0, 0],
+          "color": 0,
+          "children": [0, 1, 2]
+        }
+      ]
+    }
+  ]
+}
