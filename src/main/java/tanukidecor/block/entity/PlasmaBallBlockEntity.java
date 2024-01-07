@@ -29,7 +29,7 @@ import java.util.Random;
 public class PlasmaBallBlockEntity extends BlockEntity {
 
     private final List<Arc> arcs = new ArrayList<>();
-    private static final Gradient ARC_COLORS = Gradient.builder(0xDDFFFFFF)
+    private static final Gradient ARC_COLORS = new Gradient.Builder(0xDDFFFFFF)
             .with(0.36F, 0xCF70AEFF)
             .with(0.92F, 0xFFFF6DD8)
             .build();

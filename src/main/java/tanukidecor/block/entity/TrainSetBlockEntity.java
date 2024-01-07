@@ -33,16 +33,8 @@ public class TrainSetBlockEntity extends BlockEntity {
         if (level.isClientSide()) {
             return;
         }
-        // update silenced
-        final int time = (int) ((level.getGameTime() % 24000L + blockPos.asLong() % 24000L));
-        if(time % 50 == 1) {
-            Direction facing = blockState.getValue(TrainSetBlock.FACING);
-            MultiblockHandler multiblockHandler = ((TrainSetBlock)blockState.getBlock()).getMultiblockHandler();
-            boolean hasWoolBelow = multiblockHandler.anyPositions(multiblockHandler.getCenterPos(blockPos, blockState, facing), facing,
-                    b -> level.getBlockState(b.below()).is(BlockTags.OCCLUDES_VIBRATION_SIGNALS));
-            blockEntity.setSilent(hasWoolBelow);
-        }
         // play sounds
+        final int time = (int) ((level.getGameTime() + blockPos.asLong()) % 24000L);
         if(!blockEntity.isSilent()) {
             // play ambient sound
             if (time % 12 == 0) {
