@@ -19,10 +19,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -374,6 +376,10 @@ public final class TDRegistry {
                 new AntiqueSmallTableBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> ANTIQUE_TABLE = registerWithMultiblockItem("antique_table", () ->
                 new AntiqueTableBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> BIRDCAGE = registerWithItem("birdcage", () ->
+                new BirdcageBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).randomTicks().isSuffocating(BlockReg::never).isViewBlocking(BlockReg::never).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> ELEGANT_BIRDCAGE = registerWithItem("elegant_birdcage", () ->
+                new BirdcageBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).randomTicks().isSuffocating(BlockReg::never).isViewBlocking(BlockReg::never).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> BLUE_TABLE = registerWithMultiblockItem("blue_table", () ->
                 new BlueTableBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> CABANA_SCREEN = registerWithMultiblockItem("cabana_screen", () ->
@@ -533,6 +539,10 @@ public final class TDRegistry {
 
         private static RegistryObject<Block> registerWithWallMultiblockItem(final String name, final Supplier<Block> supplier) {
             return registerWithItem(name, supplier, block -> ItemReg.register(block.getId().getPath(), () -> new WallMultiblockItem(block.get(), new Item.Properties().tab(ItemReg.TAB).stacksTo(1))));
+        }
+
+        private static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+            return false;
         }
     }
 

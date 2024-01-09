@@ -133,6 +133,8 @@ public final class TDClientEvents {
             registerRenderLayer(BlockReg.SWEETS_MINI_LAMP.get(), RenderType.cutout());
             // MISC //
             registerRenderLayer(BlockReg.ANTIQUE_PHONE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.BIRDCAGE.get(), RenderType.cutout());
+            registerRenderLayer(BlockReg.ELEGANT_BIRDCAGE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.BLUE_TABLE.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.CABANA_SCREEN.get(), RenderType.cutout());
             registerRenderLayer(BlockReg.CABANA_TABLE.get(), RenderType.cutout());
