@@ -22,7 +22,7 @@
   "block.tanukidecor.mantle_clock": "壁炉钟",
   "block.tanukidecor.minimalist_clock": "简约钟",
   "block.tanukidecor.owl_clock": "猫头鹰钟",
-  "block.tanukidecor.recognizable_clock": "醒目钟",
+  "block.tanukidecor.recognizable_clock": "四方钟",
   "block.tanukidecor.red_clock": "红色钟",
   "block.tanukidecor.reed_clock": "簧片钟",
   "block.tanukidecor.regal_clock": "豪华钟",
@@ -208,6 +208,6 @@
   "subtitle.block.tanukidecor.metronome.tick": "节拍器滴答",
   "subtitle.block.tanukidecor.mini_figure.squeak": "小玩偶吱吱叫",
   "subtitle.block.tanukidecor.pocket_watch.tick": "手表滴答",
-  "subtitle.block.tanukidecor.recognizable_clock.chime": "醒目钟报时",
+  "subtitle.block.tanukidecor.recognizable_clock.chime": "四方钟报时",
   "subtitle.block.tanukidecor.slate_clock.chime": "石板钟报时"
 }
