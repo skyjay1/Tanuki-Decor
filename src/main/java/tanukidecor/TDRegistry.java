@@ -392,7 +392,7 @@ public final class TDRegistry {
                 new DessertCaseBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> DISPLAY_CASE = registerWithItem("display_case", () ->
                 new DisplayCaseBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).noOcclusion().strength(1.5F, 30.0F)) );
-        public static final RegistryObject<Block> LONG_DISPLAY_CASE = registerWithItem("long_display_case", () ->
+        public static final RegistryObject<Block> LONG_DISPLAY_CASE = registerWithMultiblockItem("long_display_case", () ->
                 new LongDisplayCaseBlock(BlockBehaviour.Properties.of(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).noOcclusion().strength(2.0F, 30.0F)) );
         public static final RegistryObject<Block> DIY_WORKBENCH = registerWithItem("diy_workbench", () ->
                 new DIYWorkbenchBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 30.0F)) );
@@ -414,6 +414,8 @@ public final class TDRegistry {
                 new GumballMachineBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GLOBE = registerWithItem("globe", () ->
                 new GlobeBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> HANDCART = registerWithItem("handcart", () ->
+                new HandcartBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 30.0F)) );
         public static final RegistryObject<Block> HOLIDAY_TREE = registerWithItem("holiday_tree", () ->
                 new HolidayTreeBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> HOURGLASS = registerWithItem("hourglass", () ->
@@ -661,7 +663,7 @@ public final class TDRegistry {
                         BlockReg.SWEETS_CLOSET.get(), BlockReg.SWEETS_DRESSER.get(),
                         BlockReg.WOODEN_BLOCK_DRAWERS.get(),
                         BlockReg.DIY_WORKBENCH.get(), BlockReg.PHONOGRAPH.get(), BlockReg.LARGE_FANCY_VASE.get(), BlockReg.LARGE_STRIPED_VASE.get(),
-                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get(),
+                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get(), BlockReg.HANDCART.get(),
                         BlockReg.BLUE_SCIENCE_POD.get(), BlockReg.GREEN_SCIENCE_POD.get(), BlockReg.ORANGE_SCIENCE_POD.get(), BlockReg.RED_SCIENCE_POD.get())
                 .build(null));
 
@@ -747,6 +749,10 @@ public final class TDRegistry {
                 .build(null));
         public static final RegistryObject<BlockEntityType<GlobeBlockEntity>> GLOBE = BLOCK_ENTITY_TYPES.register("globe", () -> BlockEntityType.Builder
                 .of((pos, state) -> new GlobeBlockEntity(BlockEntityReg.GLOBE.get(), pos, state), BlockReg.GLOBE.get())
+                .build(null));
+
+        public static final RegistryObject<BlockEntityType<SingleSlotBlockEntity>> HANDCART = BLOCK_ENTITY_TYPES.register("handcart", () -> BlockEntityType.Builder
+                .of((pos, state) -> new SingleSlotBlockEntity(BlockEntityReg.HANDCART.get(), pos, state), BlockReg.HANDCART.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<HourglassBlockEntity>> HOURGLASS = BLOCK_ENTITY_TYPES.register("hourglass", () -> BlockEntityType.Builder
                 .of((pos, state) -> new HourglassBlockEntity(BlockEntityReg.HOURGLASS.get(), pos, state), BlockReg.HOURGLASS.get())
