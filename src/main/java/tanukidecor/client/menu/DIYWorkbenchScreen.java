@@ -6,40 +6,37 @@
 
 package tanukidecor.client.menu;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.searchtree.SearchTree;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.ForgeRegistries;
-import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
-import tanukidecor.block.recipe.DIYRecipe;
+import tanukidecor.client.ClientRecipeCollections;
 import tanukidecor.client.menu.widget.DIYRecipeButton;
 import tanukidecor.client.menu.widget.ScrollButton;
 import tanukidecor.menu.DIYWorkbenchMenu;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu> implements ScrollButton.IScrollListener {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation(TanukiDecor.MODID, "textures/gui/diy_workbench.png");
-
-    private static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = ForgeRegistries.ITEMS.tags().createTagKey(new ResourceLocation(TanukiDecor.MODID, "diy_blacklist"));
 
     public static final int WIDTH = 182;
     public static final int HEIGHT = 216;
@@ -57,9 +54,12 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
     private static final int SCROLL_Y = RECIPE_Y;
     private static final int SCROLL_HEIGHT = 72;
 
-    private final Map<String, DIYRecipe> recipes;
+    private static final Comparator<RecipeCollection> SORT_RECIPES_BY_RESULT_NAME = Comparator.comparing(recipeCollection -> recipeCollection.getRecipes().isEmpty() ? "" : recipeCollection.getRecipes().get(0).getResultItem().getHoverName().getString());
 
-    private final List<Map.Entry<String, DIYRecipe>> sortedRecipes;
+    private final Collection<RecipeCollection> recipes;
+    private final SearchTree<RecipeCollection> searchTree;
+    private final List<RecipeCollection> sortedRecipes;
+
     private final List<DIYRecipeButton> recipeButtons;
     private ScrollButton scrollButton;
     private EditBox editBox;
@@ -68,9 +68,9 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
 
     public DIYWorkbenchScreen(DIYWorkbenchMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        // prepare data
-        this.recipes = populateRecipes();
-        this.sortedRecipes = new ArrayList<>(RECIPE_BUTTON_COUNT_Y);
+        this.recipes = ImmutableList.sortedCopyOf(SORT_RECIPES_BY_RESULT_NAME, ClientRecipeCollections.DIY_RECIPE_COLLECTIONS);
+        this.searchTree = Minecraft.getInstance().getSearchTree(ClientRecipeCollections.DIY_RECIPE_COLLECTIONS_KEY);
+        this.sortedRecipes = new ArrayList<>(this.recipes.size());
         this.recipeButtons = new ArrayList<>(RECIPE_BUTTON_COUNT_Y);
         // prepare screen
         this.imageWidth = WIDTH;
@@ -88,6 +88,7 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         // scroll button
         this.scrollButton = this.addRenderableWidget(new ScrollButton(this.leftPos + SCROLL_X, this.topPos + SCROLL_Y, 12, SCROLL_HEIGHT,
                 TEXTURE, 244, 0, 12, 15, 15, true, 1.0F, this));
+        this.scrollOffset = 0;
         // edit box
         this.getMinecraft().keyboardHandler.setSendRepeatsToGui(true);
         this.editBox = this.addRenderableWidget(new EditBox(this.font, this.leftPos + SEARCH_X, this.topPos + SEARCH_Y, SEARCH_WIDTH, SEARCH_HEIGHT, new TranslatableComponent("container.search")));
@@ -99,21 +100,20 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         this.editBox.setValue("");
         this.editBox.setResponder(s -> updateRecipes(s));
         this.setInitialFocus(this.editBox);
-        //this.editBox.setEditable(false);
         // recipe buttons
+        this.recipeButtons.clear();
         final Button.OnPress recipeButtonOnPress = b -> getMenu().selectRecipe(((DIYRecipeButton)b).getRecipe());
         final Button.OnTooltip recipeButtonOnTooltip = (b, p, mx, my) -> renderTooltip(p, ((DIYRecipeButton)b).getItemStack(), mx, my);
         for(int i = 0, x = this.leftPos + RECIPE_X, y = this.topPos + RECIPE_Y; i < RECIPE_BUTTON_COUNT_Y; i++) {
             this.recipeButtons.add(this.addRenderableWidget(new DIYRecipeButton(x, y + i * DIYRecipeButton.HEIGHT, this.itemRenderer, this.font, recipeButtonOnPress, recipeButtonOnTooltip)));
         }
         updateRecipes("");
-        updateRecipeButtons();
     }
 
     @Override
     public void resize(Minecraft pMinecraft, int pWidth, int pHeight) {
         String s = this.editBox.getValue();
-        this.init(pMinecraft, pWidth, pHeight);
+        super.resize(pMinecraft, pWidth, pHeight);
         this.editBox.setValue(s);
     }
 
@@ -128,7 +128,6 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         if (pKeyCode == 256) {
             this.getMenu().getInventory().player.closeContainer();
         }
-
         return this.editBox.keyPressed(pKeyCode, pScanCode, pModifiers) || this.editBox.canConsumeInput() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 
@@ -156,42 +155,18 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
 
     //// RECIPES ////
 
-    private Map<String, DIYRecipe> populateRecipes() {
-        // verify config allows recipes
-        if(!TanukiDecor.CONFIG.isDIYWorkbenchEnabled.get()) {
-            return ImmutableMap.of();
-        }
-        final ImmutableMap.Builder<String, DIYRecipe> builder = ImmutableMap.builder();
-        // map recipes with the string name as the key and the recipe as the value
-        getMenu().getInventory().player.level.getRecipeManager()
-                .getAllRecipesFor(TDRegistry.RecipeReg.DIY.get())
-                .stream()
-                .filter(recipe -> !recipe.getResultItem().is(DIY_BLACKLIST_TAG_KEY))
-                .forEach(recipe -> builder.put(recipe.getResultItem().getHoverName().getString().toLowerCase(Locale.ENGLISH), recipe));
-        return builder.build();
-    }
-
     private void updateRecipes(final String filter) {
         this.sortedRecipes.clear();
         if(!(TanukiDecor.CONFIG.isDIYWorkbenchEnabled.get())) {
             return;
         }
         if(filter.isEmpty()) {
-            // add all recipes
-            this.sortedRecipes.addAll(this.recipes.entrySet());
+            this.sortedRecipes.addAll(this.recipes);
         } else {
-            // add matching recipes
-            final String searchTerm = filter.toLowerCase(Locale.ENGLISH);
-            this.sortedRecipes.addAll(this.recipes.entrySet()
-                    .stream()
-                    .filter(e -> e.getKey().contains(searchTerm))
-                    .toList());
+            this.sortedRecipes.addAll(this.searchTree.search(filter.toLowerCase(Locale.ROOT)));
         }
-        // sort by name
-        this.sortedRecipes.sort(Map.Entry.comparingByKey());
         // update scroll bar
         this.scrollButton.setScrollAmountMultiplier(1.0F / Math.max(1, sortedRecipes.size() - RECIPE_BUTTON_COUNT_Y));
-        this.scrollButton.setScrollPercent(0);
         this.scrollButton.active = this.sortedRecipes.size() > RECIPE_BUTTON_COUNT_Y;
         // update count text
         this.resultCountText = new TextComponent("" + sortedRecipes.size());
@@ -203,12 +178,12 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         for(int i = 0, n = recipeButtons.size(); i < n; i++) {
             DIYRecipeButton button = recipeButtons.get(i);
             int index = i + scrollOffset;
-            if(index < 0 || index >= sortedRecipes.size()) {
+            if(index < 0 || index >= sortedRecipes.size() || sortedRecipes.get(index).getRecipes().isEmpty()) {
                 button.visible = button.active = false;
                 continue;
             }
             button.visible = button.active = true;
-            button.setRecipe(sortedRecipes.get(index).getValue());
+            button.setRecipe(sortedRecipes.get(index).getRecipes().get(0));
         }
     }
 
@@ -233,7 +208,10 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
 
     @Override
     public void onScroll(ScrollButton button, float percent) {
+        final int oldScrollOffset = this.scrollOffset;
         this.scrollOffset = Mth.floor(Math.max(0, percent * Math.max(0, sortedRecipes.size() - RECIPE_BUTTON_COUNT_Y)));
-        updateRecipeButtons();
+        if(oldScrollOffset != scrollOffset) {
+            updateRecipeButtons();
+        }
     }
 }

@@ -16,7 +16,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import tanukidecor.TanukiDecor;
-import tanukidecor.block.recipe.DIYRecipe;
+import tanukidecor.recipe.DIYRecipe;
 import tanukidecor.menu.DIYWorkbenchMenu;
 
 import java.util.Optional;

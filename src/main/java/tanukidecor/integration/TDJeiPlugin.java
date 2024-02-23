@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
-import tanukidecor.block.recipe.DIYRecipe;
+import tanukidecor.recipe.DIYRecipe;
 
 import java.util.Collection;
 import java.util.List;

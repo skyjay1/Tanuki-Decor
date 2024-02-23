@@ -11,6 +11,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -40,7 +41,7 @@ import tanukidecor.block.clock.*;
 import tanukidecor.block.entity.*;
 import tanukidecor.block.light.*;
 import tanukidecor.block.misc.*;
-import tanukidecor.block.recipe.DIYRecipe;
+import tanukidecor.recipe.DIYRecipe;
 import tanukidecor.block.seat.*;
 import tanukidecor.block.misc.PlasmaBallBlock;
 import tanukidecor.block.misc.RocketLampBlock;
@@ -48,7 +49,6 @@ import tanukidecor.block.storage.*;
 import tanukidecor.item.*;
 import tanukidecor.menu.DIYWorkbenchMenu;
 
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -57,6 +57,7 @@ public final class TDRegistry {
 
     private static final String MODID = TanukiDecor.MODID;
 
+    //// REGISTRIES ////
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MODID);
@@ -65,13 +66,8 @@ public final class TDRegistry {
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, MODID);
     private static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
 
-    // NOTE first priority is clocks, then storage, seating, bedding, lighting, and misc
-    // NOTE the following blocks are re-categorized from the specs:
-    // ADDED TO STORAGE
-    // Misc. 11 Antique bookcase
-    // Misc. 22 Regal vanity
-    // Misc. 36 Cabana bookcase
-    // Misc. 39 Cabana vanity
+    //// TAG KEYS ////
+    public static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = ForgeRegistries.ITEMS.tags().createTagKey(new ResourceLocation(TanukiDecor.MODID, "diy_blacklist"));
 
     public static void register() {
         BlockReg.register();
@@ -146,7 +142,7 @@ public final class TDRegistry {
                 new SlateClockBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(2.0F, 6.0F)) );
         public static final RegistryObject<Block> SMALL_CLOCK_TOWER_DIAL = registerWithMultiblockItem("small_clock_tower_dial", () ->
                 new SmallClockTowerDialBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(3.5F, 60.0F)) );
-        public static final RegistryObject<Block> STATION_CLOCK = registerWithMultiblockItem("station_clock", () ->
+        public static final RegistryObject<Block> STATION_CLOCK = registerWithWallMultiblockItem("station_clock", () ->
                 new StationClockBlock(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).noOcclusion().strength(3.5F, 60.0F)) );
         public static final RegistryObject<Block> WOODEN_BLOCK_CLOCK = registerWithItem("wooden_block_clock", () ->
                 new WoodenBlockClockBlock(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 4.0F)) );
@@ -557,7 +553,7 @@ public final class TDRegistry {
         public static final CreativeModeTab TAB = new CreativeModeTab(TanukiDecor.MODID) {
             @Override
             public ItemStack makeIcon() {
-                return RegistryObject.create(new ResourceLocation(TanukiDecor.MODID, "emblem_clock"), ForgeRegistries.ITEMS).get().getDefaultInstance();
+                return new ItemStack(BlockReg.BLUE_BENCH.get());
             }
         };
 

@@ -1,6 +1,7 @@
 {
   "credit": "Made by Skart2000",
-  "render_type": "cutout_mipped",
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
   "texture_size": [32, 32],
   "textures": {
     "particle": "tanukidecor:block/ship_in_a_bottle",

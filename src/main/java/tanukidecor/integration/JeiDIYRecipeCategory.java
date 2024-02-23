@@ -23,7 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.DIYWorkbenchBlockEntity;
-import tanukidecor.block.recipe.DIYRecipe;
+import tanukidecor.recipe.DIYRecipe;
 
 import java.util.List;
 

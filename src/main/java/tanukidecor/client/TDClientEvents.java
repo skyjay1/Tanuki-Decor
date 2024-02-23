@@ -23,8 +23,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import tanukidecor.TDRegistry;
-import tanukidecor.TDRegistry.BlockReg;
 import tanukidecor.TDRegistry.BlockEntityReg;
+import tanukidecor.TDRegistry.BlockReg;
 import tanukidecor.block.seat.ISeatProvider;
 import tanukidecor.client.blockentity.clock.*;
 import tanukidecor.client.blockentity.misc.*;
@@ -38,6 +38,7 @@ public final class TDClientEvents {
     public static void register() {
         FMLJavaModLoadingContext.get().getModEventBus().register(ModHandler.class);
         MinecraftForge.EVENT_BUS.register(ForgeHandler.class);
+        ClientRecipeCollections.register();
     }
 
     public static final class ForgeHandler {
@@ -50,7 +51,6 @@ public final class TDClientEvents {
                     && ISeatProvider.IS_SEAT_ENTITY.test(player.getVehicle())) {
                 event.setCanceled(true);
             }
-
         }
     }
 
