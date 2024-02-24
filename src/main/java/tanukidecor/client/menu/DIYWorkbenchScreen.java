@@ -70,14 +70,8 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
 
     public DIYWorkbenchScreen(DIYWorkbenchMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        // collect recipes, excluding any that result in a blacklisted item
-        final ImmutableList.Builder<RecipeCollection> recipesBuilder = ImmutableList.builder();
-        for(RecipeCollection recipeCollection : ClientRecipeCollections.DIY_RECIPE_COLLECTIONS) {
-            if(recipeCollection.getRecipes().size() == 1 && !recipeCollection.getRecipes().get(0).getResultItem().is(TDRegistry.DIY_BLACKLIST_TAG_KEY)) {
-                recipesBuilder.add(recipeCollection);
-            }
-        }
-        this.recipes = ImmutableList.sortedCopyOf(SORT_RECIPES_BY_RESULT_NAME, recipesBuilder.build());
+        // populate recipe collection
+        this.recipes = ImmutableList.sortedCopyOf(SORT_RECIPES_BY_RESULT_NAME, ClientRecipeCollections.DIY_RECIPE_COLLECTIONS);
         // prepare search tree and recipe slice
         this.searchTree = Minecraft.getInstance().getSearchTree(ClientRecipeCollections.DIY_RECIPE_COLLECTIONS_KEY);
         this.sortedRecipes = new ArrayList<>(this.recipes.size());
