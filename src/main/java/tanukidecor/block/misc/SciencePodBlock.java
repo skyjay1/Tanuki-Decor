@@ -52,19 +52,19 @@ public class SciencePodBlock extends RotatingMultiblock implements EntityBlock, 
     //// DISPLAY PROVIDER ////
 
     @Override
-    public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, float partialTick) {
+    public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
         return new Vector3f(0, blockState.getValue(FACING).getOpposite().toYRot(), 0);
     }
 
     @Override
-    public Vector3f getDisplayTranslation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, float partialTick) {
+    public Vector3f getDisplayTranslation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
         final float time = (int) (level.getGameTime() + Math.abs(blockState.getSeed(blockPos)) % 96000L) + partialTick;
         final float dy = Mth.sin(time * 0.032F) * 0.09F;
         return new Vector3f(0, dy, 0);
     }
 
     @Override
-    public Vector3f getDisplayScale(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, float partialTick) {
+    public Vector3f getDisplayScale(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
         return DISPLAY_SCALE;
     }
 

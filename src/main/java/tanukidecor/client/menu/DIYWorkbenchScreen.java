@@ -22,6 +22,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.crafting.Recipe;
+import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
 import tanukidecor.client.ClientRecipeCollections;
 import tanukidecor.client.menu.widget.DIYRecipeButton;
@@ -68,9 +70,18 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
 
     public DIYWorkbenchScreen(DIYWorkbenchMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        this.recipes = ImmutableList.sortedCopyOf(SORT_RECIPES_BY_RESULT_NAME, ClientRecipeCollections.DIY_RECIPE_COLLECTIONS);
+        // collect recipes, excluding any that result in a blacklisted item
+        final ImmutableList.Builder<RecipeCollection> recipesBuilder = ImmutableList.builder();
+        for(RecipeCollection recipeCollection : ClientRecipeCollections.DIY_RECIPE_COLLECTIONS) {
+            if(recipeCollection.getRecipes().size() == 1 && !recipeCollection.getRecipes().get(0).getResultItem().is(TDRegistry.DIY_BLACKLIST_TAG_KEY)) {
+                recipesBuilder.add(recipeCollection);
+            }
+        }
+        this.recipes = ImmutableList.sortedCopyOf(SORT_RECIPES_BY_RESULT_NAME, recipesBuilder.build());
+        // prepare search tree and recipe slice
         this.searchTree = Minecraft.getInstance().getSearchTree(ClientRecipeCollections.DIY_RECIPE_COLLECTIONS_KEY);
         this.sortedRecipes = new ArrayList<>(this.recipes.size());
+        // prepare button lists
         this.recipeButtons = new ArrayList<>(RECIPE_BUTTON_COUNT_Y);
         // prepare screen
         this.imageWidth = WIDTH;

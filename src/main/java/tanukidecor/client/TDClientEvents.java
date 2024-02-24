@@ -230,6 +230,7 @@ public final class TDClientEvents {
             // MISC //
             event.registerBlockEntityRenderer(BlockEntityReg.DISPLAY_CASE.get(), DisplayCaseBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.GLOBE.get(), GlobeBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.HANDCART.get(), HandcartBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.HOURGLASS.get(), HourglassBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.METRONOME.get(), MetronomeBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.NEWTONS_CRADLE.get(), NewtonsCradleBER::new);

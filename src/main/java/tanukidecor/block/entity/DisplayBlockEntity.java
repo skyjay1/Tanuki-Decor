@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.block.misc.IDisplayProvider;
 
@@ -30,30 +31,35 @@ public class DisplayBlockEntity extends SingleSlotBlockEntity implements IDispla
         this.displayProvider = (pBlockState.getBlock() instanceof IDisplayProvider p) ? p : null;
     }
 
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1, 1, 1));
+    }
+
     //// DISPLAY PROVIDER ////
 
     @Override
-    public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, float partialTick) {
+    public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
         if(this.displayProvider != null) {
-            return this.displayProvider.getDisplayRotation(level, blockState, blockPos, itemStack, partialTick);
+            return this.displayProvider.getDisplayRotation(level, blockState, blockPos, itemStack, renderPass, partialTick);
         }
-        return IDisplayProvider.super.getDisplayRotation(level, blockState, blockPos, itemStack, partialTick);
+        return IDisplayProvider.super.getDisplayRotation(level, blockState, blockPos, itemStack, renderPass, partialTick);
     }
 
     @Override
-    public Vector3f getDisplayTranslation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, float partialTick) {
+    public Vector3f getDisplayTranslation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
         if(this.displayProvider != null) {
-            return this.displayProvider.getDisplayTranslation(level, blockState, blockPos, itemStack, partialTick);
+            return this.displayProvider.getDisplayTranslation(level, blockState, blockPos, itemStack, renderPass, partialTick);
         }
-        return IDisplayProvider.super.getDisplayTranslation(level, blockState, blockPos, itemStack, partialTick);
+        return IDisplayProvider.super.getDisplayTranslation(level, blockState, blockPos, itemStack, renderPass, partialTick);
     }
 
     @Override
-    public Vector3f getDisplayScale(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, float partialTick) {
+    public Vector3f getDisplayScale(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
         if(this.displayProvider != null) {
-            return this.displayProvider.getDisplayScale(level, blockState, blockPos, itemStack, partialTick);
+            return this.displayProvider.getDisplayScale(level, blockState, blockPos, itemStack, renderPass, partialTick);
         }
-        return IDisplayProvider.super.getDisplayScale(level, blockState, blockPos, itemStack, partialTick);
+        return IDisplayProvider.super.getDisplayScale(level, blockState, blockPos, itemStack, renderPass, partialTick);
     }
 
     //// CONTAINER ////

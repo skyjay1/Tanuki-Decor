@@ -13,7 +13,6 @@ import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.searchtree.MutableSearchTree;
 import net.minecraft.client.searchtree.ReloadableSearchTree;
 import net.minecraft.client.searchtree.SearchRegistry;
-import net.minecraft.core.Registry;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
@@ -70,7 +69,6 @@ public final class ClientRecipeCollections {
         recipeManager
                 .getAllRecipesFor(TDRegistry.RecipeReg.DIY.get())
                 .stream()
-                .filter(recipe -> !recipe.getResultItem().is(TDRegistry.DIY_BLACKLIST_TAG_KEY))
                 .map(recipe -> new RecipeCollection(ImmutableList.of(recipe)))
                 .forEach(recipeCollection -> {
                     DIY_RECIPE_COLLECTIONS.add(recipeCollection);

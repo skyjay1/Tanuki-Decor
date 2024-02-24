@@ -747,8 +747,8 @@ public final class TDRegistry {
                 .of((pos, state) -> new GlobeBlockEntity(BlockEntityReg.GLOBE.get(), pos, state), BlockReg.GLOBE.get())
                 .build(null));
 
-        public static final RegistryObject<BlockEntityType<SingleSlotBlockEntity>> HANDCART = BLOCK_ENTITY_TYPES.register("handcart", () -> BlockEntityType.Builder
-                .of((pos, state) -> new SingleSlotBlockEntity(BlockEntityReg.HANDCART.get(), pos, state), BlockReg.HANDCART.get())
+        public static final RegistryObject<BlockEntityType<DisplayBlockEntity>> HANDCART = BLOCK_ENTITY_TYPES.register("handcart", () -> BlockEntityType.Builder
+                .of((pos, state) -> new DisplayBlockEntity(BlockEntityReg.HANDCART.get(), pos, state), BlockReg.HANDCART.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<HourglassBlockEntity>> HOURGLASS = BLOCK_ENTITY_TYPES.register("hourglass", () -> BlockEntityType.Builder
                 .of((pos, state) -> new HourglassBlockEntity(BlockEntityReg.HOURGLASS.get(), pos, state), BlockReg.HOURGLASS.get())

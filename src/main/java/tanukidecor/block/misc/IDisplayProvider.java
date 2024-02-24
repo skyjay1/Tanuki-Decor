@@ -22,10 +22,11 @@ public interface IDisplayProvider {
      * @param blockState the block state
      * @param blockPos the block position
      * @param itemStack the item stack
+     * @param renderPass the render pass
      * @param partialTick the partial tick
      * @return the rotation values for the x, y, and z axes in degrees
      */
-    default Vector3f getDisplayRotation(final Level level, final BlockState blockState, final BlockPos blockPos, final ItemStack itemStack, final float partialTick) {
+    default Vector3f getDisplayRotation(final Level level, final BlockState blockState, final BlockPos blockPos, final ItemStack itemStack, final int renderPass, final float partialTick) {
         return VEC_ZERO;
     }
 
@@ -34,10 +35,11 @@ public interface IDisplayProvider {
      * @param blockState the block state
      * @param blockPos the block position
      * @param itemStack the item stack
+     * @param renderPass the render pass
      * @param partialTick the partial tick
      * @return the translation values for the x, y, and z axes
      */
-    default Vector3f getDisplayTranslation(final Level level, final BlockState blockState, final BlockPos blockPos, final ItemStack itemStack, final float partialTick) {
+    default Vector3f getDisplayTranslation(final Level level, final BlockState blockState, final BlockPos blockPos, final ItemStack itemStack, final int renderPass, final float partialTick) {
         return VEC_ZERO;
     }
 
@@ -46,10 +48,11 @@ public interface IDisplayProvider {
      * @param blockState the block state
      * @param blockPos the block position
      * @param itemStack the item stack
+     * @param renderPass the render pass
      * @param partialTick the partial tick
      * @return the scale percentage values for the x, y, and z axes
      */
-    default Vector3f getDisplayScale(final Level level, final BlockState blockState, final BlockPos blockPos, final ItemStack itemStack, final float partialTick) {
+    default Vector3f getDisplayScale(final Level level, final BlockState blockState, final BlockPos blockPos, final ItemStack itemStack, final int renderPass, final float partialTick) {
         return VEC_ONE;
     }
 }

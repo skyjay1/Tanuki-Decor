@@ -58,7 +58,7 @@ public class DisplayCaseBlock extends RotatingTallBlock implements EntityBlock, 
     //// DISPLAY PROVIDER ////
 
     @Override
-    public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, float partialTick) {
+    public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
         return new Vector3f(0, blockState.getValue(FACING).getOpposite().toYRot(), 0);
     }
 

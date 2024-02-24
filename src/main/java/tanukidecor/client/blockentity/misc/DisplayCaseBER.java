@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -32,6 +31,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import tanukidecor.block.entity.DisplayBlockEntity;
+import tanukidecor.block.entity.SingleSlotBlockEntity;
+import tanukidecor.block.misc.IDisplayProvider;
 
 public class DisplayCaseBER implements BlockEntityRenderer<DisplayBlockEntity> {
 
@@ -63,9 +64,9 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayBlockEntity> {
         double dy = 0.5D;
         double dz = 0.5D;
         final Vector3f translation = new Vector3f(0.5F, 0.5F, 0.5F);
-        translation.add(pBlockEntity.getDisplayTranslation(level, blockState, blockPos, itemStack, pPartialTick));
-        final Vector3f rotation = pBlockEntity.getDisplayRotation(level, blockState, blockPos, itemStack, pPartialTick);
-        final Vector3f scale = pBlockEntity.getDisplayScale(level, blockState, blockPos, itemStack, pPartialTick);
+        translation.add(pBlockEntity.getDisplayTranslation(level, blockState, blockPos, itemStack, 0, pPartialTick));
+        final Vector3f rotation = pBlockEntity.getDisplayRotation(level, blockState, blockPos, itemStack, 0, pPartialTick);
+        final Vector3f scale = pBlockEntity.getDisplayScale(level, blockState, blockPos, itemStack, 0, pPartialTick);
 
         Quaternion quaternion = Vector3f.XP.rotationDegrees(rotation.x());
         quaternion.mul(Vector3f.YP.rotationDegrees(rotation.y()));
