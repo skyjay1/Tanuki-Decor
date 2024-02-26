@@ -8,11 +8,8 @@ package tanukidecor.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -22,7 +19,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import tanukidecor.TDRegistry;
-import tanukidecor.TDRegistry.BlockReg;
 import tanukidecor.TDRegistry.BlockEntityReg;
 import tanukidecor.block.seat.ISeatProvider;
 import tanukidecor.client.blockentity.clock.*;
@@ -37,6 +33,7 @@ public final class TDClientEvents {
     public static void register() {
         FMLJavaModLoadingContext.get().getModEventBus().register(ModHandler.class);
         MinecraftForge.EVENT_BUS.register(ForgeHandler.class);
+        ClientRecipeCollections.register();
     }
 
     public static final class ForgeHandler {
@@ -49,7 +46,6 @@ public final class TDClientEvents {
                     && ISeatProvider.IS_SEAT_ENTITY.test(player.getVehicle())) {
                 event.setCanceled(true);
             }
-
         }
     }
 
@@ -99,11 +95,16 @@ public final class TDClientEvents {
             event.registerBlockEntityRenderer(BlockEntityReg.WOODEN_BLOCK_CLOCK.get(), WoodenBlockClockBER::new);
             // MISC //
             event.registerBlockEntityRenderer(BlockEntityReg.DISPLAY_CASE.get(), DisplayCaseBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.GLOBE.get(), GlobeBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.HANDCART.get(), HandcartBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.HOURGLASS.get(), HourglassBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.METRONOME.get(), MetronomeBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.NEWTONS_CRADLE.get(), NewtonsCradleBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.PHONOGRAPH.get(), PhonographBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.ROCKET_LAMP.get(), RocketLampBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.SLOT_MACHINE.get(), SlotMachineBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.TRAIN_SET.get(), TrainSetBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.PLASMA_BALL.get(), PlasmaBallBER::new);
         }
 
         @SubscribeEvent
@@ -142,9 +143,12 @@ public final class TDClientEvents {
             StationClockBER.addSpecialModels(set);
             WoodenBlockClockBER.addSpecialModels(set);
             // MISC //
+            GlobeBER.addSpecialModels(set);
             HourglassBER.addSpecialModels(set);
             MetronomeBER.addSpecialModels(set);
+            NewtonsCradleBER.addSpecialModels(set);
             PhonographBER.addSpecialModels(set);
+            RocketLampBER.addSpecialModels(set);
             SlotMachineBER.addSpecialModels(set);
             TrainSetBER.addSpecialModels(set);
             // register special models

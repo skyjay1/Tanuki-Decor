@@ -76,8 +76,8 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
                 .withPackedLight(pPackedLight)
                 .withPackedOverlay(pPackedOverlay)
                 .withPartialTick(pPartialTick)
-                .withRandom(level.getRandom())
-                .withRotationZ(0);
+                .withRotationZ(0)
+                .withRandom(level.getRandom());
 
         // rotate pose stack
         this.clockRenderHelper

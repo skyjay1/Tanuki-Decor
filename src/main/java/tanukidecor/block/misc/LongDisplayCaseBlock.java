@@ -7,28 +7,26 @@
 package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.RotatingMultiblock;
-import tanukidecor.block.entity.DisplayCaseBlockEntity;
 import tanukidecor.block.entity.SingleSlotBlockEntity;
 import tanukidecor.util.MultiblockHandler;
 
-public class LongDisplayCaseBlock extends RotatingMultiblock implements EntityBlock {
+public class LongDisplayCaseBlock extends RotatingMultiblock implements EntityBlock, IDisplayProvider {
 
     public LongDisplayCaseBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X2X1, createMultiblockShapeBuilder(MultiblockHandler.MULTIBLOCK_2X2X1, SHAPE), pProperties);
@@ -46,6 +44,13 @@ public class LongDisplayCaseBlock extends RotatingMultiblock implements EntityBl
             SingleSlotBlockEntity.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
             super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
         }
+    }
+
+    //// DISPLAY PROVIDER ////
+
+    @Override
+    public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
+        return new Vector3f(0, blockState.getValue(FACING).getOpposite().toYRot(), 0);
     }
 
     //// DELEGATE PROVIDER ////

@@ -6,24 +6,27 @@
 
 package tanukidecor.integration;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.DIYWorkbenchBlockEntity;
-import tanukidecor.block.recipe.DIYRecipe;
+import tanukidecor.recipe.DIYRecipe;
 
 import java.util.List;
+import java.util.Optional;
 
 public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
 
@@ -51,6 +54,10 @@ public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, DIYRecipe recipe, IFocusGroup focuses) {
+        final Optional<RegistryAccess> oRegistryAccess = TDJeiPlugin.getClientRegistryAccess();
+        if(oRegistryAccess.isEmpty()) {
+            return;
+        }
         // input
         int x = PADDING + 1;
         int y = PADDING + 1;
@@ -64,7 +71,7 @@ public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
         y += SLOT_SIZE + ARROW_HEIGHT;
         builder.addSlot(RecipeIngredientRole.OUTPUT, x, y)
                 .setSlotName("output")
-                .addItemStack(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()));
+                .addItemStack(recipe.getResultItem(oRegistryAccess.get()));
     }
 
     @Override

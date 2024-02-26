@@ -10,14 +10,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.item.ItemStack;
-import tanukidecor.block.recipe.DIYRecipe;
+import net.minecraft.world.item.crafting.Recipe;
 import tanukidecor.client.menu.DIYWorkbenchScreen;
 
 public class DIYRecipeButton extends ImageButton {
@@ -29,7 +28,7 @@ public class DIYRecipeButton extends ImageButton {
     protected final Font fontRenderer;
 
     protected ItemStack itemStack;
-    protected DIYRecipe recipe;
+    protected Recipe<?> recipe;
 
     public DIYRecipeButton(int pX, int pY, final ItemRenderer itemRenderer, final Font fontRenderer, OnPress pOnPress) {
         super(pX, pY, WIDTH, HEIGHT, 0, 216, HEIGHT, DIYWorkbenchScreen.TEXTURE, 256, 256, pOnPress, Component.empty());
@@ -45,11 +44,11 @@ public class DIYRecipeButton extends ImageButton {
         return this.itemStack;
     }
 
-    public DIYRecipe getRecipe() {
+    public Recipe<?> getRecipe() {
         return recipe;
     }
 
-    public void setRecipe(final DIYRecipe recipe) {
+    public void setRecipe(final Recipe<?> recipe) {
         this.recipe = recipe;
         this.itemStack = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
         final Component hoverName = this.itemStack.getHoverName();

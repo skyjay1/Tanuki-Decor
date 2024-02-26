@@ -12,6 +12,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -40,8 +42,10 @@ import tanukidecor.block.clock.*;
 import tanukidecor.block.entity.*;
 import tanukidecor.block.light.*;
 import tanukidecor.block.misc.*;
-import tanukidecor.block.recipe.DIYRecipe;
+import tanukidecor.recipe.DIYRecipe;
 import tanukidecor.block.seat.*;
+import tanukidecor.block.misc.PlasmaBallBlock;
+import tanukidecor.block.misc.RocketLampBlock;
 import tanukidecor.block.storage.*;
 import tanukidecor.item.*;
 import tanukidecor.menu.DIYWorkbenchMenu;
@@ -56,14 +60,18 @@ public final class TDRegistry {
 
     private static final String MODID = TanukiDecor.MODID;
 
+    //// REGISTRIES ////
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     private static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MODID);
     private static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, MODID);
-    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, MODID);
+    private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, MODID);
     private static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
+
+    //// TAG KEYS ////
+    public static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = ForgeRegistries.ITEMS.tags().createTagKey(new ResourceLocation(TanukiDecor.MODID, "diy_blacklist"));
 
     public static void register() {
         BlockReg.register();
@@ -139,7 +147,7 @@ public final class TDRegistry {
                 new SlateClockBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).noOcclusion().strength(2.0F, 6.0F)) );
         public static final RegistryObject<Block> SMALL_CLOCK_TOWER_DIAL = registerWithMultiblockItem("small_clock_tower_dial", () ->
                 new SmallClockTowerDialBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).noOcclusion().strength(3.5F, 60.0F)) );
-        public static final RegistryObject<Block> STATION_CLOCK = registerWithMultiblockItem("station_clock", () ->
+        public static final RegistryObject<Block> STATION_CLOCK = registerWithWallMultiblockItem("station_clock", () ->
                 new StationClockBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).noOcclusion().strength(3.5F, 60.0F)) );
         public static final RegistryObject<Block> WOODEN_BLOCK_CLOCK = registerWithItem("wooden_block_clock", () ->
                 new WoodenBlockClockBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 4.0F)) );
@@ -241,16 +249,30 @@ public final class TDRegistry {
                 new GreenBenchBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_CHAIR = registerWithItem("green_chair", () ->
                 new GreenChairBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> LOG_BENCH = registerWithItem("log_bench", () ->
+                new LogBenchBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> LOG_STOOL = registerWithItem("log_stool", () ->
+                new LogStoolBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> MINIMALIST_CHAIR = registerWithItem("minimalist_chair", () ->
                 new MinimalistChairBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> MINIMALIST_COUCH = registerWithItem("minimalist_couch", () ->
                 new MinimalistCouchBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> MINIMALIST_STOOL = registerWithItem("minimalist_stool", () ->
                 new MinimalistStoolBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> BROWN_MUSHROOM_LOG_STOOL = registerWithItem("brown_mushroom_log_stool", () ->
+                new LogStoolBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> RED_MUSHROOM_LOG_STOOL = registerWithItem("red_mushroom_log_stool", () ->
+                new LogStoolBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> BROWN_MUSHROOM_STOOL = registerWithItem("brown_mushroom_stool", () ->
+                new MushroomStoolBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).sound(SoundType.FUNGUS).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> RED_MUSHROOM_STOOL = registerWithItem("red_mushroom_stool", () ->
+                new MushroomStoolBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).sound(SoundType.FUNGUS).randomTicks().noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_CHAIR = registerWithItem("regal_chair", () ->
                 new RegalChairBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> REGAL_SOFA = registerWithItem("regal_sofa", () ->
                 new RegalSofaBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> ROUGH_LOG_BENCH = registerWithItem("rough_log_bench", () ->
+                new RoughLogBenchBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> SWEETS_CHAIR = registerWithItem("sweets_chair", () ->
                 new SweetsChairBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> SWEETS_SOFA = registerWithItem("sweets_sofa", () ->
@@ -277,6 +299,10 @@ public final class TDRegistry {
                 new GorgeousBedBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.0F, 30.0F)) );
         public static final RegistryObject<Block> MINIMALIST_BED = registerWithMultiblockItem("minimalist_bed", () ->
                 new MinimalistBedBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> BROWN_MUSHROOM_BED = registerWithMultiblockItem("brown_mushroom_bed", () ->
+                new MushroomBedBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).sound(SoundType.FUNGUS).sound(SoundType.FUNGUS).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> RED_MUSHROOM_BED = registerWithMultiblockItem("red_mushroom_bed", () ->
+                new MushroomBedBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).sound(SoundType.FUNGUS).sound(SoundType.FUNGUS).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> REGAL_BED = registerWithMultiblockItem("regal_bed", () ->
                 new RegalBedBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.0F, 30.0F)) );
         public static final RegistryObject<Block> SWEETS_BED = registerWithMultiblockItem("sweets_bed", () ->
@@ -293,6 +319,8 @@ public final class TDRegistry {
                 new CabanaLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> EGYPTIAN_LAMP = registerWithItem("egyptian_lamp", () ->
                 new EgyptianLampBlock(2, BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).lightLevel(b -> !b.getValue(TallBlock.WATERLOGGED) ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> GLOWING_MOSS_JAR = registerWithItem("glowing_moss_jar", () ->
+                new GlowingMossJarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.GLOW_LICHEN).sound(SoundType.GLASS).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GORGEOUS_LAMP = registerWithItem("gorgeous_lamp", () ->
                 new GorgeousLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> GREEN_LAMP = registerWithItem("green_lamp", () ->
@@ -301,6 +329,10 @@ public final class TDRegistry {
                 new LargeFireplaceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_RED).sound(SoundType.STONE).lightLevel(b -> b.getValue(RotatingBlock.WATERLOGGED) ? 0 : 14).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> MINIMALIST_LAMP = registerWithItem("minimalist_lamp", () ->
                 new MinimalistLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> BROWN_MUSHROOM_LAMP = registerWithItem("brown_mushroom_lamp", () ->
+                new MushroomLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).sound(SoundType.FUNGUS).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> RED_MUSHROOM_LAMP = registerWithItem("red_mushroom_lamp", () ->
+                new MushroomLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).sound(SoundType.FUNGUS).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER ? 14 : 0).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> NEON_CLUB_SIGN = registerWithItem("neon_club_sign", () ->
                 new NeonSignBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> NEON_DIAMOND_SIGN = registerWithItem("neon_diamond_sign", () ->
@@ -317,9 +349,22 @@ public final class TDRegistry {
                 new RegalLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_WALL_LAMP = registerWithItem("regal_wall_lamp", () ->
                 new RegalWallLampBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> BLUE_ROCKET_LAMP = registerWithItem("blue_rocket_lamp", () ->
+                new RocketLampBlock("blue", BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> GREEN_ROCKET_LAMP = registerWithItem("green_rocket_lamp", () ->
+                new RocketLampBlock("green", BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> PINK_ROCKET_LAMP = registerWithItem("pink_rocket_lamp", () ->
+                new RocketLampBlock("pink", BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> PURPLE_ROCKET_LAMP = registerWithItem("purple_rocket_lamp", () ->
+                new RocketLampBlock("purple", BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> RED_ROCKET_LAMP = registerWithItem("red_rocket_lamp", () ->
+                new RocketLampBlock("red", BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> TURQUOISE_ROCKET_LAMP = registerWithItem("turquoise_rocket_lamp", () ->
+                new RocketLampBlock("turquoise", BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> YELLOW_ROCKET_LAMP = registerWithItem("yellow_rocket_lamp", () ->
+                new RocketLampBlock("yellow", BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> SMALL_FIREPLACE = registerWithItem("small_fireplace", () ->
                 new SmallFireplaceBlock(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_RED).sound(SoundType.STONE).lightLevel(b -> b.getValue(RotatingBlock.WATERLOGGED) ? 0 : 14).noOcclusion().strength(2.0F, 10.0F)) );
-
 
         // MISC //
         public static final RegistryObject<Block> ANTIQUE_PHONE = registerWithItem("antique_phone", () ->
@@ -332,6 +377,10 @@ public final class TDRegistry {
                 new AntiqueSmallTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> ANTIQUE_TABLE = registerWithMultiblockItem("antique_table", () ->
                 new AntiqueTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> BIRDCAGE = registerWithItem("birdcage", () ->
+                new BirdcageBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).randomTicks().isSuffocating(BlockReg::never).isViewBlocking(BlockReg::never).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> ELEGANT_BIRDCAGE = registerWithItem("elegant_birdcage", () ->
+                new BirdcageBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).randomTicks().isSuffocating(BlockReg::never).isViewBlocking(BlockReg::never).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> BLUE_TABLE = registerWithMultiblockItem("blue_table", () ->
                 new BlueTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> CABANA_SCREEN = registerWithMultiblockItem("cabana_screen", () ->
@@ -344,7 +393,7 @@ public final class TDRegistry {
                 new DessertCaseBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> DISPLAY_CASE = registerWithItem("display_case", () ->
                 new DisplayCaseBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.GLASS).noOcclusion().strength(1.5F, 30.0F)) );
-        public static final RegistryObject<Block> LONG_DISPLAY_CASE = registerWithItem("long_display_case", () ->
+        public static final RegistryObject<Block> LONG_DISPLAY_CASE = registerWithMultiblockItem("long_display_case", () ->
                 new LongDisplayCaseBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.GLASS).noOcclusion().strength(2.0F, 30.0F)) );
         public static final RegistryObject<Block> DIY_WORKBENCH = registerWithItem("diy_workbench", () ->
                 new DIYWorkbenchBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 30.0F)) );
@@ -364,8 +413,12 @@ public final class TDRegistry {
                 new GorgeousTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GUMBALL_MACHINE = registerWithItem("gumball_machine", () ->
                 new GumballMachineBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> GLOBE = registerWithItem("globe", () ->
+                new GlobeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> HANDCART = registerWithItem("handcart", () ->
+                new HandcartBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 30.0F)) );
         public static final RegistryObject<Block> HOLIDAY_TREE = registerWithItem("holiday_tree", () ->
-                new HolidayTreeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+                new HolidayTreeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> HOURGLASS = registerWithItem("hourglass", () ->
                 new HourglassBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> METRONOME = registerWithItem("metronome", () ->
@@ -374,32 +427,50 @@ public final class TDRegistry {
                 new MinimalistSmallTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> MINIMALIST_TABLE = registerWithItem("minimalist_table", () ->
                 new MinimalistTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> DEVELOPER_MINI_FIGURE = registerWithItem("developer_mini_figure", () ->
+                new MiniFigureBlock(() -> SoundEvents.CAT_AMBIENT, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).sound(SoundType.WOOL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> MAYORAL_MINI_FIGURE = registerWithItem("mayoral_mini_figure", () ->
-                new MiniFigureBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).noOcclusion().strength(1.5F, 6.0F)) );
+                new MiniFigureBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).sound(SoundType.WOOL).noOcclusion().strength(1.5F, 6.0F)) );
+        public static final RegistryObject<Block> BROWN_MUSHROOM_TABLE = registerWithMultiblockItem("brown_mushroom_table", () ->
+                new MushroomTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).sound(SoundType.FUNGUS).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> RED_MUSHROOM_TABLE = registerWithMultiblockItem("red_mushroom_table", () ->
+                new MushroomTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).sound(SoundType.FUNGUS).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> NEWTONS_CRADLE = registerWithItem("newtons_cradle", () ->
+                new NewtonsCradleBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_BLUE_STREAMER = registerWithItem("narrow_blue_streamer", () ->
-                new NarrowStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).isViewBlocking(BlockReg::never).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
+                new NarrowStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_GREEN_STREAMER = registerWithItem("narrow_green_streamer", () ->
-                new NarrowStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).isViewBlocking(BlockReg::never).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
+                new NarrowStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_RED_STREAMER = registerWithItem("narrow_red_streamer", () ->
-                new NarrowStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).isViewBlocking(BlockReg::never).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
+                new NarrowStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_YELLOW_STREAMER = registerWithItem("narrow_yellow_streamer", () ->
-                new NarrowStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).isViewBlocking(BlockReg::never).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
+                new NarrowStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
         public static final RegistryObject<Block> NARROW_STRING_LIGHTS = registerWithItem("narrow_string_lights", () ->
-                new NarrowStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).lightLevel(b -> 14).isViewBlocking(BlockReg::never).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
+                new NarrowStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.GLASS).lightLevel(b -> 14).noCollission().noOcclusion().strength(0.5F, 6.0F)) );
         public static final RegistryObject<Block> PHONOGRAPH = registerWithItem("phonograph", () ->
                 new PhonographBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> PIANO = registerWithMultiblockItem("piano", () ->
                 new PianoBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> PLASMA_BALL = registerWithItem("plasma_ball", () ->
+                new PlasmaBallBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> b.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER && b.getValue(PlasmaBallBlock.ENABLED) ? 14 : 0).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_SMALL_TABLE = registerWithItem("regal_small_table", () ->
                 new RegalSmallTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> REGAL_TABLE = registerWithItem("regal_table", () ->
                 new RegalTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
+        public static final RegistryObject<Block> BLUE_SCIENCE_POD = registerWithMultiblockItem("blue_science_pod", () ->
+                new SciencePodBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> GREEN_SCIENCE_POD = registerWithMultiblockItem("green_science_pod", () ->
+                new SciencePodBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> ORANGE_SCIENCE_POD = registerWithMultiblockItem("orange_science_pod", () ->
+                new SciencePodBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(3.5F, 30.0F)) );
+        public static final RegistryObject<Block> RED_SCIENCE_POD = registerWithMultiblockItem("red_science_pod", () ->
+                new SciencePodBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.GLASS).lightLevel(b -> 14).noOcclusion().strength(3.5F, 30.0F)) );
         public static final RegistryObject<Block> SHIP_IN_A_BOTTLE = registerWithItem("ship_in_a_bottle", () ->
-                new ShipInABottleBlock(BlockBehaviour.Properties.of().mapColor(MapColor.QUARTZ).sound(SoundType.GLASS).noOcclusion().strength(1.5F, 6.0F)) );
+                new ShipInABottleBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.GLASS).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> SLOT_MACHINE = registerWithItem("slot_machine", () ->
                 new SlotMachineBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> SNOWGLOBE = registerWithItem("snowglobe", () ->
-                new SnowglobeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.QUARTZ).sound(SoundType.GLASS).noOcclusion().strength(1.5F, 6.0F)) );
+                new SnowglobeBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.GLASS).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> BLUE_STALL_TARP = registerWithWallMultiblockItem("blue_stall_tarp", () ->
                 new StallTarpBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).sound(SoundType.WOOL).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> GREEN_STALL_TARP = registerWithWallMultiblockItem("green_stall_tarp", () ->
@@ -411,7 +482,7 @@ public final class TDRegistry {
         public static final RegistryObject<Block> SWEETS_BOOKCASE = registerWithItem("sweets_bookcase", () ->
                 new SweetsBookcaseBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> SWEETS_MINI_TABLE = registerWithItem("sweets_mini_table", () ->
-                new SweetsMiniTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).sound(SoundType.GLASS).noOcclusion().strength(1.5F, 6.0F)) );
+                new SweetsMiniTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.GLASS).noOcclusion().strength(1.5F, 6.0F)) );
         public static final RegistryObject<Block> SWEETS_TABLE = registerWithItem("sweets_table", () ->
                 new SweetsTableBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOD).noOcclusion().strength(2.0F, 10.0F)) );
         public static final RegistryObject<Block> TRAIN_SET = registerWithItem("train_set", () ->
@@ -443,16 +514,15 @@ public final class TDRegistry {
         public static final RegistryObject<Block> SMALL_STRIPED_VASE = registerWithItem("small_striped_vase", () ->
                 new VaseBlock(VaseBlock.SMALL_STRIPED_SHAPE, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).sound(SoundType.DECORATED_POT).noOcclusion().strength(2.0F, 30.0F)) );
         public static final RegistryObject<Block> WIDE_BLUE_STREAMER = registerWithItem("wide_blue_streamer", () ->
-                new WideStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).isViewBlocking(BlockReg::never).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
+                new WideStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
         public static final RegistryObject<Block> WIDE_GREEN_STREAMER = registerWithItem("wide_green_streamer", () ->
-                new WideStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).isViewBlocking(BlockReg::never).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
+                new WideStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
         public static final RegistryObject<Block> WIDE_RED_STREAMER = registerWithItem("wide_red_streamer", () ->
-                new WideStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).isViewBlocking(BlockReg::never).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
+                new WideStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
         public static final RegistryObject<Block> WIDE_YELLOW_STREAMER = registerWithItem("wide_yellow_streamer", () ->
-                new WideStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).isViewBlocking(BlockReg::never).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
+                new WideStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
         public static final RegistryObject<Block> WIDE_STRING_LIGHTS = registerWithItem("wide_string_lights", () ->
-                new WideStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.WOOL).lightLevel(b -> 14).isViewBlocking(BlockReg::never).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
-
+                new WideStreamerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.NONE).sound(SoundType.GLASS).lightLevel(b -> 14).noCollission().noOcclusion().strength(0.5F, 10.0F)) );
 
         // HELPER METHODS //
 
@@ -474,13 +544,7 @@ public final class TDRegistry {
             return registerWithItem(name, supplier, block -> ItemReg.register(block.getId().getPath(), () -> new WallMultiblockItem(block.get(), new Item.Properties().stacksTo(1))));
         }
 
-        // PREDICATES //
-
-        private static boolean always(BlockState blockState, BlockGetter level, BlockPos pos) {
-            return true;
-        }
-
-        private static boolean never(BlockState blockState, BlockGetter level, BlockPos pos) {
+        private static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
             return false;
         }
     }
@@ -509,7 +573,7 @@ public final class TDRegistry {
          * @return the item registry object
          */
         private static RegistryObject<Item> register(final String name, final Supplier<Item> supplier) {
-            RegistryObject<Item> item = ITEMS.register(name, supplier);
+            final RegistryObject<Item> item = ITEMS.register(name, supplier);
             ALL_ITEMS.add(item);
             return item;
         }
@@ -522,17 +586,17 @@ public final class TDRegistry {
         }
 
         public static final RegistryObject<CreativeModeTab> TAB = CREATIVE_MODE_TABS.register("tab", () ->
-            CreativeModeTab.builder()
-                    .icon(Suppliers.memoize(() -> new ItemStack(BlockReg.EMBLEM_CLOCK.get())))
-                    .title(Component.translatable(CreativeTabReg.TAB.getId().toLanguageKey("tab")))
-                    .withSearchBar()
-                    .displayItems((parameters, output) ->
-                        output.acceptAll(ItemReg.ALL_ITEMS
-                                .stream()
-                                .map(o -> new ItemStack(o.get()))
-                                .toList())
-                    )
-                    .build()
+                CreativeModeTab.builder()
+                        .icon(Suppliers.memoize(() -> new ItemStack(BlockReg.BLUE_BENCH.get())))
+                        .title(Component.translatable(CreativeTabReg.TAB.getId().toLanguageKey("tab")))
+                        .withSearchBar()
+                        .displayItems((parameters, output) ->
+                                output.acceptAll(ItemReg.ALL_ITEMS
+                                        .stream()
+                                        .map(o -> new ItemStack(o.get()))
+                                        .toList())
+                        )
+                        .build()
         );
     }
 
@@ -618,7 +682,8 @@ public final class TDRegistry {
                         BlockReg.SWEETS_CLOSET.get(), BlockReg.SWEETS_DRESSER.get(),
                         BlockReg.WOODEN_BLOCK_DRAWERS.get(),
                         BlockReg.DIY_WORKBENCH.get(), BlockReg.PHONOGRAPH.get(), BlockReg.LARGE_FANCY_VASE.get(), BlockReg.LARGE_STRIPED_VASE.get(),
-                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get())
+                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get(), BlockReg.HANDCART.get(),
+                        BlockReg.BLUE_SCIENCE_POD.get(), BlockReg.GREEN_SCIENCE_POD.get(), BlockReg.ORANGE_SCIENCE_POD.get(), BlockReg.RED_SCIENCE_POD.get())
                 .build(null));
 
         public static final RegistryObject<BlockEntityType<StorageBlockEntity>> ANTIQUE_BOOKCASE = registerStorage(
@@ -693,12 +758,20 @@ public final class TDRegistry {
                 () -> BlockEntityReg.WOODEN_BLOCK_DRAWERS, 6, BlockReg.WOODEN_BLOCK_DRAWERS);
 
         // MISC //
-        public static final RegistryObject<BlockEntityType<DisplayCaseBlockEntity>> DISPLAY_CASE = BLOCK_ENTITY_TYPES.register("display_case", () -> BlockEntityType.Builder
-                .of((pos, state) -> new DisplayCaseBlockEntity(BlockEntityReg.DISPLAY_CASE.get(), pos, state),
-                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get())
+        public static final RegistryObject<BlockEntityType<DisplayBlockEntity>> DISPLAY_CASE = BLOCK_ENTITY_TYPES.register("display_case", () -> BlockEntityType.Builder
+                .of((pos, state) -> new DisplayBlockEntity(BlockEntityReg.DISPLAY_CASE.get(), pos, state),
+                        BlockReg.DISPLAY_CASE.get(), BlockReg.LONG_DISPLAY_CASE.get(),
+                        BlockReg.BLUE_SCIENCE_POD.get(), BlockReg.GREEN_SCIENCE_POD.get(), BlockReg.ORANGE_SCIENCE_POD.get(), BlockReg.RED_SCIENCE_POD.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<DIYWorkbenchBlockEntity>> DIY_WORKBENCH = BLOCK_ENTITY_TYPES.register("diy_workbench", () -> BlockEntityType.Builder
                 .of((pos, state) -> new DIYWorkbenchBlockEntity(BlockEntityReg.DIY_WORKBENCH.get(), pos, state), BlockReg.DIY_WORKBENCH.get())
+                .build(null));
+        public static final RegistryObject<BlockEntityType<GlobeBlockEntity>> GLOBE = BLOCK_ENTITY_TYPES.register("globe", () -> BlockEntityType.Builder
+                .of((pos, state) -> new GlobeBlockEntity(BlockEntityReg.GLOBE.get(), pos, state), BlockReg.GLOBE.get())
+                .build(null));
+
+        public static final RegistryObject<BlockEntityType<DisplayBlockEntity>> HANDCART = BLOCK_ENTITY_TYPES.register("handcart", () -> BlockEntityType.Builder
+                .of((pos, state) -> new DisplayBlockEntity(BlockEntityReg.HANDCART.get(), pos, state), BlockReg.HANDCART.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<HourglassBlockEntity>> HOURGLASS = BLOCK_ENTITY_TYPES.register("hourglass", () -> BlockEntityType.Builder
                 .of((pos, state) -> new HourglassBlockEntity(BlockEntityReg.HOURGLASS.get(), pos, state), BlockReg.HOURGLASS.get())
@@ -706,8 +779,20 @@ public final class TDRegistry {
         public static final RegistryObject<BlockEntityType<MetronomeBlockEntity>> METRONOME = BLOCK_ENTITY_TYPES.register("metronome", () -> BlockEntityType.Builder
                 .of((pos, state) -> new MetronomeBlockEntity(BlockEntityReg.METRONOME.get(), pos, state), BlockReg.METRONOME.get())
                 .build(null));
+        public static final RegistryObject<BlockEntityType<NewtonsCradleBlockEntity>> NEWTONS_CRADLE = BLOCK_ENTITY_TYPES.register("newtons_cradle", () -> BlockEntityType.Builder
+                .of((pos, state) -> new NewtonsCradleBlockEntity(BlockEntityReg.NEWTONS_CRADLE.get(), pos, state), BlockReg.NEWTONS_CRADLE.get())
+                .build(null));
         public static final RegistryObject<BlockEntityType<PhonographBlockEntity>> PHONOGRAPH = BLOCK_ENTITY_TYPES.register("phonograph", () -> BlockEntityType.Builder
                 .of((pos, state) -> new PhonographBlockEntity(BlockEntityReg.PHONOGRAPH.get(), pos, state), BlockReg.PHONOGRAPH.get())
+                .build(null));
+        public static final RegistryObject<BlockEntityType<PlasmaBallBlockEntity>> PLASMA_BALL = BLOCK_ENTITY_TYPES.register("plasma_ball", () -> BlockEntityType.Builder
+                .of((pos, state) -> new PlasmaBallBlockEntity(BlockEntityReg.PLASMA_BALL.get(), pos, state), BlockReg.PLASMA_BALL.get())
+                .build(null));
+        public static final RegistryObject<BlockEntityType<RocketLampBlockEntity>> ROCKET_LAMP = BLOCK_ENTITY_TYPES.register("rocket_lamp", () -> BlockEntityType.Builder
+                .of((pos, state) -> new RocketLampBlockEntity(BlockEntityReg.ROCKET_LAMP.get(), pos, state),
+                        BlockReg.BLUE_ROCKET_LAMP.get(), BlockReg.GREEN_ROCKET_LAMP.get(), BlockReg.PINK_ROCKET_LAMP.get(),
+                        BlockReg.PURPLE_ROCKET_LAMP.get(), BlockReg.RED_ROCKET_LAMP.get(), BlockReg.TURQUOISE_ROCKET_LAMP.get(),
+                        BlockReg.YELLOW_ROCKET_LAMP.get())
                 .build(null));
         public static final RegistryObject<BlockEntityType<SlotMachineBlockEntity>> SLOT_MACHINE = BLOCK_ENTITY_TYPES.register("slot_machine", () -> BlockEntityType.Builder
                 .of((pos, state) -> new SlotMachineBlockEntity(BlockEntityReg.SLOT_MACHINE.get(), pos, state), BlockReg.SLOT_MACHINE.get())
@@ -745,6 +830,16 @@ public final class TDRegistry {
             return BLOCK_ENTITY_TYPES.register(block.getId().getPath(), () -> BlockEntityType.Builder
                     .of((pos, state) -> new StorageBlockEntity(type.get().get(), pos, state, rows), block.get())
                     .build(null));
+        }
+
+        // PREDICATES //
+
+        private static boolean always(BlockState blockState, BlockGetter level, BlockPos pos) {
+            return true;
+        }
+
+        private static boolean never(BlockState blockState, BlockGetter level, BlockPos pos) {
+            return false;
         }
     }
 
