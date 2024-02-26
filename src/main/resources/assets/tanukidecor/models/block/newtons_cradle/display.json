@@ -3,8 +3,8 @@
   "parent": "minecraft:block/block",
   "render_type": "minecraft:solid",
   "textures": {
-    "cradle": "tanukidecor:block/newtons_cradle",
-    "particle": "#cradle"
+    "particle": "tanukidecor:block/newtons_cradle",
+    "cradle": "tanukidecor:block/newtons_cradle"
   },
   "elements": [
     {
@@ -92,8 +92,8 @@
     },
     {
       "name": "ball",
-      "from": [5, 2.1, 6.4],
-      "to": [7, 4.1, 8.4],
+      "from": [5, 2.1, 7.1],
+      "to": [7, 4.1, 9.1],
       "faces": {
         "north": {"uv": [13, 0, 15, 2], "texture": "#cradle"},
         "east": {"uv": [13, 0, 15, 2], "texture": "#cradle"},
@@ -105,8 +105,8 @@
     },
     {
       "name": "ball",
-      "from": [7, 2, 6.5],
-      "to": [9, 4, 8.5],
+      "from": [7, 2, 7],
+      "to": [9, 4, 9],
       "faces": {
         "north": {"uv": [13, 0, 15, 2], "texture": "#cradle"},
         "east": {"uv": [13, 0, 15, 2], "texture": "#cradle"},
@@ -118,8 +118,8 @@
     },
     {
       "name": "ball",
-      "from": [9, 2.1, 6.6],
-      "to": [11, 4.1, 8.6],
+      "from": [9, 2.1, 7.1],
+      "to": [11, 4.1, 9.1],
       "faces": {
         "north": {"uv": [13, 0, 15, 2], "texture": "#cradle"},
         "east": {"uv": [13, 0, 15, 2], "texture": "#cradle"},
@@ -131,8 +131,8 @@
     },
     {
       "name": "ball",
-      "from": [3, 2, 6.5],
-      "to": [5, 4, 8.5],
+      "from": [11, 2.1, 7.1],
+      "to": [13, 4.1, 9.1],
       "faces": {
         "north": {"uv": [13, 0, 15, 2], "texture": "#cradle"},
         "east": {"uv": [13, 0, 15, 2], "texture": "#cradle"},
@@ -144,8 +144,8 @@
     },
     {
       "name": "ball",
-      "from": [11, 2, 6.5],
-      "to": [13, 4, 8.5],
+      "from": [3, 2.1, 7.1],
+      "to": [5, 4.1, 9.1],
       "faces": {
         "north": {"uv": [13, 0, 15, 2], "texture": "#cradle"},
         "east": {"uv": [13, 0, 15, 2], "texture": "#cradle"},
@@ -167,23 +167,7 @@
       "name": "balls",
       "origin": [0, 0, 0],
       "color": 0,
-      "children": [
-        7,
-        8,
-        9,
-        {
-          "name": "west_ball",
-          "origin": [0, 0, 0],
-          "color": 0,
-          "children": [10]
-        },
-        {
-          "name": "east_ball",
-          "origin": [0, 0, 0],
-          "color": 0,
-          "children": [11]
-        }
-      ]
+      "children": [7, 8, 9, 10, 11]
     }
   ]
 }

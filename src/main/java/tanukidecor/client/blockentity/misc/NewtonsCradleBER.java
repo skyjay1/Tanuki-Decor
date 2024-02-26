@@ -37,7 +37,7 @@ public class NewtonsCradleBER implements BlockEntityRenderer<NewtonsCradleBlockE
 
     public static final ResourceLocation BALL = new ResourceLocation(TanukiDecor.MODID, "block/newtons_cradle/ball");
     protected static final Vector3f LINE_START = new Vector3f(4.0F / 16.0F, 8.0F / 16.0F, 5.0F / 16.0F);
-    protected static final Vector3f LINE_MID = new Vector3f(4.0F / 16.0F, 4.0F / 16.0F, 8.5F / 16.0F);
+    protected static final Vector3f LINE_MID = new Vector3f(4.0F / 16.0F, 4.0F / 16.0F, 8.0F / 16.0F);
     protected static final Vector3f LINE_END = new Vector3f(4.0F / 16.0F, 8.0F / 16.0F, 11.0F / 16.0F);
 
     protected final BlockRenderDispatcher blockRenderer;
@@ -84,7 +84,7 @@ public class NewtonsCradleBER implements BlockEntityRenderer<NewtonsCradleBlockE
         dz = 7.5F / 16.0F;
         zRotation = westBallAngle;
         pPoseStack.pushPose();
-        pPoseStack.translate(4.0F / 16.0F, 0.0F / 16.0F, 1.0F / 16.0F);
+        pPoseStack.translate(4.0F / 16.0F, 0.0F / 16.0F, 0.0F / 16.0F);
         pPoseStack.translate(dx, dy, dz);
         pPoseStack.mulPose(Vector3f.ZP.rotation(zRotation));
         pPoseStack.translate(-dx, -dy, -dz);
@@ -95,7 +95,7 @@ public class NewtonsCradleBER implements BlockEntityRenderer<NewtonsCradleBlockE
         // render east ball
         zRotation = eastBallAngle;
         pPoseStack.pushPose();
-        pPoseStack.translate(-4.0F / 16.0F, 0.0F / 16.0F, 1.0F / 16.0F);
+        pPoseStack.translate(-4.0F / 16.0F, 0.0F / 16.0F, 0.0F / 16.0F);
         pPoseStack.translate(dx, dy, dz);
         pPoseStack.mulPose(Vector3f.ZN.rotation(zRotation));
         pPoseStack.translate(-dx, -dy, -dz);
