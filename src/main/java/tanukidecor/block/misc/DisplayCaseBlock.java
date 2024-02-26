@@ -6,16 +6,16 @@
 
 package tanukidecor.block.misc;
 
+import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -23,11 +23,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.RotatingTallBlock;
-import tanukidecor.block.entity.ClockBlockEntity;
-import tanukidecor.block.entity.DisplayCaseBlockEntity;
 import tanukidecor.block.entity.SingleSlotBlockEntity;
 
-public class DisplayCaseBlock extends RotatingTallBlock implements EntityBlock {
+public class DisplayCaseBlock extends RotatingTallBlock implements EntityBlock, IDisplayProvider {
 
     public static final VoxelShape SHAPE_UPPER = box(0.01D, 0, 0.01D, 15.99D, 15.99D, 15.99D);
     public static final VoxelShape SHAPE_LOWER = Shapes.or(
@@ -55,6 +53,13 @@ public class DisplayCaseBlock extends RotatingTallBlock implements EntityBlock {
             SingleSlotBlockEntity.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
             super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
         }
+    }
+
+    //// DISPLAY PROVIDER ////
+
+    @Override
+    public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
+        return new Vector3f(0, blockState.getValue(FACING).getOpposite().toYRot(), 0);
     }
 
     //// BLOCK ENTITY ////

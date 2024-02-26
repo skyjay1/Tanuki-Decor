@@ -25,6 +25,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.TallBlock;
 
+import java.util.Random;
+
 public class EgyptianLampBlock extends TallBlock {
 
     public static final VoxelShape SHAPE_UPPER = Shapes.join(

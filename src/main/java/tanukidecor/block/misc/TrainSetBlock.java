@@ -10,6 +10,7 @@ import com.google.common.collect.Iterables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -98,6 +99,17 @@ public class TrainSetBlock extends RotatingMultiblock implements EntityBlock {
         return false;
     }
 
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
+        if(!pLevel.isClientSide() && pFromPos.getY() == pPos.getY() - 1 && pLevel.getBlockEntity(pPos) instanceof TrainSetBlockEntity blockEntity) {
+            Direction facing = pState.getValue(TrainSetBlock.FACING);
+            MultiblockHandler multiblockHandler = this.getMultiblockHandler();
+            boolean silent = multiblockHandler.anyPositions(multiblockHandler.getCenterPos(pPos, pState, facing), facing,
+                    b -> pLevel.getBlockState(b.below()).is(BlockTags.OCCLUDES_VIBRATION_SIGNALS));
+            blockEntity.setSilent(silent);
+        }
+        super.neighborChanged(pState, pLevel, pPos, pBlock, pFromPos, pIsMoving);
+    }
 
     //// BLOCK ENTITY ////
 

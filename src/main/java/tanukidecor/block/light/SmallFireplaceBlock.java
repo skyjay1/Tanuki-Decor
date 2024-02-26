@@ -20,6 +20,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingWideBlock;
 import tanukidecor.block.Side;
 
+import java.util.Random;
+
 public class SmallFireplaceBlock extends RotatingWideBlock {
 
     public static final VoxelShape SHAPE_EAST = Shapes.or(

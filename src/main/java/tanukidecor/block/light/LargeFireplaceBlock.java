@@ -18,7 +18,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingMultiblock;
+import tanukidecor.block.Side;
 import tanukidecor.util.MultiblockHandler;
+
+import java.util.Random;
 
 public class LargeFireplaceBlock extends RotatingMultiblock {
 

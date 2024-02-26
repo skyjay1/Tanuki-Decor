@@ -17,9 +17,10 @@ import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.entity.DIYWorkbenchBlockEntity;
-import tanukidecor.block.recipe.DIYRecipe;
+import tanukidecor.recipe.DIYRecipe;
 import tanukidecor.network.ServerBoundSelectDIYRecipePacket;
 import tanukidecor.network.TDNetwork;
 
@@ -132,7 +133,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
 
     //// RECIPE ////
 
-    public void selectRecipe(final DIYRecipe recipe) {
+    public void selectRecipe(final Recipe<?> recipe) {
         this.resultContainer.setRecipeUsed(recipe);
         // send packet from client to server
         if(inventory.player.level.isClientSide() && recipe != null) {
@@ -141,14 +142,15 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
     }
 
     public void setRecipe(final DIYRecipe recipe) {
+        // update recipe
+        this.resultContainer.setRecipeUsed(recipe);
         if(null == recipe) {
             this.resultContainer.clearContent();
             this.slotsChanged(this.resultContainer);
             return;
         }
-        // update recipe
+        // update max craft count
         this.updateMaxCraftCount();
-        this.resultContainer.setRecipeUsed(recipe);
         // update result item
         if(maxCraftCount > 0) {
             this.resultContainer.setItem(0, recipe.assemble(this.container));

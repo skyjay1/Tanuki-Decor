@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.item.ItemStack;
-import tanukidecor.block.recipe.DIYRecipe;
+import net.minecraft.world.item.crafting.Recipe;
 import tanukidecor.client.menu.DIYWorkbenchScreen;
 
 public class DIYRecipeButton extends ImageButton {
@@ -27,7 +27,7 @@ public class DIYRecipeButton extends ImageButton {
     protected final Font fontRenderer;
 
     protected ItemStack itemStack;
-    protected DIYRecipe recipe;
+    protected Recipe<?> recipe;
     protected Component text;
 
     public DIYRecipeButton(int pX, int pY, final ItemRenderer itemRenderer, final Font fontRenderer,
@@ -43,11 +43,11 @@ public class DIYRecipeButton extends ImageButton {
         return this.itemStack;
     }
 
-    public DIYRecipe getRecipe() {
+    public Recipe<?> getRecipe() {
         return recipe;
     }
 
-    public void setRecipe(final DIYRecipe recipe) {
+    public void setRecipe(final Recipe<?> recipe) {
         this.recipe = recipe;
         this.itemStack = recipe.getResultItem();
         this.setMessage(this.itemStack.getHoverName());

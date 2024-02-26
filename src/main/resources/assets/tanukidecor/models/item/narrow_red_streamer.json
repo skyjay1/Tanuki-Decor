@@ -1,3 +1,7 @@
 {
-  "parent": "tanukidecor:item/generic"
+  "parent": "minecraft:item/generated",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "layer0": "tanukidecor:block/narrow_streamer/red"
+  }
 }

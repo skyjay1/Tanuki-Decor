@@ -20,6 +20,8 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.block.clock.IChimeProvider;
 
+import java.util.Random;
+
 public class ClockBlockEntity extends BlockEntity {
 
     protected final @Nullable IChimeProvider chimeProvider;
