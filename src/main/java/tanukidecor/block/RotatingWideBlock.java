@@ -58,7 +58,7 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
         precalculateShapes();
     }
 
-    //// SHAPE ////
+    /// / SHAPE ////
 
     protected void precalculateShapes() {
         blockShapes.clear();
@@ -67,7 +67,7 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
         final Map<Direction, VoxelShape> doubleBlockShapes = new EnumMap<>(Direction.class);
         doubleBlockShapes.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, createDoubleBlockShape()));
         // create shapes for all possible block states
-        for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
+        for (BlockState blockState : this.stateDefinition.getPossibleStates()) {
             // cache the individual shape
             blockShapes.put(blockState, this.shapeBuilder.apply(blockState));
             // calculate multiblock shape
@@ -117,14 +117,14 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
         return getMultiblockShape(pState);
     }
 
-    //// DELEGATE PROVIDER ////
+    /// / DELEGATE PROVIDER ////
 
     @Override
     public BlockPos getDelegatePos(BlockState blockState, BlockPos blockPos) {
         return getLeftSide(blockState, blockPos);
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -159,7 +159,7 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
         final BlockPos oppositePos = getOppositeSide(pState, pCurrentPos);
         final BlockState oppositeState = pLevel.getBlockState(oppositePos);
         // update half
-        if(!oppositeState.is(this) || oppositeState.getValue(SIDE) == side || !pState.canSurvive(pLevel, pCurrentPos)) {
+        if (!oppositeState.is(this) || oppositeState.getValue(SIDE) == side || !pState.canSurvive(pLevel, pCurrentPos)) {
             return pState.getFluidState().createLegacyBlock();
         }
         return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
@@ -175,7 +175,7 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         // assume if the block at the given position is not this one, this is a preemptive check
-        if(!pLevel.getBlockState(pPos).is(this)) {
+        if (!pLevel.getBlockState(pPos).is(this)) {
             return true;
         }
         return pState.getValue(SIDE) == Side.LEFT || pLevel.getBlockState(getOppositeSide(pState, pPos)).is(this);
@@ -196,7 +196,7 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
 
     // TODO custom #rotation and #mirror implementations
 
-    //// FLUID ////
+    /// / FLUID ////
 
     @Override
     public FluidState getFluidState(BlockState pState) {
@@ -221,21 +221,22 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
 
     /**
      * Removes the left block without allowing loot drops. This prevents the item from dropping, intended for use in creative mode.
-     * @param level the level
-     * @param pos the block position
+     *
+     * @param level      the level
+     * @param pos        the block position
      * @param blockState the block state
-     * @param player the player
+     * @param player     the player
      */
     public void preventCreativeDropFromLeftPart(Level level, BlockPos pos, BlockState blockState, Player player) {
         final BlockPos origin = getLeftSide(blockState, pos);
         final BlockState originState = level.getBlockState(origin);
-        if(originState.is(blockState.getBlock()) && originState.getValue(SIDE) == Side.LEFT) {
+        if (originState.is(blockState.getBlock()) && originState.getValue(SIDE) == Side.LEFT) {
             level.setBlock(origin, originState.getFluidState().createLegacyBlock(), Block.UPDATE_SUPPRESS_DROPS | Block.UPDATE_ALL);
         }
     }
 
     public static BlockPos getLeftSide(final BlockState blockState, final BlockPos pos) {
-        if(blockState.getValue(SIDE) == Side.LEFT) {
+        if (blockState.getValue(SIDE) == Side.LEFT) {
             return pos;
         }
         Direction facing = blockState.getValue(FACING);
@@ -243,7 +244,7 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
     }
 
     public static BlockPos getRightSide(final BlockState blockState, final BlockPos pos) {
-        if(blockState.getValue(SIDE) == Side.RIGHT) {
+        if (blockState.getValue(SIDE) == Side.RIGHT) {
             return pos;
         }
         Direction facing = blockState.getValue(FACING);

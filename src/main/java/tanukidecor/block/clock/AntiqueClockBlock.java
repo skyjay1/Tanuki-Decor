@@ -35,7 +35,7 @@ public class AntiqueClockBlock extends TallClockBlock {
                 UPPER_SHAPE, LOWER_SHAPE, TDRegistry.BlockEntityReg.ANTIQUE_CLOCK, pProperties);
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Override
     public int getTickSoundInterval(BlockState blockState) {

@@ -11,7 +11,6 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
@@ -40,7 +39,7 @@ public final class TDClientEvents {
         @SubscribeEvent
         public static void onRenderOverlay(final RenderGuiEvent.Pre event) {
             final Player player = Minecraft.getInstance().player;
-            if(event.getName().equals(VanillaGuiLayers.MOUNT_HEALTH)
+            if (event.getName().equals(VanillaGuiLayers.MOUNT_HEALTH)
                     && player != null && player.isPassenger()
                     && ISeatProvider.IS_SEAT_ENTITY.test(player.getVehicle())) {
                 event.setCanceled(true);

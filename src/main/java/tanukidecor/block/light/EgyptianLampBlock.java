@@ -11,7 +11,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -42,7 +41,7 @@ public class EgyptianLampBlock extends TallBlock {
             box(11, 0, 3, 13, 6, 5),
             box(11, 0, 11, 13, 6, 13));
 
-    private float fireDamage;
+    private final float fireDamage;
 
     public EgyptianLampBlock(int fireDamage, Properties pProperties) {
         super(SHAPE_UPPER, SHAPE_LOWER, pProperties);
@@ -58,7 +57,7 @@ public class EgyptianLampBlock extends TallBlock {
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         if (pState.getValue(HALF) == DoubleBlockHalf.UPPER && !pState.getValue(WATERLOGGED)
                 && !pEntity.fireImmune() && !((pEntity.position().y() + 3.0D / 16.0D) < pPos.getY())
-                && pEntity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)pEntity)) {
+                && pEntity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) pEntity)) {
             pEntity.hurt(pLevel.damageSources().inFire(), this.fireDamage);
         }
 
@@ -67,7 +66,7 @@ public class EgyptianLampBlock extends TallBlock {
 
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(!pState.isBurning(pLevel, pPos)) {
+        if (!pState.isBurning(pLevel, pPos)) {
             return;
         }
         // play sound
@@ -82,7 +81,7 @@ public class EgyptianLampBlock extends TallBlock {
         // smoke particle
         pLevel.addParticle(ParticleTypes.SMOKE, pos.x(), pos.y(), pos.z(), 0.0D, 0.0D, 0.0D);
         // fire particle
-        if(pRandom.nextInt(5) == 0) {
+        if (pRandom.nextInt(5) == 0) {
             pLevel.addParticle(ParticleTypes.LARGE_SMOKE, pos.x(), pos.y(), pos.z(), 0.0D, 0.0D, 0.0D);
         }
     }

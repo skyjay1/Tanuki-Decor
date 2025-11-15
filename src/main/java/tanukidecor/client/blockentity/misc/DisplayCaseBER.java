@@ -11,7 +11,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -33,8 +32,6 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import tanukidecor.block.entity.DisplayBlockEntity;
-import tanukidecor.block.entity.SingleSlotBlockEntity;
-import tanukidecor.block.misc.IDisplayProvider;
 
 public class DisplayCaseBER implements BlockEntityRenderer<DisplayBlockEntity> {
 
@@ -58,7 +55,7 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayBlockEntity> {
         final BlockPos blockPos = pBlockEntity.getBlockPos();
         final ItemStack itemStack = pBlockEntity.getItem(0);
         // validate item stack
-        if(itemStack.isEmpty()) {
+        if (itemStack.isEmpty()) {
             return;
         }
 
@@ -90,7 +87,7 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayBlockEntity> {
         pPoseStack.popPose();
 
         // render nametag
-        if(pBlockEntity.hasCustomName() && shouldRenderNameTag(pBlockEntity)) {
+        if (pBlockEntity.hasCustomName() && shouldRenderNameTag(pBlockEntity)) {
             renderNameTag(pBlockEntity, pBlockEntity.getCustomName(), pPoseStack, pBufferSource, pPackedLight);
         }
     }
@@ -99,7 +96,7 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayBlockEntity> {
         final Minecraft mc = Minecraft.getInstance();
         final Vec3 pos = Vec3.atCenterOf(blockEntity.getBlockPos());
         final double distance = mc.player.getBlockReach();
-        if(this.entityRenderDispatcher.distanceToSqr(pos.x, pos.y, pos.z) < (distance * distance)
+        if (this.entityRenderDispatcher.distanceToSqr(pos.x, pos.y, pos.z) < (distance * distance)
                 && mc.hitResult != null
                 && mc.hitResult.getType() == HitResult.Type.BLOCK) {
             BlockPos blockPos = BlockPos.containing(mc.hitResult.getLocation());
@@ -119,8 +116,8 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayBlockEntity> {
         Matrix4f matrix4f = poseStack.last().pose();
 
         float opacityFactor = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
-        int opacity = (int)(opacityFactor * 255.0F) << 24;
-        float x = (float)(-font.width(text) / 2);
+        int opacity = (int) (opacityFactor * 255.0F) << 24;
+        float x = (float) (-font.width(text) / 2);
 
         font.drawInBatch(text, x, 0.0F, 553648127, false, matrix4f, multiBufferSource, Font.DisplayMode.SEE_THROUGH, opacity, packedLight);
         font.drawInBatch(text, x, 0.0F, -1, false, matrix4f, multiBufferSource, Font.DisplayMode.NORMAL, 0, packedLight);

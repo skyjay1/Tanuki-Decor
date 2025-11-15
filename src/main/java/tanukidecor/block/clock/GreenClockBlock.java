@@ -31,7 +31,7 @@ public class GreenClockBlock extends ClockBlock {
                 SHAPE, TDRegistry.BlockEntityReg.GREEN_CLOCK, pProperties);
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

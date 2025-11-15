@@ -30,7 +30,6 @@ import tanukidecor.util.ShapeUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
 
@@ -48,11 +47,11 @@ public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleW
         precalculateShapes();
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     protected void precalculateShapes() {
         blockShapes.clear();
-        for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
+        for (BlockState blockState : this.stateDefinition.getPossibleStates()) {
             blockShapes.put(blockState, this.shapeBuilder.apply(blockState));
         }
     }
@@ -79,7 +78,7 @@ public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleW
         if (pState.getValue(WATERLOGGED)) {
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
-        if(pLevel.getBlockState(pCurrentPos).is(this) && !pState.canSurvive(pLevel, pCurrentPos)) {
+        if (pLevel.getBlockState(pCurrentPos).is(this) && !pState.canSurvive(pLevel, pCurrentPos)) {
             pLevel.destroyBlock(pCurrentPos, true);
             return pState.getFluidState().createLegacyBlock();
         }
@@ -93,7 +92,7 @@ public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleW
 
     public static ShapeBuilder createShapeBuilder(final VoxelShape shape) {
         return blockState -> {
-            final Direction facing =  blockState.getValue(FACING);
+            final Direction facing = blockState.getValue(FACING);
             return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);
         };
     }
@@ -120,7 +119,7 @@ public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleW
     /**
      * @param state the block state
      * @param level the level
-     * @param pos the block position
+     * @param pos   the block position
      * @return true if the block behind this one has a solid face
      * @see BlockState#isFaceSturdy(BlockGetter, BlockPos, Direction)
      */

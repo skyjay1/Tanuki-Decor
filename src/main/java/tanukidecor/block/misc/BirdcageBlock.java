@@ -15,11 +15,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.ShoulderRidingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -67,7 +63,7 @@ public class BirdcageBlock extends RotatingTallBlock {
     // entities can be caged if they are not on the blacklist, not a player, not a monster, and are the correct size
     private static final Predicate<LivingEntity> CAN_BE_CAGED = e ->
             !e.getType().is(BIRDCAGE_BLACKLIST) && !(e instanceof Player || e instanceof Monster)
-            && e.isAlive() && !(e.getType().getDimensions().width > CAGE_WIDTH) && !(e.getType().getDimensions().height > CAGE_HEIGHT);
+                    && e.isAlive() && !(e.getType().getDimensions().width > CAGE_WIDTH) && !(e.getType().getDimensions().height > CAGE_HEIGHT);
 
     public BirdcageBlock(Properties pProperties) {
         super(pProperties, RotatingTallBlock.createShapeBuilder(SHAPE_UPPER, SHAPE_LOWER));
@@ -80,7 +76,7 @@ public class BirdcageBlock extends RotatingTallBlock {
 
     @Override
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        if(pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+        if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
             return COLLISION_SHAPE_UPPER;
         }
         return super.getCollisionShape(pState, pLevel, pPos, pContext);
@@ -88,14 +84,14 @@ public class BirdcageBlock extends RotatingTallBlock {
 
     @Override
     public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+        if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
             this.getCagedEntity(pLevel, pState, pPos).ifPresent(e -> updateEntityInCage(e));
         }
     }
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        if(pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+        if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
             this.getCagedEntity(pLevel, pState, pPos).ifPresent(e -> extractCagedEntity(e, pLevel, pState, pPos, null));
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
@@ -103,7 +99,7 @@ public class BirdcageBlock extends RotatingTallBlock {
 
     @Override
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-        if(pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+        if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
             this.getCagedEntity(pLevel, pState, pPos).ifPresent(e -> extractCagedEntity(e, pLevel, pState, pPos, pPlayer));
         }
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
@@ -112,7 +108,7 @@ public class BirdcageBlock extends RotatingTallBlock {
     @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         final BlockPos pos = getDelegatePos(pState, pPos);
-        if(pEntity instanceof Mob entity
+        if (pEntity instanceof Mob entity
                 && CAN_BE_CAGED.test(entity) && getCagedEntity(pLevel, pState, pos).isEmpty()
                 && !entity.isOnPortalCooldown()) {
             final Vec3 cagedPos = getCagedEntityPos(pLevel, pState, pos);
@@ -123,7 +119,7 @@ public class BirdcageBlock extends RotatingTallBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
-        if(pPlayer.isShiftKeyDown() || pHand != InteractionHand.MAIN_HAND) {
+        if (pPlayer.isShiftKeyDown() || pHand != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
         // locate caged entity, if any
@@ -131,23 +127,23 @@ public class BirdcageBlock extends RotatingTallBlock {
         final Vec3 cagePos = getCagedEntityPos(pLevel, pState, pos);
         final Optional<LivingEntity> oEntity = getCagedEntity(pLevel, pState, pos);
         // validate server side
-        if(pLevel.isClientSide()) {
+        if (pLevel.isClientSide()) {
             return oEntity.isPresent() ? InteractionResult.SUCCESS : InteractionResult.PASS;
         }
         // attempt to remove entity
-        if(oEntity.isPresent()) {
+        if (oEntity.isPresent()) {
             extractCagedEntity(oEntity.get(), pLevel, pState, pos, pPlayer);
             return InteractionResult.SUCCESS;
         }
         // attempt to insert entity from shoulders, if any
         final boolean hasShoulderEntity = !pPlayer.getShoulderEntityLeft().isEmpty() || !pPlayer.getShoulderEntityRight().isEmpty();
-        if(hasShoulderEntity) {
-            if(spawnFromShoulderEntity(pPlayer, pPlayer.getShoulderEntityLeft(), cagePos).isPresent()) {
+        if (hasShoulderEntity) {
+            if (spawnFromShoulderEntity(pPlayer, pPlayer.getShoulderEntityLeft(), cagePos).isPresent()) {
                 // remove left shoulder entity
                 pPlayer.setShoulderEntityLeft(new CompoundTag());
                 return InteractionResult.SUCCESS;
             }
-            if(spawnFromShoulderEntity(pPlayer, pPlayer.getShoulderEntityRight(), cagePos).isPresent()) {
+            if (spawnFromShoulderEntity(pPlayer, pPlayer.getShoulderEntityRight(), cagePos).isPresent()) {
                 // remove right shoulder entity
                 pPlayer.setShoulderEntityRight(new CompoundTag());
                 return InteractionResult.SUCCESS;
@@ -162,7 +158,7 @@ public class BirdcageBlock extends RotatingTallBlock {
     }
 
     private Optional<Entity> spawnFromShoulderEntity(Player player, CompoundTag compoundTag, final Vec3 pos) {
-        if(compoundTag.isEmpty()) {
+        if (compoundTag.isEmpty()) {
             return Optional.empty();
         }
         final Optional<Entity> oEntity = EntityType.create(compoundTag, player.level());
@@ -175,7 +171,7 @@ public class BirdcageBlock extends RotatingTallBlock {
             e.setPos(pos.x(), pos.y(), pos.z());
             e.setDeltaMovement(Vec3.ZERO);
             // spawn the entity
-            ((ServerLevel)player.level()).addWithUUID(e);
+            ((ServerLevel) player.level()).addWithUUID(e);
             // post process the entity
             updateEntityInCage(e);
         });
@@ -184,37 +180,38 @@ public class BirdcageBlock extends RotatingTallBlock {
 
     /**
      * Attempts to extract the entity from the cage, either to the player shoulder or the player position
-     * @param entity the entity to extract
-     * @param level the level
+     *
+     * @param entity     the entity to extract
+     * @param level      the level
      * @param blockState the blocks tate
-     * @param pos the block position
-     * @param player the player that extracted the entity, if any
+     * @param pos        the block position
+     * @param player     the player that extracted the entity, if any
      */
     private void extractCagedEntity(LivingEntity entity, Level level, BlockState blockState, BlockPos pos, @Nullable Player player) {
         // update portal cooldown
         entity.setPortalCooldown();
         // move directly to shoulder
-        if(entity instanceof ShoulderRidingEntity ridingEntity
+        if (entity instanceof ShoulderRidingEntity ridingEntity
                 && player instanceof ServerPlayer serverPlayer
                 && ridingEntity.isOwnedBy(player)
                 && ridingEntity.setEntityOnShoulder(serverPlayer)) {
             return;
         }
         // stop sitting
-        if(entity instanceof TamableAnimal tamable) {
+        if (entity instanceof TamableAnimal tamable) {
             tamable.setOrderedToSit(false);
         }
         // move to player position
-        if(player != null) {
+        if (player != null) {
             entity.setPos(player.position());
         }
     }
 
     private void updateEntityInCage(final Entity entity) {
-        if(entity instanceof TamableAnimal tamable) {
+        if (entity instanceof TamableAnimal tamable) {
             tamable.setOrderedToSit(true);
         }
-        if(entity instanceof Mob mob) {
+        if (entity instanceof Mob mob) {
             mob.getNavigation().stop();
             mob.setJumping(false);
             mob.setTarget(null);
@@ -226,14 +223,14 @@ public class BirdcageBlock extends RotatingTallBlock {
     }
 
     private Optional<LivingEntity> getCagedEntity(Level level, BlockState blockState, BlockPos pos) {
-        if(blockState.getValue(HALF) != DoubleBlockHalf.UPPER) {
+        if (blockState.getValue(HALF) != DoubleBlockHalf.UPPER) {
             return Optional.empty();
         }
         final Vec3 start = Vec3.atLowerCornerOf(pos).add(3.0D / 16.0D, 0, 3.0D / 16.0D);
         final Vec3 end = start.add(10.0D / 16.0D, 14.0D / 16.0D, 10.0D / 16.0D);
         final AABB aabb = new AABB(start, end);
         final List<LivingEntity> list = level.getEntitiesOfClass(LivingEntity.class, aabb, CAN_BE_CAGED);
-        if(list.isEmpty()) {
+        if (list.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(list.get(0));

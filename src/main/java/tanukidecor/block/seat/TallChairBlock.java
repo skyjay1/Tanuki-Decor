@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -20,15 +19,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingTallBlock;
 
-import java.util.Random;
-
 public class TallChairBlock extends RotatingTallBlock implements ISeatProvider {
 
-    private double seatYOffset;
+    private final double seatYOffset;
 
     /**
-     * @param upperShape the shape of the upper half
-     * @param lowerShape the shape of the lower half
+     * @param upperShape  the shape of the upper half
+     * @param lowerShape  the shape of the lower half
      * @param seatYOffset the y offset of the seat in block units, generally 2 pixels above the seat part of the model
      * @param pProperties the block properties
      */
@@ -37,7 +34,7 @@ public class TallChairBlock extends RotatingTallBlock implements ISeatProvider {
         this.seatYOffset = seatYOffset;
     }
 
-    //// SEAT PROVIDER ////
+    /// / SEAT PROVIDER ////
 
     @Override
     public double getSeatYOffset(BlockState blockState, Level level, BlockPos blockPos) {
@@ -49,7 +46,7 @@ public class TallChairBlock extends RotatingTallBlock implements ISeatProvider {
         return blockState.getValue(FACING);
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
@@ -58,11 +55,11 @@ public class TallChairBlock extends RotatingTallBlock implements ISeatProvider {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
-        if(pLevel.isClientSide()) {
+        if (pLevel.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
         BlockPos seatPos = pState.getValue(HALF) == DoubleBlockHalf.UPPER ? pPos.below() : pPos;
-        if(!pPlayer.isShiftKeyDown() && startSitting(pLevel.getBlockState(seatPos), pLevel, seatPos, pPlayer)) {
+        if (!pPlayer.isShiftKeyDown() && startSitting(pLevel.getBlockState(seatPos), pLevel, seatPos, pPlayer)) {
             return InteractionResult.SUCCESS;
         }
         return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);

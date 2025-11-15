@@ -24,7 +24,7 @@ public class AlarmClockBlock extends ClockBlock {
                 SHAPE, TDRegistry.BlockEntityReg.ALARM_CLOCK, pProperties);
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Override
     public boolean isTimeToChime(BlockState blockState, long dayTime) {

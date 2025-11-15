@@ -22,8 +22,8 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.network.PacketDistributor;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.entity.DIYWorkbenchBlockEntity;
-import tanukidecor.recipe.DIYRecipe;
 import tanukidecor.network.ServerBoundSelectDIYRecipePacket;
+import tanukidecor.recipe.DIYRecipe;
 
 
 public class DIYWorkbenchMenu extends AbstractContainerMenu {
@@ -52,14 +52,14 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         checkContainerSize(this.container, CONTAINER_SLOTS);
 
         // slots
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             this.addSlot(new IngredientSlot(this.container, i, PLAYER_INV_X + i * 33, 15, DIYWorkbenchBlockEntity.INGREDIENTS[i]));
         }
         this.addSlot(new ResultSlot(this.inventory.player, this.resultContainer, 0, 155, 15));
         addPlayerSlots(PLAYER_INV_X, PLAYER_INV_Y);
     }
 
-    //// MENU ////
+    /// / MENU ////
 
     public Inventory getInventory() {
         return inventory;
@@ -84,7 +84,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
                 if (!this.moveItemStackTo(itemstack, resultContainer.getContainerSize() + container.getContainerSize(), this.slots.size(), false)) {
                     return ItemStack.EMPTY;
                 }
-                if(this.maxCraftCount > 0 && index == resultContainer.getContainerSize() + container.getContainerSize() - 1) {
+                if (this.maxCraftCount > 0 && index == resultContainer.getContainerSize() + container.getContainerSize() - 1) {
                     onTakeResult(player, copy, 1);
                     slotsChanged(this.resultContainer);
                 }
@@ -110,17 +110,17 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
     @Override
     public void slotsChanged(Container pContainer) {
         super.slotsChanged(pContainer);
-        if(pContainer == this.container){
+        if (pContainer == this.container) {
             updateMaxCraftCount();
             if (this.maxCraftCount <= 0) {
                 resultContainer.clearContent();
                 slotsChanged(this.resultContainer);
             }
         }
-        if(pContainer == this.resultContainer) {
+        if (pContainer == this.resultContainer) {
             if (this.maxCraftCount > 0 && this.resultContainer.isEmpty()) {
                 RecipeHolder<?> recipeHolder = this.resultContainer.getRecipeUsed();
-                if(recipeHolder != null && recipeHolder.value() instanceof DIYRecipe recipe) {
+                if (recipeHolder != null && recipeHolder.value() instanceof DIYRecipe recipe) {
                     this.resultContainer.setItem(0, recipe.assemble(DIYWorkbenchBlockEntity.asRecipeInput(this.container), this.registryAccess));
                     slotsChanged(this.resultContainer);
                 }
@@ -132,32 +132,32 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         this.maxCraftCount = 127;
         // init at max stack size
         RecipeHolder<?> recipeHolder = this.resultContainer.getRecipeUsed();
-        if(recipeHolder != null) {
+        if (recipeHolder != null) {
             this.maxCraftCount = recipeHolder.value().getResultItem(this.registryAccess).getMaxStackSize();
         }
         // reduce to min stack size of any input
-        for(int i = 0; i < CONTAINER_SLOTS; i++) {
+        for (int i = 0; i < CONTAINER_SLOTS; i++) {
             ItemStack item = container.getItem(i);
             this.maxCraftCount = Math.min(this.maxCraftCount, item.getCount());
         }
     }
 
-    //// RECIPE ////
+    /// / RECIPE ////
 
     public void selectRecipe(final RecipeHolder<?> recipeHolder) {
         this.resultContainer.setRecipeUsed(recipeHolder);
         // send packet from client to server
-        if(inventory.player.level().isClientSide() && recipeHolder != null) {
+        if (inventory.player.level().isClientSide() && recipeHolder != null) {
             PacketDistributor.sendToServer(new ServerBoundSelectDIYRecipePacket(recipeHolder.id()));
         }
     }
 
     public void setRecipe(final DIYRecipe recipe) {
         // update recipe - wrap in RecipeHolder
-        RecipeHolder<DIYRecipe> recipeHolder = recipe != null ? 
-            new RecipeHolder<>(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("tanukidecor", "diy_temp"), recipe) : null;
+        RecipeHolder<DIYRecipe> recipeHolder = recipe != null ?
+                new RecipeHolder<>(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("tanukidecor", "diy_temp"), recipe) : null;
         this.resultContainer.setRecipeUsed(recipeHolder);
-        if(null == recipe) {
+        if (null == recipe) {
             this.resultContainer.clearContent();
             this.slotsChanged(this.resultContainer);
             return;
@@ -165,7 +165,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         // update max craft count
         this.updateMaxCraftCount();
         // update result item
-        if(maxCraftCount > 0) {
+        if (maxCraftCount > 0) {
             this.resultContainer.setItem(0, recipe.assemble(DIYWorkbenchBlockEntity.asRecipeInput(this.container), this.registryAccess));
         } else {
             this.resultContainer.clearContent();
@@ -173,14 +173,14 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         this.slotsChanged(this.resultContainer);
     }
 
-    //// CONTAINER LISTENER ////
+    /// / CONTAINER LISTENER ////
 
     private void onTakeResult(Player player, ItemStack result, int count) {
         //if(this.inventory.player.level.isClientSide()) {
-            //return;
+        //return;
         //}
         // remove items
-        for(int i = 0; i < CONTAINER_SLOTS; i++) {
+        for (int i = 0; i < CONTAINER_SLOTS; i++) {
             this.container.removeItem(i, count);
         }
         // crafting trigger
@@ -192,26 +192,26 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         player.level().playSound(player, blockPos, SoundEvents.VILLAGER_WORK_TOOLSMITH, SoundSource.PLAYERS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
     }
 
-    //// PLAYER INVENTORY ////
+    /// / PLAYER INVENTORY ////
 
     private void addPlayerSlots(final int x, final int y) {
         // inventory
-        for(int i = 0; i < 3; ++i) {
-            for(int j = 0; j < 9; ++j) {
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 9; ++j) {
                 this.addSlot(new Slot(this.inventory, j + i * 9 + 9, x + j * 18, y + i * 18));
             }
         }
         // hotbar
-        for(int k = 0; k < 9; ++k) {
+        for (int k = 0; k < 9; ++k) {
             this.addSlot(new Slot(this.inventory, k, x + k * 18, y + 58));
         }
     }
 
-    //// SLOT ////
+    /// / SLOT ////
 
     private class IngredientSlot extends Slot {
 
-        private Ingredient ingredient;
+        private final Ingredient ingredient;
 
         public IngredientSlot(Container pContainer, int pSlot, int pX, int pY, Ingredient ingredient) {
             super(pContainer, pSlot, pX, pY);

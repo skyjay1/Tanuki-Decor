@@ -55,13 +55,13 @@ public class TallBlock extends Block implements SimpleWaterloggedBlock, IDelegat
         precalculateShapes();
     }
 
-    //// SHAPE ////
+    /// / SHAPE ////
 
     protected void precalculateShapes() {
         multiblockShapes.clear();
         // create shapes for all possible block states
         final VoxelShape doubleBlockShape = createDoubleBlockShape();
-        for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
+        for (BlockState blockState : this.stateDefinition.getPossibleStates()) {
             // calculate multiblock shape
             double offset = blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? 0 : 1;
             VoxelShape shape = doubleBlockShape.move(0, offset, 0);
@@ -102,14 +102,14 @@ public class TallBlock extends Block implements SimpleWaterloggedBlock, IDelegat
         return getMultiblockShape(pState);
     }
 
-    //// DELEGATE PROVIDER ////
+    /// / DELEGATE PROVIDER ////
 
     @Override
     public BlockPos getDelegatePos(BlockState blockState, BlockPos blockPos) {
         return blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? blockPos : blockPos.above();
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

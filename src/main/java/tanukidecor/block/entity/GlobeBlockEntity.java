@@ -42,23 +42,23 @@ public class GlobeBlockEntity extends BlockEntity {
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, GlobeBlockEntity blockEntity) {
         // verify server side
-        if(level.isClientSide()) {
+        if (level.isClientSide()) {
             return;
         }
-        if(blockEntity.isActive() && blockEntity.getStartTime() > 0) {
+        if (blockEntity.isActive() && blockEntity.getStartTime() > 0) {
             int timeElapsed = (int) (level.getGameTime() - blockEntity.getStartTime());
             // check if block is active and time has expired
-            if(timeElapsed > 20) {
+            if (timeElapsed > 20) {
                 blockEntity.stop(level);
             }
         }
     }
 
     public static InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(!(level.getBlockEntity(pos) instanceof GlobeBlockEntity blockEntity) || blockEntity.isActive()) {
+        if (!(level.getBlockEntity(pos) instanceof GlobeBlockEntity blockEntity) || blockEntity.isActive()) {
             return InteractionResult.PASS;
         }
-        if(level.isClientSide()) {
+        if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
         // activate block entity
@@ -66,7 +66,7 @@ public class GlobeBlockEntity extends BlockEntity {
         return InteractionResult.SUCCESS;
     }
 
-    //// ACTIVE ////
+    /// / ACTIVE ////
 
     public boolean isActive() {
         return this.active;
@@ -74,7 +74,7 @@ public class GlobeBlockEntity extends BlockEntity {
 
     public void start(final Level level) {
         this.active = true;
-        if(!level.isClientSide()) {
+        if (!level.isClientSide()) {
             this.startTime = level.getGameTime();
             this.targetDirection = Direction.Plane.HORIZONTAL.getRandomDirection(level.getRandom());
             setChanged();
@@ -88,7 +88,7 @@ public class GlobeBlockEntity extends BlockEntity {
 
     public void stop(final Level level) {
         this.active = false;
-        if(!level.isClientSide()) {
+        if (!level.isClientSide()) {
             this.startTime = 0;
             setChanged();
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
@@ -105,14 +105,14 @@ public class GlobeBlockEntity extends BlockEntity {
     }
 
     public float getUsePercentage(final float partialTick) {
-        if(!this.active) {
+        if (!this.active) {
             return 1.0F;
         }
         int useTime = (int) (getLevel().getGameTime() - startTime);
         return Mth.lerp(partialTick, useTime - 1, useTime) / (float) 20;
     }
 
-    //// NBT ////
+    /// / NBT ////
 
     private static final String KEY_TIMESTAMP = "StartTime";
     private static final String KEY_TARGET_DIRECTION = "Direction";

@@ -58,7 +58,7 @@ public class RecognizableClockBER extends ClockBER {
                 .withRotationZ(0);
 
         // render on all 4 sides
-        for(Direction direction : Direction.Plane.HORIZONTAL) {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
             // start rendering
             pPoseStack.pushPose();
 

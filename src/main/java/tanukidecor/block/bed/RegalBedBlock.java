@@ -20,26 +20,26 @@ public class RegalBedBlock extends DoubleBedBlock {
     /**
      * Shape data for each block in the default horizontal direction, ordered by index {@code [height][width][depth]}
      **/
-    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][] {
+    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][]{
             // height = 0
             {
                     // width = 0
                     {},
                     // width = 1
                     {
-                        Shapes.empty(),
-                        box(0, 0, 0, 15, 8, 16),
-                        Shapes.or(box(0, 0, 0, 15, 8, 15),
-                                box(14, 0, 14, 16, 16, 16),
-                                box(0, 8, 14.98D, 14, 16, 15))
+                            Shapes.empty(),
+                            box(0, 0, 0, 15, 8, 16),
+                            Shapes.or(box(0, 0, 0, 15, 8, 15),
+                                    box(14, 0, 14, 16, 16, 16),
+                                    box(0, 8, 14.98D, 14, 16, 15))
                     },
                     // width = 2
                     {
-                        Shapes.empty(),
-                        box(1, 0, 0, 16, 8, 16),
-                        Shapes.or(box(1, 0, 0, 16, 8, 15),
-                                box(0, 0, 14, 2, 16, 16),
-                                box(2, 8, 14.98D, 16, 16, 15))
+                            Shapes.empty(),
+                            box(1, 0, 0, 16, 8, 16),
+                            Shapes.or(box(1, 0, 0, 16, 8, 15),
+                                    box(0, 0, 14, 2, 16, 16),
+                                    box(2, 8, 14.98D, 16, 16, 15))
                     }
             },
             // height = 1

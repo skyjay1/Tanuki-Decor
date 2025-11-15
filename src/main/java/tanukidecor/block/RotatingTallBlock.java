@@ -40,7 +40,6 @@ import tanukidecor.util.ShapeUtils;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 public class RotatingTallBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock, IDelegateProvider {
 
@@ -61,7 +60,7 @@ public class RotatingTallBlock extends HorizontalDirectionalBlock implements Sim
         precalculateShapes();
     }
 
-    //// SHAPE ////
+    /// / SHAPE ////
 
     protected void precalculateShapes() {
         blockShapes.clear();
@@ -70,7 +69,7 @@ public class RotatingTallBlock extends HorizontalDirectionalBlock implements Sim
         final Map<Direction, VoxelShape> doubleBlockShapes = new EnumMap<>(Direction.class);
         doubleBlockShapes.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, createDoubleBlockShape()));
         // create shapes for all possible block states
-        for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
+        for (BlockState blockState : this.stateDefinition.getPossibleStates()) {
             // calculate block shape
             blockShapes.put(blockState, this.shapeBuilder.apply(blockState));
             // calculate multiblock shape
@@ -118,14 +117,14 @@ public class RotatingTallBlock extends HorizontalDirectionalBlock implements Sim
         return getMultiblockShape(pState);
     }
 
-    //// DELEGATE PROVIDER ////
+    /// / DELEGATE PROVIDER ////
 
     @Override
     public BlockPos getDelegatePos(BlockState blockState, BlockPos blockPos) {
         return blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? blockPos : blockPos.above();
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -193,7 +192,7 @@ public class RotatingTallBlock extends HorizontalDirectionalBlock implements Sim
 
     public static ShapeBuilder createShapeBuilder(final VoxelShape upperShape, final VoxelShape lowerShape) {
         return blockState -> {
-            final Direction facing =  blockState.getValue(FACING);
+            final Direction facing = blockState.getValue(FACING);
             final DoubleBlockHalf half = blockState.getValue(HALF);
             final VoxelShape shape = half == DoubleBlockHalf.UPPER ? upperShape : lowerShape;
             return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);

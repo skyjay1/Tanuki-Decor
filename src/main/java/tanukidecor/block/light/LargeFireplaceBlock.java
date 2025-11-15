@@ -18,10 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingMultiblock;
-import tanukidecor.block.Side;
 import tanukidecor.util.MultiblockHandler;
-
-import java.util.Random;
 
 public class LargeFireplaceBlock extends RotatingMultiblock {
 
@@ -29,11 +26,11 @@ public class LargeFireplaceBlock extends RotatingMultiblock {
         super(MultiblockHandler.MULTIBLOCK_3X2X1, createMultiblockShapeBuilder(MultiblockHandler.MULTIBLOCK_3X2X1, SHAPE), pProperties);
     }
 
-    //// ANIMATE ////
+    /// / ANIMATE ////
 
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(pState.getValue(WATERLOGGED) || !getMultiblockHandler().isCenterState(pState)) {
+        if (pState.getValue(WATERLOGGED) || !getMultiblockHandler().isCenterState(pState)) {
             return;
         }
         // play sound
@@ -49,7 +46,7 @@ public class LargeFireplaceBlock extends RotatingMultiblock {
         // smoke particle
         pLevel.addParticle(ParticleTypes.SMOKE, pos.x(), pos.y(), pos.z(), 0.0D, 0.0D, 0.0D);
         // fire particle
-        if(pRandom.nextInt(5) == 0) {
+        if (pRandom.nextInt(5) == 0) {
             pLevel.addParticle(ParticleTypes.LAVA, pos.x(), pos.y(), pos.z(), 0.0D, 0.0D, 0.0D);
         }
     }
@@ -60,27 +57,27 @@ public class LargeFireplaceBlock extends RotatingMultiblock {
     /**
      * Shape data for each block in the default horizontal direction, ordered by index {@code [height][width][depth]}
      **/
-    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][] {
+    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][]{
             // height = 0
             {},
             // height = 1
             {
                     // width = 0
                     {
-                        Shapes.or(box(0, 0, 0, 16, 4, 16),
-                                box(4, 4, 4, 14, 16, 16),
-                                box(0, 4, 14, 4, 16, 16))
+                            Shapes.or(box(0, 0, 0, 16, 4, 16),
+                                    box(4, 4, 4, 14, 16, 16),
+                                    box(0, 4, 14, 4, 16, 16))
                     },
                     // width = 1
                     {
-                        Shapes.or(box(0, 0, 0, 16, 4, 16),
-                                box(0, 4, 14, 16, 16, 16))
+                            Shapes.or(box(0, 0, 0, 16, 4, 16),
+                                    box(0, 4, 14, 16, 16, 16))
                     },
                     // width = 2
                     {
-                        Shapes.or(box(0, 0, 0, 16, 4, 16),
-                                box(2, 4, 4, 12, 16, 16),
-                                box(12, 4, 14, 16, 16, 16))
+                            Shapes.or(box(0, 0, 0, 16, 4, 16),
+                                    box(2, 4, 4, 12, 16, 16),
+                                    box(12, 4, 14, 16, 16, 16))
                     }
             },
             // height = 2

@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.clock.IChimeProvider;
@@ -42,14 +41,14 @@ public class CuckooClockBER extends ClockBER {
     @Override
     public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity, MultiBufferSource bufferSource) {
         // validate block
-        if(!(blockEntity.getBlockState().getBlock() instanceof IChimeProvider chimeProvider)) {
+        if (!(blockEntity.getBlockState().getBlock() instanceof IChimeProvider chimeProvider)) {
             return;
         }
         // validate time
         final int duration = 20;
-        final long dayTime = (blockEntity.getLevel().getDayTime() + 0) % 24000L;
+        final long dayTime = (blockEntity.getLevel().getDayTime()) % 24000L;
         final long adjustedTime = duration * (dayTime / duration);
-        if(!chimeProvider.isTimeToChime(renderHelper.getBlockState(), adjustedTime)) {
+        if (!chimeProvider.isTimeToChime(renderHelper.getBlockState(), adjustedTime)) {
             return;
         }
 

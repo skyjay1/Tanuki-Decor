@@ -8,7 +8,6 @@ package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -59,7 +58,7 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
                 .setValue(WATERLOGGED, false));
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -80,19 +79,19 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
         }
     }
 
-    //// DELEGATE PROVIDER ////
+    /// / DELEGATE PROVIDER ////
 
     @Override
     public BlockPos getDelegatePos(BlockState blockState, BlockPos blockPos) {
         return blockState.getValue(HALF) == DoubleBlockHalf.LOWER ? blockPos : blockPos.below();
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pPos.equals(getDelegatePos(pState, pPos))) {
+        if (pPos.equals(getDelegatePos(pState, pPos))) {
             return TDRegistry.BlockEntityReg.PHONOGRAPH.get().create(pPos, pState);
         }
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);
@@ -101,13 +100,13 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(pBlockEntityType == TDRegistry.BlockEntityReg.PHONOGRAPH.get() && pState.getValue(HAS_RECORD)) {
+        if (pBlockEntityType == TDRegistry.BlockEntityReg.PHONOGRAPH.get() && pState.getValue(HAS_RECORD)) {
             return (BlockEntityTicker<T>) (BlockEntityTicker<PhonographBlockEntity>) (PhonographBlockEntity::tick);
         }
         return null;
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public boolean isSignalSource(BlockState pState) {
@@ -134,7 +133,7 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
         if (level.getBlockEntity(getDelegatePos(state, pos)) instanceof PhonographBlockEntity blockEntity) {
             Item item = blockEntity.getFirstItem().getItem();
             if (item instanceof RecordItem) {
-                return ((RecordItem)item).getAnalogOutput();
+                return ((RecordItem) item).getAnalogOutput();
             }
         }
         return 0;

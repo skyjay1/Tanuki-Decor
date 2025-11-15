@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -31,8 +30,6 @@ import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.TallBlock;
 import tanukidecor.block.entity.PlasmaBallBlockEntity;
-
-import java.util.Random;
 
 public class PlasmaBallBlock extends TallBlock implements EntityBlock {
 
@@ -61,10 +58,10 @@ public class PlasmaBallBlock extends TallBlock implements EntityBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
-        if(pPlayer.isShiftKeyDown() || !pPlayer.getItemInHand(pHand).isEmpty()) {
+        if (pPlayer.isShiftKeyDown() || !pPlayer.getItemInHand(pHand).isEmpty()) {
             return super.use(pState, pLevel, pPos, pPlayer, pHitResult);
         }
-        if(!pLevel.isClientSide()) {
+        if (!pLevel.isClientSide()) {
             // update state
             BlockPos delegatePos = getDelegatePos(pState, pPos);
             BlockState delegateState = pLevel.getBlockState(delegatePos);
@@ -80,12 +77,12 @@ public class PlasmaBallBlock extends TallBlock implements EntityBlock {
 
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(getDelegatePos(pState, pPos).equals(pPos)) {
+        if (getDelegatePos(pState, pPos).equals(pPos)) {
             return TDRegistry.BlockEntityReg.PLASMA_BALL.get().create(pPos, pState);
         }
         return null;

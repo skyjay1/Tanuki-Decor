@@ -8,7 +8,7 @@ package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
@@ -46,35 +46,35 @@ public class LongDisplayCaseBlock extends RotatingMultiblock implements EntityBl
         }
     }
 
-    //// DISPLAY PROVIDER ////
+    /// / DISPLAY PROVIDER ////
 
     @Override
     public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
         return new Vector3f(0, blockState.getValue(FACING).getOpposite().toYRot(), 0);
     }
 
-    //// DELEGATE PROVIDER ////
+    /// / DELEGATE PROVIDER ////
 
     @Override
     public BlockPos getDelegatePos(BlockState blockState, BlockPos blockPos) {
-        if(getMultiblockHandler().getIndex(blockState).getY() == getMultiblockHandler().getMaxIndex().getY()) {
+        if (getMultiblockHandler().getIndex(blockState).getY() == getMultiblockHandler().getMaxIndex().getY()) {
             return blockPos;
         }
         return blockPos.above();
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pPos.equals(getDelegatePos(pState, pPos))) {
+        if (pPos.equals(getDelegatePos(pState, pPos))) {
             return TDRegistry.BlockEntityReg.DISPLAY_CASE.get().create(pPos, pState);
         }
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
@@ -91,7 +91,7 @@ public class LongDisplayCaseBlock extends RotatingMultiblock implements EntityBl
     /**
      * Shape data for each block in the default horizontal direction, ordered by index {@code [height][width][depth]}
      **/
-    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][] {
+    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][]{
             // height = 0
             {},
             // height = 1

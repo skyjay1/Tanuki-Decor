@@ -6,7 +6,6 @@
 
 package tanukidecor.integration;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -56,13 +55,13 @@ public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, DIYRecipe recipe, IFocusGroup focuses) {
         final Optional<RegistryAccess> oRegistryAccess = TDJeiPlugin.getClientRegistryAccess();
-        if(oRegistryAccess.isEmpty()) {
+        if (oRegistryAccess.isEmpty()) {
             return;
         }
         // input
         int x = PADDING + 1;
         int y = PADDING + 1;
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             builder.addSlot(RecipeIngredientRole.INPUT, x + INPUT_SPACING * i, y)
                     .setSlotName("input" + i)
                     .addItemStacks(List.of(DIYWorkbenchBlockEntity.INGREDIENTS[i].getItems()));

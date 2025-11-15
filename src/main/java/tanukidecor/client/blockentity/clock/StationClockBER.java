@@ -73,7 +73,7 @@ public class StationClockBER extends ClockBER {
         pPoseStack.translate(-8.0D / 16.0D, -8.0D / 16.0D, -6.5D / 16.0D);
 
         // render on front and back
-        for(int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
 
             // render short hand
             this.clockRenderHelper

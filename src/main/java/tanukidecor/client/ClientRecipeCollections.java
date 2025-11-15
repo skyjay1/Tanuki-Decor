@@ -13,13 +13,11 @@ import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.searchtree.FullTextSearchTree;
 import net.minecraft.client.searchtree.SearchRegistry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.TooltipFlag;
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraft.core.registries.BuiltInRegistries;
 import tanukidecor.TDRegistry;
 
 import java.util.ArrayList;
@@ -30,7 +28,8 @@ public final class ClientRecipeCollections {
     public static final SearchRegistry.Key<RecipeCollection> DIY_RECIPE_COLLECTIONS_KEY = new SearchRegistry.Key<>();
     public static final List<RecipeCollection> DIY_RECIPE_COLLECTIONS = new ArrayList<>();
 
-    private ClientRecipeCollections() {}
+    private ClientRecipeCollections() {
+    }
 
     public static void register() {
         NeoForge.EVENT_BUS.addListener(ClientRecipeCollections::onUpdateRecipes);
@@ -52,6 +51,7 @@ public final class ClientRecipeCollections {
     /**
      * Populates the recipe cache and search tree with {@link RecipeCollection}s that contain
      * one {@link tanukidecor.recipe.DIYRecipe} each
+     *
      * @param event the recipe update event
      */
     private static void onUpdateRecipes(final RecipesUpdatedEvent event) {
@@ -70,6 +70,7 @@ public final class ClientRecipeCollections {
 
     /**
      * Filters the recipe cache and search tree to remove any blacklisted items
+     *
      * @param event the tag update event
      */
     private static void onUpdateTags(final TagsUpdatedEvent event) {
@@ -77,8 +78,8 @@ public final class ClientRecipeCollections {
         final List<RecipeCollection> recipes = ImmutableList.copyOf(DIY_RECIPE_COLLECTIONS);
         DIY_RECIPE_COLLECTIONS.clear();
         // add all recipes that are not blacklisted back into the list and search tree
-        for(RecipeCollection recipeCollection : recipes) {
-            if(recipeCollection.getRecipes().size() == 1 && !recipeCollection.getRecipes().get(0).getResultItem(event.getRegistryAccess()).is(TDRegistry.DIY_BLACKLIST_TAG_KEY)) {
+        for (RecipeCollection recipeCollection : recipes) {
+            if (recipeCollection.getRecipes().size() == 1 && !recipeCollection.getRecipes().get(0).getResultItem(event.getRegistryAccess()).is(TDRegistry.DIY_BLACKLIST_TAG_KEY)) {
                 DIY_RECIPE_COLLECTIONS.add(recipeCollection);
             }
         }

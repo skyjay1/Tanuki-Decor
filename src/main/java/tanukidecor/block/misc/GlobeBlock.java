@@ -7,7 +7,6 @@
 package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -43,14 +42,14 @@ public class GlobeBlock extends RotatingBlock implements EntityBlock {
         super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         return GlobeBlockEntity.use(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
@@ -64,7 +63,7 @@ public class GlobeBlock extends RotatingBlock implements EntityBlock {
         return !pLevel.isClientSide() ? (BlockEntityTicker<T>) (BlockEntityTicker<GlobeBlockEntity>) (GlobeBlockEntity::tick) : null;
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {

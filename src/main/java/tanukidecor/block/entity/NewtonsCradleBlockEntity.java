@@ -26,7 +26,7 @@ public class NewtonsCradleBlockEntity extends ClockBlockEntity {
 
     @Override
     protected void playTick(Level level, BlockPos blockPos, BlockState blockState) {
-        if(!silent) {
+        if (!silent) {
             super.playTick(level, blockPos, blockState);
         }
     }
@@ -36,7 +36,7 @@ public class NewtonsCradleBlockEntity extends ClockBlockEntity {
         // do nothing
     }
 
-    //// SILENT ////
+    /// / SILENT ////
 
     public boolean isSilent() {
         return silent;
@@ -46,7 +46,7 @@ public class NewtonsCradleBlockEntity extends ClockBlockEntity {
         this.silent = silent;
     }
 
-    //// NBT ////
+    /// / NBT ////
 
     private static final String KEY_SILENT = "Silent";
 

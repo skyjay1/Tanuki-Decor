@@ -8,7 +8,6 @@ package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -52,7 +51,7 @@ public class HourglassBlock extends Block implements SimpleWaterloggedBlock, Ent
                 .setValue(WATERLOGGED, false));
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -61,10 +60,10 @@ public class HourglassBlock extends Block implements SimpleWaterloggedBlock, Ent
 
     @Override
     protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
-        if(pLevel.isClientSide()) {
+        if (pLevel.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
-        if(pLevel.getBlockEntity(pPos) instanceof HourglassBlockEntity blockEntity/* && !blockEntity.isActive()*/) {
+        if (pLevel.getBlockEntity(pPos) instanceof HourglassBlockEntity blockEntity/* && !blockEntity.isActive()*/) {
             blockEntity.startTimer(HourglassBlockEntity.TIME);
             return InteractionResult.SUCCESS;
         }
@@ -76,7 +75,7 @@ public class HourglassBlock extends Block implements SimpleWaterloggedBlock, Ent
         return SHAPE;
     }
 
-    //// FLUID ////
+    /// / FLUID ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -99,7 +98,7 @@ public class HourglassBlock extends Block implements SimpleWaterloggedBlock, Ent
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
@@ -113,7 +112,7 @@ public class HourglassBlock extends Block implements SimpleWaterloggedBlock, Ent
         return (BlockEntityTicker<T>) (BlockEntityTicker<HourglassBlockEntity>) (HourglassBlockEntity::tick);
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
@@ -134,7 +133,7 @@ public class HourglassBlock extends Block implements SimpleWaterloggedBlock, Ent
 
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        if(level.getBlockEntity(pos) instanceof HourglassBlockEntity blockEntity) {
+        if (level.getBlockEntity(pos) instanceof HourglassBlockEntity blockEntity) {
             return blockEntity.getRedstoneStrength();
         }
         return 0;
@@ -144,7 +143,7 @@ public class HourglassBlock extends Block implements SimpleWaterloggedBlock, Ent
         if (!pLevel.isClientSide() && pLevel.hasNeighborSignal(pPos)
                 && pLevel.getBlockEntity(pPos) instanceof HourglassBlockEntity blockEntity
                 && !blockEntity.isActive() && !pState.getValue(ACTIVE)) {
-             blockEntity.startTimer(HourglassBlockEntity.TIME);
+            blockEntity.startTimer(HourglassBlockEntity.TIME);
         }
     }
 }

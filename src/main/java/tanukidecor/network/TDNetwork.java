@@ -15,7 +15,8 @@ import tanukidecor.TanukiDecor;
 @EventBusSubscriber(modid = TanukiDecor.MODID)
 public final class TDNetwork {
 
-    private TDNetwork() {}
+    private TDNetwork() {
+    }
 
     public static void register() {
         // Network registration is now done via RegisterPayloadHandlersEvent
@@ -24,12 +25,12 @@ public final class TDNetwork {
     @SubscribeEvent
     public static void registerPayloads(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar(TanukiDecor.MODID);
-        
+
         // Register server-bound packets
         registrar.playToServer(
-            ServerBoundSelectDIYRecipePacket.TYPE,
-            ServerBoundSelectDIYRecipePacket.STREAM_CODEC,
-            ServerBoundSelectDIYRecipePacket::handle
+                ServerBoundSelectDIYRecipePacket.TYPE,
+                ServerBoundSelectDIYRecipePacket.STREAM_CODEC,
+                ServerBoundSelectDIYRecipePacket::handle
         );
     }
 }

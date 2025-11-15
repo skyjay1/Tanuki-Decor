@@ -22,7 +22,7 @@ import tanukidecor.menu.DIYWorkbenchMenu;
 
 public class DIYWorkbenchBlockEntity extends StorageBlockEntity {
 
-    public static final Ingredient[] INGREDIENTS = new Ingredient[] {
+    public static final Ingredient[] INGREDIENTS = new Ingredient[]{
             Ingredient.of(ItemTags.STONE_CRAFTING_MATERIALS),
             Ingredient.of(ItemTags.LOGS_THAT_BURN),
             Ingredient.of(Items.CLAY_BALL),
@@ -50,14 +50,14 @@ public class DIYWorkbenchBlockEntity extends StorageBlockEntity {
         };
     }
 
-    //// MENU PROVIDER ////
+    /// / MENU PROVIDER ////
 
     @Override
     protected AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory) {
         return new DIYWorkbenchMenu(pContainerId, pInventory, getBlockPos(), this);
     }
 
-    //// CONTAINER ////
+    /// / CONTAINER ////
 
 
     @Override

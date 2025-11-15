@@ -27,14 +27,15 @@ public class TallClockBlock extends RotatingTallBlock implements EntityBlock, IC
 
     protected final Supplier<SoundEvent> tickSound;
     protected final Supplier<SoundEvent> chimeSound;
-    protected final  Supplier<BlockEntityType<ClockBlockEntity>> blockEntitySupplier;
+    protected final Supplier<BlockEntityType<ClockBlockEntity>> blockEntitySupplier;
 
     /**
      * Simple constructor for a clock that takes up two blocks
-     * @param tickSound the tick sound supplier, use {@link ClockBlock#NO_SOUND} to skip
-     * @param chimeSound the chime sound supplier, use {@link ClockBlock#NO_SOUND} to skip
-     * @param upperShape the shape of the upper half in the default direction
-     * @param lowerShape the shape of the lower half in the default direction
+     *
+     * @param tickSound   the tick sound supplier, use {@link ClockBlock#NO_SOUND} to skip
+     * @param chimeSound  the chime sound supplier, use {@link ClockBlock#NO_SOUND} to skip
+     * @param upperShape  the shape of the upper half in the default direction
+     * @param lowerShape  the shape of the lower half in the default direction
      * @param blockEntity the block entity type supplier
      * @param pProperties the block properties
      */
@@ -48,7 +49,7 @@ public class TallClockBlock extends RotatingTallBlock implements EntityBlock, IC
         this.blockEntitySupplier = blockEntity;
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Nullable
     @Override
@@ -62,12 +63,12 @@ public class TallClockBlock extends RotatingTallBlock implements EntityBlock, IC
         return this.chimeSound.get();
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+        if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
             return blockEntitySupplier.get().create(pPos, pState);
         }
         return null;

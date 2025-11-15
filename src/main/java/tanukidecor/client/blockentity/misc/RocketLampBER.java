@@ -82,15 +82,16 @@ public class RocketLampBER implements BlockEntityRenderer<RocketLampBlockEntity>
 
     /**
      * Renders the given baked model with transformations applied according to the given parameters
-     * @param poseStack the pose stack
-     * @param vertexConsumer the vertex consumer
-     * @param blockState the block state
-     * @param model the baked model
-     * @param sizeY the height of the baked model
-     * @param dx the x offset
-     * @param dz the z offset
-     * @param time the current time. For best results, this value should be less than 10430
-     * @param biasFactor a number from 0 to 1 that determines which end of the height range to tend towards
+     *
+     * @param poseStack       the pose stack
+     * @param vertexConsumer  the vertex consumer
+     * @param blockState      the block state
+     * @param model           the baked model
+     * @param sizeY           the height of the baked model
+     * @param dx              the x offset
+     * @param dz              the z offset
+     * @param time            the current time. For best results, this value should be less than 10430
+     * @param biasFactor      a number from 0 to 1 that determines which end of the height range to tend towards
      * @param amplitudeFactor a number greater than 0 that determines how much time is spent at the end of the height range
      * @param frequencyFactor a number greater than 0 that determines how quickly each cycle is completed
      */
@@ -127,16 +128,16 @@ public class RocketLampBER implements BlockEntityRenderer<RocketLampBlockEntity>
     }
 
     public static void addSpecialModels(final Set<ResourceLocation> set) {
-        for(String color : RocketLampBlock.getColors().keySet()) {
-            for(WaxSize size : WaxSize.values()) {
+        for (String color : RocketLampBlock.getColors().keySet()) {
+            for (WaxSize size : WaxSize.values()) {
                 set.add(getWaxModel(size, color));
             }
         }
     }
 
-    //// CLASSES ////
+    /// / CLASSES ////
 
-    private static enum WaxSize implements StringRepresentable {
+    private enum WaxSize implements StringRepresentable {
         SMALL("small"),
         MEDIUM("medium"),
         LARGE("large");

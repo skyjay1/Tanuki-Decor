@@ -30,7 +30,7 @@ public class RecognizableClockBlock extends TallClockBlock {
                 UPPER_SHAPE, LOWER_SHAPE, TDRegistry.BlockEntityReg.RECOGNIZABLE_CLOCK, pProperties);
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Override
     public int getTickSoundInterval(BlockState blockState) {

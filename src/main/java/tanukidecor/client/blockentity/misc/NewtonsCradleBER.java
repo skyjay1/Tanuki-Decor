@@ -111,7 +111,7 @@ public class NewtonsCradleBER implements BlockEntityRenderer<NewtonsCradleBlockE
         final VertexConsumer lineVertexConsumer = pBufferSource.getBuffer(RenderType.LINES);
 
         // render stationary lines
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             float startX = LINE_START.x() + (i + 1) * (2.0F / 16.0F);
             cradleLineStrip(pPoseStack, lineVertexConsumer,
                     startX, LINE_START.y(), LINE_START.z(),

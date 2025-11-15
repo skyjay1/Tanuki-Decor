@@ -80,7 +80,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
         return builder.create(Block::defaultBlockState, BlockState::new);
     }
 
-    //// DELEGATE PROVIDER ////
+    /// / DELEGATE PROVIDER ////
 
     @Override
     public BlockPos getDelegatePos(BlockState blockState, BlockPos blockPos) {
@@ -104,7 +104,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
         this.multiblockHandler.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -128,7 +128,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
         // validate block can stay
-        if(!multiblockHandler.canSurvive(pState, pLevel, pCurrentPos, pState.getValue(FACING))) {
+        if (!multiblockHandler.canSurvive(pState, pLevel, pCurrentPos, pState.getValue(FACING))) {
             return getFluidState(pState).createLegacyBlock();
         }
         return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
@@ -143,7 +143,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         // assume if the block at the given position is not this one, this is a preemptive check
-        if(!pLevel.getBlockState(pPos).is(this)) {
+        if (!pLevel.getBlockState(pPos).is(this)) {
             return true;
         }
         // validate the multiblock is intact
@@ -172,14 +172,14 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
         });
     }
 
-    //// FLUID ////
+    /// / FLUID ////
 
     @Override
     public FluidState getFluidState(BlockState pState) {
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
-    //// SHAPE ////
+    /// / SHAPE ////
 
     @Override
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
@@ -198,7 +198,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
         final Map<Direction, VoxelShape> centeredVisualShapes = new EnumMap<>(Direction.class);
         centeredVisualShapes.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, createMultiblockShape()));
         // iterate all block states
-        for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
+        for (BlockState blockState : this.stateDefinition.getPossibleStates()) {
             // cache the individual shape
             blockShapes.put(blockState, this.shapeBuilder.apply(blockState));
             // move the centered shape for the given rotation to the correct offset
@@ -206,7 +206,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
             Vec3i index = multiblockHandler.getIndex(blockState);
             Vec3i offset = MultiblockHandler.indexToOffset(index, direction);
             VoxelShape shape = centeredVisualShapes.get(blockState.getValue(FACING))
-                    .move(-offset.getX(), -offset.getY(),  -offset.getZ());
+                    .move(-offset.getX(), -offset.getY(), -offset.getZ());
             // cache the offset visual shape
             multiblockShapes.put(blockState, shape);
         }
@@ -246,7 +246,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     //// SHAPE HELPER METHODS ////
 
     /**
-     * @param handler the multiblock handler
+     * @param handler  the multiblock handler
      * @param template the array of voxel shapes ordered by {@code [height][width][depth]}
      * @return a shape builder for the given handler that uses the {@link #FACING} property to rotate shapes
      */
@@ -254,7 +254,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
         return blockState -> {
             final Vec3i index = handler.getIndex(blockState);
             final Vec3i dimensions = handler.getDimensions();
-            final Direction facing =  blockState.getValue(FACING);
+            final Direction facing = blockState.getValue(FACING);
             int heightIndex = (index.getY() + dimensions.getY() / 2);
             int widthIndex = (index.getX() + dimensions.getX() / 2);
             int depthIndex = (index.getZ() + dimensions.getZ() / 2);

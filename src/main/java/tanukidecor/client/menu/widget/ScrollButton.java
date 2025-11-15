@@ -25,7 +25,9 @@ public class ScrollButton extends Button {
     protected final boolean isVertical;
     protected final IScrollListener listener;
 
-    /** The percent of scroll progress **/
+    /**
+     * The percent of scroll progress
+     **/
     protected float scrollPercent;
     protected float scrollAmountMultiplier;
     protected boolean dragging;
@@ -33,7 +35,8 @@ public class ScrollButton extends Button {
     public ScrollButton(int x, int y, int width, int height, ResourceLocation resourceLocation,
                         int iconU, int iconV, int iconWidth, int iconHeight, int iconDeltaV, boolean isVertical,
                         final float scrollAmountMultiplier, final IScrollListener listener) {
-        super(x, y, Math.max(1, width), Math.max(1, height), Component.empty(), b -> {}, Button.DEFAULT_NARRATION);
+        super(x, y, Math.max(1, width), Math.max(1, height), Component.empty(), b -> {
+        }, Button.DEFAULT_NARRATION);
         this.resourceLocation = resourceLocation;
         this.iconU = iconU;
         this.iconV = iconV;
@@ -51,13 +54,13 @@ public class ScrollButton extends Button {
         RenderSystem.setShaderTexture(0, resourceLocation);
         // determine v coordinate
         int v = iconV;
-        if(!isActive()) {
+        if (!isActive()) {
             v += iconDeltaV;
         }
         // determine icon position
         int renderX = this.getX();
         int renderY = this.getY();
-        if(isVertical) {
+        if (isVertical) {
             renderY += Mth.floor((float) (height - iconHeight) * scrollPercent);
         } else {
             renderX += Mth.floor((float) (width - iconWidth) * scrollPercent);
@@ -68,7 +71,7 @@ public class ScrollButton extends Button {
 
     @Override
     public void onClick(double mouseX, double mouseY) {
-        if(isActive()) {
+        if (isActive()) {
             this.dragging = true;
             setValueFromMouse(mouseX, mouseY);
             super.onClick(mouseX, mouseY);
@@ -77,7 +80,7 @@ public class ScrollButton extends Button {
 
     @Override
     public void onDrag(double mouseX, double mouseY, double dragX, double dragY) {
-        if(isActive()) {
+        if (isActive()) {
             this.dragging = true;
             setValueFromMouse(mouseX, mouseY);
         }
@@ -85,7 +88,7 @@ public class ScrollButton extends Button {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        if(isActive()) {
+        if (isActive()) {
             float scrollPercent = Mth.clamp(this.scrollPercent - (float) amount * scrollAmountMultiplier, 0.0F, 1.0F);
             setScrollPercent(scrollPercent);
             return true;
@@ -127,10 +130,11 @@ public class ScrollButton extends Button {
     }
 
     @FunctionalInterface
-    public static interface IScrollListener {
+    public interface IScrollListener {
         /**
          * Called when the scroll percent changes
-         * @param button the scroll button
+         *
+         * @param button  the scroll button
          * @param percent the updated scroll amount
          */
         void onScroll(final ScrollButton button, final float percent);

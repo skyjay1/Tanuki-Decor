@@ -22,7 +22,7 @@ public class MinimalistClockBlock extends ClockBlock {
                 SHAPE, TDRegistry.BlockEntityReg.MINIMALIST_CLOCK, pProperties);
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

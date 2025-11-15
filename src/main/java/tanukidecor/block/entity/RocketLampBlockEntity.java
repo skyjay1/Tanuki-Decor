@@ -20,7 +20,7 @@ public class RocketLampBlockEntity extends BlockEntity {
     }
 
     public String getColor() {
-        if(getBlockState().getBlock() instanceof RocketLampBlock block) {
+        if (getBlockState().getBlock() instanceof RocketLampBlock block) {
             return block.getColor();
         }
         return "";

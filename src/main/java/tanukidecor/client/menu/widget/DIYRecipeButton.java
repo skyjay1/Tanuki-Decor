@@ -52,7 +52,7 @@ public class DIYRecipeButton extends ImageButton {
         this.recipe = recipe;
         this.itemStack = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
         final Component hoverName = this.itemStack.getHoverName();
-        final String sMessage = StringUtil.truncateStringIfNecessary(hoverName.getString(), (int)((this.getWidth() - 16 - 6) / 4.5F), true);
+        final String sMessage = StringUtil.truncateStringIfNecessary(hoverName.getString(), (int) ((this.getWidth() - 16 - 6) / 4.5F), true);
         this.setMessage(Component.literal(sMessage).withStyle(hoverName.getStyle()));
         this.setTooltip(DIYWorkbenchScreen.createTooltip(Screen.getTooltipFromItem(Minecraft.getInstance(), this.itemStack)));
     }
@@ -60,7 +60,7 @@ public class DIYRecipeButton extends ImageButton {
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         this.renderTexture(guiGraphics, this.resourceLocation, this.getX(), this.getY(), this.xTexStart, this.yTexStart, this.yDiffTex, this.width, this.height, this.textureWidth, this.textureHeight);
-        if(!this.itemStack.isEmpty()) {
+        if (!this.itemStack.isEmpty()) {
             int x = this.getX() + 2;
             int y = this.getY() + (this.height - 16) / 2;
             // render item

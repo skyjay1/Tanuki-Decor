@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * Contains color and threshold information
+ *
  * @see Gradient.Builder
  */
 public class Gradient {
@@ -25,7 +26,7 @@ public class Gradient {
     private final List<Entry> colors;
 
     private Gradient(final List<Entry> colors) {
-        if(colors.isEmpty()) {
+        if (colors.isEmpty()) {
             throw new IllegalArgumentException("Failed to build Gradient with empty list");
         }
         // sort list
@@ -37,9 +38,9 @@ public class Gradient {
      * @return the color for the given threshold
      */
     public Vector4f getColor(final float percent) {
-        for(int i = 0, n = colors.size(); i < n; i++) {
+        for (int i = 0, n = colors.size(); i < n; i++) {
             Entry entry = colors.get(i);
-            if(percent > entry.threshold) {
+            if (percent > entry.threshold) {
                 return entry.color();
             }
         }
@@ -90,7 +91,7 @@ public class Gradient {
 
         /**
          * @param threshold the minimum threshold for the given color
-         * @param color the packed RGBA color
+         * @param color     the packed RGBA color
          * @return the builder instance
          */
         public Builder with(final float threshold, final int color) {
@@ -100,7 +101,7 @@ public class Gradient {
 
         /**
          * @param threshold the minimum threshold for the given color
-         * @param color the RGBA color values from 0 to 1
+         * @param color     the RGBA color values from 0 to 1
          * @return the builder instance
          */
         public Builder with(final float threshold, final Vector4f color) {
@@ -116,7 +117,7 @@ public class Gradient {
         }
     }
 
-    private static record Entry(float threshold, Vector4f color) implements Comparable<Entry> {
+    private record Entry(float threshold, Vector4f color) implements Comparable<Entry> {
 
         private Entry(float threshold, Vector4f color) {
             this.threshold = Mth.clamp(threshold, 0.0F, 1.0F);

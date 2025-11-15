@@ -24,7 +24,7 @@ public class DisplayWatchBlock extends ClockBlock {
                 SHAPE, TDRegistry.BlockEntityReg.DISPLAY_WATCH, pProperties);
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Override
     public float getTickVolume(BlockState blockState, RandomSource random, long dayTime) {

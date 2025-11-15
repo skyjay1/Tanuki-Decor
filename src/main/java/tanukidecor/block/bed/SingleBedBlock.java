@@ -9,7 +9,6 @@ package tanukidecor.block.bed;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,7 +29,6 @@ import tanukidecor.util.ShapeBuilder;
 import tanukidecor.util.ShapeUtils;
 
 import javax.annotation.Nullable;
-import java.util.function.Function;
 
 
 public class SingleBedBlock extends RotatingMultiblock implements IBedProvider {
@@ -45,18 +43,18 @@ public class SingleBedBlock extends RotatingMultiblock implements IBedProvider {
                 .setValue(OCCUPIED, false)));
     }
 
-    //// MULTIBLOCK ////
+    /// / MULTIBLOCK ////
 
     @Override
     protected void createMultiblockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         super.createMultiblockStateDefinition(pBuilder.add(OCCUPIED));
     }
 
-    //// BED ////
+    /// / BED ////
 
     @Override
     public boolean isHeadOfBed(BlockState blockState) {
-        if(blockState.getBlock() != this) {
+        if (blockState.getBlock() != this) {
             return false;
         }
         final Vec3i index = getMultiblockHandler().getIndex(blockState);

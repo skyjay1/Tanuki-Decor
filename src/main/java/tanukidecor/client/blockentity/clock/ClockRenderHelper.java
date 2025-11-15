@@ -34,14 +34,14 @@ public class ClockRenderHelper {
     private Vec3 position;
     private float rotZ;
 
-    //// CONSTRUCTOR ////
+    /// / CONSTRUCTOR ////
 
     public ClockRenderHelper() {
         this.pivotPoint = Vec3.ZERO;
         this.position = Vec3.ZERO;
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     public void rotateForDirection(final Direction direction) {
         final float yRot = (direction.getOpposite().toYRot()) * Mth.DEG_TO_RAD;
@@ -52,7 +52,7 @@ public class ClockRenderHelper {
     }
 
     public void render(BlockRenderDispatcher blockRenderer) {
-        if(null == model) {
+        if (null == model) {
             return;
         }
         // render the model
@@ -61,14 +61,14 @@ public class ClockRenderHelper {
         poseStack.translate(pivotPoint.x(), pivotPoint.y(), pivotPoint.z());
         poseStack.mulPose(Axis.ZP.rotation(rotZ));
         poseStack.translate(-pivotPoint.x(), -pivotPoint.y(), -pivotPoint.z());
-        for(RenderType renderType : model.getRenderTypes(blockState, random, ModelData.EMPTY)) {
+        for (RenderType renderType : model.getRenderTypes(blockState, random, ModelData.EMPTY)) {
             blockRenderer.getModelRenderer().renderModel(poseStack.last(), vertexConsumer, blockState, model,
                     1.0F, 1.0F, 1.0F, packedLight, packedOverlay, ModelData.EMPTY, renderType);
         }
         poseStack.popPose();
     }
 
-    //// SETTERS ////
+    /// / SETTERS ////
 
     public ClockRenderHelper withPoseStack(final PoseStack poseStack) {
         this.poseStack = poseStack;
@@ -126,7 +126,7 @@ public class ClockRenderHelper {
         return this;
     }
 
-    //// GETTERS ////
+    /// / GETTERS ////
 
     public PoseStack getPoseStack() {
         return poseStack;

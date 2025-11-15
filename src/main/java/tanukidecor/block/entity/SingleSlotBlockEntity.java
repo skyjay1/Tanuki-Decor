@@ -7,21 +7,13 @@
 package tanukidecor.block.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Clearable;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.Nameable;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -31,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.ticks.ContainerSingleItem;
-import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
@@ -45,11 +36,11 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
         super(pType, pPos, pBlockState);
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     public static ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         // validate not sneaking
-        if(player.isShiftKeyDown()) {
+        if (player.isShiftKeyDown()) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         // validate side
@@ -57,19 +48,19 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
             return ItemInteractionResult.SUCCESS;
         }
         // validate block entity
-        if(!(level.getBlockEntity(pos) instanceof SingleSlotBlockEntity blockEntity)) {
+        if (!(level.getBlockEntity(pos) instanceof SingleSlotBlockEntity blockEntity)) {
             return ItemInteractionResult.FAIL;
         }
         ItemStack heldItem = itemStack;
         ItemStack storedItem = blockEntity.getItem(0);
         // remove item from block
-        if(heldItem.isEmpty() && !storedItem.isEmpty()) {
+        if (heldItem.isEmpty() && !storedItem.isEmpty()) {
             // remove item
             blockEntity.clearContent();
             // give to player
-            if(heldItem.isEmpty()) {
+            if (heldItem.isEmpty()) {
                 player.setItemInHand(hand, storedItem);
-            } else if(!player.getInventory().add(storedItem)) {
+            } else if (!player.getInventory().add(storedItem)) {
                 player.drop(storedItem, false);
             }
             // play sound
@@ -77,7 +68,7 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
             return ItemInteractionResult.SUCCESS;
         }
         // insert item, if any
-        else if(!heldItem.isEmpty() &&
+        else if (!heldItem.isEmpty() &&
                 (storedItem.isEmpty() || (storedItem.getCount() < storedItem.getMaxStackSize()
                         && ItemStack.isSameItemSameTags(heldItem, storedItem)))
                 && blockEntity.canPlaceItem(0, heldItem)) {
@@ -89,7 +80,7 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
             // play sound
             level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
             return ItemInteractionResult.SUCCESS;
-        } else if(!heldItem.isEmpty()) {
+        } else if (!heldItem.isEmpty()) {
             // play sound
             //level.playSound(null, pos, SoundEvents.STONE_HIT, SoundSource.BLOCKS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
             return ItemInteractionResult.FAIL;
@@ -99,11 +90,12 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
 
     /**
      * Drops the contents of the block entity inventory
+     *
      * @param blockState the block state
-     * @param level the level
-     * @param pos the block position
-     * @param newState the block state that replaced this one
-     * @param isMoving true if the block is moving
+     * @param level      the level
+     * @param pos        the block position
+     * @param newState   the block state that replaced this one
+     * @param isMoving   true if the block is moving
      */
     public static void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (level.getBlockEntity(pos) instanceof SingleSlotBlockEntity blockEntity) {
@@ -114,6 +106,7 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
 
     /**
      * Drops the contents of the block entity
+     *
      * @see Containers#dropContents(Level, BlockPos, NonNullList)
      */
     public void dropContents() {
@@ -123,7 +116,7 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
         }
     }
 
-    //// GETTERS ////
+    /// / GETTERS ////
 
     public NonNullList<ItemStack> getInventory() {
         return inventory;
@@ -133,7 +126,7 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
         return new InvWrapper(this);
     }
 
-    //// CONTAINER ////
+    /// / CONTAINER ////
 
     @Override
     public void setChanged() {
@@ -178,7 +171,7 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
         return pPlayer.position().closerThan(Vec3.atCenterOf(this.getBlockPos()), 8.0D);
     }
 
-    //// CLEARABLE ////
+    /// / CLEARABLE ////
 
     @Override
     public void clearContent() {
@@ -186,7 +179,7 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
         this.setChanged();
     }
 
-    //// NBT ////
+    /// / NBT ////
 
     @Override
     public void load(CompoundTag pTag) {
@@ -207,7 +200,7 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
         return "Item";
     }
 
-    //// NAMEABLE ////
+    /// / NAMEABLE ////
 
     @Override
     public Component getName() {
@@ -218,7 +211,7 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
     @Override
     public Component getCustomName() {
         ItemStack itemStack = getItem(0);
-        if(itemStack.isEmpty() || !itemStack.hasCustomHoverName()) {
+        if (itemStack.isEmpty() || !itemStack.hasCustomHoverName()) {
             return null;
         }
         return itemStack.getHoverName();

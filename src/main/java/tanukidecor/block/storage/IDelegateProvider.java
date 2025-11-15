@@ -13,7 +13,7 @@ public interface IDelegateProvider {
 
     /**
      * @param blockState the block state
-     * @param blockPos the block position
+     * @param blockPos   the block position
      * @return the block position to delegate to
      */
     BlockPos getDelegatePos(final BlockState blockState, final BlockPos blockPos);

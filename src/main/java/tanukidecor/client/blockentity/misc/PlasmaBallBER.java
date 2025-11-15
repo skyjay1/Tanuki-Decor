@@ -7,11 +7,7 @@
 package tanukidecor.client.blockentity.misc;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -35,7 +31,7 @@ public class PlasmaBallBER implements BlockEntityRenderer<PlasmaBallBlockEntity>
     public void render(PlasmaBallBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         // validate arcs can render
         final BlockState blockState = blockEntity.getBlockState();
-        if(!blockState.getValue(PlasmaBallBlock.ENABLED)) {
+        if (!blockState.getValue(PlasmaBallBlock.ENABLED)) {
             return;
         }
         // prepare to render
@@ -51,7 +47,7 @@ public class PlasmaBallBER implements BlockEntityRenderer<PlasmaBallBlockEntity>
         long time = blockEntity.getLevel().getGameTime() % 24000L;
 
         // render each arc
-        for(PlasmaBallBlockEntity.Arc arc : blockEntity.getArcs()) {
+        for (PlasmaBallBlockEntity.Arc arc : blockEntity.getArcs()) {
             // increase time for randomness
             time += 10;
             // determine start position
@@ -81,7 +77,7 @@ public class PlasmaBallBER implements BlockEntityRenderer<PlasmaBallBlockEntity>
     }
 
     protected static void renderRect(final PoseStack poseStack, final Vector4f startColor, final Vector4f endColor,
-                                                final Vector3f start, final Vector3f end, final float size) {
+                                     final Vector3f start, final Vector3f end, final float size) {
         final float dsize = size / 2.0F;
         PoseStack.Pose lastPose = poseStack.last();
         Matrix4f matrix4f = lastPose.pose();

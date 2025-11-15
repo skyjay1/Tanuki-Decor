@@ -9,7 +9,6 @@ package tanukidecor.block.storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -34,9 +33,10 @@ public class RegalBookshelfBlock extends RotatingMultiblock implements EntityBlo
         super(MultiblockHandler.MULTIBLOCK_2X2X1, RegalBookshelfBlock::buildShape, pProperties);
     }
 
-    //// CONTAINER ////
+    /// / CONTAINER ////
     @Override
-    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {return StorageBlockEntity.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult, SoundEvents.BARREL_OPEN);
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        return StorageBlockEntity.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult, SoundEvents.BARREL_OPEN);
     }
 
     @Override
@@ -47,18 +47,18 @@ public class RegalBookshelfBlock extends RotatingMultiblock implements EntityBlo
         }
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pPos.equals(getDelegatePos(pState, pPos))) {
+        if (pPos.equals(getDelegatePos(pState, pPos))) {
             return TDRegistry.BlockEntityReg.REGAL_BOOKSHELF.get().create(pPos, pState);
         }
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
@@ -70,7 +70,7 @@ public class RegalBookshelfBlock extends RotatingMultiblock implements EntityBlo
         return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
 
-    //// SHAPE ////
+    /// / SHAPE ////
 
     public static VoxelShape buildShape(final BlockState blockState) {
         final Vec3i index = MultiblockHandler.MULTIBLOCK_2X2X1.getIndex(blockState);

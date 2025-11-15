@@ -7,7 +7,6 @@
 package tanukidecor.block.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
@@ -18,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.block.storage.IDelegateProvider;
 
@@ -31,24 +29,24 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
 
     public StorageDelegateBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
-        if(pBlockState.getBlock() instanceof IDelegateProvider delegateProvider) {
+        if (pBlockState.getBlock() instanceof IDelegateProvider delegateProvider) {
             this.delegatePos = delegateProvider.getDelegatePos(pBlockState, pPos);
         } else {
             this.delegatePos = null;
         }
     }
 
-    //// GETTERS ////
+    /// / GETTERS ////
 
     public BlockPos getDelegatePos() {
         return delegatePos;
     }
 
     public @Nullable BlockEntity getDelegate() {
-        if(null == delegatePos) {
+        if (null == delegatePos) {
             return null;
         }
-        if(null == delegate && level != null) {
+        if (null == delegate && level != null) {
             this.delegate = level.getBlockEntity(delegatePos);
         }
         return this.delegate;
@@ -58,12 +56,12 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
         return Optional.ofNullable(getDelegate());
     }
 
-    //// MENU PROVIDER ////
+    /// / MENU PROVIDER ////
 
     @Override
     public Component getDisplayName() {
         final BlockEntity blockEntity = getDelegate();
-        if(blockEntity instanceof MenuProvider provider) {
+        if (blockEntity instanceof MenuProvider provider) {
             return provider.getDisplayName();
         }
         return getBlockState().getBlock().getName();
@@ -73,17 +71,17 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         final BlockEntity blockEntity = getDelegate();
-        if(blockEntity instanceof MenuProvider provider) {
+        if (blockEntity instanceof MenuProvider provider) {
             return provider.createMenu(pContainerId, pPlayerInventory, pPlayer);
         }
         return null;
     }
 
-    //// CONTAINER ////
+    /// / CONTAINER ////
 
     @Override
     public int getContainerSize() {
-        if(getDelegate() instanceof Container container) {
+        if (getDelegate() instanceof Container container) {
             return container.getContainerSize();
         }
         return 0;
@@ -91,7 +89,7 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
 
     @Override
     public boolean isEmpty() {
-        if(getDelegate() instanceof Container container) {
+        if (getDelegate() instanceof Container container) {
             return container.isEmpty();
         }
         return false;
@@ -99,7 +97,7 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
 
     @Override
     public ItemStack getItem(int pSlot) {
-        if(getDelegate() instanceof Container container) {
+        if (getDelegate() instanceof Container container) {
             return container.getItem(pSlot);
         }
         return ItemStack.EMPTY;
@@ -107,7 +105,7 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
 
     @Override
     public ItemStack removeItem(int pSlot, int pAmount) {
-        if(getDelegate() instanceof Container container) {
+        if (getDelegate() instanceof Container container) {
             return container.removeItem(pSlot, pAmount);
         }
         return ItemStack.EMPTY;
@@ -115,7 +113,7 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
 
     @Override
     public ItemStack removeItemNoUpdate(int pSlot) {
-        if(getDelegate() instanceof Container container) {
+        if (getDelegate() instanceof Container container) {
             return container.removeItemNoUpdate(pSlot);
         }
         return ItemStack.EMPTY;
@@ -123,14 +121,14 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
 
     @Override
     public void setItem(int pSlot, ItemStack pStack) {
-        if(getDelegate() instanceof Container container) {
+        if (getDelegate() instanceof Container container) {
             container.setItem(pSlot, pStack);
         }
     }
 
     @Override
     public boolean stillValid(Player pPlayer) {
-        if(getDelegate() instanceof Container container) {
+        if (getDelegate() instanceof Container container) {
             return container.stillValid(pPlayer);
         }
         return false;
@@ -138,7 +136,7 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
 
     @Override
     public void clearContent() {
-        if(getDelegate() instanceof Container container) {
+        if (getDelegate() instanceof Container container) {
             container.clearContent();
         }
     }

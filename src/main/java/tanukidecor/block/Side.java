@@ -6,10 +6,7 @@
 
 package tanukidecor.block;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.state.BlockState;
 
 public enum Side implements StringRepresentable {
     LEFT("left"),
@@ -22,7 +19,7 @@ public enum Side implements StringRepresentable {
     }
 
     public Side getOpposite() {
-        if(this == LEFT) {
+        if (this == LEFT) {
             return RIGHT;
         }
         return LEFT;

@@ -40,7 +40,7 @@ public class PhonographBER implements BlockEntityRenderer<PhonographBlockEntity>
     public void render(PhonographBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         final BlockState blockState = pBlockEntity.getBlockState();
         // verify block entity has record
-        if(!blockState.getValue(PhonographBlock.HAS_RECORD) || blockState.getValue(PhonographBlock.HALF) != DoubleBlockHalf.LOWER) {
+        if (!blockState.getValue(PhonographBlock.HAS_RECORD) || blockState.getValue(PhonographBlock.HALF) != DoubleBlockHalf.LOWER) {
             return;
         }
         // prepare to render

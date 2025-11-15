@@ -36,11 +36,11 @@ public class DisplayBlockEntity extends SingleSlotBlockEntity implements IDispla
         return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1, 1, 1));
     }
 
-    //// DISPLAY PROVIDER ////
+    /// / DISPLAY PROVIDER ////
 
     @Override
     public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
-        if(this.displayProvider != null) {
+        if (this.displayProvider != null) {
             return this.displayProvider.getDisplayRotation(level, blockState, blockPos, itemStack, renderPass, partialTick);
         }
         return IDisplayProvider.super.getDisplayRotation(level, blockState, blockPos, itemStack, renderPass, partialTick);
@@ -48,7 +48,7 @@ public class DisplayBlockEntity extends SingleSlotBlockEntity implements IDispla
 
     @Override
     public Vector3f getDisplayTranslation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
-        if(this.displayProvider != null) {
+        if (this.displayProvider != null) {
             return this.displayProvider.getDisplayTranslation(level, blockState, blockPos, itemStack, renderPass, partialTick);
         }
         return IDisplayProvider.super.getDisplayTranslation(level, blockState, blockPos, itemStack, renderPass, partialTick);
@@ -56,23 +56,23 @@ public class DisplayBlockEntity extends SingleSlotBlockEntity implements IDispla
 
     @Override
     public Vector3f getDisplayScale(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
-        if(this.displayProvider != null) {
+        if (this.displayProvider != null) {
             return this.displayProvider.getDisplayScale(level, blockState, blockPos, itemStack, renderPass, partialTick);
         }
         return IDisplayProvider.super.getDisplayScale(level, blockState, blockPos, itemStack, renderPass, partialTick);
     }
 
-    //// CONTAINER ////
+    /// / CONTAINER ////
 
     @Override
     public void setChanged() {
         super.setChanged();
-        if(this.getLevel() != null && !this.getLevel().isClientSide()) {
+        if (this.getLevel() != null && !this.getLevel().isClientSide()) {
             this.getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
         }
     }
 
-    //// NBT ////
+    /// / NBT ////
 
     @Override
     public void load(CompoundTag pTag) {
@@ -89,7 +89,7 @@ public class DisplayBlockEntity extends SingleSlotBlockEntity implements IDispla
         pTag.put(getItemNbtKey(), getInventory().get(0).save(new CompoundTag()));
     }
 
-    //// CLIENT SERVER SYNC ////
+    /// / CLIENT SERVER SYNC ////
 
     @Override
     public CompoundTag getUpdateTag() {

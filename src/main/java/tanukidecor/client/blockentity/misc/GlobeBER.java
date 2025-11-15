@@ -66,7 +66,7 @@ public class GlobeBER implements BlockEntityRenderer<GlobeBlockEntity> {
 
         // render globe model
         yRot = targetDirection.toYRot();
-        if(pBlockEntity.isActive() && duration < 0.98F) {
+        if (pBlockEntity.isActive() && duration < 0.98F) {
             yRot += (100) * Math.pow(8.0D, -5.0D * (duration - 0.5F));
         }
         pPoseStack.translate(dx, dy, dz);

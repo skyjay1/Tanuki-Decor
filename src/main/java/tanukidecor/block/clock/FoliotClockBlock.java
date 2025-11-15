@@ -42,7 +42,7 @@ public class FoliotClockBlock extends ClockBlock {
                 SHAPE, TDRegistry.BlockEntityReg.FOLIOT_CLOCK, pProperties);
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

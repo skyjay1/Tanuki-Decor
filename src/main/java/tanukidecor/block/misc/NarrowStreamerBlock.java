@@ -27,10 +27,10 @@ public class NarrowStreamerBlock extends RotatingBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         BlockState blockState = super.getStateForPlacement(pContext);
-        if(blockState != null) {
+        if (blockState != null) {
             // check this block has support
             Optional<Direction> direction = getSupportingDirection(blockState, pContext.getLevel(), pContext.getClickedPos());
-            if(direction.isEmpty()) {
+            if (direction.isEmpty()) {
                 return null;
             }
         }
@@ -44,19 +44,19 @@ public class NarrowStreamerBlock extends RotatingBlock {
 
     /**
      * @param blockState the block state
-     * @param level the level
-     * @param pos the block position
+     * @param level      the level
+     * @param pos        the block position
      * @return the direction to the block that is supporting this one, if any
      */
     public static Optional<Direction> getSupportingDirection(BlockState blockState, LevelReader level, BlockPos pos) {
         final Direction facing = blockState.getValue(FACING);
         final BlockPos.MutableBlockPos mutablePos = pos.mutable();
-        for(Direction direction : Direction.values()) {
+        for (Direction direction : Direction.values()) {
             // skip position ahead and position below
-            if(direction == facing || direction == Direction.DOWN) continue;
+            if (direction == facing || direction == Direction.DOWN) continue;
             // check if block has solid face
             BlockState supportingState = level.getBlockState(mutablePos.setWithOffset(pos, direction));
-            if(supportingState.isFaceSturdy(level, mutablePos, direction.getOpposite())) {
+            if (supportingState.isFaceSturdy(level, mutablePos, direction.getOpposite())) {
                 return Optional.of(direction);
             }
         }

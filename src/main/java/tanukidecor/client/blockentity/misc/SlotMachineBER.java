@@ -44,7 +44,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
     public void render(SlotMachineBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         final BlockState blockState = pBlockEntity.getBlockState();
         // verify block entity
-        if(blockState.getValue(RotatingTallBlock.HALF) != DoubleBlockHalf.UPPER) {
+        if (blockState.getValue(RotatingTallBlock.HALF) != DoubleBlockHalf.UPPER) {
             return;
         }
         final float duration = pBlockEntity.getUsePercentage(pPartialTick);
@@ -88,7 +88,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         dy = 3.5D / 16.0D;
         dz = 4.0D / 16.0D;
         xRot = 90.0F * rotations.getX();
-        if(pBlockEntity.isActive() && duration < 0.58F) {
+        if (pBlockEntity.isActive() && duration < 0.58F) {
             xRot += (360 * 10) * Math.pow(8.0D, -10.0D * (duration - 0.18D));
         }
         pPoseStack.pushPose();
@@ -102,7 +102,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
 
         // render slot 1
         xRot = 90.0F * rotations.getY();
-        if(pBlockEntity.isActive() && duration < 0.78F) {
+        if (pBlockEntity.isActive() && duration < 0.78F) {
             xRot += (360 * 20) * Math.pow(8.0D, -10.0D * (duration - 0.35D));
         }
         pPoseStack.pushPose();
@@ -116,7 +116,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
 
         // render slot 2
         xRot = 90.0F * rotations.getZ();
-        if(pBlockEntity.isActive() && duration < 0.99F) {
+        if (pBlockEntity.isActive() && duration < 0.99F) {
             xRot += (360 * 30) * Math.pow(8.0D, -10.0D * (duration - 0.56D));
         }
         pPoseStack.translate(-4.0D / 16.0D, 0, 0);

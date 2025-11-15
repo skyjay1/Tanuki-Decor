@@ -26,7 +26,7 @@ public class AntiqueClockBER extends ClockBER {
     public static final ResourceLocation PENDULUM = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/antique_clock/pendulum");
 
     private static final Vec3 PENDULUM_POSITION = new Vec3(-8.0D / 16.0D, -24.0D / 16.0D, 0);
-    private static final Vec3 PENDULUM_PIVOT_POINT = new Vec3(8.0D / 16.0D, 16.0D / 16.0D, 0);
+    private static final Vec3 PENDULUM_PIVOT_POINT = new Vec3(8.0D / 16.0D, 1.0, 0);
 
     public AntiqueClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,

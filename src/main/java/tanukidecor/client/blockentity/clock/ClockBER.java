@@ -86,7 +86,7 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
                 .rotateForDirection(direction);
 
         // render short hand
-        if(this.shortHand != null) {
+        if (this.shortHand != null) {
             this.clockRenderHelper
                     .withModel(mc.getModelManager().getModel(this.shortHand))
                     .withPosition(this.handsPosition)
@@ -96,7 +96,7 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
         }
 
         // render long hand
-        if(this.longHand != null) {
+        if (this.longHand != null) {
             this.clockRenderHelper
                     .withModel(mc.getModelManager().getModel(this.longHand))
                     .withPosition(this.handsPosition)
@@ -112,19 +112,20 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
 
     /**
      * Allows implementations to render additional models
+     *
      * @param renderHelper the clock render helper
-     * @param blockEntity the block entity
+     * @param blockEntity  the block entity
      * @param bufferSource the buffer source
      */
-    public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity,  MultiBufferSource bufferSource) {
+    public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity, MultiBufferSource bufferSource) {
         // do nothing
     }
 
     /**
-     * @param speed the pendulum speed factor
+     * @param speed        the pendulum speed factor
      * @param maximumAngle the maximum angle in radians
-     * @param time the current time to pass into {@link ClockBlockEntity#getSecond(long, float)}
-     * @param partialTick the partial tick
+     * @param time         the current time to pass into {@link ClockBlockEntity#getSecond(long, float)}
+     * @param partialTick  the partial tick
      * @return the pendulum angle in radians
      */
     public static float getPendulumRotation(final float speed, final float maximumAngle, final long time, final float partialTick) {

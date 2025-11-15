@@ -14,9 +14,11 @@ import java.util.function.Function;
 /**
  * Implementation of {@code Function<.BlockState, VoxelShape>}
  * that is used to create voxel shapes to be cached separately
+ *
  * @see Function
  * @see BlockState
  * @see VoxelShape
  */
 @FunctionalInterface
-public interface ShapeBuilder extends Function<BlockState, VoxelShape> {}
+public interface ShapeBuilder extends Function<BlockState, VoxelShape> {
+}

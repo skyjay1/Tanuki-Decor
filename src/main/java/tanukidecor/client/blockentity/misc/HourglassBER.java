@@ -51,7 +51,7 @@ public class HourglassBER implements BlockEntityRenderer<HourglassBlockEntity> {
         pPoseStack.pushPose();
 
 
-        if(pBlockEntity.isActive()) {
+        if (pBlockEntity.isActive()) {
             // render top
             scale = 1.0F - percentage;
             pPoseStack.pushPose();
