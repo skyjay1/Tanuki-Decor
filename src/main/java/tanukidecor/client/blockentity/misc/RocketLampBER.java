@@ -63,9 +63,9 @@ public class RocketLampBER implements BlockEntityRenderer<RocketLampBlockEntity>
         final Minecraft mc = Minecraft.getInstance();
         final RenderType renderType = RenderType.solid();
         final VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        BakedModel largeModel = mc.getModelManager().getModel(getWaxModel(WaxSize.LARGE, color));
-        BakedModel mediumModel = mc.getModelManager().getModel(getWaxModel(WaxSize.MEDIUM, color));
-        BakedModel smallModel = mc.getModelManager().getModel(getWaxModel(WaxSize.SMALL, color));
+        BakedModel largeModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(getWaxModel(WaxSize.LARGE, color)));
+        BakedModel mediumModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(getWaxModel(WaxSize.MEDIUM, color)));
+        BakedModel smallModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(getWaxModel(WaxSize.SMALL, color)));
 
         poseStack.pushPose();
         poseStack.translate(0.5F, 0.5F, 0.5F);
