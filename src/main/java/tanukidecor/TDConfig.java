@@ -6,14 +6,14 @@
 
 package tanukidecor;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class TDConfig {
 
-    public final ForgeConfigSpec.BooleanValue isDIYWorkbenchEnabled;
-    public final ForgeConfigSpec.DoubleValue slotMachineJackboxChance;
+    public final ModConfigSpec.BooleanValue isDIYWorkbenchEnabled;
+    public final ModConfigSpec.DoubleValue slotMachineJackboxChance;
 
-    public TDConfig(final ForgeConfigSpec.Builder builder) {
+    public TDConfig(final ModConfigSpec.Builder builder) {
         isDIYWorkbenchEnabled = builder
                 .comment("True to allow the DIY Workbench to craft items, false to disable")
                 .define("enable_diy_workbench", true);
