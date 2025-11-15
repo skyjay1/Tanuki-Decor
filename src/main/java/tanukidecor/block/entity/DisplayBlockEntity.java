@@ -67,35 +67,13 @@ public class DisplayBlockEntity extends SingleSlotBlockEntity implements IDispla
         }
     }
 
-    /// / NBT ////
-
-    @Override
-    protected void loadAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
-        super.loadAdditional(pTag, pLookup);
-        if (pTag.contains(getItemNbtKey(), Tag.TAG_COMPOUND)) {
-            this.setItem(0, ItemStack.parseOptional(pLookup, pTag.getCompound(getItemNbtKey())));
-        }
-
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
-        super.saveAdditional(pTag, pLookup);
-        ItemStack stack = getInventory().get(0);
-        if (!stack.isEmpty()) {
-            pTag.put(getItemNbtKey(), stack.save(pLookup));
-        }
-    }
-
     /// / CLIENT SERVER SYNC ////
 
     @Override
     public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider pLookup) {
-        final CompoundTag tag = super.getUpdateTag(pLookup);
-        ItemStack stack = getInventory().get(0);
-        if (!stack.isEmpty()) {
-            tag.put(getItemNbtKey(), stack.save(pLookup));
-        }
+        // Use saveAdditional to ensure all data is included in the update tag
+        CompoundTag tag = new CompoundTag();
+        this.saveAdditional(tag, pLookup);
         return tag;
     }
 
