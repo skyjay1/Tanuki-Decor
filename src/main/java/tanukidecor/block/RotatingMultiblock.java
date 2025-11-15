@@ -61,8 +61,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
         super(pProperties.dynamicShape());
         this.multiblockHandler = multiblockHandler;
         this.shapeBuilder = shapeBuilder;
-        // re-create state definition
-        this.stateDefinition = createStateDefinition();
+        // Note: state definition is created automatically by super constructor via createBlockStateDefinition
         this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
                 .setValue(WATERLOGGED, false)
                 .setValue(FACING, Direction.NORTH)));
@@ -91,13 +90,15 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
 
     /**
      * @param pBuilder the state definition builder
-     * @deprecated use and override {@link #createMultiblockStateDefinition(StateDefinition.Builder)}
      */
     @Override
-    @Deprecated
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        // note: this method is called from the super constructor before the multiblockHandler is assigned
-        super.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
+        // Note: multiblockHandler may be null during super constructor, so add basic properties
+        if (this.multiblockHandler != null) {
+            this.createMultiblockStateDefinition(pBuilder);
+        } else {
+            super.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
+        }
     }
 
     protected void createMultiblockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
