@@ -68,7 +68,7 @@ public class DIYWorkbenchBlock extends RotatingTallBlock implements EntityBlock 
             serverPlayer.openMenu(menuProvider, pos);
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHitResult);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     @Override

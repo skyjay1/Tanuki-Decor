@@ -67,7 +67,7 @@ public class HourglassBlock extends Block implements SimpleWaterloggedBlock, Ent
             blockEntity.startTimer(HourglassBlockEntity.TIME);
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHitResult);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     @Override

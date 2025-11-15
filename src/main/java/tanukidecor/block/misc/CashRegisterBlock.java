@@ -35,7 +35,7 @@ public class CashRegisterBlock extends RotatingBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         if (pPlayer.isShiftKeyDown()) {
-            return super.use(pState, pLevel, pPos, pPlayer, pHitResult);
+            return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
         }
         // play sound
         pLevel.playSound(pPlayer, pPos, TDRegistry.SoundReg.CASH_REGISTER_RING.get(), SoundSource.BLOCKS, 1.0F, 0.95F + pPlayer.getRandom().nextFloat() * 0.1F);

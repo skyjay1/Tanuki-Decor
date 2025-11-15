@@ -37,7 +37,7 @@ public class PianoBlock extends RotatingMultiblock {
             playNote(pLevel, pPos, pState, pPlayer);
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHitResult);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     protected void playNote(Level level, BlockPos blockPos, BlockState blockState, Player player) {

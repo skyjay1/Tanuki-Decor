@@ -69,7 +69,7 @@ public class MetronomeBlock extends RotatingBlock implements EntityBlock, IChime
             pLevel.updateNeighbourForOutputSignal(pPos, pState.getBlock());
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHitResult);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     /// / CHIME PROVIDER ////

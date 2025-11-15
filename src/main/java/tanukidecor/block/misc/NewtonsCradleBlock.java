@@ -67,7 +67,7 @@ public class NewtonsCradleBlock extends RotatingBlock implements EntityBlock, IC
             pLevel.updateNeighbourForOutputSignal(pPos, pState.getBlock());
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHitResult);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     @Override
