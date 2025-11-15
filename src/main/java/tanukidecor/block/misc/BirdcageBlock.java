@@ -14,7 +14,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.ShoulderRidingEntity;
@@ -24,8 +23,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.pathfinder.PathType;
-import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -35,6 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.RotatingTallBlock;
+import tanukidecor.mixin.PlayerAccessor;
 
 import java.util.List;
 import java.util.Optional;
@@ -133,15 +131,15 @@ public class BirdcageBlock extends RotatingTallBlock {
         }
         // attempt to insert entity from shoulders, if any
         final boolean hasShoulderEntity = !pPlayer.getShoulderEntityLeft().isEmpty() || !pPlayer.getShoulderEntityRight().isEmpty();
-        if (hasShoulderEntity) {
-            if (spawnFromShoulderEntity(pPlayer, pPlayer.getShoulderEntityLeft(), cagePos).isPresent()) {
-                // remove left shoulder entity by spawning it
-                pPlayer.respawnEntityOnShoulder(pPlayer.getShoulderEntityLeft());
+        if (hasShoulderEntity && pPlayer instanceof PlayerAccessor accessor) {
+            CompoundTag leftShoulder = pPlayer.getShoulderEntityLeft();
+            if (!leftShoulder.isEmpty() && spawnFromShoulderEntity(pPlayer, leftShoulder, cagePos).isPresent()) {
+                accessor.tanukidecor$setShoulderEntityLeft(new CompoundTag());
                 return InteractionResult.SUCCESS;
             }
-            if (spawnFromShoulderEntity(pPlayer, pPlayer.getShoulderEntityRight(), cagePos).isPresent()) {
-                // remove right shoulder entity by spawning it
-                pPlayer.respawnEntityOnShoulder(pPlayer.getShoulderEntityRight());
+            CompoundTag rightShoulder = pPlayer.getShoulderEntityRight();
+            if (!rightShoulder.isEmpty() && spawnFromShoulderEntity(pPlayer, rightShoulder, cagePos).isPresent()) {
+                accessor.tanukidecor$setShoulderEntityRight(new CompoundTag());
                 return InteractionResult.SUCCESS;
             }
         }
