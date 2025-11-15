@@ -37,10 +37,6 @@ public class SingleBedBlock extends RotatingMultiblock implements IBedProvider {
 
     public SingleBedBlock(final VoxelShape northShape, final VoxelShape southShape, Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_1X1X2, SingleBedBlock.createShapeBuilder(northShape, southShape), pProperties);
-        this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
-                .setValue(WATERLOGGED, false)
-                .setValue(FACING, Direction.NORTH)
-                .setValue(OCCUPIED, false)));
     }
 
     /// / MULTIBLOCK ////

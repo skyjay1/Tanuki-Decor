@@ -35,10 +35,6 @@ public class GorgeousBedBlock extends RotatingMultiblock implements IBedProvider
 
     public GorgeousBedBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X2X2, RotatingMultiblock.createMultiblockShapeBuilder(MultiblockHandler.MULTIBLOCK_2X2X2, SHAPE), pProperties);
-        this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
-                .setValue(WATERLOGGED, false)
-                .setValue(FACING, Direction.NORTH)
-                .setValue(OCCUPIED, false)));
     }
 
     @Override

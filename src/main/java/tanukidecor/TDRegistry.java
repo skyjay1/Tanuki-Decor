@@ -72,6 +72,7 @@ public final class TDRegistry {
     public static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "diy_blacklist"));
 
     public static void register(IEventBus modEventBus) {
+        // Register all deferred registers
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
@@ -80,6 +81,21 @@ public final class TDRegistry {
         RECIPE_SERIALIZERS.register(modEventBus);
         RECIPE_TYPES.register(modEventBus);
         MENU_TYPES.register(modEventBus);
+        
+        // Force initialization of all registry holder classes by accessing them
+        // This ensures all static fields are initialized during the registration phase
+        forceInit();
+    }
+
+    private static void forceInit() {
+        // Access static fields from each inner class to trigger class initialization
+        Object blockInit = BlockReg.ALARM_CLOCK;
+        Object itemInit = ItemReg.ALL_ITEMS;
+        Object tabInit = CreativeTabReg.CREATIVE_MODE_TAB;
+        Object beInit = BlockEntityReg.ALARM_CLOCK;
+        Object soundInit = SoundReg.ALARM_CLOCK_TICK;
+        Object recipeInit = RecipeReg.DIY_SERIALIZER;
+        Object menuInit = MenuReg.DIY_WORKBENCH;
     }
 
     public static final class BlockReg {
