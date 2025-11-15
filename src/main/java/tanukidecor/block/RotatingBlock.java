@@ -6,6 +6,7 @@
 
 package tanukidecor.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -33,10 +34,20 @@ import java.util.Map;
 
 public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
 
+    // Codec is not used for dynamically shaped blocks, but required by API
+    public static final MapCodec<RotatingBlock> CODEC = MapCodec.unit(() -> {
+        throw new UnsupportedOperationException("RotatingBlock requires ShapeBuilder and cannot be deserialized");
+    });
+
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
     protected final ShapeBuilder shapeBuilder;
+
+    @Override
+    protected MapCodec<? extends RotatingBlock> codec() {
+        return CODEC;
+    }
 
     public RotatingBlock(Properties pProperties, ShapeBuilder shapeBuilder) {
         super(pProperties);
