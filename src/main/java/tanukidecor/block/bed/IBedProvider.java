@@ -76,7 +76,7 @@ public interface IBedProvider {
         }
 
         // attempt to eject villager sleeping in the bed
-        if (headState.getValue(BlockStateProperties.OCCUPIED)) {
+        if (headState.hasProperty(BlockStateProperties.OCCUPIED) && headState.getValue(BlockStateProperties.OCCUPIED)) {
             if (!kickVillagerOutOfBed(level, headPos)) {
                 player.displayClientMessage(Component.translatable("block.minecraft.bed.occupied"), true);
             }

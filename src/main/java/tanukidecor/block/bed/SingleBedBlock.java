@@ -9,6 +9,7 @@ package tanukidecor.block.bed;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.extensions.IBlockExtension;
 import tanukidecor.block.RotatingMultiblock;
@@ -38,6 +40,11 @@ public class SingleBedBlock extends RotatingMultiblock implements IBedProvider, 
 
     public SingleBedBlock(final VoxelShape northShape, final VoxelShape southShape, Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_1X1X2, SingleBedBlock.createShapeBuilder(northShape, southShape), pProperties);
+        // Set default state with OCCUPIED after parent initialization
+        BlockState defaultState = this.defaultBlockState();
+        if (defaultState.hasProperty(OCCUPIED)) {
+            this.registerDefaultState(defaultState.setValue(OCCUPIED, false));
+        }
     }
 
     /// / MULTIBLOCK ////
@@ -87,7 +94,16 @@ public class SingleBedBlock extends RotatingMultiblock implements IBedProvider, 
 
     @Override
     public void setBedOccupied(BlockState blockState, Level level, BlockPos pos, LivingEntity sleeper, boolean occupied) {
-        level.setBlock(pos, blockState.setValue(OCCUPIED, occupied), Block.UPDATE_CLIENTS);
+        if (blockState.hasProperty(OCCUPIED)) {
+            level.setBlock(pos, blockState.setValue(OCCUPIED, occupied), Block.UPDATE_CLIENTS);
+        }
+    }
+
+    @Override
+    public java.util.Optional<net.minecraft.server.level.ServerPlayer.RespawnPosAngle> getRespawnPosition(BlockState state, net.minecraft.world.entity.EntityType<?> type, LevelReader levelReader, BlockPos pos, float orientation) {
+        BlockPos headPos = getHeadPos(state, (Level) levelReader, pos);
+        return net.minecraft.world.level.block.BedBlock.findStandUpPosition(type, levelReader, headPos, state.getValue(FACING), orientation)
+                .map(vec3 -> new net.minecraft.server.level.ServerPlayer.RespawnPosAngle(vec3, orientation));
     }
 
     @Override
