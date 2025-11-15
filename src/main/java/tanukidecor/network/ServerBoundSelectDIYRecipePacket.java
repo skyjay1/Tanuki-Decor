@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import tanukidecor.TanukiDecor;
 import tanukidecor.recipe.DIYRecipe;
 import tanukidecor.menu.DIYWorkbenchMenu;
@@ -67,8 +67,8 @@ public class ServerBoundSelectDIYRecipePacket {
             return;
         }
         // validate recipe
-        final Optional<? extends Recipe<?>> oRecipe = player.level().getRecipeManager().byKey(message.recipeId);
-        if(oRecipe.isEmpty() || !(oRecipe.get() instanceof DIYRecipe recipe)) {
+        final Optional<RecipeHolder<?>> oRecipe = player.level().getRecipeManager().byKey(message.recipeId);
+        if(oRecipe.isEmpty() || !(oRecipe.get().value() instanceof DIYRecipe recipe)) {
             return;
         }
         // validate result
