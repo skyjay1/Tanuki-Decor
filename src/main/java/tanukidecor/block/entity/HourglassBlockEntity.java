@@ -130,8 +130,8 @@ public class HourglassBlockEntity extends BlockEntity {
     /// / CLIENT SERVER SYNC ////
 
     @Override
-    public CompoundTag getUpdateTag() {
-        final CompoundTag tag = super.getUpdateTag();
+    public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider pLookup) {
+        final CompoundTag tag = super.getUpdateTag(pLookup);
         tag.putInt(KEY_TIMER, this.timer);
         tag.putInt(KEY_TIMER_MAX, this.maxTimer);
         return tag;

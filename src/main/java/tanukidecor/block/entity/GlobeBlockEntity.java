@@ -133,8 +133,8 @@ public class GlobeBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        final CompoundTag tag = super.getUpdateTag();
+    public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider pLookup) {
+        final CompoundTag tag = super.getUpdateTag(pLookup);
         tag.putLong(KEY_TIMESTAMP, this.startTime);
         tag.putString(KEY_TARGET_DIRECTION, this.targetDirection.getSerializedName());
         return tag;

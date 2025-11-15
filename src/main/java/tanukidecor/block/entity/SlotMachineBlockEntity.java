@@ -179,8 +179,8 @@ public class SlotMachineBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        final CompoundTag tag = super.getUpdateTag();
+    public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider pLookup) {
+        final CompoundTag tag = super.getUpdateTag(pLookup);
         tag.putLong(KEY_TIMESTAMP, this.startTime);
         writeSlotRotations(tag);
         return tag;
