@@ -25,7 +25,7 @@ import java.util.List;
 
 public final class ClientRecipeCollections {
 
-    public static final SearchRegistry.Key<RecipeCollection> DIY_RECIPE_COLLECTIONS_KEY = new SearchRegistry.Key<>();
+    public static final SearchRegistry.TreeKey<RecipeCollection> DIY_RECIPE_COLLECTIONS_KEY = new SearchRegistry.TreeKey<>();
     public static final List<RecipeCollection> DIY_RECIPE_COLLECTIONS = new ArrayList<>();
 
     private ClientRecipeCollections() {
