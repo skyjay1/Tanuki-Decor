@@ -121,9 +121,4 @@ public class ClockBlockEntity extends BlockEntity {
     public static float getSecond(final long dayTime, final float partialTick) {
         return Mth.lerp(partialTick, dayTime - 1, dayTime) / 20;
     }
-
-    @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos()).inflate(1);
-    }
 }

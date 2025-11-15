@@ -72,11 +72,6 @@ public class SlotMachineBlockEntity extends BlockEntity {
         return InteractionResult.SUCCESS;
     }
 
-    @Override
-    public AABB getRenderBoundingBox() {
-        return super.getRenderBoundingBox().inflate(1);
-    }
-
     /// / ACTIVE ////
 
     public boolean isActive() {

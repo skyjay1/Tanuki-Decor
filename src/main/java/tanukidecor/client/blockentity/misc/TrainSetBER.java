@@ -22,6 +22,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.TrainSetBlockEntity;
@@ -70,6 +71,11 @@ public class TrainSetBER implements BlockEntityRenderer<TrainSetBlockEntity> {
 
         // finish rendering
         pPoseStack.popPose();
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(TrainSetBlockEntity blockEntity) {
+        return INFINITE_EXTENT_AABB.inflate(2);
     }
 
     public static void addSpecialModels(final Set<ResourceLocation> list) {

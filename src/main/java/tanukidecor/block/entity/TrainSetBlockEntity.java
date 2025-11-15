@@ -52,11 +52,6 @@ public class TrainSetBlockEntity extends BlockEntity {
         this.setChanged();
     }
 
-    @Override
-    public AABB getRenderBoundingBox() {
-        return super.getRenderBoundingBox().inflate(2);
-    }
-
     /// / NBT ////
 
     private static final String KEY_SILENT = "Silent";

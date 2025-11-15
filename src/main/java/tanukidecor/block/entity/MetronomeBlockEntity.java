@@ -26,9 +26,4 @@ public class MetronomeBlockEntity extends ClockBlockEntity {
     protected void playChime(Level level, BlockPos blockPos, BlockState blockState) {
         // do nothing
     }
-
-    @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos()).inflate(1);
-    }
 }

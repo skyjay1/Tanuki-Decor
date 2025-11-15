@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -123,6 +124,11 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayBlockEntity> {
         font.drawInBatch(text, x, 0.0F, -1, false, matrix4f, multiBufferSource, Font.DisplayMode.NORMAL, 0, packedLight);
 
         poseStack.popPose();
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(DisplayBlockEntity blockEntity) {
+        return new AABB(blockEntity.getBlockPos().offset(-1, 0, -1), blockEntity.getBlockPos().offset(1, 1, 1));
     }
 
 }

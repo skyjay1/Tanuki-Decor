@@ -31,11 +31,6 @@ public class DisplayBlockEntity extends SingleSlotBlockEntity implements IDispla
         this.displayProvider = (pBlockState.getBlock() instanceof IDisplayProvider p) ? p : null;
     }
 
-    @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1, 1, 1));
-    }
-
     /// / DISPLAY PROVIDER ////
 
     @Override

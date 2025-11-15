@@ -19,6 +19,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import tanukidecor.block.entity.ClockBlockEntity;
 
@@ -130,5 +131,10 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
      */
     public static float getPendulumRotation(final float speed, final float maximumAngle, final long time, final float partialTick) {
         return Mth.sin(ClockBlockEntity.getSecond(time % 24000L, partialTick) * speed * Mth.TWO_PI) * maximumAngle;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(ClockBlockEntity blockEntity) {
+        return new AABB(blockEntity.getBlockPos()).inflate(1);
     }
 }

@@ -22,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.RotatingTallBlock;
@@ -38,6 +39,11 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
 
     public SlotMachineBER(BlockEntityRendererProvider.Context pContext) {
         this.blockRenderer = pContext.getBlockRenderDispatcher();
+    }
+
+    public static void addSpecialModels(final Set<ResourceLocation> list) {
+        list.add(SLOT);
+        list.add(LEVER);
     }
 
     @Override
@@ -132,8 +138,8 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         pPoseStack.popPose();
     }
 
-    public static void addSpecialModels(final Set<ResourceLocation> list) {
-        list.add(SLOT);
-        list.add(LEVER);
+    @Override
+    public AABB getRenderBoundingBox(SlotMachineBlockEntity blockEntity) {
+        return INFINITE_EXTENT_AABB.inflate(1);
     }
 }

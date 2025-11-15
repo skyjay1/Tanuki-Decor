@@ -25,9 +25,4 @@ public class RocketLampBlockEntity extends BlockEntity {
         }
         return "";
     }
-
-    @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos()).inflate(0.5F, 1.0F, 0.5F);
-    }
 }

@@ -23,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.RocketLampBlockEntity;
@@ -152,5 +153,10 @@ public class RocketLampBER implements BlockEntityRenderer<RocketLampBlockEntity>
         public String getSerializedName() {
             return this.name;
         }
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(RocketLampBlockEntity blockEntity) {
+        return new AABB(blockEntity.getBlockPos()).inflate(0.5F, 1.0F, 0.5F);
     }
 }

@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.clock.IChimeProvider;
@@ -95,6 +96,11 @@ public class MetronomeBER implements BlockEntityRenderer<MetronomeBlockEntity> {
 
         // finish rendering
         pPoseStack.popPose();
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(MetronomeBlockEntity blockEntity) {
+        return new AABB(blockEntity.getBlockPos()).inflate(1);
     }
 
     public static void addSpecialModels(final Set<ResourceLocation> list) {
