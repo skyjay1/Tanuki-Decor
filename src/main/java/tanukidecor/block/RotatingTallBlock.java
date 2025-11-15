@@ -6,6 +6,7 @@
 
 package tanukidecor.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,6 +45,8 @@ import java.util.Map;
 
 public class RotatingTallBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock, IDelegateProvider {
 
+    public static final MapCodec<RotatingTallBlock> CODEC = simpleCodec(RotatingTallBlock::new);
+
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -59,6 +62,15 @@ public class RotatingTallBlock extends HorizontalDirectionalBlock implements Sim
                 .setValue(WATERLOGGED, false)
                 .setValue(HALF, DoubleBlockHalf.LOWER));
         precalculateShapes();
+    }
+
+    protected RotatingTallBlock(Properties pProperties) {
+        this(pProperties, createShapeBuilder(Shapes.block(), Shapes.block()));
+    }
+
+    @Override
+    protected MapCodec<? extends RotatingTallBlock> codec() {
+        return CODEC;
     }
 
     /// / SHAPE ////
