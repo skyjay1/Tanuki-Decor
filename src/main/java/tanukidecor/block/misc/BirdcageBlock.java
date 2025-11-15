@@ -70,11 +70,6 @@ public class BirdcageBlock extends RotatingTallBlock {
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return false;
-    }
-
-    @Override
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
             return COLLISION_SHAPE_UPPER;

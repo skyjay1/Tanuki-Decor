@@ -94,11 +94,6 @@ public class TrainSetBlock extends RotatingMultiblock implements EntityBlock {
     /// / METHODS ////
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return false;
-    }
-
-    @Override
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
         if (!pLevel.isClientSide() && pFromPos.getY() == pPos.getY() - 1 && pLevel.getBlockEntity(pPos) instanceof TrainSetBlockEntity blockEntity) {
             Direction facing = pState.getValue(TrainSetBlock.FACING);
