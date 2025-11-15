@@ -11,7 +11,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.RecordItem;
+import net.minecraft.world.item.JukeboxPlayable;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -131,9 +132,10 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         if (level.getBlockEntity(getDelegatePos(state, pos)) instanceof PhonographBlockEntity blockEntity) {
-            Item item = blockEntity.getFirstItem().getItem();
-            if (item instanceof RecordItem) {
-                return ((RecordItem) item).getAnalogOutput();
+            ItemStack stack = blockEntity.getFirstItem();
+            JukeboxPlayable playable = stack.get(DataComponents.JUKEBOX_PLAYABLE);
+            if (playable != null) {
+                return playable.comparatorOutput();
             }
         }
         return 0;

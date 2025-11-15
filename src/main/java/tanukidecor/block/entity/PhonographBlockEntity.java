@@ -20,7 +20,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.RecordItem;
+import net.minecraft.world.item.JukeboxPlayable;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
@@ -103,9 +104,10 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
     protected void phonographTick(Level level, BlockPos blockPos, BlockState blockState) {
         ++this.ticksSinceLastEvent;
         if (this.isRecordPlaying()) {
-            Item item = this.getFirstItem().getItem();
-            if (item instanceof RecordItem record) {
-                if (this.shouldRecordStopPlaying(record)) {
+            ItemStack stack = this.getFirstItem();
+            JukeboxPlayable playable = stack.get(DataComponents.JUKEBOX_PLAYABLE);
+            if (playable != null) {
+                if (this.shouldRecordStopPlaying(playable)) {
                     this.stopPlaying();
                 } else if (this.shouldSendJukeboxPlayingEvent()) {
                     // TODO Allay#shouldStopDancing is hardcoded to check for a jukebox at the given position
@@ -203,12 +205,12 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
         this.setChanged();
     }
 
-    protected long getRecordLengthInTicks(final RecordItem recordItem) {
-        return recordItem.getLengthInTicks();
+    protected long getRecordLengthInTicks(final JukeboxPlayable playable) {
+        return playable.lengthInTicks();
     }
 
-    protected boolean shouldRecordStopPlaying(RecordItem recordItem) {
-        return this.tickCount >= this.recordStartedTick + getRecordLengthInTicks(recordItem) + 20L;
+    protected boolean shouldRecordStopPlaying(JukeboxPlayable playable) {
+        return this.tickCount >= this.recordStartedTick + getRecordLengthInTicks(playable) + 20L;
     }
 
     public boolean isRecordPlaying() {
