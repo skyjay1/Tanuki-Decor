@@ -57,7 +57,7 @@ public class BirdcageBlock extends RotatingTallBlock {
             box(2, 0, 2, 14, 2, 14),
             box(6.5D, 2, 6.5D, 9.5D, 16, 9.5D));
 
-    private static final TagKey<EntityType<?>> BIRDCAGE_BLACKLIST = BuiltInRegistries.ENTITY_TYPE.createTag(ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "birdcage_blacklist"));
+    private static final TagKey<EntityType<?>> BIRDCAGE_BLACKLIST = TagKey.create(BuiltInRegistries.ENTITY_TYPE.key(), ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "birdcage_blacklist"));
 
     private static final double CAGE_WIDTH = 12.0D / 16.0D;
     private static final double CAGE_HEIGHT = 15.0D / 16.0D;
@@ -135,13 +135,13 @@ public class BirdcageBlock extends RotatingTallBlock {
         final boolean hasShoulderEntity = !pPlayer.getShoulderEntityLeft().isEmpty() || !pPlayer.getShoulderEntityRight().isEmpty();
         if (hasShoulderEntity) {
             if (spawnFromShoulderEntity(pPlayer, pPlayer.getShoulderEntityLeft(), cagePos).isPresent()) {
-                // remove left shoulder entity
-                pPlayer.setShoulderEntityLeft(new CompoundTag());
+                // remove left shoulder entity by spawning it
+                pPlayer.respawnEntityOnShoulder(pPlayer.getShoulderEntityLeft());
                 return InteractionResult.SUCCESS;
             }
             if (spawnFromShoulderEntity(pPlayer, pPlayer.getShoulderEntityRight(), cagePos).isPresent()) {
-                // remove right shoulder entity
-                pPlayer.setShoulderEntityRight(new CompoundTag());
+                // remove right shoulder entity by spawning it
+                pPlayer.respawnEntityOnShoulder(pPlayer.getShoulderEntityRight());
                 return InteractionResult.SUCCESS;
             }
         }
