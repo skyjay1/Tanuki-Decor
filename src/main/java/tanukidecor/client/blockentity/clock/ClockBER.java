@@ -88,7 +88,7 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
         // render short hand
         if (this.shortHand != null) {
             this.clockRenderHelper
-                    .withModel(mc.getModelManager().getModel(this.shortHand))
+                    .withModel(mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(this.shortHand)))
                     .withPosition(this.handsPosition)
                     .withPivotPoint(this.handsPivotPoint)
                     .withRotationZ(hourRotation)
@@ -98,7 +98,7 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
         // render long hand
         if (this.longHand != null) {
             this.clockRenderHelper
-                    .withModel(mc.getModelManager().getModel(this.longHand))
+                    .withModel(mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(this.longHand)))
                     .withPosition(this.handsPosition)
                     .withPivotPoint(this.handsPivotPoint)
                     .withRotationZ(minuteRotation)

@@ -70,7 +70,7 @@ public class RecognizableClockBER extends ClockBER {
 
             // render short hand
             this.clockRenderHelper
-                    .withModel(mc.getModelManager().getModel(this.shortHand))
+                    .withModel(mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(this.shortHand)))
                     .withPosition(this.handsPosition)
                     .withPivotPoint(this.handsPivotPoint)
                     .withRotationZ(hourRotation)
@@ -78,7 +78,7 @@ public class RecognizableClockBER extends ClockBER {
 
             // render long hand
             this.clockRenderHelper
-                    .withModel(mc.getModelManager().getModel(this.longHand))
+                    .withModel(mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(this.longHand)))
                     .withRotationZ(minuteRotation)
                     .render(blockRenderer);
 
