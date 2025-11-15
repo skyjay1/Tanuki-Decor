@@ -77,11 +77,6 @@ public class DoubleBedBlock extends RotatingMultiblock implements IBedProvider {
     }
 
     @Override
-    public boolean isBed(BlockState state, BlockGetter level, BlockPos pos, @Nullable Entity player) {
-        return true;
-    }
-
-    @Override
     public Direction getBedDirection(BlockState state, LevelReader level, BlockPos pos) {
         return state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
     }
