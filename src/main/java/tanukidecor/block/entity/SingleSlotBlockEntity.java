@@ -7,6 +7,7 @@
 package tanukidecor.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -70,13 +71,13 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
         // insert item, if any
         else if (!heldItem.isEmpty() &&
                 (storedItem.isEmpty() || (storedItem.getCount() < storedItem.getMaxStackSize()
-                        && ItemStack.isSameItemSameTags(heldItem, storedItem)))
+                        && ItemStack.isSameItemSameComponents(heldItem, storedItem)))
                 && blockEntity.canPlaceItem(0, heldItem)) {
             // split item stack
-            ItemStack itemStack = heldItem.split(Math.min(storedItem.getMaxStackSize() - storedItem.getCount(), heldItem.getCount()));
-            itemStack.grow(storedItem.getCount());
+            ItemStack splitStack = heldItem.split(Math.min(storedItem.getMaxStackSize() - storedItem.getCount(), heldItem.getCount()));
+            splitStack.grow(storedItem.getCount());
             // insert item
-            blockEntity.setItem(0, itemStack);
+            blockEntity.setItem(0, splitStack);
             // play sound
             level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
             return ItemInteractionResult.SUCCESS;
@@ -139,6 +140,11 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
     }
 
     @Override
+    public ItemStack getTheItem() {
+        return this.getItem(0);
+    }
+
+    @Override
     public ItemStack removeItem(int pSlot, int pAmount) {
         ItemStack itemstack = ContainerHelper.removeItem(this.getInventory(), pSlot, pAmount);
         if (!itemstack.isEmpty()) {
@@ -164,6 +170,11 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
     }
 
     @Override
+    public void setTheItem(ItemStack pStack) {
+        this.setItem(0, pStack);
+    }
+
+    @Override
     public boolean stillValid(Player pPlayer) {
         if (this.level.getBlockEntity(this.worldPosition) != this) {
             return false;
@@ -182,18 +193,18 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
     /// / NBT ////
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pLookup) {
+        super.loadAdditional(pTag, pLookup);
         if (pTag.contains(getItemNbtKey(), Tag.TAG_COMPOUND)) {
-            this.setItem(0, ItemStack.of(pTag.getCompound(getItemNbtKey())));
+            this.setItem(0, ItemStack.parseOptional(pLookup, pTag.getCompound(getItemNbtKey())));
         }
 
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        pTag.put(getItemNbtKey(), getInventory().get(0).save(new CompoundTag()));
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pLookup) {
+        super.saveAdditional(pTag, pLookup);
+        pTag.put(getItemNbtKey(), getInventory().get(0).save(pLookup));
     }
 
     protected String getItemNbtKey() {
@@ -211,7 +222,7 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
     @Override
     public Component getCustomName() {
         ItemStack itemStack = getItem(0);
-        if (itemStack.isEmpty() || !itemStack.hasCustomHoverName()) {
+        if (itemStack.isEmpty() || !itemStack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
             return null;
         }
         return itemStack.getHoverName();
