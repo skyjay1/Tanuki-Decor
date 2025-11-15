@@ -152,22 +152,18 @@ public class NewtonsCradleBER implements BlockEntityRenderer<NewtonsCradleBlockE
         final PoseStack.Pose lastPose = poseStack.last();
         final Matrix4f matrix4f = lastPose.pose();
 
-        vertexConsumer.vertex(matrix4f, startX, startY, startZ)
-                .color(10, 10, 10, 255)
-                .normal(lastPose.normal(), 0.0F, 1.0F, 0.0F)
-                .endVertex();
-        vertexConsumer.vertex(matrix4f, midX, midY, midZ)
-                .color(10, 10, 10, 255)
-                .normal(lastPose.normal(), 0.0F, 1.0F, 0.0F)
-                .endVertex();
+        vertexConsumer.addVertex(matrix4f, startX, startY, startZ)
+                .setColor(10, 10, 10, 255)
+                .setNormal(lastPose, 0.0F, 1.0F, 0.0F);
+        vertexConsumer.addVertex(matrix4f, midX, midY, midZ)
+                .setColor(10, 10, 10, 255)
+                .setNormal(lastPose, 0.0F, 1.0F, 0.0F);
 
-        vertexConsumer.vertex(matrix4f, midX, midY, midZ)
-                .color(10, 10, 10, 255)
-                .normal(lastPose.normal(), 0.0F, 1.0F, 0.0F)
-                .endVertex();
-        vertexConsumer.vertex(matrix4f, endX, endY, endZ)
-                .color(10, 10, 10, 255)
-                .normal(lastPose.normal(), 0.0F, 1.0F, 0.0F)
-                .endVertex();
+        vertexConsumer.addVertex(matrix4f, midX, midY, midZ)
+                .setColor(10, 10, 10, 255)
+                .setNormal(lastPose, 0.0F, 1.0F, 0.0F);
+        vertexConsumer.addVertex(matrix4f, endX, endY, endZ)
+                .setColor(10, 10, 10, 255)
+                .setNormal(lastPose, 0.0F, 1.0F, 0.0F);
     }
 }
