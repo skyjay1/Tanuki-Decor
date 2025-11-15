@@ -66,7 +66,7 @@ public class ScrollButton extends Button {
             renderX += Mth.floor((float) (width - iconWidth) * scrollPercent);
         }
         // draw button icon
-        this.renderTexture(guiGraphics, this.resourceLocation, renderX, renderY, iconU, v, 0, iconWidth, iconHeight, 256, 256);
+        guiGraphics.blit(this.resourceLocation, renderX, renderY, iconU, v, iconWidth, iconHeight, 256, 256);
     }
 
     @Override
