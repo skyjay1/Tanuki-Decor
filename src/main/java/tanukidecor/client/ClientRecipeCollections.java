@@ -11,7 +11,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.searchtree.FullTextSearchTree;
-import net.minecraft.client.searchtree.SearchRegistry;
+import net.minecraft.client.searchtree.SearchTree;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,8 +25,8 @@ import java.util.List;
 
 public final class ClientRecipeCollections {
 
-    public static final SearchRegistry.TreeKey<RecipeCollection> DIY_RECIPE_COLLECTIONS_KEY = new SearchRegistry.TreeKey<>();
     public static final List<RecipeCollection> DIY_RECIPE_COLLECTIONS = new ArrayList<>();
+    private static SearchTree<RecipeCollection> searchTree;
 
     private ClientRecipeCollections() {
     }
@@ -38,14 +38,11 @@ public final class ClientRecipeCollections {
 
     public static void registerSearchTrees() {
         // create a search tree (copied from Minecraft#createSearchTrees)
-        Minecraft.getInstance().getSearchTreeManager().register(ClientRecipeCollections.DIY_RECIPE_COLLECTIONS_KEY, (recipes) ->
-                new FullTextSearchTree<>((recipeCollection) -> recipeCollection.getRecipes()
-                        .stream()
-                        .flatMap((recipe) -> recipe.getResultItem(recipeCollection.registryAccess()).getTooltipLines(null, TooltipFlag.Default.NORMAL).stream())
-                        .map((component) -> ChatFormatting.stripFormatting(component.getString()).trim())
-                        .filter((s) -> !s.isEmpty()), (collection) -> collection.getRecipes()
-                        .stream()
-                        .map((recipe) -> BuiltInRegistries.ITEM.getKey(recipe.getResultItem(collection.registryAccess()).getItem())), recipes));
+        searchTree = new FullTextSearchTree<>((recipeCollection) -> recipeCollection.getRecipes().stream().flatMap((recipe) -> recipe.getResultItem(recipeCollection.registryAccess()).getTooltipLines(null, TooltipFlag.Default.NORMAL).stream()).map((component) -> ChatFormatting.stripFormatting(component.getString()).trim()).filter((s) -> !s.isEmpty()), (collection) -> collection.getRecipes().stream().map((recipe) -> BuiltInRegistries.ITEM.getKey(recipe.getResultItem(collection.registryAccess()).getItem())), DIY_RECIPE_COLLECTIONS);
+    }
+
+    public static List<RecipeCollection> searchRecipes(String query) {
+        return searchTree != null ? searchTree.search(query) : DIY_RECIPE_COLLECTIONS;
     }
 
     /**
@@ -59,13 +56,9 @@ public final class ClientRecipeCollections {
         DIY_RECIPE_COLLECTIONS.clear();
         // add updated recipes to collections, one recipe per RecipeCollection
         final RegistryAccess registryAccess = Minecraft.getInstance().level.registryAccess();
-        event.getRecipeManager()
-                .getAllRecipesFor(TDRegistry.RecipeReg.DIY.get())
-                .stream()
-                .map(recipe -> new RecipeCollection(registryAccess, ImmutableList.of(recipe)))
-                .forEach(DIY_RECIPE_COLLECTIONS::add);
+        event.getRecipeManager().getAllRecipesFor(TDRegistry.RecipeReg.DIY.get()).stream().map(recipe -> new RecipeCollection(registryAccess, ImmutableList.of(recipe))).forEach(DIY_RECIPE_COLLECTIONS::add);
         // refresh search tree
-        Minecraft.getInstance().populateSearchTree(DIY_RECIPE_COLLECTIONS_KEY, DIY_RECIPE_COLLECTIONS);
+        registerSearchTrees();
     }
 
     /**
@@ -84,6 +77,6 @@ public final class ClientRecipeCollections {
             }
         }
         // refresh search tree
-        Minecraft.getInstance().populateSearchTree(DIY_RECIPE_COLLECTIONS_KEY, DIY_RECIPE_COLLECTIONS);
+        registerSearchTrees();
     }
 }
