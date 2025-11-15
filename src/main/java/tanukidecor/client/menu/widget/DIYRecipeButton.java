@@ -17,6 +17,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import tanukidecor.client.menu.DIYWorkbenchScreen;
 
 public class DIYRecipeButton extends ImageButton {
@@ -29,12 +30,14 @@ public class DIYRecipeButton extends ImageButton {
 
     protected ItemStack itemStack;
     protected Recipe<?> recipe;
+    protected RecipeHolder<?> recipeHolder;
 
     public DIYRecipeButton(int pX, int pY, final ItemRenderer itemRenderer, final Font fontRenderer, OnPress pOnPress) {
         super(pX, pY, WIDTH, HEIGHT, 0, 216, HEIGHT, DIYWorkbenchScreen.TEXTURE, 256, 256, pOnPress, Component.empty());
         this.itemRenderer = itemRenderer;
         this.fontRenderer = fontRenderer;
         this.recipe = null;
+        this.recipeHolder = null;
         this.itemStack = ItemStack.EMPTY;
         this.packedFGColor = 0x404040;
         this.setTooltip(null);
@@ -48,8 +51,22 @@ public class DIYRecipeButton extends ImageButton {
         return recipe;
     }
 
+    public RecipeHolder<?> getRecipeHolder() {
+        return recipeHolder;
+    }
+
     public void setRecipe(final Recipe<?> recipe) {
         this.recipe = recipe;
+        this.itemStack = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
+        final Component hoverName = this.itemStack.getHoverName();
+        final String sMessage = StringUtil.truncateStringIfNecessary(hoverName.getString(), (int) ((this.getWidth() - 16 - 6) / 4.5F), true);
+        this.setMessage(Component.literal(sMessage).withStyle(hoverName.getStyle()));
+        this.setTooltip(DIYWorkbenchScreen.createTooltip(Screen.getTooltipFromItem(Minecraft.getInstance(), this.itemStack)));
+    }
+
+    public void setRecipeHolder(final RecipeHolder<?> recipeHolder) {
+        this.recipeHolder = recipeHolder;
+        this.recipe = recipeHolder.value();
         this.itemStack = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
         final Component hoverName = this.itemStack.getHoverName();
         final String sMessage = StringUtil.truncateStringIfNecessary(hoverName.getString(), (int) ((this.getWidth() - 16 - 6) / 4.5F), true);

@@ -53,10 +53,9 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
     private static final Comparator<RecipeCollection> SORT_RECIPES_BY_RESULT_NAME = Comparator.comparing(recipeCollection ->
             recipeCollection.getRecipes().isEmpty()
                     ? ""
-                    : recipeCollection.getRecipes().get(0).getResultItem(Minecraft.getInstance().level.registryAccess()).getHoverName().getString());
+                    : recipeCollection.getRecipes().get(0).value().getResultItem(Minecraft.getInstance().level.registryAccess()).getHoverName().getString());
 
     private final Collection<RecipeCollection> recipes;
-    private final SearchTree<RecipeCollection> searchTree;
     private final List<RecipeCollection> sortedRecipes;
 
     private final List<DIYRecipeButton> recipeButtons;
@@ -69,8 +68,7 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         super(pMenu, pPlayerInventory, pTitle);
         // populate recipe collection
         this.recipes = ImmutableList.sortedCopyOf(SORT_RECIPES_BY_RESULT_NAME, ClientRecipeCollections.DIY_RECIPE_COLLECTIONS);
-        // prepare search tree and recipe slice
-        this.searchTree = Minecraft.getInstance().getSearchTree(ClientRecipeCollections.DIY_RECIPE_COLLECTIONS_KEY);
+        // prepare recipe slice
         this.sortedRecipes = new ArrayList<>(this.recipes.size());
         // prepare button lists
         this.recipeButtons = new ArrayList<>(RECIPE_BUTTON_COUNT_Y);
@@ -103,7 +101,7 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         this.setInitialFocus(this.editBox);
         // recipe buttons
         this.recipeButtons.clear();
-        final Button.OnPress recipeButtonOnPress = b -> getMenu().selectRecipe(((DIYRecipeButton) b).getRecipe());
+        final Button.OnPress recipeButtonOnPress = b -> getMenu().selectRecipe(((DIYRecipeButton) b).getRecipeHolder());
         final ItemRenderer itemRenderer = this.getMinecraft().getItemRenderer();
         for (int i = 0, x = this.leftPos + RECIPE_X, y = this.topPos + RECIPE_Y; i < RECIPE_BUTTON_COUNT_Y; i++) {
             this.recipeButtons.add(this.addRenderableWidget(new DIYRecipeButton(x, y + i * DIYRecipeButton.HEIGHT, itemRenderer, this.font, recipeButtonOnPress)));
@@ -129,7 +127,6 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
     @Override
     public void containerTick() {
         super.containerTick();
-        this.editBox.tick();
     }
 
     /// / RENDER ////
@@ -143,7 +140,7 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         // render background
-        this.renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
         // render labels and widgets
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         // render result count text
@@ -162,7 +159,7 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
         if (filter.isEmpty()) {
             this.sortedRecipes.addAll(this.recipes);
         } else {
-            this.sortedRecipes.addAll(this.searchTree.search(filter.toLowerCase(Locale.ROOT)));
+            this.sortedRecipes.addAll(ClientRecipeCollections.searchRecipes(filter.toLowerCase(Locale.ROOT)));
         }
         // update scroll bar
         this.scrollButton.setScrollAmountMultiplier(1.0F / Math.max(1, sortedRecipes.size() - RECIPE_BUTTON_COUNT_Y));
@@ -182,18 +179,18 @@ public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu
                 continue;
             }
             button.visible = button.active = true;
-            button.setRecipe(sortedRecipes.get(index).getRecipes().get(0));
+            button.setRecipeHolder(sortedRecipes.get(index).getRecipes().get(0));
         }
     }
 
     /// / SCROLL LISTENER ////
 
     @Override
-    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pScrollX, double pScrollY) {
         if (isHovering(RECIPE_X, RECIPE_Y, DIYRecipeButton.WIDTH, DIYRecipeButton.HEIGHT * RECIPE_BUTTON_COUNT_Y, pMouseX, pMouseY)) {
-            return scrollButton.mouseScrolled(pMouseX, pMouseY, pDelta);
+            return scrollButton.mouseScrolled(pMouseX, pMouseY, pScrollX, pScrollY);
         }
-        return super.mouseScrolled(pMouseX, pMouseY, pDelta);
+        return super.mouseScrolled(pMouseX, pMouseY, pScrollX, pScrollY);
     }
 
     @Override
