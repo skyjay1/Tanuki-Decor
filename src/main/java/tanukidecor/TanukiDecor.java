@@ -40,22 +40,19 @@ public class TanukiDecor {
         // register client events
         if (FMLEnvironment.dist == Dist.CLIENT) {
             tanukidecor.client.TDClientEvents.register();
-            modEventBus.addListener(this::registerEntityRenderers);
-            modEventBus.addListener(this::registerAdditionalModels);
+            tanukidecor.client.ClientRecipeCollections.register();
+            modEventBus.addListener(this::clientSetup);
         }
     }
 
     private void commonSetup(final net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) {
+        // Common setup if needed
+    }
+
+    private void clientSetup(final net.neoforged.fml.event.lifecycle.FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             net.minecraft.client.gui.screens.MenuScreens.register(TDRegistry.MenuReg.DIY_WORKBENCH.get(), tanukidecor.client.menu.DIYWorkbenchScreen::new);
+            tanukidecor.client.ClientRecipeCollections.registerSearchTrees();
         });
-    }
-
-    private void registerEntityRenderers(final net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers event) {
-        // This will be implemented by calling the static methods from TDClientEvents
-    }
-
-    private void registerAdditionalModels(final net.neoforged.neoforge.client.event.ModelEvent.RegisterAdditional event) {
-        // This will be implemented by calling the static methods from TDClientEvents
     }
 }

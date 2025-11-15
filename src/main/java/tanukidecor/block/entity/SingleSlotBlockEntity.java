@@ -128,30 +128,8 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
         return inventory;
     }
 
-    //// CAPABILITY ////
-
     protected IItemHandler createUnSidedHandler() {
         return new InvWrapper(this);
-    }
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-        if (!this.remove && cap == ForgeCapabilities.ITEM_HANDLER) {
-            return itemHandler.cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        itemHandler.invalidate();
-    }
-
-    @Override
-    public void reviveCaps() {
-        super.reviveCaps();
-        itemHandler = LazyOptional.of(() -> createUnSidedHandler());
     }
 
     //// CONTAINER ////
