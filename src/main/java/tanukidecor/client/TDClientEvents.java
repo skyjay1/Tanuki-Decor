@@ -7,11 +7,10 @@
 package tanukidecor.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
@@ -39,7 +38,7 @@ public final class TDClientEvents {
         @SubscribeEvent
         public static void onRenderOverlay(final RenderGuiEvent.Pre event) {
             final Player player = Minecraft.getInstance().player;
-            if (event.getName().equals(VanillaGuiLayers.MOUNT_HEALTH)
+            if (event.getGuiLayer().equals(VanillaGuiLayers.MOUNT_HEALTH)
                     && player != null && player.isPassenger()
                     && ISeatProvider.IS_SEAT_ENTITY.test(player.getVehicle())) {
                 event.setCanceled(true);
@@ -50,12 +49,8 @@ public final class TDClientEvents {
     public static final class ModHandler {
 
         @SubscribeEvent
-        public static void onCommonSetup(final FMLCommonSetupEvent event) {
-            event.enqueueWork(ModHandler::registerMenuScreens);
-        }
-
-        private static void registerMenuScreens() {
-            MenuScreens.register(TDRegistry.MenuReg.DIY_WORKBENCH.get(), DIYWorkbenchScreen::new);
+        public static void onRegisterMenuScreens(final net.neoforged.neoforge.client.event.RegisterMenuScreensEvent event) {
+            event.register(TDRegistry.MenuReg.DIY_WORKBENCH.get(), DIYWorkbenchScreen::new);
         }
 
         @SubscribeEvent
@@ -150,7 +145,7 @@ public final class TDClientEvents {
             SlotMachineBER.addSpecialModels(set);
             TrainSetBER.addSpecialModels(set);
             // register special models
-            set.forEach(event::register);
+            set.forEach(rl -> event.register(ModelResourceLocation.standalone(rl)));
         }
     }
 }
