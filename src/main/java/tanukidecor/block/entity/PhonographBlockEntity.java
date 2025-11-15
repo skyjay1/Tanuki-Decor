@@ -152,7 +152,7 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
 
     @Override
     public boolean canPlaceItem(int pIndex, ItemStack pStack) {
-        return pStack.is(ItemTags.MUSIC_DISCS) && this.getItem(pIndex).isEmpty();
+        return pStack.has(DataComponents.JUKEBOX_PLAYABLE) && this.getItem(pIndex).isEmpty();
     }
 
     @Override
@@ -162,7 +162,7 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
 
     public void setItem(int pSlot, ItemStack pStack) {
         super.setItem(pSlot, pStack);
-        if (pStack.is(ItemTags.MUSIC_DISCS) && this.level != null) {
+        if (pStack.has(DataComponents.JUKEBOX_PLAYABLE) && this.level != null) {
             this.getInventory().set(pSlot, pStack);
             this.setHasRecordBlockState(null, true);
             this.startPlaying();
