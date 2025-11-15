@@ -51,6 +51,7 @@ public final class TDClientEvents {
         @SubscribeEvent
         public static void onRegisterMenuScreens(final net.neoforged.neoforge.client.event.RegisterMenuScreensEvent event) {
             event.register(TDRegistry.MenuReg.DIY_WORKBENCH.get(), DIYWorkbenchScreen::new);
+            ClientRecipeCollections.registerSearchTrees();
         }
 
         @SubscribeEvent
