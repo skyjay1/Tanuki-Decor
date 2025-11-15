@@ -182,11 +182,11 @@ public class RotatingWideBlock extends Block implements SimpleWaterloggedBlock, 
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (!pLevel.isClientSide && pPlayer.isCreative()) {
             preventCreativeDropFromLeftPart(pLevel, pPos, pState, pPlayer);
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
     @Override

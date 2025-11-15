@@ -98,11 +98,11 @@ public class BirdcageBlock extends RotatingTallBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
             this.getCagedEntity(pLevel, pState, pPos).ifPresent(e -> extractCagedEntity(e, pLevel, pState, pPos, pPlayer));
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
     @Override
