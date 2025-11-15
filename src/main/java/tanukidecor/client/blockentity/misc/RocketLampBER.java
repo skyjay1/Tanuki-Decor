@@ -23,7 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.RocketLampBlockEntity;
 import tanukidecor.block.misc.RocketLampBlock;

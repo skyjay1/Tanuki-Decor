@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
@@ -67,7 +66,7 @@ public class DIYWorkbenchBlock extends RotatingTallBlock implements EntityBlock 
         // open menu
         if(!pPlayer.isShiftKeyDown() && pPlayer instanceof ServerPlayer serverPlayer
             && pLevel.getBlockEntity(pos) instanceof MenuProvider menuProvider) {
-            NetworkHooks.openScreen(serverPlayer, menuProvider, buf -> buf.writeBlockPos(pos));
+            serverPlayer.openMenu(menuProvider, pos);
             return InteractionResult.SUCCESS;
         }
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);

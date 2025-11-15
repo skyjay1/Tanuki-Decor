@@ -19,7 +19,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.PhonographBlockEntity;
 import tanukidecor.block.misc.PhonographBlock;

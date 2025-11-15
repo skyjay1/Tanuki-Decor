@@ -33,7 +33,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.RotatingTallBlock;
 import tanukidecor.block.misc.PhonographBlock;

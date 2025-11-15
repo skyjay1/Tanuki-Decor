@@ -14,12 +14,12 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
 import tanukidecor.recipe.DIYRecipe;
@@ -34,7 +34,7 @@ public class TDJeiPlugin implements IModPlugin {
 
     public static final ResourceLocation UID = new ResourceLocation(TanukiDecor.MODID, "jei");
 
-    private static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = ForgeRegistries.ITEMS.tags().createTagKey(new ResourceLocation(TanukiDecor.MODID, "diy_blacklist"));
+    private static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "diy_blacklist"));
 
     @Override
     public ResourceLocation getPluginUid() {

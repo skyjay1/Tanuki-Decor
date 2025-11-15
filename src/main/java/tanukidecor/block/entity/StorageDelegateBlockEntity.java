@@ -18,8 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.block.storage.IDelegateProvider;
@@ -58,18 +56,6 @@ public class StorageDelegateBlockEntity extends BlockEntity implements Container
 
     public Optional<BlockEntity> getOptionalDelegate() {
         return Optional.ofNullable(getDelegate());
-    }
-
-    //// CAPABILITY ////
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        final BlockEntity blockEntity = getDelegate();
-        if(blockEntity != null) {
-            return blockEntity.getCapability(cap, side);
-        }
-        return super.getCapability(cap, side);
     }
 
     //// MENU PROVIDER ////
