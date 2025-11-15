@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.event.RenderGuiEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import tanukidecor.TDRegistry;
@@ -36,9 +36,9 @@ public final class TDClientEvents {
     public static final class ForgeHandler {
 
         @SubscribeEvent
-        public static void onRenderOverlay(final RenderGuiEvent.Pre event) {
+        public static void onRenderOverlay(final RenderGuiLayerEvent.Pre event) {
             final Player player = Minecraft.getInstance().player;
-            if (event.getGuiLayer().equals(VanillaGuiLayers.MOUNT_HEALTH)
+            if (VanillaGuiLayers.VEHICLE_HEALTH.equals(event.getName())
                     && player != null && player.isPassenger()
                     && ISeatProvider.IS_SEAT_ENTITY.test(player.getVehicle())) {
                 event.setCanceled(true);
