@@ -114,15 +114,15 @@ public class HourglassBlockEntity extends BlockEntity {
     private static final String KEY_TIMER_MAX = "TimerMax";
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.loadAdditional(pTag, pLookup);
         this.timer = pTag.getInt(KEY_TIMER);
         this.maxTimer = pTag.getInt(KEY_TIMER_MAX);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.saveAdditional(pTag, pLookup);
         pTag.putInt(KEY_TIMER, this.timer);
         pTag.putInt(KEY_TIMER_MAX, this.maxTimer);
     }

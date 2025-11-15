@@ -118,16 +118,16 @@ public class GlobeBlockEntity extends BlockEntity {
     private static final String KEY_TARGET_DIRECTION = "Direction";
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.loadAdditional(pTag, pLookup);
         this.startTime = pTag.getLong(KEY_TIMESTAMP);
         this.active = this.startTime > 0;
         this.targetDirection = Direction.byName(pTag.getString(KEY_TARGET_DIRECTION));
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.saveAdditional(pTag, pLookup);
         pTag.putLong(KEY_TIMESTAMP, this.startTime);
         pTag.putString(KEY_TARGET_DIRECTION, this.targetDirection.getSerializedName());
     }

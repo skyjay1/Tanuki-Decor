@@ -161,8 +161,8 @@ public class SlotMachineBlockEntity extends BlockEntity {
     private static final String KEY_SLOT_ROTATIONS = "SlotRotations";
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.loadAdditional(pTag, pLookup);
         this.startTime = pTag.getLong(KEY_TIMESTAMP);
         this.active = this.startTime > 0;
         if (pTag.contains(KEY_SLOT_ROTATIONS, Tag.TAG_COMPOUND)) {
@@ -172,8 +172,8 @@ public class SlotMachineBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.saveAdditional(pTag, pLookup);
         pTag.putLong(KEY_TIMESTAMP, this.startTime);
         writeSlotRotations(pTag);
     }

@@ -51,14 +51,14 @@ public class NewtonsCradleBlockEntity extends ClockBlockEntity {
     private static final String KEY_SILENT = "Silent";
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.saveAdditional(pTag, pLookup);
         pTag.putBoolean(KEY_SILENT, this.silent);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.loadAdditional(pTag, pLookup);
         this.silent = pTag.getBoolean(KEY_SILENT);
     }
 }

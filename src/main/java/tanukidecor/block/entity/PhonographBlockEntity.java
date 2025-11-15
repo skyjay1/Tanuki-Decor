@@ -231,16 +231,16 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
     private static final String KEY_TICK_COUNT = "TickCount";
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.loadAdditional(pTag, pLookup);
         this.isPlaying = pTag.getBoolean(KEY_IS_PLAYING);
         this.recordStartedTick = pTag.getLong(KEY_RECORD_STARTED_TICK);
         this.tickCount = pTag.getLong(KEY_TICK_COUNT);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.saveAdditional(pTag, pLookup);
         pTag.putBoolean(KEY_IS_PLAYING, this.isPlaying);
         pTag.putLong(KEY_RECORD_STARTED_TICK, this.recordStartedTick);
         pTag.putLong(KEY_TICK_COUNT, this.tickCount);

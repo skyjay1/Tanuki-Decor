@@ -169,19 +169,19 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
     /// / NBT ////
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.saveAdditional(pTag, pLookup);
         if (!this.trySaveLootTable(pTag)) {
-            ContainerHelper.saveAllItems(pTag, this.inventory);
+            ContainerHelper.saveAllItems(pTag, this.inventory, pLookup);
         }
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.loadAdditional(pTag, pLookup);
         this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         if (!this.tryLoadLootTable(pTag)) {
-            ContainerHelper.loadAllItems(pTag, this.inventory);
+            ContainerHelper.loadAllItems(pTag, this.inventory, pLookup);
         }
     }
 }
