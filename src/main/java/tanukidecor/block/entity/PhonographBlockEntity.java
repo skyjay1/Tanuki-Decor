@@ -10,6 +10,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
@@ -211,7 +212,15 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
         this.recordStartedTick = this.tickCount;
         this.isPlaying = true;
         this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
-        this.level.levelEvent(null, LevelEvent.SOUND_PLAY_JUKEBOX_SONG, this.getBlockPos(), Item.getId(this.getFirstItem().getItem()));
+        // In 1.21.1, we need to pass the JukeboxPlayable song holder ID
+        ItemStack record = this.getFirstItem();
+        JukeboxPlayable playable = record.get(DataComponents.JUKEBOX_PLAYABLE);
+        if (playable != null && this.level.registryAccess() != null) {
+            playable.song().unwrap(this.level.registryAccess()).ifPresent(holder -> {
+                this.level.levelEvent(null, LevelEvent.SOUND_PLAY_JUKEBOX_SONG, this.getBlockPos(), 
+                    this.level.registryAccess().registryOrThrow(Registries.JUKEBOX_SONG).getId(holder.value()));
+            });
+        }
         this.setChanged();
     }
 

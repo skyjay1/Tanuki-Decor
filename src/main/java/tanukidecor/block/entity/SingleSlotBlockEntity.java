@@ -204,7 +204,10 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
     @Override
     protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pLookup) {
         super.saveAdditional(pTag, pLookup);
-        pTag.put(getItemNbtKey(), getInventory().get(0).save(pLookup));
+        ItemStack stack = getInventory().get(0);
+        if (!stack.isEmpty()) {
+            pTag.put(getItemNbtKey(), stack.save(pLookup));
+        }
     }
 
     protected String getItemNbtKey() {
