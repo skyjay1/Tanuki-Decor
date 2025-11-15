@@ -34,11 +34,11 @@ public class TrainSetBlockEntity extends BlockEntity {
         if (!blockEntity.isSilent()) {
             // play ambient sound
             if (time % 12 == 0) {
-                level.playSound(null, blockPos, SoundEvents.GRASS_HIT.value(), SoundSource.BLOCKS, 0.25F, 1.5F + level.getRandom().nextFloat() * 0.5F);
+                level.playSound(null, blockPos, SoundEvents.GRASS_HIT, SoundSource.BLOCKS, 0.25F, 1.5F + level.getRandom().nextFloat() * 0.5F);
             }
             // play whistle
             if (level.getRandom().nextInt(600) == 0) {
-                level.playSound(null, blockPos, SoundEvents.NOTE_BLOCK_FLUTE.value(), SoundSource.BLOCKS, 0.5F, 0.95F + level.getRandom().nextFloat() * 0.1F);
+                level.playSound(null, blockPos, SoundEvents.NOTE_BLOCK_FLUTE, SoundSource.BLOCKS, 0.5F, 0.95F + level.getRandom().nextFloat() * 0.1F);
             }
         }
     }
