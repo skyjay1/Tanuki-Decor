@@ -96,7 +96,7 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayBlockEntity> {
     protected boolean shouldRenderNameTag(final BlockEntity blockEntity) {
         final Minecraft mc = Minecraft.getInstance();
         final Vec3 pos = Vec3.atCenterOf(blockEntity.getBlockPos());
-        final double distance = mc.player.getBlockReach();
+        final double distance = mc.player.blockInteractionRange();
         if (this.entityRenderDispatcher.distanceToSqr(pos.x, pos.y, pos.z) < (distance * distance)
                 && mc.hitResult != null
                 && mc.hitResult.getType() == HitResult.Type.BLOCK) {
@@ -128,7 +128,8 @@ public class DisplayCaseBER implements BlockEntityRenderer<DisplayBlockEntity> {
 
     @Override
     public AABB getRenderBoundingBox(DisplayBlockEntity blockEntity) {
-        return new AABB(blockEntity.getBlockPos().offset(-1, 0, -1), blockEntity.getBlockPos().offset(1, 1, 1));
+        BlockPos pos = blockEntity.getBlockPos();
+        return new AABB(pos.offset(-1, 0, -1).getCenter(), pos.offset(1, 1, 1).getCenter());
     }
 
 }

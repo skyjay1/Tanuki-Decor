@@ -140,6 +140,6 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
 
     @Override
     public AABB getRenderBoundingBox(SlotMachineBlockEntity blockEntity) {
-        return INFINITE_EXTENT_AABB.inflate(1);
+        return AABB.INFINITE;
     }
 }

@@ -32,7 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.RotatingTallBlock;
-import tanukidecor.mixin.PlayerAccessor;
+import tanukidecor.util.ReflectionHelper;
 
 import java.util.List;
 import java.util.Optional;
@@ -131,15 +131,15 @@ public class BirdcageBlock extends RotatingTallBlock {
         }
         // attempt to insert entity from shoulders, if any
         final boolean hasShoulderEntity = !pPlayer.getShoulderEntityLeft().isEmpty() || !pPlayer.getShoulderEntityRight().isEmpty();
-        if (hasShoulderEntity && pPlayer instanceof PlayerAccessor accessor) {
+        if (hasShoulderEntity) {
             CompoundTag leftShoulder = pPlayer.getShoulderEntityLeft();
             if (!leftShoulder.isEmpty() && spawnFromShoulderEntity(pPlayer, leftShoulder, cagePos).isPresent()) {
-                accessor.tanukidecor$setShoulderEntityLeft(new CompoundTag());
+                ReflectionHelper.setShoulderEntityLeft(pPlayer, new CompoundTag());
                 return InteractionResult.SUCCESS;
             }
             CompoundTag rightShoulder = pPlayer.getShoulderEntityRight();
             if (!rightShoulder.isEmpty() && spawnFromShoulderEntity(pPlayer, rightShoulder, cagePos).isPresent()) {
-                accessor.tanukidecor$setShoulderEntityRight(new CompoundTag());
+                ReflectionHelper.setShoulderEntityRight(pPlayer, new CompoundTag());
                 return InteractionResult.SUCCESS;
             }
         }

@@ -41,7 +41,7 @@ public class SlotMachineBlock extends RotatingTallBlock implements EntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         BlockPos pos = getDelegatePos(pState, pPos);
-        return SlotMachineBlockEntity.use(pState, pLevel, pos, pPlayer, pHitResult);
+        return SlotMachineBlockEntity.use(pState, pLevel, pos, pPlayer, net.minecraft.world.InteractionHand.MAIN_HAND, pHitResult);
     }
 
     /// / BLOCK ENTITY ////
