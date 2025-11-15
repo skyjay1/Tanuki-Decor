@@ -6,6 +6,7 @@
 
 package tanukidecor.block.entity;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,12 +31,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.slf4j.Logger;
 import tanukidecor.block.RotatingTallBlock;
 import tanukidecor.block.misc.PhonographBlock;
 
 import javax.annotation.Nullable;
 
 public class PhonographBlockEntity extends SingleSlotBlockEntity {
+
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     protected boolean isPlaying;
     protected long recordStartedTick;
@@ -163,9 +167,15 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
     public void setItem(int pSlot, ItemStack pStack) {
         super.setItem(pSlot, pStack);
         if (pStack.has(DataComponents.JUKEBOX_PLAYABLE) && this.level != null) {
-            this.getInventory().set(pSlot, pStack);
-            this.setHasRecordBlockState(null, true);
-            this.startPlaying();
+            JukeboxPlayable playable = pStack.get(DataComponents.JUKEBOX_PLAYABLE);
+            // Only start playing if we can get valid song data
+            if (playable != null && canGetSongLength(playable)) {
+                this.getInventory().set(pSlot, pStack);
+                this.setHasRecordBlockState(null, true);
+                this.startPlaying();
+            } else {
+                LOGGER.error("Cannot play record at {} - failed to retrieve song data", this.getBlockPos());
+            }
         }
     }
 
@@ -190,6 +200,13 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
 
     /// / RECORD ////
 
+    private boolean canGetSongLength(JukeboxPlayable playable) {
+        if (this.level == null) return false;
+        return playable.song()
+                .unwrap(this.level.registryAccess())
+                .isPresent();
+    }
+
     protected void startPlaying() {
         this.recordStartedTick = this.tickCount;
         this.isPlaying = true;
@@ -206,11 +223,27 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
     }
 
     protected long getRecordLengthInTicks(final JukeboxPlayable playable) {
-        return playable.lengthInTicks();
+        if (this.level == null) {
+            LOGGER.error("Attempted to get record length with null level at position {}", this.getBlockPos());
+            return 0L;
+        }
+        
+        return playable.song()
+                .unwrap(this.level.registryAccess())
+                .map(holder -> {
+                    float lengthInSeconds = holder.value().lengthInSeconds();
+                    return (long)(lengthInSeconds * 20.0F);
+                })
+                .orElse(0L);
     }
 
     protected boolean shouldRecordStopPlaying(JukeboxPlayable playable) {
-        return this.tickCount >= this.recordStartedTick + getRecordLengthInTicks(playable) + 20L;
+        long recordLength = getRecordLengthInTicks(playable);
+        if (recordLength <= 0) {
+            LOGGER.error("Invalid record length at {}, stopping playback", this.getBlockPos());
+            return true; // Stop playing if we can't get valid length
+        }
+        return this.tickCount >= this.recordStartedTick + recordLength + 20L;
     }
 
     public boolean isRecordPlaying() {
