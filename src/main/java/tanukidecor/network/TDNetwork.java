@@ -12,7 +12,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import tanukidecor.TanukiDecor;
 
-@EventBusSubscriber(modid = TanukiDecor.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = TanukiDecor.MODID)
 public final class TDNetwork {
 
     private TDNetwork() {}
