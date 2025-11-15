@@ -122,7 +122,7 @@ public class BirdcageBlock extends RotatingTallBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         if(pPlayer.isShiftKeyDown() || pHand != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }

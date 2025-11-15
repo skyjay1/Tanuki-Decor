@@ -60,7 +60,7 @@ public class HourglassBlock extends Block implements SimpleWaterloggedBlock, Ent
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         if(pLevel.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
@@ -68,7 +68,7 @@ public class HourglassBlock extends Block implements SimpleWaterloggedBlock, Ent
             blockEntity.startTimer(HourglassBlockEntity.TIME);
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return super.use(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     @Override

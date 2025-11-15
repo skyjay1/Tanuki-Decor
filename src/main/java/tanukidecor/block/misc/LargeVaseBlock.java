@@ -68,9 +68,9 @@ public class LargeVaseBlock extends TallBlock implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
         BlockPos pos = getDelegatePos(pState, pPos);
-        return SingleSlotBlockEntity.use(pState, pLevel, pos, pPlayer, pHand, pHit);
+        return SingleSlotBlockEntity.useItemOn(pStack, pState, pLevel, pos, pPlayer, pHand, pHitResult);
     }
 
     @Override

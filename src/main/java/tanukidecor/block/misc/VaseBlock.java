@@ -76,8 +76,8 @@ public class VaseBlock extends Block implements SimpleWaterloggedBlock, EntityBl
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        return SingleSlotBlockEntity.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+        return SingleSlotBlockEntity.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
     }
 
     @Override

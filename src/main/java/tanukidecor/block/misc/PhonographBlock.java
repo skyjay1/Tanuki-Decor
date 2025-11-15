@@ -67,9 +67,9 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         BlockPos pos = getDelegatePos(pState, pPos);
-        return PhonographBlockEntity.use(pState, pLevel, pos, pPlayer, pHand, pHit);
+        return PhonographBlockEntity.use(pState, pLevel, pos, pPlayer, pHitResult);
     }
 
     @Override

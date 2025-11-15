@@ -61,7 +61,7 @@ public class GorgeousBedBlock extends RotatingMultiblock implements IBedProvider
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         return useBed(pState, pLevel, pPos, pPlayer);
     }
 

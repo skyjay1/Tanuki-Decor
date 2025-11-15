@@ -34,12 +34,12 @@ public class PianoBlock extends RotatingMultiblock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         if(!pPlayer.isShiftKeyDown() && pLevel.getBlockState(pPos.above()).isAir()) {
             playNote(pLevel, pPos, pState, pPlayer);
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return super.use(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     protected void playNote(Level level, BlockPos blockPos, BlockState blockState, Player player) {

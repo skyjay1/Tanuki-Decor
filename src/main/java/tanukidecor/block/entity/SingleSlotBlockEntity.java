@@ -20,6 +20,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -46,20 +47,20 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
 
     //// METHODS ////
 
-    public static InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public static ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         // validate not sneaking
         if(player.isShiftKeyDown()) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         // validate side
         if (level.isClientSide()) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
         // validate block entity
         if(!(level.getBlockEntity(pos) instanceof SingleSlotBlockEntity blockEntity)) {
-            return InteractionResult.FAIL;
+            return ItemInteractionResult.FAIL;
         }
-        ItemStack heldItem = player.getItemInHand(hand);
+        ItemStack heldItem = itemStack;
         ItemStack storedItem = blockEntity.getItem(0);
         // remove item from block
         if(heldItem.isEmpty() && !storedItem.isEmpty()) {
@@ -73,7 +74,7 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
             }
             // play sound
             level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
         // insert item, if any
         else if(!heldItem.isEmpty() &&
@@ -87,13 +88,13 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
             blockEntity.setItem(0, itemStack);
             // play sound
             level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         } else if(!heldItem.isEmpty()) {
             // play sound
             //level.playSound(null, pos, SoundEvents.STONE_HIT, SoundSource.BLOCKS, 1.0F, 0.8F + 0.4F * player.getRandom().nextFloat());
-            return InteractionResult.FAIL;
+            return ItemInteractionResult.FAIL;
         }
-        return InteractionResult.CONSUME;
+        return ItemInteractionResult.CONSUME;
     }
 
     /**

@@ -37,9 +37,9 @@ public class MiniFigureBlock extends RotatingBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         if(pPlayer.isShiftKeyDown()) {
-            return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+            return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
         }
         // determine sounds to play
         SoundEvent sqeak = getSqueakSound(pLevel, pState, pPos);

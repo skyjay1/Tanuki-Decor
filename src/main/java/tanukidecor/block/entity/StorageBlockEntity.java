@@ -59,12 +59,11 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
      * @param level the level
      * @param pos the block position
      * @param player the player
-     * @param hand the hand
      * @param hitResult the hit result
      * @param openMenuSound the sound to play when opening the menu
      * @return if the menu was opened
      */
-    public static InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, SoundEvent openMenuSound) {
+    public static InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos pos, Player player, BlockHitResult hitResult, SoundEvent openMenuSound) {
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }

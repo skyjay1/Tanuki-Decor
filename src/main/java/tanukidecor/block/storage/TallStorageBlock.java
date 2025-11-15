@@ -48,8 +48,8 @@ public class TallStorageBlock extends RotatingTallBlock implements EntityBlock {
     //// CONTAINER ////
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        return StorageBlockEntity.use(pState, pLevel, pPos, pPlayer, pHand, pHit, this.openSound);
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        return StorageBlockEntity.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult, this.openSound);
     }
 
     @Override

@@ -60,9 +60,9 @@ public class PlasmaBallBlock extends TallBlock implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         if(pPlayer.isShiftKeyDown() || !pPlayer.getItemInHand(pHand).isEmpty()) {
-            return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+            return super.use(pState, pLevel, pPos, pPlayer, pHitResult);
         }
         if(!pLevel.isClientSide()) {
             // update state

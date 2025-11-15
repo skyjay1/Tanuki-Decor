@@ -63,9 +63,9 @@ public class HandcartBlock extends RotatingWideBlock implements EntityBlock, IDi
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         BlockPos pos = getDelegatePos(pState, pPos);
-        return SingleSlotBlockEntity.use(pState, pLevel, pos, pPlayer, pHand, pHit);
+        return SingleSlotBlockEntity.use(pState, pLevel, pos, pPlayer, pHitResult);
     }
 
     @Override
