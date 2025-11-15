@@ -25,7 +25,7 @@ import tanukidecor.block.entity.ClockBlockEntity;
 
 public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
 
-    public static final ResourceLocation EMPTY = ResourceLocation.fromNamespaceAndPath("block/air");
+    public static final ResourceLocation EMPTY = ResourceLocation.fromNamespaceAndPath("minecraft", "block/air");
     public static final Vec3 ROOT_POSITION = new Vec3(8.0D / 16.0D, 8.0D / 16.0D, 0);
     public static final Vec3 ROOT_PIVOT_POINT = new Vec3(8.0D / 16.0D, 0, 8.0D / 16.0D);
     public static final Vec3 HANDS_POSITION = new Vec3(-8.0D / 16.0D, -8.0D / 16.0D, 0);
