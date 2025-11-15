@@ -23,13 +23,14 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.extensions.IBlockExtension;
 import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.util.MultiblockHandler;
 
 import javax.annotation.Nullable;
 
 
-public class DoubleBedBlock extends RotatingMultiblock implements IBedProvider {
+public class DoubleBedBlock extends RotatingMultiblock implements IBedProvider, IBlockExtension {
 
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
@@ -45,6 +46,11 @@ public class DoubleBedBlock extends RotatingMultiblock implements IBedProvider {
     }
 
     /// / BED ////
+
+    @Override
+    public boolean isBed(BlockState state, BlockGetter level, BlockPos pos, @Nullable LivingEntity sleeper) {
+        return true;
+    }
 
     @Override
     public boolean isHeadOfBed(BlockState blockState) {
