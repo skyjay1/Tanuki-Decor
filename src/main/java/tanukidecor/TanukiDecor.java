@@ -8,6 +8,7 @@ package tanukidecor;
 
 import com.mojang.logging.LogUtils;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForgeConfig;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -27,15 +28,34 @@ public class TanukiDecor {
     public static final TDConfig CONFIG = new TDConfig(CONFIG_BUILDER);
 
     public TanukiDecor(ModContainer container) {
+        IEventBus modEventBus = container.getEventBus();
         // register common config
         container.registerConfig(ModConfig.Type.COMMON, CONFIG_BUILDER.build());
         // register network
         TDNetwork.register();
         // register registry objects
-        TDRegistry.register();
+        TDRegistry.register(modEventBus);
+        // register mod lifecycle events
+        modEventBus.addListener(this::commonSetup);
         // register client events
         if (FMLEnvironment.dist == Dist.CLIENT) {
             tanukidecor.client.TDClientEvents.register();
+            modEventBus.addListener(this::registerEntityRenderers);
+            modEventBus.addListener(this::registerAdditionalModels);
         }
+    }
+
+    private void commonSetup(final net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            net.minecraft.client.gui.screens.MenuScreens.register(TDRegistry.MenuReg.DIY_WORKBENCH.get(), tanukidecor.client.menu.DIYWorkbenchScreen::new);
+        });
+    }
+
+    private void registerEntityRenderers(final net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers event) {
+        // This will be implemented by calling the static methods from TDClientEvents
+    }
+
+    private void registerAdditionalModels(final net.neoforged.neoforge.client.event.ModelEvent.RegisterAdditional event) {
+        // This will be implemented by calling the static methods from TDClientEvents
     }
 }

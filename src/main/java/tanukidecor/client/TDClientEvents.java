@@ -10,14 +10,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.common.NeoForge;
 import tanukidecor.TDRegistry;
 import tanukidecor.TDRegistry.BlockEntityReg;
 import tanukidecor.block.seat.ISeatProvider;
@@ -31,17 +31,16 @@ import java.util.Set;
 public final class TDClientEvents {
 
     public static void register() {
-        FMLJavaModLoadingContext.get().getModEventBus().register(ModHandler.class);
-        MinecraftForge.EVENT_BUS.register(ForgeHandler.class);
+        NeoForge.EVENT_BUS.register(ForgeHandler.class);
         ClientRecipeCollections.register();
     }
 
     public static final class ForgeHandler {
 
         @SubscribeEvent
-        public static void onRenderOverlay(final RenderGuiOverlayEvent.Pre event) {
+        public static void onRenderOverlay(final RenderGuiEvent.Pre event) {
             final Player player = Minecraft.getInstance().player;
-            if(event.getOverlay().id().equals(VanillaGuiOverlay.MOUNT_HEALTH.id())
+            if(event.getName().equals(VanillaGuiLayers.MOUNT_HEALTH)
                     && player != null && player.isPassenger()
                     && ISeatProvider.IS_SEAT_ENTITY.test(player.getVehicle())) {
                 event.setCanceled(true);

@@ -7,23 +7,16 @@
 package tanukidecor.network;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import tanukidecor.TanukiDecor;
 
-import java.util.Optional;
-
 public final class TDNetwork {
-
-    private static final String PROTOCOL_VERSION = "2";
-    public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(TanukiDecor.MODID, "channel"),
-            () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 
     private TDNetwork() {}
 
     public static void register() {
-        int messageId = 0;
-        CHANNEL.registerMessage(messageId++, ServerBoundSelectDIYRecipePacket.class, ServerBoundSelectDIYRecipePacket::toBytes, ServerBoundSelectDIYRecipePacket::fromBytes, ServerBoundSelectDIYRecipePacket::handlePacket, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        // Network registration is now done via RegisterPayloadHandlersEvent in NeoForge 1.21+
+        // This method can be kept for compatibility but the actual registration should be done in an event handler
     }
 }
