@@ -82,74 +82,53 @@ public class PlasmaBallBER implements BlockEntityRenderer<PlasmaBallBlockEntity>
         PoseStack.Pose lastPose = poseStack.last();
         Matrix4f matrix4f = lastPose.pose();
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder buffer = tesselator.getBuilder();
 
         // draw front side
-        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        buffer.vertex(matrix4f, start.x() + dsize, start.y() - dsize, start.z() + dsize)
-                .color(startColor.x(), startColor.y(), startColor.z(), startColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, start.x() + dsize, start.y() + dsize, start.z() + dsize)
-                .color(startColor.x(), startColor.y(), startColor.z(), startColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, end.x() + dsize, end.y() + dsize, end.z() + dsize)
-                .color(endColor.x(), endColor.y(), endColor.z(), endColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, end.x() + dsize, end.y() - dsize, end.z() + dsize)
-                .color(endColor.x(), endColor.y(), endColor.z(), endColor.w())
-                .endVertex();
-        // end vertices
-        tesselator.end();
+        BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        buffer.addVertex(matrix4f, start.x() + dsize, start.y() - dsize, start.z() + dsize)
+                .setColor(startColor.x(), startColor.y(), startColor.z(), startColor.w());
+        buffer.addVertex(matrix4f, start.x() + dsize, start.y() + dsize, start.z() + dsize)
+                .setColor(startColor.x(), startColor.y(), startColor.z(), startColor.w());
+        buffer.addVertex(matrix4f, end.x() + dsize, end.y() + dsize, end.z() + dsize)
+                .setColor(endColor.x(), endColor.y(), endColor.z(), endColor.w());
+        buffer.addVertex(matrix4f, end.x() + dsize, end.y() - dsize, end.z() + dsize)
+                .setColor(endColor.x(), endColor.y(), endColor.z(), endColor.w());
+        BufferUploader.drawWithShader(buffer.buildOrThrow());
 
         // draw back side
-        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        buffer.vertex(matrix4f, end.x() - dsize, end.y() - dsize, end.z() - dsize)
-                .color(endColor.x(), endColor.y(), endColor.z(), endColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, end.x() - dsize, end.y() + dsize, end.z() - dsize)
-                .color(endColor.x(), endColor.y(), endColor.z(), endColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, start.x() - dsize, start.y() + dsize, start.z() - dsize)
-                .color(startColor.x(), startColor.y(), startColor.z(), startColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, start.x() - dsize, start.y() - dsize, start.z() - dsize)
-                .color(startColor.x(), startColor.y(), startColor.z(), startColor.w())
-                .endVertex();
-        // end vertices
-        tesselator.end();
+        buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        buffer.addVertex(matrix4f, end.x() - dsize, end.y() - dsize, end.z() - dsize)
+                .setColor(endColor.x(), endColor.y(), endColor.z(), endColor.w());
+        buffer.addVertex(matrix4f, end.x() - dsize, end.y() + dsize, end.z() - dsize)
+                .setColor(endColor.x(), endColor.y(), endColor.z(), endColor.w());
+        buffer.addVertex(matrix4f, start.x() - dsize, start.y() + dsize, start.z() - dsize)
+                .setColor(startColor.x(), startColor.y(), startColor.z(), startColor.w());
+        buffer.addVertex(matrix4f, start.x() - dsize, start.y() - dsize, start.z() - dsize)
+                .setColor(startColor.x(), startColor.y(), startColor.z(), startColor.w());
+        BufferUploader.drawWithShader(buffer.buildOrThrow());
 
         // draw bottom side
-        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        buffer.vertex(matrix4f, start.x() - dsize, start.y() - dsize, start.z() - dsize)
-                .color(startColor.x(), startColor.y(), startColor.z(), startColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, start.x() + dsize, start.y() - dsize, start.z() + dsize)
-                .color(startColor.x(), startColor.y(), startColor.z(), startColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, end.x() + dsize, end.y() - dsize, end.z() + dsize)
-                .color(endColor.x(), endColor.y(), endColor.z(), endColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, end.x() - dsize, end.y() - dsize, end.z() - dsize)
-                .color(endColor.x(), endColor.y(), endColor.z(), endColor.w())
-                .endVertex();
-        // end vertices
-        tesselator.end();
+        buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        buffer.addVertex(matrix4f, start.x() - dsize, start.y() - dsize, start.z() - dsize)
+                .setColor(startColor.x(), startColor.y(), startColor.z(), startColor.w());
+        buffer.addVertex(matrix4f, start.x() + dsize, start.y() - dsize, start.z() + dsize)
+                .setColor(startColor.x(), startColor.y(), startColor.z(), startColor.w());
+        buffer.addVertex(matrix4f, end.x() + dsize, end.y() - dsize, end.z() + dsize)
+                .setColor(endColor.x(), endColor.y(), endColor.z(), endColor.w());
+        buffer.addVertex(matrix4f, end.x() - dsize, end.y() - dsize, end.z() - dsize)
+                .setColor(endColor.x(), endColor.y(), endColor.z(), endColor.w());
+        BufferUploader.drawWithShader(buffer.buildOrThrow());
 
         // draw top side
-        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        buffer.vertex(matrix4f, end.x() - dsize, end.y() + dsize, end.z() - dsize)
-                .color(endColor.x(), endColor.y(), endColor.z(), endColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, end.x() + dsize, end.y() + dsize, end.z() + dsize)
-                .color(endColor.x(), endColor.y(), endColor.z(), endColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, start.x() + dsize, start.y() + dsize, start.z() + dsize)
-                .color(startColor.x(), startColor.y(), startColor.z(), startColor.w())
-                .endVertex();
-        buffer.vertex(matrix4f, start.x() - dsize, start.y() + dsize, start.z() - dsize)
-                .color(startColor.x(), startColor.y(), startColor.z(), startColor.w())
-                .endVertex();
-        // end vertices
-        tesselator.end();
+        buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        buffer.addVertex(matrix4f, end.x() - dsize, end.y() + dsize, end.z() - dsize)
+                .setColor(endColor.x(), endColor.y(), endColor.z(), endColor.w());
+        buffer.addVertex(matrix4f, end.x() + dsize, end.y() + dsize, end.z() + dsize)
+                .setColor(endColor.x(), endColor.y(), endColor.z(), endColor.w());
+        buffer.addVertex(matrix4f, start.x() + dsize, start.y() + dsize, start.z() + dsize)
+                .setColor(startColor.x(), startColor.y(), startColor.z(), startColor.w());
+        buffer.addVertex(matrix4f, start.x() - dsize, start.y() + dsize, start.z() - dsize)
+                .setColor(startColor.x(), startColor.y(), startColor.z(), startColor.w());
+        BufferUploader.drawWithShader(buffer.buildOrThrow());
     }
 }
