@@ -8,9 +8,11 @@ package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.JukeboxPlayable;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.BlockGetter;
@@ -69,7 +71,7 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         BlockPos pos = getDelegatePos(pState, pPos);
-        return PhonographBlockEntity.use(pState, pLevel, pos, pPlayer, pHitResult);
+        return PhonographBlockEntity.use(pState, pLevel, pos, pPlayer, InteractionHand.MAIN_HAND, pHitResult);
     }
 
     @Override
@@ -135,7 +137,8 @@ public class PhonographBlock extends RotatingTallBlock implements EntityBlock {
             ItemStack stack = blockEntity.getFirstItem();
             JukeboxPlayable playable = stack.get(DataComponents.JUKEBOX_PLAYABLE);
             if (playable != null) {
-                return playable.comparatorOutput();
+                // Return signal strength based on whether a record is present
+                return 15;
             }
         }
         return 0;
