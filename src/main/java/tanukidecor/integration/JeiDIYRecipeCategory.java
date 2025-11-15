@@ -16,7 +16,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -54,7 +54,7 @@ public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, DIYRecipe recipe, IFocusGroup focuses) {
-        final Optional<RegistryAccess> oRegistryAccess = TDJeiPlugin.getClientRegistryAccess();
+        final Optional<HolderLookup.Provider> oRegistryAccess = TDJeiPlugin.getClientRegistryAccess();
         if (oRegistryAccess.isEmpty()) {
             return;
         }
