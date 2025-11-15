@@ -549,10 +549,6 @@ public final class TDRegistry {
 
         private static final List<DeferredHolder<Item, Item>> ALL_ITEMS = new ArrayList<>();
 
-        private static void register() {
-            ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        }
-
         /**
          * Creates a registry object for a block item and adds it to the mod creative tab
          * @param block the block
@@ -577,14 +573,9 @@ public final class TDRegistry {
 
     public static final class CreativeTabReg {
 
-        private static void register() {
-            CREATIVE_MODE_TABS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        }
-
-        public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_MODE_TABS.register("tab", () ->
-                CreativeModeTab.builder()
+        public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CREATIVE_MODE_TAB = CREATIVE_MODE_TABS.register("tab", () -> CreativeModeTab.builder()
                         .icon(Suppliers.memoize(() -> new ItemStack(BlockReg.BLUE_BENCH.get())))
-                        .title(Component.translatable(CreativeTabReg.TAB.getId().toLanguageKey("tab")))
+                        .title(Component.translatable("itemGroup." + TanukiDecor.MODID + ".tab"))
                         .withSearchBar()
                         .displayItems((parameters, output) ->
                                 output.acceptAll(ItemReg.ALL_ITEMS
@@ -597,10 +588,6 @@ public final class TDRegistry {
     }
 
     public static final class BlockEntityReg {
-
-        private static void register() {
-            BLOCK_ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
-        }
 
         // CLOCKS //
 

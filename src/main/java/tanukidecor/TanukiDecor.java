@@ -41,7 +41,7 @@ public class TanukiDecor {
         if (FMLEnvironment.dist == Dist.CLIENT) {
             tanukidecor.client.TDClientEvents.register();
             tanukidecor.client.ClientRecipeCollections.register();
-            modEventBus.addListener(this::clientSetup);
+            modEventBus.addListener(this::registerMenuScreens);
         }
     }
 
@@ -49,10 +49,8 @@ public class TanukiDecor {
         // Common setup if needed
     }
 
-    private void clientSetup(final net.neoforged.fml.event.lifecycle.FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            net.minecraft.client.gui.screens.MenuScreens.register(TDRegistry.MenuReg.DIY_WORKBENCH.get(), tanukidecor.client.menu.DIYWorkbenchScreen::new);
-            tanukidecor.client.ClientRecipeCollections.registerSearchTrees();
-        });
+    private void registerMenuScreens(final net.neoforged.neoforge.client.event.RegisterMenuScreensEvent event) {
+        event.register(TDRegistry.MenuReg.DIY_WORKBENCH.get(), tanukidecor.client.menu.DIYWorkbenchScreen::new);
+        tanukidecor.client.ClientRecipeCollections.registerSearchTrees();
     }
 }
