@@ -45,7 +45,7 @@ public class HourglassBER implements BlockEntityRenderer<HourglassBlockEntity> {
 
         final RenderType renderType = RenderType.solid();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);
-        final BakedModel model = mc.getModelManager().getModel(SAND);
+        final BakedModel model = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(SAND));
 
         // start rendering
         pPoseStack.pushPose();

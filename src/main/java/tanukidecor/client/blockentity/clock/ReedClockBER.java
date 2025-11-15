@@ -45,7 +45,7 @@ public class ReedClockBER extends ClockBER {
     public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity, MultiBufferSource bufferSource) {
         final float pendulumRotation = blockEntity.getBias() * getPendulumRotation(1.0F, 20 * Mth.DEG_TO_RAD, blockEntity.getLevel().getGameTime(), renderHelper.getPartialTick());
 
-        final BakedModel pendulum = Minecraft.getInstance().getModelManager().getModel(PENDULUM);
+        final BakedModel pendulum = Minecraft.getInstance().getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(PENDULUM));
 
         // render pendulum
         renderHelper

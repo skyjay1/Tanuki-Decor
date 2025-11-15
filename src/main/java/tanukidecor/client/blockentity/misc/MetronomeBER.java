@@ -50,7 +50,7 @@ public class MetronomeBER implements BlockEntityRenderer<MetronomeBlockEntity> {
         final Minecraft mc = Minecraft.getInstance();
         final BlockState blockState = pBlockEntity.getBlockState();
         final Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        final BakedModel pendulum = mc.getModelManager().getModel(PENDULUM);
+        final BakedModel pendulum = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(PENDULUM));
 
         final int blockSpeed = blockState.getValue(MetronomeBlock.SPEED);
         final float pendulumRotation;

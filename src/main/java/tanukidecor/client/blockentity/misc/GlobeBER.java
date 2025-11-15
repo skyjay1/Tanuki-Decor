@@ -50,7 +50,7 @@ public class GlobeBER implements BlockEntityRenderer<GlobeBlockEntity> {
 
         final RenderType renderType = RenderType.cutout();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);
-        final BakedModel globeModel = mc.getModelManager().getModel(GLOBE_MODEL);
+        final BakedModel globeModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(GLOBE_MODEL));
 
         double dx = 0.5D;
         double dy = 0.5D;

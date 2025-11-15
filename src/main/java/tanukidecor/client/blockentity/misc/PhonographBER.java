@@ -49,7 +49,7 @@ public class PhonographBER implements BlockEntityRenderer<PhonographBlockEntity>
 
         final RenderType renderType = RenderType.cutout();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);
-        final BakedModel model = mc.getModelManager().getModel(DISC);
+        final BakedModel model = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(DISC));
 
         // start rendering
         pPoseStack.pushPose();

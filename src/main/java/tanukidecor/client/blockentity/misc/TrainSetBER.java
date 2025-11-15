@@ -51,7 +51,7 @@ public class TrainSetBER implements BlockEntityRenderer<TrainSetBlockEntity> {
 
         final RenderType renderType = RenderType.cutout();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);
-        final BakedModel model = mc.getModelManager().getModel(TRAIN);
+        final BakedModel model = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(TRAIN));
 
         // start rendering
         pPoseStack.pushPose();

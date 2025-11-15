@@ -53,7 +53,7 @@ public class CuckooClockBER extends ClockBER {
         }
 
         // prepare to render
-        final BakedModel model = Minecraft.getInstance().getModelManager().getModel(CUCKOO);
+        final BakedModel model = Minecraft.getInstance().getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(CUCKOO));
         final float cuckooPercent = (dayTime % duration + renderHelper.getPartialTick()) / ((float) duration);
         // the percent of the animation to spend at the apex
         final float apex = 0.15F;

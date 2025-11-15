@@ -57,7 +57,7 @@ public class NewtonsCradleBER implements BlockEntityRenderer<NewtonsCradleBlockE
 
         // load baked models
         final Minecraft mc = Minecraft.getInstance();
-        final BakedModel ballModel = mc.getModelManager().getModel(BALL);
+        final BakedModel ballModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(BALL));
 
         final float timeFactor = Mth.PI / chimeProvider.getTickSoundInterval(blockState);
         final float maxAngle = 40.0F * Mth.DEG_TO_RAD;

@@ -56,8 +56,8 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
 
         final RenderType renderType = RenderType.cutout();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);
-        final BakedModel slotModel = mc.getModelManager().getModel(SLOT);
-        final BakedModel leverModel = mc.getModelManager().getModel(LEVER);
+        final BakedModel slotModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(SLOT));
+        final BakedModel leverModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(LEVER));
 
         double dx = 0.5D;
         double dy = 0.0D;

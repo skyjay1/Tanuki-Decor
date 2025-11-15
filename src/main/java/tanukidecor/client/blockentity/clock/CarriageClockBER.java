@@ -43,7 +43,7 @@ public class CarriageClockBER extends ClockBER {
         final float time = blockEntity.getLevel().getGameTime() + renderHelper.getPartialTick();
         final float angle = 0.00625F * time * Mth.PI;
 
-        final BakedModel gear = Minecraft.getInstance().getModelManager().getModel(GEAR);
+        final BakedModel gear = Minecraft.getInstance().getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(GEAR));
         final Vec3 gearPosition = new Vec3(-8.0D / 16.0D, -8.0D / 16.0D, 0);
 
         this.clockRenderHelper
