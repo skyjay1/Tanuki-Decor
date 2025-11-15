@@ -14,6 +14,7 @@ import net.minecraft.client.searchtree.FullTextSearchTree;
 import net.minecraft.client.searchtree.SearchTree;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -38,7 +39,7 @@ public final class ClientRecipeCollections {
 
     public static void registerSearchTrees() {
         // create a search tree (copied from Minecraft#createSearchTrees)
-        searchTree = new FullTextSearchTree<>((recipeCollection) -> recipeCollection.getRecipes().stream().flatMap((recipe) -> recipe.getResultItem(recipeCollection.registryAccess()).getTooltipLines(null, TooltipFlag.Default.NORMAL).stream()).map((component) -> ChatFormatting.stripFormatting(component.getString()).trim()).filter((s) -> !s.isEmpty()), (collection) -> collection.getRecipes().stream().map((recipe) -> BuiltInRegistries.ITEM.getKey(recipe.getResultItem(collection.registryAccess()).getItem())), DIY_RECIPE_COLLECTIONS);
+        searchTree = new FullTextSearchTree<>((recipeCollection) -> recipeCollection.getRecipes().stream().flatMap((recipe) -> recipe.value().getResultItem(recipeCollection.registryAccess()).getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.Default.NORMAL).stream()).map((component) -> ChatFormatting.stripFormatting(component.getString()).trim()).filter((s) -> !s.isEmpty()), (collection) -> collection.getRecipes().stream().map((recipe) -> BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(collection.registryAccess()).getItem())), DIY_RECIPE_COLLECTIONS);
     }
 
     public static List<RecipeCollection> searchRecipes(String query) {
@@ -72,7 +73,7 @@ public final class ClientRecipeCollections {
         DIY_RECIPE_COLLECTIONS.clear();
         // add all recipes that are not blacklisted back into the list and search tree
         for (RecipeCollection recipeCollection : recipes) {
-            if (recipeCollection.getRecipes().size() == 1 && !recipeCollection.getRecipes().get(0).getResultItem(event.getRegistryAccess()).is(TDRegistry.DIY_BLACKLIST_TAG_KEY)) {
+            if (recipeCollection.getRecipes().size() == 1 && !recipeCollection.getRecipes().get(0).value().getResultItem(event.getRegistryAccess()).is(TDRegistry.DIY_BLACKLIST_TAG_KEY)) {
                 DIY_RECIPE_COLLECTIONS.add(recipeCollection);
             }
         }
