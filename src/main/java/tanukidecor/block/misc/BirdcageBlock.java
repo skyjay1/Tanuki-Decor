@@ -7,6 +7,7 @@
 package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -56,14 +57,14 @@ public class BirdcageBlock extends RotatingTallBlock {
             box(2, 0, 2, 14, 2, 14),
             box(6.5D, 2, 6.5D, 9.5D, 16, 9.5D));
 
-    private static final TagKey<EntityType<?>> BIRDCAGE_BLACKLIST = ForgeRegistries.ENTITY_TYPES.tags().createTagKey(ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "birdcage_blacklist"));
+    private static final TagKey<EntityType<?>> BIRDCAGE_BLACKLIST = BuiltInRegistries.ENTITY_TYPE.createTag(ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "birdcage_blacklist"));
 
     private static final double CAGE_WIDTH = 12.0D / 16.0D;
     private static final double CAGE_HEIGHT = 15.0D / 16.0D;
     // entities can be caged if they are not on the blacklist, not a player, not a monster, and are the correct size
     private static final Predicate<LivingEntity> CAN_BE_CAGED = e ->
             !e.getType().is(BIRDCAGE_BLACKLIST) && !(e instanceof Player || e instanceof Monster)
-                    && e.isAlive() && !(e.getType().getDimensions().width > CAGE_WIDTH) && !(e.getType().getDimensions().height > CAGE_HEIGHT);
+                    && e.isAlive() && !(e.getType().getDimensions().width() > CAGE_WIDTH) && !(e.getType().getDimensions().height() > CAGE_HEIGHT);
 
     public BirdcageBlock(Properties pProperties) {
         super(pProperties, RotatingTallBlock.createShapeBuilder(SHAPE_UPPER, SHAPE_LOWER));
@@ -114,7 +115,7 @@ public class BirdcageBlock extends RotatingTallBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
-        if (pPlayer.isShiftKeyDown() || pHand != InteractionHand.MAIN_HAND) {
+        if (pPlayer.isShiftKeyDown()) {
             return InteractionResult.PASS;
         }
         // locate caged entity, if any
@@ -145,11 +146,6 @@ public class BirdcageBlock extends RotatingTallBlock {
             }
         }
         return InteractionResult.PASS;
-    }
-
-    @Override
-    public @Nullable PathType getPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
-        return PathType.BLOCKED;
     }
 
     private Optional<Entity> spawnFromShoulderEntity(Player player, CompoundTag compoundTag, final Vec3 pos) {
