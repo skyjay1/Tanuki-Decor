@@ -36,7 +36,7 @@ import java.util.Set;
 
 public class NewtonsCradleBER implements BlockEntityRenderer<NewtonsCradleBlockEntity> {
 
-    public static final ResourceLocation BALL = new ResourceLocation(TanukiDecor.MODID, "block/newtons_cradle/ball");
+    public static final ResourceLocation BALL = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/newtons_cradle/ball");
     protected static final Vector3f LINE_START = new Vector3f(4.0F / 16.0F, 8.0F / 16.0F, 5.0F / 16.0F);
     protected static final Vector3f LINE_MID = new Vector3f(4.0F / 16.0F, 4.0F / 16.0F, 8.0F / 16.0F);
     protected static final Vector3f LINE_END = new Vector3f(4.0F / 16.0F, 8.0F / 16.0F, 11.0F / 16.0F);

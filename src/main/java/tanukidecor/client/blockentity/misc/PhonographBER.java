@@ -28,7 +28,7 @@ import java.util.Set;
 
 public class PhonographBER implements BlockEntityRenderer<PhonographBlockEntity> {
 
-    public static final ResourceLocation DISC = new ResourceLocation(TanukiDecor.MODID, "block/phonograph/disc");
+    public static final ResourceLocation DISC = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/phonograph/disc");
 
     protected final BlockRenderDispatcher blockRenderer;
 

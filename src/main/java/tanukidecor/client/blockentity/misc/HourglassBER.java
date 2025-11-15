@@ -26,7 +26,7 @@ import java.util.Set;
 public class HourglassBER implements BlockEntityRenderer<HourglassBlockEntity> {
 
     // TODO possible improvement: make 5 "one pixel tall" layers that gradually shrink until they disappear on top and appear on bottom
-    public static final ResourceLocation SAND = new ResourceLocation(TanukiDecor.MODID, "block/hourglass/sand");
+    public static final ResourceLocation SAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/hourglass/sand");
 
     protected final BlockRenderDispatcher blockRenderer;
 

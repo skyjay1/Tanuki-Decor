@@ -22,9 +22,9 @@ import java.util.Set;
 
 public class CuckooClockBER extends ClockBER {
 
-    public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/cuckoo_clock/long_hand");
-    public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/cuckoo_clock/short_hand");
-    public static final ResourceLocation CUCKOO = new ResourceLocation(TanukiDecor.MODID, "block/cuckoo_clock/cuckoo");
+    public static final ResourceLocation LONG_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/cuckoo_clock/long_hand");
+    public static final ResourceLocation SHORT_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/cuckoo_clock/short_hand");
+    public static final ResourceLocation CUCKOO = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/cuckoo_clock/cuckoo");
 
     public CuckooClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,

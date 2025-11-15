@@ -31,8 +31,8 @@ import java.util.Set;
 
 public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntity> {
 
-    public static final ResourceLocation SLOT = new ResourceLocation(TanukiDecor.MODID, "block/slot_machine/slot");
-    public static final ResourceLocation LEVER = new ResourceLocation(TanukiDecor.MODID, "block/slot_machine/lever");
+    public static final ResourceLocation SLOT = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/slot_machine/slot");
+    public static final ResourceLocation LEVER = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/slot_machine/lever");
 
     protected final BlockRenderDispatcher blockRenderer;
 

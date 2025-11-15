@@ -21,9 +21,9 @@ import java.util.Set;
 
 public class CarriageClockBER extends ClockBER {
 
-    public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/carriage_clock/long_hand");
-    public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/carriage_clock/short_hand");
-    public static final ResourceLocation GEAR = new ResourceLocation(TanukiDecor.MODID, "block/carriage_clock/gear");
+    public static final ResourceLocation LONG_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/carriage_clock/long_hand");
+    public static final ResourceLocation SHORT_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/carriage_clock/short_hand");
+    public static final ResourceLocation GEAR = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/carriage_clock/gear");
 
     public CarriageClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,

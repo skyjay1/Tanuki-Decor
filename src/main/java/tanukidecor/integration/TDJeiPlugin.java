@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 @JeiPlugin
 public class TDJeiPlugin implements IModPlugin {
 
-    public static final ResourceLocation UID = new ResourceLocation(TanukiDecor.MODID, "jei");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "jei");
 
     private static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "diy_blacklist"));
 

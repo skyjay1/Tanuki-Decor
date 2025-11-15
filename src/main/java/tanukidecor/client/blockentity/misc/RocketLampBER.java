@@ -46,7 +46,7 @@ public class RocketLampBER implements BlockEntityRenderer<RocketLampBlockEntity>
     protected static ResourceLocation getWaxModel(final WaxSize waxSize, final String color) {
         return WAX_MODELS
                 .computeIfAbsent(color, s -> new EnumMap<>(WaxSize.class))
-                .computeIfAbsent(waxSize, size -> new ResourceLocation(TanukiDecor.MODID, "block/rocket_lamp/" + color + "/" + size.getSerializedName() + "_wax"));
+                .computeIfAbsent(waxSize, size -> ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/rocket_lamp/" + color + "/" + size.getSerializedName() + "_wax"));
     }
 
     @Override

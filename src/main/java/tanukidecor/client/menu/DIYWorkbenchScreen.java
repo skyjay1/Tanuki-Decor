@@ -38,7 +38,7 @@ import java.util.Locale;
 
 public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu> implements ScrollButton.IScrollListener {
 
-    public static final ResourceLocation TEXTURE = new ResourceLocation(TanukiDecor.MODID, "textures/gui/diy_workbench.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "textures/gui/diy_workbench.png");
 
     public static final int WIDTH = 182;
     public static final int HEIGHT = 216;

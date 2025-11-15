@@ -21,9 +21,9 @@ import java.util.Set;
 
 public class AntiqueClockBER extends ClockBER {
 
-    public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/antique_clock/long_hand");
-    public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/antique_clock/short_hand");
-    public static final ResourceLocation PENDULUM = new ResourceLocation(TanukiDecor.MODID, "block/antique_clock/pendulum");
+    public static final ResourceLocation LONG_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/antique_clock/long_hand");
+    public static final ResourceLocation SHORT_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/antique_clock/short_hand");
+    public static final ResourceLocation PENDULUM = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/antique_clock/pendulum");
 
     private static final Vec3 PENDULUM_POSITION = new Vec3(-8.0D / 16.0D, -24.0D / 16.0D, 0);
     private static final Vec3 PENDULUM_PIVOT_POINT = new Vec3(8.0D / 16.0D, 16.0D / 16.0D, 0);

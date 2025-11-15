@@ -60,7 +60,7 @@ public class BirdcageBlock extends RotatingTallBlock {
             box(2, 0, 2, 14, 2, 14),
             box(6.5D, 2, 6.5D, 9.5D, 16, 9.5D));
 
-    private static final TagKey<EntityType<?>> BIRDCAGE_BLACKLIST = ForgeRegistries.ENTITY_TYPES.tags().createTagKey(new ResourceLocation(TanukiDecor.MODID, "birdcage_blacklist"));
+    private static final TagKey<EntityType<?>> BIRDCAGE_BLACKLIST = ForgeRegistries.ENTITY_TYPES.tags().createTagKey(ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "birdcage_blacklist"));
 
     private static final double CAGE_WIDTH = 12.0D / 16.0D;
     private static final double CAGE_HEIGHT = 15.0D / 16.0D;

@@ -30,7 +30,7 @@ import java.util.Set;
 
 public class TrainSetBER implements BlockEntityRenderer<TrainSetBlockEntity> {
 
-    public static final ResourceLocation TRAIN = new ResourceLocation(TanukiDecor.MODID, "block/train_set/train");
+    public static final ResourceLocation TRAIN = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/train_set/train");
 
     protected final BlockRenderDispatcher blockRenderer;
 

@@ -29,7 +29,7 @@ import java.util.Set;
 
 public class GlobeBER implements BlockEntityRenderer<GlobeBlockEntity> {
 
-    public static final ResourceLocation GLOBE_MODEL = new ResourceLocation(TanukiDecor.MODID, "block/globe/globe_model");
+    public static final ResourceLocation GLOBE_MODEL = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/globe/globe_model");
 
     protected final BlockRenderDispatcher blockRenderer;
 

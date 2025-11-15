@@ -30,10 +30,10 @@ import java.util.Optional;
 
 public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
 
-    public static final ResourceLocation UID = new ResourceLocation(TanukiDecor.MODID, "diy");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "diy");
     public static final RecipeType<DIYRecipe> RECIPE_TYPE = new RecipeType<>(UID, DIYRecipe.class);
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(TanukiDecor.MODID, "textures/jei/diy_recipe.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "textures/jei/diy_recipe.png");
     private static final int PADDING = 10;
     private static final int INPUT_SPACING = 33;
     private static final int SLOT_SIZE = 18;

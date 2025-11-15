@@ -31,7 +31,7 @@ import java.util.Set;
 
 public class MetronomeBER implements BlockEntityRenderer<MetronomeBlockEntity> {
 
-    public static final ResourceLocation PENDULUM = new ResourceLocation(TanukiDecor.MODID, "block/metronome/pendulum");
+    public static final ResourceLocation PENDULUM = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/metronome/pendulum");
 
     private static final Vec3 PENDULUM_POSITION = new Vec3(-8.0D / 16.0D, -8.0D / 16.0D, 0);
     private static final Vec3 PENDULUM_PIVOT_POINT = new Vec3(8.0D / 16.0D, 3.0D / 16.0D, 0);
