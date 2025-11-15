@@ -575,7 +575,7 @@ public final class TDRegistry {
     public static final class CreativeTabReg {
 
         public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CREATIVE_MODE_TAB = CREATIVE_MODE_TABS.register("tab", () -> CreativeModeTab.builder()
-                .icon(Suppliers.memoize(() -> new ItemStack(BlockReg.BLUE_BENCH.get())))
+                .icon(() -> new ItemStack(BlockReg.BLUE_BENCH.get()))
                 .title(Component.translatable("itemGroup." + TanukiDecor.MODID + ".tab"))
                 .withSearchBar()
                 .displayItems((parameters, output) ->
