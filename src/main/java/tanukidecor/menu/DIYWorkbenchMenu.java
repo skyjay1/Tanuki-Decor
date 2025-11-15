@@ -7,7 +7,7 @@
 package tanukidecor.menu;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -18,12 +18,12 @@ import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.neoforge.network.PacketDistributor;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.entity.DIYWorkbenchBlockEntity;
 import tanukidecor.recipe.DIYRecipe;
 import tanukidecor.network.ServerBoundSelectDIYRecipePacket;
-import tanukidecor.network.TDNetwork;
 
 
 public class DIYWorkbenchMenu extends AbstractContainerMenu {
@@ -36,7 +36,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
 
     private final BlockPos blockPos;
     private final Inventory inventory;
-    private final RegistryAccess registryAccess;
+    private final HolderLookup.Provider registryAccess;
     private final Container container;
     private final ResultContainer resultContainer;
 
@@ -69,7 +69,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         return this.maxCraftCount;
     }
 
-    public RegistryAccess getRegistryAccess() {
+    public HolderLookup.Provider getRegistryAccess() {
         return this.registryAccess;
     }
 
@@ -118,9 +118,12 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
             }
         }
         if(pContainer == this.resultContainer) {
-            if (this.maxCraftCount > 0 && this.resultContainer.isEmpty() && this.resultContainer.getRecipeUsed() instanceof DIYRecipe recipe) {
-                this.resultContainer.setItem(0, recipe.assemble(this.container, this.registryAccess));
-                slotsChanged(this.resultContainer);
+            if (this.maxCraftCount > 0 && this.resultContainer.isEmpty()) {
+                RecipeHolder<?> recipeHolder = this.resultContainer.getRecipeUsed();
+                if(recipeHolder != null && recipeHolder.value() instanceof DIYRecipe recipe) {
+                    this.resultContainer.setItem(0, recipe.assemble(DIYWorkbenchBlockEntity.asRecipeInput(this.container), this.registryAccess));
+                    slotsChanged(this.resultContainer);
+                }
             }
         }
     }
@@ -128,8 +131,9 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
     protected void updateMaxCraftCount() {
         this.maxCraftCount = 127;
         // init at max stack size
-        if(this.resultContainer.getRecipeUsed() != null) {
-            this.maxCraftCount = this.resultContainer.getRecipeUsed().getResultItem(this.registryAccess).getMaxStackSize();
+        RecipeHolder<?> recipeHolder = this.resultContainer.getRecipeUsed();
+        if(recipeHolder != null) {
+            this.maxCraftCount = recipeHolder.value().getResultItem(this.registryAccess).getMaxStackSize();
         }
         // reduce to min stack size of any input
         for(int i = 0; i < CONTAINER_SLOTS; i++) {
@@ -140,17 +144,19 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
 
     //// RECIPE ////
 
-    public void selectRecipe(final Recipe<?> recipe) {
-        this.resultContainer.setRecipeUsed(recipe);
+    public void selectRecipe(final RecipeHolder<?> recipeHolder) {
+        this.resultContainer.setRecipeUsed(recipeHolder);
         // send packet from client to server
-        if(inventory.player.level().isClientSide() && recipe != null) {
-            TDNetwork.CHANNEL.sendToServer(new ServerBoundSelectDIYRecipePacket(recipe.getId()));
+        if(inventory.player.level().isClientSide() && recipeHolder != null) {
+            PacketDistributor.sendToServer(new ServerBoundSelectDIYRecipePacket(recipeHolder.id()));
         }
     }
 
     public void setRecipe(final DIYRecipe recipe) {
-        // update recipe
-        this.resultContainer.setRecipeUsed(recipe);
+        // update recipe - wrap in RecipeHolder
+        RecipeHolder<DIYRecipe> recipeHolder = recipe != null ? 
+            new RecipeHolder<>(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("tanukidecor", "diy_temp"), recipe) : null;
+        this.resultContainer.setRecipeUsed(recipeHolder);
         if(null == recipe) {
             this.resultContainer.clearContent();
             this.slotsChanged(this.resultContainer);
@@ -160,7 +166,7 @@ public class DIYWorkbenchMenu extends AbstractContainerMenu {
         this.updateMaxCraftCount();
         // update result item
         if(maxCraftCount > 0) {
-            this.resultContainer.setItem(0, recipe.assemble(this.container, this.registryAccess));
+            this.resultContainer.setItem(0, recipe.assemble(DIYWorkbenchBlockEntity.asRecipeInput(this.container), this.registryAccess));
         } else {
             this.resultContainer.clearContent();
         }

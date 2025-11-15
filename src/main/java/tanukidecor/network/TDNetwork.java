@@ -6,17 +6,30 @@
 
 package tanukidecor.network;
 
-import net.minecraft.resources.ResourceLocation;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import tanukidecor.TanukiDecor;
 
+@EventBusSubscriber(modid = TanukiDecor.MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class TDNetwork {
 
     private TDNetwork() {}
 
     public static void register() {
-        // Network registration is now done via RegisterPayloadHandlersEvent in NeoForge 1.21+
-        // This method can be kept for compatibility but the actual registration should be done in an event handler
+        // Network registration is now done via RegisterPayloadHandlersEvent
+    }
+
+    @SubscribeEvent
+    public static void registerPayloads(final RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar(TanukiDecor.MODID);
+        
+        // Register server-bound packets
+        registrar.playToServer(
+            ServerBoundSelectDIYRecipePacket.TYPE,
+            ServerBoundSelectDIYRecipePacket.STREAM_CODEC,
+            ServerBoundSelectDIYRecipePacket::handle
+        );
     }
 }

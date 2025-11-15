@@ -8,74 +8,68 @@ package tanukidecor.network;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import tanukidecor.TanukiDecor;
 import tanukidecor.recipe.DIYRecipe;
 import tanukidecor.menu.DIYWorkbenchMenu;
 
 import java.util.Optional;
 
-public class ServerBoundSelectDIYRecipePacket {
+public record ServerBoundSelectDIYRecipePacket(ResourceLocation recipeId) implements CustomPacketPayload {
 
-    private static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "diy_blacklist"));
+    public static final CustomPacketPayload.Type<ServerBoundSelectDIYRecipePacket> TYPE = 
+        new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "select_diy_recipe"));
 
-    private ResourceLocation recipeId;
+    private static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = TagKey.create(Registries.ITEM, 
+        ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "diy_blacklist"));
 
-    public ServerBoundSelectDIYRecipePacket(ResourceLocation recipeId) {
-        this.recipeId = recipeId;
-    }
+    public static final StreamCodec<FriendlyByteBuf, ServerBoundSelectDIYRecipePacket> STREAM_CODEC = StreamCodec.composite(
+        ResourceLocation.STREAM_CODEC,
+        ServerBoundSelectDIYRecipePacket::recipeId,
+        ServerBoundSelectDIYRecipePacket::new
+    );
 
-
-    /**
-     * Reads the raw packet data from the data stream.
-     *
-     * @param buf the PacketBuffer
-     * @return a new instance of the packet based on the PacketBuffer
-     */
-    public static ServerBoundSelectDIYRecipePacket fromBytes(final FriendlyByteBuf buf) {
-        ResourceLocation recipeId = buf.readResourceLocation();
-        return new ServerBoundSelectDIYRecipePacket(recipeId);
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
     /**
-     * Writes the raw packet data to the data stream.
+     * Handles the packet when it is received on the server.
      *
-     * @param msg the packet
-     * @param buf the PacketBuffer
+     * @param payload the packet payload
+     * @param context the payload context
      */
-    public static void toBytes(final ServerBoundSelectDIYRecipePacket msg, final FriendlyByteBuf buf) {
-        buf.writeResourceLocation(msg.recipeId);
-    }
-
-    /**
-     * Handles the packet when it is received.
-     *
-     * @param message the packet
-     * @param player the server player
-     */
-    public static void handlePacket(final ServerBoundSelectDIYRecipePacket message, final ServerPlayer player) {
-        // validate menu
-        if(!(player.containerMenu instanceof DIYWorkbenchMenu menu)) {
-            return;
-        }
-        // validate crafting
-        if(!TanukiDecor.CONFIG.isDIYWorkbenchEnabled.get()) {
-            return;
-        }
-        // validate recipe
-        final Optional<RecipeHolder<?>> oRecipe = player.level().getRecipeManager().byKey(message.recipeId);
-        if(oRecipe.isEmpty() || !(oRecipe.get().value() instanceof DIYRecipe recipe)) {
-            return;
-        }
-        // validate result
-        if(recipe.getResultItem(player.level().registryAccess()).is(DIY_BLACKLIST_TAG_KEY)) {
-            return;
-        }
-        // update menu
-        menu.setRecipe(recipe);
+    public static void handle(final ServerBoundSelectDIYRecipePacket payload, final IPayloadContext context) {
+        context.enqueueWork(() -> {
+            ServerPlayer player = (ServerPlayer) context.player();
+            
+            // validate menu
+            if(!(player.containerMenu instanceof DIYWorkbenchMenu menu)) {
+                return;
+            }
+            // validate crafting
+            if(!TanukiDecor.CONFIG.isDIYWorkbenchEnabled.get()) {
+                return;
+            }
+            // validate recipe
+            final Optional<RecipeHolder<?>> oRecipe = player.level().getRecipeManager().byKey(payload.recipeId());
+            if(oRecipe.isEmpty() || !(oRecipe.get().value() instanceof DIYRecipe recipe)) {
+                return;
+            }
+            // validate result
+            if(recipe.getResultItem(player.level().registryAccess()).is(DIY_BLACKLIST_TAG_KEY)) {
+                return;
+            }
+            // update menu
+            menu.setRecipe(recipe);
+        });
     }
 }
