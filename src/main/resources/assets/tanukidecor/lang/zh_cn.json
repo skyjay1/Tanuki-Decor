@@ -1,7 +1,6 @@
 {
   "_comment": "Translated by Alex from CrabMods",
   "itemGroup.tanukidecor.tab": "狸猫装饰",
-
   "block.tanukidecor.alarm_clock": "闹钟",
   "block.tanukidecor.anniversary_clock": "周年纪念钟",
   "block.tanukidecor.antique_clock": "古董时钟",
@@ -32,7 +31,6 @@
   "block.tanukidecor.small_clock_tower_dial": "小型钟楼表盘",
   "block.tanukidecor.station_clock": "车站钟",
   "block.tanukidecor.wooden_block_clock": "木块钟",
-
   "block.tanukidecor.antique_bookcase": "古董书柜",
   "block.tanukidecor.antique_bureau": "古董五斗柜",
   "block.tanukidecor.antique_cabinet": "古董橱柜",
@@ -68,7 +66,6 @@
   "block.tanukidecor.sweets_closet": "甜品壁橱",
   "block.tanukidecor.sweets_dresser": "甜品梳妆台",
   "block.tanukidecor.wooden_block_drawers": "木块抽屉柜",
-
   "block.tanukidecor.antique_chair": "古董椅子",
   "block.tanukidecor.antique_sofa": "古董沙发",
   "block.tanukidecor.blue_bench": "蓝色长凳",
@@ -98,7 +95,6 @@
   "block.tanukidecor.wooden_block_bench": "木块长凳",
   "block.tanukidecor.wooden_block_chair": "木块椅子",
   "block.tanukidecor.wooden_block_stool": "木块凳子",
-
   "block.tanukidecor.antique_bed": "古董床",
   "block.tanukidecor.blue_bed": "蓝色床",
   "block.tanukidecor.brown_mushroom_bed": "棕色蘑菇床",
@@ -111,7 +107,6 @@
   "block.tanukidecor.regal_bed": "帝王床",
   "block.tanukidecor.sweets_bed": "甜品床",
   "block.tanukidecor.wooden_block_bed": "木块床",
-
   "block.tanukidecor.antique_wall_oil_lamp": "古董壁挂油灯",
   "block.tanukidecor.blue_lamp": "蓝色灯",
   "block.tanukidecor.blue_rocket_lamp": "蓝色火箭灯",
@@ -139,7 +134,6 @@
   "block.tanukidecor.small_fireplace": "小型壁炉",
   "block.tanukidecor.turquoise_rocket_lamp": "青绿色火箭灯",
   "block.tanukidecor.yellow_rocket_lamp": "黄色火箭灯",
-
   "block.tanukidecor.antique_phone": "古董电话",
   "block.tanukidecor.antique_radio": "古董收音机",
   "block.tanukidecor.antique_small_table": "古董小桌子",
@@ -218,11 +212,8 @@
   "block.tanukidecor.wooden_block_toys": "木块玩具",
   "block.tanukidecor.yellow_stall_tarp": "黄色摊位帆布",
   "block.tanukidecor.yellow_wall_tarp": "黄色墙面帆布",
-
   "message.block.tanukidecor.diy_workbench.disabled": "DIY合成已禁用",
-
   "jei.recipe.category.tanukidecor.diy": "DIY合成",
-
   "subtitle.block.tanukidecor.alarm_clock.tick": "闹钟滴答",
   "subtitle.block.tanukidecor.alarm_clock.chime": "闹钟响铃",
   "subtitle.block.tanukidecor.clock_tower.tick": "钟楼滴答",

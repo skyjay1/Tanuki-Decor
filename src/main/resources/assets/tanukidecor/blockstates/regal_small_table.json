@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "tanukidecor:block/regal_small_table/regal_small_table" }
+    "": {
+      "model": "tanukidecor:block/regal_small_table/regal_small_table"
+    }
   }
 }

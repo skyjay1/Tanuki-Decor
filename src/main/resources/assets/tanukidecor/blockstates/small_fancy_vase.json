@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "tanukidecor:block/small_fancy_vase/small_fancy_vase" }
+    "": {
+      "model": "tanukidecor:block/small_fancy_vase/small_fancy_vase"
+    }
   }
 }

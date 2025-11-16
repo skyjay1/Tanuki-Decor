@@ -9,24 +9,86 @@
   "elements": [
     {
       "name": "ball",
-      "from": [7, 2, 7],
-      "to": [9, 4, 9],
+      "from": [
+        7,
+        2,
+        7
+      ],
+      "to": [
+        9,
+        4,
+        9
+      ],
       "faces": {
-        "north": {"uv": [13, 0, 15, 2], "texture": "#ball"},
-        "east": {"uv": [13, 0, 15, 2], "texture": "#ball"},
-        "south": {"uv": [13, 0, 15, 2], "texture": "#ball"},
-        "west": {"uv": [13, 0, 15, 2], "texture": "#ball"},
-        "up": {"uv": [13, 0, 15, 2], "texture": "#ball"},
-        "down": {"uv": [13, 0, 15, 2], "texture": "#ball"}
+        "north": {
+          "uv": [
+            13,
+            0,
+            15,
+            2
+          ],
+          "texture": "#ball"
+        },
+        "east": {
+          "uv": [
+            13,
+            0,
+            15,
+            2
+          ],
+          "texture": "#ball"
+        },
+        "south": {
+          "uv": [
+            13,
+            0,
+            15,
+            2
+          ],
+          "texture": "#ball"
+        },
+        "west": {
+          "uv": [
+            13,
+            0,
+            15,
+            2
+          ],
+          "texture": "#ball"
+        },
+        "up": {
+          "uv": [
+            13,
+            0,
+            15,
+            2
+          ],
+          "texture": "#ball"
+        },
+        "down": {
+          "uv": [
+            13,
+            0,
+            15,
+            2
+          ],
+          "texture": "#ball"
+        }
       }
     }
   ],
   "groups": [
     {
       "name": "balls",
-      "origin": [0, 0, 0],
+      "origin": [
+        0,
+        0,
+        0
+      ],
       "color": 0,
-      "children": [0]
+      "children": [
+        0
+      ]
     }
   ]
 }

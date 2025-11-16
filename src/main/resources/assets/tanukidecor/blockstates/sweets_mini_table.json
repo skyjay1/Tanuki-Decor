@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "tanukidecor:block/sweets_mini_table/sweets_mini_table" }
+    "": {
+      "model": "tanukidecor:block/sweets_mini_table/sweets_mini_table"
+    }
   }
 }

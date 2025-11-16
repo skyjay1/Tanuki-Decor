@@ -57,7 +57,8 @@ public final class ClientRecipeCollections {
         DIY_RECIPE_COLLECTIONS.clear();
         // add updated recipes to collections, one recipe per RecipeCollection
         final RegistryAccess registryAccess = Minecraft.getInstance().level.registryAccess();
-        event.getRecipeManager().getAllRecipesFor(TDRegistry.RecipeReg.DIY.get()).stream().map(recipe -> new RecipeCollection(registryAccess, ImmutableList.of(recipe))).forEach(DIY_RECIPE_COLLECTIONS::add);
+        var diyRecipes = event.getRecipeManager().getAllRecipesFor(TDRegistry.RecipeReg.DIY.get());
+        diyRecipes.stream().map(recipe -> new RecipeCollection(registryAccess, ImmutableList.of(recipe))).forEach(DIY_RECIPE_COLLECTIONS::add);
         // refresh search tree
         registerSearchTrees();
     }
