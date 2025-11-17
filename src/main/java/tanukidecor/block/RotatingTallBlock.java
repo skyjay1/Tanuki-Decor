@@ -35,7 +35,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.storage.IDelegateProvider;
-import tanukidecor.mixin.DoublePlantBlockAccessor;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeBuilder;
 import tanukidecor.util.ShapeUtils;
@@ -189,7 +188,7 @@ public class RotatingTallBlock extends HorizontalDirectionalBlock implements Sim
     @Override
     public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (!pLevel.isClientSide && pPlayer.isCreative()) {
-            DoublePlantBlockAccessor.tanukidecor$preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
+            DoublePlantBlock.preventDropFromBottomPart(pLevel, pPos, pState, pPlayer);
         }
         return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }

@@ -4,7 +4,7 @@
   "package": "tanukidecor.mixin",
   "compatibilityLevel": "JAVA_21",
   "refmap": "tanukidecor.refmap.json",
-  "mixins": ["PlayerAccessor", "EntityAccessor", "DoublePlantBlockAccessor"],
+  "mixins": ["PlayerAccessor", "EntityAccessor"],
   "injectors": {
     "defaultRequire": 1
   }
