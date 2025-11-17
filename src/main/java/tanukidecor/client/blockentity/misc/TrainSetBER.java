@@ -75,7 +75,7 @@ public class TrainSetBER implements BlockEntityRenderer<TrainSetBlockEntity> {
 
     @Override
     public AABB getRenderBoundingBox(TrainSetBlockEntity blockEntity) {
-        return new AABB(blockEntity.getBlockPos()).inflate(16.0D);
+        return new AABB(blockEntity.getBlockPos()).inflate(2.0D);
     }
 
     public static void addSpecialModels(final Set<ResourceLocation> list) {
