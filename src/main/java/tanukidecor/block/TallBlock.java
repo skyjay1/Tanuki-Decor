@@ -18,6 +18,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -159,22 +160,9 @@ public class TallBlock extends Block implements SimpleWaterloggedBlock, IDelegat
     @Override
     public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (!pLevel.isClientSide && pPlayer.isCreative()) {
-            preventDropFromBottomPart(pLevel, pPos, pState, pPlayer);
+            DoublePlantBlock.preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
         }
         return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
-    }
-
-    // Prevent creative mode drop duplication for double-height blocks
-    private void preventDropFromBottomPart(Level level, BlockPos pos, BlockState state, Player player) {
-        DoubleBlockHalf doubleblockhalf = state.getValue(HALF);
-        if (doubleblockhalf == DoubleBlockHalf.UPPER) {
-            BlockPos blockpos = pos.below();
-            BlockState blockstate = level.getBlockState(blockpos);
-            if (blockstate.is(state.getBlock()) && blockstate.getValue(HALF) == DoubleBlockHalf.LOWER) {
-                level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
-                level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
-            }
-        }
     }
 
     @Override
