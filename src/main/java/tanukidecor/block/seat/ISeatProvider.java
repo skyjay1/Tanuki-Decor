@@ -133,7 +133,7 @@ public interface ISeatProvider {
             final float rotation = seatDirection.toYRot();
             entity.setYRot(rotation);
             entity.setYHeadRot(rotation);
-            entity.setPos(seatPos.add(0, -tanukidecor.util.ReflectionHelper.getPassengersRidingOffset(entity), 0));
+            entity.setPos(seatPos.add(0, -((tanukidecor.mixin.EntityAccessor) entity).tanukidecor$getPassengersRidingOffset(), 0));
             // entity settings
             entity.setNoAi(true);
             entity.setSilent(true);
