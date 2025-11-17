@@ -48,9 +48,6 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    // Store as non-final temp variable for constructor initialization order
-    private static final ThreadLocal<MultiblockHandler> TEMP_HANDLER = new ThreadLocal<>();
-
     protected final MultiblockHandler multiblockHandler;
 
     protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
@@ -61,10 +58,9 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     protected RotatingMultiblock(MultiblockHandler multiblockHandler,
                                  ShapeBuilder shapeBuilder,
                                  Properties pProperties) {
-        super(setTempHandler(multiblockHandler, pProperties.dynamicShape()));
+        super(pProperties.dynamicShape());
         this.multiblockHandler = multiblockHandler;
         this.shapeBuilder = shapeBuilder;
-        TEMP_HANDLER.remove();
         // Note: state definition is created automatically by super constructor via createBlockStateDefinition
         // Set the default state with center position values
         // Use stateDefinition.any() which returns a state with all properties at their default values
@@ -81,11 +77,6 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
         this.registerDefaultState(defaultState);
         // calculate voxel shapes for all possible states
         this.precalculateShapes();
-    }
-
-    private static Properties setTempHandler(MultiblockHandler handler, Properties props) {
-        TEMP_HANDLER.set(handler);
-        return props;
     }
 
     public MultiblockHandler getMultiblockHandler() {
@@ -112,19 +103,16 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
      */
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        // During super constructor, multiblockHandler is not yet assigned, so use thread-local
-        MultiblockHandler handler = this.multiblockHandler != null ? this.multiblockHandler : TEMP_HANDLER.get();
-        if (handler != null) {
-            handler.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
+        if (this.multiblockHandler != null) {
+            this.multiblockHandler.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
         } else {
             super.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
         }
     }
 
     protected void createMultiblockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        MultiblockHandler handler = this.multiblockHandler != null ? this.multiblockHandler : TEMP_HANDLER.get();
-        if (handler != null) {
-            handler.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
+        if (this.multiblockHandler != null) {
+            this.multiblockHandler.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
         }
     }
 
