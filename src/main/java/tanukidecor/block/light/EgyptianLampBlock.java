@@ -8,11 +8,16 @@ package tanukidecor.block.light;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -56,11 +61,26 @@ public class EgyptianLampBlock extends TallBlock {
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         if (pState.getValue(HALF) == DoubleBlockHalf.UPPER && !pState.getValue(WATERLOGGED)
                 && !pEntity.fireImmune() && !((pEntity.position().y() + 3.0D / 16.0D) < pPos.getY())
-                && pEntity instanceof LivingEntity) {
+                && pEntity instanceof LivingEntity livingEntity && !hasFrostWalker(livingEntity)) {
             pEntity.hurt(pLevel.damageSources().inFire(), this.fireDamage);
         }
 
         super.entityInside(pState, pLevel, pPos, pEntity);
+    }
+
+    /**
+     * Checks if the entity has Frost Walker enchantment
+     */
+    private static boolean hasFrostWalker(LivingEntity entity) {
+        if (entity.level().isClientSide()) {
+            return false;
+        }
+        ResourceKey<Enchantment> frostWalkerKey = ResourceKey.create(Registries.ENCHANTMENT, 
+                ResourceLocation.withDefaultNamespace("frost_walker"));
+        return entity.level().registryAccess().registryOrThrow(Registries.ENCHANTMENT)
+                .getHolder(frostWalkerKey)
+                .map(holder -> EnchantmentHelper.getEnchantmentLevel(holder, entity) > 0)
+                .orElse(false);
     }
 
     @Override
