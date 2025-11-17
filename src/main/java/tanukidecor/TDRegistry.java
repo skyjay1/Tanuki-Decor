@@ -83,23 +83,26 @@ public final class TDRegistry {
         RECIPE_TYPES.register(modEventBus);
         MENU_TYPES.register(modEventBus);
         
-        // Force initialization of all registry holder classes by accessing them
+        // Force initialization of all registry holder classes
         // This ensures all static fields are initialized during the registration phase
-        forceInit();
-    }
-
-    private static void forceInit() {
-        // Access static fields from each inner class to trigger class initialization
-        Object blockInit = BlockReg.ALARM_CLOCK;
-        Object itemInit = ItemReg.ALL_ITEMS;
-        Object tabInit = CreativeTabReg.CREATIVE_MODE_TAB;
-        Object beInit = BlockEntityReg.ALARM_CLOCK;
-        Object soundInit = SoundReg.ALARM_CLOCK_TICK;
-        Object recipeInit = RecipeReg.DIY_SERIALIZER;
-        Object menuInit = MenuReg.DIY_WORKBENCH;
+        BlockReg.init();
+        ItemReg.init();
+        CreativeTabReg.init();
+        BlockEntityReg.init();
+        SoundReg.init();
+        RecipeReg.init();
+        MenuReg.init();
     }
 
     public static final class BlockReg {
+
+        /**
+         * Forces initialization of this class and all its static fields.
+         * Called during mod initialization to ensure all blocks are registered.
+         */
+        public static void init() {
+            // Method intentionally empty - the act of calling it triggers class initialization
+        }
 
         // CLOCKS //
 
@@ -563,6 +566,14 @@ public final class TDRegistry {
 
     public static final class ItemReg {
 
+        /**
+         * Forces initialization of this class and all its static fields.
+         * Called during mod initialization to ensure all items are registered.
+         */
+        public static void init() {
+            // Method intentionally empty - the act of calling it triggers class initialization
+        }
+
         private static final List<DeferredHolder<Item, Item>> ALL_ITEMS = new ArrayList<>();
 
         /**
@@ -591,6 +602,14 @@ public final class TDRegistry {
 
     public static final class CreativeTabReg {
 
+        /**
+         * Forces initialization of this class and all its static fields.
+         * Called during mod initialization to ensure the creative tab is registered.
+         */
+        public static void init() {
+            // Method intentionally empty - the act of calling it triggers class initialization
+        }
+
         public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CREATIVE_MODE_TAB = CREATIVE_MODE_TABS.register("tab", () -> CreativeModeTab.builder()
                 .icon(Suppliers.memoize(() -> new ItemStack(BlockReg.BLUE_BENCH.get())))
                 .title(Component.translatable("itemGroup." + TanukiDecor.MODID + ".tab"))
@@ -606,6 +625,14 @@ public final class TDRegistry {
     }
 
     public static final class BlockEntityReg {
+
+        /**
+         * Forces initialization of this class and all its static fields.
+         * Called during mod initialization to ensure all block entity types are registered.
+         */
+        public static void init() {
+            // Method intentionally empty - the act of calling it triggers class initialization
+        }
 
         // CLOCKS //
 
@@ -847,6 +874,14 @@ public final class TDRegistry {
 
     public static final class SoundReg {
 
+        /**
+         * Forces initialization of this class and all its static fields.
+         * Called during mod initialization to ensure all sounds are registered.
+         */
+        public static void init() {
+            // Method intentionally empty - the act of calling it triggers class initialization
+        }
+
         public static final DeferredHolder<SoundEvent, SoundEvent> ALARM_CLOCK_TICK = register("block.alarm_clock.tick");
         public static final DeferredHolder<SoundEvent, SoundEvent> ALARM_CLOCK_CHIME = register("block.alarm_clock.chime");
         public static final DeferredHolder<SoundEvent, SoundEvent> CASH_REGISTER_RING = register("block.cash_register.ring");
@@ -881,6 +916,14 @@ public final class TDRegistry {
 
     public static final class RecipeReg {
 
+        /**
+         * Forces initialization of this class and all its static fields.
+         * Called during mod initialization to ensure all recipes are registered.
+         */
+        public static void init() {
+            // Method intentionally empty - the act of calling it triggers class initialization
+        }
+
         public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<DIYRecipe>> DIY_SERIALIZER = RECIPE_SERIALIZERS.register(DIYRecipe.Serializer.CATEGORY, () -> new DIYRecipe.Serializer());
 
         public static final DeferredHolder<RecipeType<?>, RecipeType<DIYRecipe>> DIY = RECIPE_TYPES.register(DIYRecipe.Serializer.CATEGORY, () -> new RecipeType<>() {
@@ -892,6 +935,14 @@ public final class TDRegistry {
     }
 
     public static final class MenuReg {
+
+        /**
+         * Forces initialization of this class and all its static fields.
+         * Called during mod initialization to ensure all menu types are registered.
+         */
+        public static void init() {
+            // Method intentionally empty - the act of calling it triggers class initialization
+        }
 
         public static final DeferredHolder<MenuType<?>, MenuType<DIYWorkbenchMenu>> DIY_WORKBENCH = MENU_TYPES.register("diy_workbench", () ->
                 IMenuTypeExtension.create((windowId, inv, data) -> {
