@@ -49,8 +49,7 @@ public class GlobeBlock extends RotatingBlock implements EntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-        InteractionResult result = GlobeBlockEntity.use(pState, pLevel, pPos, pPlayer, pHand, pHitResult);
-        return result == InteractionResult.SUCCESS ? ItemInteractionResult.SUCCESS : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return GlobeBlockEntity.use(pState, pLevel, pPos, pPlayer, pHand, pHitResult);
     }
 
     /// / BLOCK ENTITY ////
