@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import tanukidecor.TanukiDecor;
@@ -24,6 +25,7 @@ public class CuckooClockBER extends ClockBER {
     public static final ResourceLocation LONG_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/cuckoo_clock/long_hand");
     public static final ResourceLocation SHORT_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/cuckoo_clock/short_hand");
     public static final ResourceLocation CUCKOO = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/cuckoo_clock/cuckoo");
+    private static final ModelResourceLocation CUCKOO_MODEL = ModelResourceLocation.standalone(CUCKOO);
 
     public CuckooClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,
@@ -53,7 +55,7 @@ public class CuckooClockBER extends ClockBER {
         }
 
         // prepare to render
-        final BakedModel model = Minecraft.getInstance().getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(CUCKOO));
+        final BakedModel model = Minecraft.getInstance().getModelManager().getModel(CUCKOO_MODEL);
         final float cuckooPercent = (dayTime % duration + renderHelper.getPartialTick()) / ((float) duration);
         // the percent of the animation to spend at the apex
         final float apex = 0.15F;

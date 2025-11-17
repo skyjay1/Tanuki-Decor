@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -23,6 +24,7 @@ public class FoliotClockBER extends ClockBER {
 
     public static final ResourceLocation SHORT_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/foliot_clock/short_hand");
     public static final ResourceLocation GEAR = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/foliot_clock/gear");
+    private static final ModelResourceLocation GEAR_MODEL = ModelResourceLocation.standalone(GEAR);
 
     public FoliotClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, null,
@@ -42,7 +44,7 @@ public class FoliotClockBER extends ClockBER {
         final float time = blockEntity.getLevel().getGameTime() + renderHelper.getPartialTick();
         final float angle = 0.00125F * time * Mth.TWO_PI;
 
-        final BakedModel gear = Minecraft.getInstance().getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(GEAR));
+        final BakedModel gear = Minecraft.getInstance().getModelManager().getModel(GEAR_MODEL);
         final Vec3 gearPosition = new Vec3(-8.0D / 16.0D, -8.0D / 16.0D, 0);
 
         this.clockRenderHelper

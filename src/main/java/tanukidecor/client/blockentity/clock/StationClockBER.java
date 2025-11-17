@@ -77,7 +77,7 @@ public class StationClockBER extends ClockBER {
 
             // render short hand
             this.clockRenderHelper
-                    .withModel(mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(this.shortHand)))
+                    .withModel(mc.getModelManager().getModel(this.shortHand))
                     .withPosition(this.handsPosition)
                     .withPivotPoint(this.handsPivotPoint)
                     .withRotationZ(hourRotation)
@@ -85,7 +85,7 @@ public class StationClockBER extends ClockBER {
 
             // render long hand
             this.clockRenderHelper
-                    .withModel(mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(this.longHand)))
+                    .withModel(mc.getModelManager().getModel(this.longHand))
                     .withRotationZ(minuteRotation)
                     .render(blockRenderer);
 
