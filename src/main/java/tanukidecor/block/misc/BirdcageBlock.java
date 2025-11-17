@@ -36,7 +36,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.RotatingTallBlock;
-import tanukidecor.mixin.PlayerAccessor;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -138,12 +138,14 @@ public class BirdcageBlock extends RotatingTallBlock {
         if (hasShoulderEntity) {
             CompoundTag leftShoulder = pPlayer.getShoulderEntityLeft();
             if (!leftShoulder.isEmpty() && spawnFromShoulderEntity(pPlayer, leftShoulder, cagePos).isPresent()) {
-                ((PlayerAccessor) pPlayer).tanukidecor$setShoulderEntityLeft(new CompoundTag());
+                // Remove left shoulder entity using NeoForge's setShoulderEntityLeft API
+                pPlayer.setShoulderEntityLeft(new CompoundTag());
                 return InteractionResult.SUCCESS;
             }
             CompoundTag rightShoulder = pPlayer.getShoulderEntityRight();
             if (!rightShoulder.isEmpty() && spawnFromShoulderEntity(pPlayer, rightShoulder, cagePos).isPresent()) {
-                ((PlayerAccessor) pPlayer).tanukidecor$setShoulderEntityRight(new CompoundTag());
+                // Remove right shoulder entity using NeoForge's setShoulderEntityRight API
+                pPlayer.setShoulderEntityRight(new CompoundTag());
                 return InteractionResult.SUCCESS;
             }
         }

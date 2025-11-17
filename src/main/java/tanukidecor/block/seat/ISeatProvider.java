@@ -133,7 +133,8 @@ public interface ISeatProvider {
             final float rotation = seatDirection.toYRot();
             entity.setYRot(rotation);
             entity.setYHeadRot(rotation);
-            entity.setPos(seatPos.add(0, -((tanukidecor.mixin.EntityAccessor) entity).tanukidecor$getPassengersRidingOffset(), 0));
+            // Use Pig's passenger riding offset (0.5625) to position the seat entity correctly
+            entity.setPos(seatPos.add(0, -0.5625D, 0));
             // entity settings
             entity.setNoAi(true);
             entity.setSilent(true);
