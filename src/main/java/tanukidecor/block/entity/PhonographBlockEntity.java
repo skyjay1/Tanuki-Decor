@@ -6,7 +6,6 @@
 
 package tanukidecor.block.entity;
 
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -30,15 +29,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.slf4j.Logger;
+import tanukidecor.TanukiDecor;
 import tanukidecor.block.RotatingTallBlock;
 import tanukidecor.block.misc.PhonographBlock;
 
 import javax.annotation.Nullable;
 
 public class PhonographBlockEntity extends SingleSlotBlockEntity {
-
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     protected boolean isPlaying;
     protected long recordStartedTick;
@@ -173,7 +170,7 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
                 this.setHasRecordBlockState(null, true);
                 this.startPlaying();
             } else {
-                LOGGER.error("Cannot play record at {} - failed to retrieve song data", this.getBlockPos());
+                TanukiDecor.LOGGER.error("Cannot play record at {} - failed to retrieve song data", this.getBlockPos());
             }
         }
     }
@@ -230,9 +227,9 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
     }
 
     protected long getRecordLengthInTicks(final JukeboxPlayable playable) {
-        if (this.level == null) {
-            LOGGER.error("Attempted to get record length with null level at position {}", this.getBlockPos());
-            return 0L;
+        if(this.level == null) {
+            TanukiDecor.LOGGER.error("Attempted to get record length with null level at position {}", this.getBlockPos());
+            return -1L;
         }
         
         return playable.song()
@@ -247,7 +244,7 @@ public class PhonographBlockEntity extends SingleSlotBlockEntity {
     protected boolean shouldRecordStopPlaying(JukeboxPlayable playable) {
         long recordLength = getRecordLengthInTicks(playable);
         if (recordLength <= 0) {
-            LOGGER.error("Invalid record length at {}, stopping playback", this.getBlockPos());
+            TanukiDecor.LOGGER.error("Invalid record length at {}, stopping playback", this.getBlockPos());
             return true; // Stop playing if we can't get valid length
         }
         return this.tickCount >= this.recordStartedTick + recordLength + 20L;
