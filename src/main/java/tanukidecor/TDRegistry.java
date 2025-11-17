@@ -6,7 +6,6 @@
 
 package tanukidecor;
 
-import com.google.common.base.Suppliers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;

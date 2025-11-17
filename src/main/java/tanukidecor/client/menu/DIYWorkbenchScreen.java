@@ -16,7 +16,6 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.searchtree.SearchTree;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +27,11 @@ import tanukidecor.client.menu.widget.DIYRecipeButton;
 import tanukidecor.client.menu.widget.ScrollButton;
 import tanukidecor.menu.DIYWorkbenchMenu;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 
 public class DIYWorkbenchScreen extends AbstractContainerScreen<DIYWorkbenchMenu> implements ScrollButton.IScrollListener {
 
