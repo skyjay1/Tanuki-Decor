@@ -39,7 +39,15 @@ public final class ClientRecipeCollections {
 
     public static void registerSearchTrees() {
         // create a search tree (copied from Minecraft#createSearchTrees)
-        searchTree = new FullTextSearchTree<>((recipeCollection) -> recipeCollection.getRecipes().stream().flatMap((recipe) -> recipe.value().getResultItem(recipeCollection.registryAccess()).getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.Default.NORMAL).stream()).map((component) -> ChatFormatting.stripFormatting(component.getString()).trim()).filter((s) -> !s.isEmpty()), (collection) -> collection.getRecipes().stream().map((recipe) -> BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(collection.registryAccess()).getItem())), DIY_RECIPE_COLLECTIONS);
+        searchTree = new FullTextSearchTree<>(
+                (recipeCollection) -> recipeCollection.getRecipes().stream()
+                        .flatMap((recipe) -> recipe.value().getResultItem(recipeCollection.registryAccess())
+                                .getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.Default.NORMAL).stream())
+                        .map((component) -> ChatFormatting.stripFormatting(component.getString()).trim())
+                        .filter((s) -> !s.isEmpty()),
+                (collection) -> collection.getRecipes().stream()
+                        .map((recipe) -> BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(collection.registryAccess()).getItem())),
+                DIY_RECIPE_COLLECTIONS);
     }
 
     public static List<RecipeCollection> searchRecipes(String query) {
