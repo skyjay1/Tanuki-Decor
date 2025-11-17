@@ -9,50 +9,20 @@
   "elements": [
     {
       "name": "streamer",
-      "from": [
-        0,
-        0,
-        15
-      ],
-      "to": [
-        16,
-        16,
-        15
-      ],
+      "from": [0, 0, 15],
+      "to": [16, 16, 15],
       "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#streamer"
-        },
-        "south": {
-          "uv": [
-            16,
-            0,
-            0,
-            16
-          ],
-          "texture": "#streamer"
-        }
+        "north": {"uv": [0, 0, 16, 16], "texture": "#streamer"},
+        "south": {"uv": [16, 0, 0, 16], "texture": "#streamer"}
       }
     }
   ],
   "groups": [
     {
       "name": "streamer",
-      "origin": [
-        8,
-        8,
-        8
-      ],
+      "origin": [8, 8, 8],
       "color": 0,
-      "children": [
-        0
-      ]
+      "children": [0]
     }
   ]
 }

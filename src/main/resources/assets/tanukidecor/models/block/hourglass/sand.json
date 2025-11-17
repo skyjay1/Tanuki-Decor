@@ -2,10 +2,7 @@
   "credit": "Made by Skart2000",
   "parent": "minecraft:block/block",
   "render_type": "minecraft:cutout",
-  "texture_size": [
-    32,
-    32
-  ],
+  "texture_size": [32, 32],
   "textures": {
     "particle": "tanukidecor:block/hourglass",
     "hourglass": "tanukidecor:block/hourglass"
@@ -13,86 +10,24 @@
   "elements": [
     {
       "name": "sand",
-      "from": [
-        5.5,
-        9.5,
-        5.5
-      ],
-      "to": [
-        10.5,
-        14.5,
-        10.5
-      ],
+      "from": [5.5, 9.5, 5.5],
+      "to": [10.5, 14.5, 10.5],
       "faces": {
-        "north": {
-          "uv": [
-            7,
-            5.5,
-            9.5,
-            8
-          ],
-          "texture": "#hourglass"
-        },
-        "east": {
-          "uv": [
-            7,
-            5.5,
-            9.5,
-            8
-          ],
-          "texture": "#hourglass"
-        },
-        "south": {
-          "uv": [
-            7,
-            5.5,
-            9.5,
-            8
-          ],
-          "texture": "#hourglass"
-        },
-        "west": {
-          "uv": [
-            7,
-            5.5,
-            9.5,
-            8
-          ],
-          "texture": "#hourglass"
-        },
-        "up": {
-          "uv": [
-            7,
-            5.5,
-            9.5,
-            8
-          ],
-          "texture": "#hourglass"
-        },
-        "down": {
-          "uv": [
-            7,
-            5.5,
-            9.5,
-            8
-          ],
-          "texture": "#hourglass"
-        }
+        "north": {"uv": [7, 5.5, 9.5, 8], "texture": "#hourglass"},
+        "east": {"uv": [7, 5.5, 9.5, 8], "texture": "#hourglass"},
+        "south": {"uv": [7, 5.5, 9.5, 8], "texture": "#hourglass"},
+        "west": {"uv": [7, 5.5, 9.5, 8], "texture": "#hourglass"},
+        "up": {"uv": [7, 5.5, 9.5, 8], "texture": "#hourglass"},
+        "down": {"uv": [7, 5.5, 9.5, 8], "texture": "#hourglass"}
       }
     }
   ],
   "groups": [
     {
       "name": "top_sand",
-      "origin": [
-        8,
-        8,
-        8
-      ],
+      "origin": [8, 8, 8],
       "color": 0,
-      "children": [
-        0
-      ]
+      "children": [0]
     }
   ]
 }

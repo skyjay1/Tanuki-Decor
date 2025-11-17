@@ -1,9 +1,6 @@
 {
   "parent": "tanukidecor:block/rocket_lamp/upper",
-  "texture_size": [
-    32,
-    32
-  ],
+  "texture_size": [32, 32],
   "textures": {
     "lamp": "tanukidecor:block/rocket_lamp/blue",
     "particle": "#lamp"

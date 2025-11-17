@@ -6,6 +6,6 @@
     "inside": "minecraft:block/mushroom_block_inside",
     "stem": "minecraft:block/mushroom_stem",
     "cross": "minecraft:block/red_mushroom",
-    "particle": "#mushroom"
+	"particle": "#mushroom"
   }
 }
