@@ -33,6 +33,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.storage.IDelegateProvider;
+import tanukidecor.mixin.DoublePlantBlockAccessor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -160,7 +161,7 @@ public class TallBlock extends Block implements SimpleWaterloggedBlock, IDelegat
     @Override
     public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (!pLevel.isClientSide && pPlayer.isCreative()) {
-            DoublePlantBlock.preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
+            DoublePlantBlockAccessor.tanukidecor$preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
         }
         return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
