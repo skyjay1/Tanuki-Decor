@@ -70,9 +70,16 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
         CONSTRUCTING_HANDLER.remove();
         // Note: state definition now has all properties including multiblock ones
         // Set the default state with center position values
-        this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
-                .setValue(WATERLOGGED, false)
-                .setValue(FACING, Direction.NORTH)));
+        BlockState defaultState = this.stateDefinition.any();
+        // Explicitly set the base properties to ensure they have the correct defaults
+        if (defaultState.hasProperty(WATERLOGGED)) {
+            defaultState = defaultState.setValue(WATERLOGGED, false);
+        }
+        if (defaultState.hasProperty(FACING)) {
+            defaultState = defaultState.setValue(FACING, Direction.NORTH);
+        }
+        // Apply multiblock center properties
+        this.registerDefaultState(this.multiblockHandler.getCenterState(defaultState));
         // calculate voxel shapes for all possible states
         this.precalculateShapes();
     }
