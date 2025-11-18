@@ -48,6 +48,11 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
+    /**
+     * ThreadLocal to pass multiblockHandler to createBlockStateDefinition during construction
+     */
+    private static final ThreadLocal<MultiblockHandler> CONSTRUCTING_HANDLER = new ThreadLocal<>();
+
     protected final MultiblockHandler multiblockHandler;
 
     protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
@@ -58,35 +63,27 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     protected RotatingMultiblock(MultiblockHandler multiblockHandler,
                                  ShapeBuilder shapeBuilder,
                                  Properties pProperties) {
-        super(pProperties.dynamicShape());
+        super(withHandler(multiblockHandler, pProperties).dynamicShape());
         this.multiblockHandler = multiblockHandler;
         this.shapeBuilder = shapeBuilder;
-        // Note: state definition is created automatically by super constructor via createBlockStateDefinition
+        // Clean up ThreadLocal
+        CONSTRUCTING_HANDLER.remove();
+        // Note: state definition now has all properties including multiblock ones
         // Set the default state with center position values
-        // Use stateDefinition.any() which returns a state with all properties at their default values
-        BlockState defaultState = this.stateDefinition.any();
-        // Explicitly set the base properties to ensure they have the correct defaults
-        if (defaultState.hasProperty(WATERLOGGED)) {
-            defaultState = defaultState.setValue(WATERLOGGED, false);
-        }
-        if (defaultState.hasProperty(FACING)) {
-            defaultState = defaultState.setValue(FACING, Direction.NORTH);
-        }
-        // Apply multiblock center properties
-        defaultState = this.multiblockHandler.getCenterState(defaultState);
-        this.registerDefaultState(defaultState);
+        this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
+                .setValue(WATERLOGGED, false)
+                .setValue(FACING, Direction.NORTH)));
         // calculate voxel shapes for all possible states
         this.precalculateShapes();
     }
 
-    public MultiblockHandler getMultiblockHandler() {
-        return multiblockHandler;
+    private static Properties withHandler(MultiblockHandler handler, Properties properties) {
+        CONSTRUCTING_HANDLER.set(handler);
+        return properties;
     }
 
-    protected StateDefinition<Block, BlockState> createStateDefinition() {
-        StateDefinition.Builder<Block, BlockState> builder = new StateDefinition.Builder<>(this);
-        this.createMultiblockStateDefinition(builder);
-        return builder.create(Block::defaultBlockState, BlockState::new);
+    public MultiblockHandler getMultiblockHandler() {
+        return multiblockHandler;
     }
 
     /// / DELEGATE PROVIDER ////
@@ -103,16 +100,18 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
      */
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        if (this.multiblockHandler != null) {
-            this.multiblockHandler.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
-        } else {
-            super.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
+        pBuilder.add(WATERLOGGED).add(FACING);
+        // Use ThreadLocal to get the handler during construction, or use the instance field after construction
+        MultiblockHandler handler = this.multiblockHandler != null ? this.multiblockHandler : CONSTRUCTING_HANDLER.get();
+        if (handler != null) {
+            handler.createBlockStateDefinition(pBuilder);
         }
     }
 
     protected void createMultiblockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(WATERLOGGED).add(FACING);
         if (this.multiblockHandler != null) {
-            this.multiblockHandler.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
+            this.multiblockHandler.createBlockStateDefinition(pBuilder);
         }
     }
 
