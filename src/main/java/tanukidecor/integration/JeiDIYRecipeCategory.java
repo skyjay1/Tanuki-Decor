@@ -75,6 +75,16 @@ public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
     }
 
     @Override
+    public int getWidth() {
+        return this.background.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return this.background.getHeight();
+    }
+
+    @Override
     public Component getTitle() {
         return this.title;
     }
