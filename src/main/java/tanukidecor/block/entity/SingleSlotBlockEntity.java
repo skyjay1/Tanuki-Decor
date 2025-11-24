@@ -202,6 +202,8 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
         super.loadAdditional(pTag, pLookup);
         if (pTag.contains(getItemNbtKey(), Tag.TAG_COMPOUND)) {
             this.setItem(0, ItemStack.parseOptional(pLookup, pTag.getCompound(getItemNbtKey())));
+        } else {
+            this.setItem(0, ItemStack.EMPTY);
         }
 
     }
@@ -217,6 +219,12 @@ public class SingleSlotBlockEntity extends BlockEntity implements ContainerSingl
 
     protected String getItemNbtKey() {
         return "Item";
+    }
+
+    @Override
+    public void onDataPacket(net.minecraft.network.Connection net, net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
+        super.onDataPacket(net, pkt, lookupProvider);
+        this.loadAdditional(pkt.getTag(), lookupProvider);
     }
 
     /// / NAMEABLE ////
