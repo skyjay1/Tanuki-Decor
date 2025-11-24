@@ -1,20 +1,12 @@
 {
   "multipart": [
     {
-      "when": {
-        "half": "upper"
-      },
-      "apply": {
-        "model": "tanukidecor:block/rocket_lamp/yellow/upper"
-      }
+      "when": { "half": "upper" },
+      "apply": { "model": "tanukidecor:block/rocket_lamp/yellow/upper" }
     },
     {
-      "when": {
-        "half": "lower"
-      },
-      "apply": {
-        "model": "tanukidecor:block/rocket_lamp/yellow/lower"
-      }
+      "when": { "half": "lower" },
+      "apply": { "model": "tanukidecor:block/rocket_lamp/yellow/lower" }
     }
   ]
 }
