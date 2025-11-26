@@ -93,12 +93,17 @@ public class TrainSetBlock extends RotatingMultiblock implements EntityBlock {
 
     @Override
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
-        if (!pLevel.isClientSide() && pFromPos.getY() == pPos.getY() - 1 && pLevel.getBlockEntity(pPos) instanceof TrainSetBlockEntity blockEntity) {
+        if (!pLevel.isClientSide() && pFromPos.getY() == pPos.getY() - 1) {
+            // Locate the block entity
             Direction facing = pState.getValue(TrainSetBlock.FACING);
             MultiblockHandler multiblockHandler = this.getMultiblockHandler();
-            boolean silent = multiblockHandler.anyPositions(multiblockHandler.getCenterPos(pPos, pState, facing), facing,
-                    b -> pLevel.getBlockState(b.below()).is(BlockTags.OCCLUDES_VIBRATION_SIGNALS));
-            blockEntity.setSilent(silent);
+            BlockPos centerPos = multiblockHandler.getCenterPos(pPos, pState, facing);
+            BlockPos entityPos = centerPos.offset(DEFAULT_INDEX);
+            // Silence the block entity when there is wool underneath any of its blocks
+            if (pLevel.getBlockEntity(entityPos) instanceof TrainSetBlockEntity blockEntity) {
+                boolean silent = multiblockHandler.anyPositions(centerPos, facing, b -> pLevel.getBlockState(b.below()).is(BlockTags.OCCLUDES_VIBRATION_SIGNALS));
+                blockEntity.setSilent(silent);
+            }
         }
         super.neighborChanged(pState, pLevel, pPos, pBlock, pFromPos, pIsMoving);
     }
