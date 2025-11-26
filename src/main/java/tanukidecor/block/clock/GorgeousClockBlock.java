@@ -31,7 +31,7 @@ public class GorgeousClockBlock extends TallClockBlock {
                 UPPER_SHAPE, LOWER_SHAPE, TDRegistry.BlockEntityReg.GORGEOUS_CLOCK, pProperties);
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

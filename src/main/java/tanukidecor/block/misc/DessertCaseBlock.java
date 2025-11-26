@@ -21,7 +21,7 @@ public class DessertCaseBlock extends RotatingMultiblock {
     /**
      * Shape data for each block in the default horizontal direction, ordered by index {@code [height][width][depth]}
      **/
-    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][] {
+    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][]{
             // height = 0
             {},
             // height = 1

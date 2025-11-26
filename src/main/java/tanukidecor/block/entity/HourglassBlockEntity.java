@@ -33,22 +33,22 @@ public class HourglassBlockEntity extends BlockEntity {
     }
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, HourglassBlockEntity blockEntity) {
-        if(blockEntity.isActive()) {
+        if (blockEntity.isActive()) {
             blockEntity.updateTimer();
         }
     }
 
     public int getRedstoneStrength() {
-        if(this.isActive()) {
+        if (this.isActive()) {
             return Mth.ceil(((float) this.timer / (float) this.maxTimer) * 15.0F);
         }
         return 0;
     }
 
-    //// TIMER ////
+    /// / TIMER ////
 
     public float getPercentageComplete(final float partialTick) {
-        if(!isActive()) {
+        if (!isActive()) {
             return 1.0F;
         }
         return 1.0F - ((float) this.timer / (float) this.maxTimer);
@@ -61,13 +61,13 @@ public class HourglassBlockEntity extends BlockEntity {
     protected void updateTimer() {
         int redstone = getRedstoneStrength();
         // decrement timer
-        if(--this.timer <= 0) {
+        if (--this.timer <= 0) {
             stopTimer();
             return;
         }
-        if(getLevel() != null && !getLevel().isClientSide()) {
+        if (getLevel() != null && !getLevel().isClientSide()) {
             // update redstone
-            if(redstone != getRedstoneStrength()) {
+            if (redstone != getRedstoneStrength()) {
                 getLevel().updateNeighbourForOutputSignal(getBlockPos(), getBlockState().getBlock());
             }
             // mark dirty
@@ -78,7 +78,7 @@ public class HourglassBlockEntity extends BlockEntity {
     public void startTimer(final int timer) {
         this.maxTimer = timer;
         this.timer = timer;
-        if(getLevel() != null && !getLevel().isClientSide()) {
+        if (getLevel() != null && !getLevel().isClientSide()) {
             // mark dirty
             setChanged();
             // update block
@@ -96,7 +96,7 @@ public class HourglassBlockEntity extends BlockEntity {
     public void stopTimer() {
         this.maxTimer = 0;
         this.timer = 0;
-        if(getLevel() != null && !getLevel().isClientSide()) {
+        if (getLevel() != null && !getLevel().isClientSide()) {
             // mark dirty
             setChanged();
             // update block
@@ -108,30 +108,30 @@ public class HourglassBlockEntity extends BlockEntity {
         }
     }
 
-    //// NBT ////
+    /// / NBT ////
 
     private static final String KEY_TIMER = "Timer";
     private static final String KEY_TIMER_MAX = "TimerMax";
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.loadAdditional(pTag, pLookup);
         this.timer = pTag.getInt(KEY_TIMER);
         this.maxTimer = pTag.getInt(KEY_TIMER_MAX);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.saveAdditional(pTag, pLookup);
         pTag.putInt(KEY_TIMER, this.timer);
         pTag.putInt(KEY_TIMER_MAX, this.maxTimer);
     }
 
-    //// CLIENT SERVER SYNC ////
+    /// / CLIENT SERVER SYNC ////
 
     @Override
-    public CompoundTag getUpdateTag() {
-        final CompoundTag tag = super.getUpdateTag();
+    public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider pLookup) {
+        final CompoundTag tag = super.getUpdateTag(pLookup);
         tag.putInt(KEY_TIMER, this.timer);
         tag.putInt(KEY_TIMER_MAX, this.maxTimer);
         return tag;

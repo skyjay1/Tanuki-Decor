@@ -9,9 +9,9 @@ package tanukidecor.block.bed;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -24,22 +24,24 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.extensions.IBlockExtension;
 import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.util.MultiblockHandler;
 
 import javax.annotation.Nullable;
 
 
-public class GorgeousBedBlock extends RotatingMultiblock implements IBedProvider {
+public class GorgeousBedBlock extends RotatingMultiblock implements IBedProvider, IBlockExtension {
 
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
     public GorgeousBedBlock(Properties pProperties) {
         super(MultiblockHandler.MULTIBLOCK_2X2X2, RotatingMultiblock.createMultiblockShapeBuilder(MultiblockHandler.MULTIBLOCK_2X2X2, SHAPE), pProperties);
-        this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
-                .setValue(WATERLOGGED, false)
-                .setValue(FACING, Direction.NORTH)
-                .setValue(OCCUPIED, false)));
+        // Set default state with OCCUPIED after parent initialization
+        BlockState defaultState = this.defaultBlockState();
+        if (defaultState.hasProperty(OCCUPIED)) {
+            this.registerDefaultState(defaultState.setValue(OCCUPIED, false));
+        }
     }
 
     @Override
@@ -47,11 +49,11 @@ public class GorgeousBedBlock extends RotatingMultiblock implements IBedProvider
         super.createMultiblockStateDefinition(pBuilder.add(OCCUPIED));
     }
 
-    //// BED ////
+    /// / BED ////
 
     @Override
     public boolean isHeadOfBed(BlockState blockState) {
-        if(blockState.getBlock() != this) {
+        if (blockState.getBlock() != this) {
             return false;
         }
         final Vec3i minIndex = getMultiblockHandler().getMinIndex();
@@ -61,7 +63,7 @@ public class GorgeousBedBlock extends RotatingMultiblock implements IBedProvider
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         return useBed(pState, pLevel, pPos, pPlayer);
     }
 
@@ -79,13 +81,27 @@ public class GorgeousBedBlock extends RotatingMultiblock implements IBedProvider
     }
 
     @Override
-    public boolean isBed(BlockState state, BlockGetter level, BlockPos pos, @Nullable Entity player) {
+    public Direction getBedDirection(BlockState state, LevelReader level, BlockPos pos) {
+        return state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
+    }
+
+    @Override
+    public boolean isBed(BlockState state, BlockGetter level, BlockPos pos, @Nullable LivingEntity sleeper) {
         return true;
     }
 
     @Override
-    public Direction getBedDirection(BlockState state, LevelReader level, BlockPos pos) {
-        return state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
+    public void setBedOccupied(BlockState blockState, Level level, BlockPos pos, LivingEntity sleeper, boolean occupied) {
+        if (blockState.hasProperty(OCCUPIED)) {
+            level.setBlock(pos, blockState.setValue(OCCUPIED, occupied), Block.UPDATE_CLIENTS);
+        }
+    }
+
+    @Override
+    public java.util.Optional<net.minecraft.server.level.ServerPlayer.RespawnPosAngle> getRespawnPosition(BlockState state, net.minecraft.world.entity.EntityType<?> type, LevelReader levelReader, BlockPos pos, float orientation) {
+        BlockPos headPos = getHeadPos(state, (Level) levelReader, pos);
+        return net.minecraft.world.level.block.BedBlock.findStandUpPosition(type, levelReader, headPos, state.getValue(FACING), orientation)
+                .map(vec3 -> new net.minecraft.server.level.ServerPlayer.RespawnPosAngle(vec3, orientation));
     }
 
     @Override
@@ -104,56 +120,56 @@ public class GorgeousBedBlock extends RotatingMultiblock implements IBedProvider
     /**
      * Shape data for each block in the default horizontal direction, ordered by index {@code [height][width][depth]}
      **/
-    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][] {
+    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][]{
             // height = 0
             {},
             // height = 1
             {
-                // width = 0
-                {},
-                // width = 1
-                {
-                    Shapes.empty(),
-                    Shapes.or(box(14, 0, 0, 16, 16, 2),
-                            box(0, 3, 0, 14, 8, 16)),
-                    Shapes.or(box(14, 0, 14, 16, 16, 16),
-                            box(0, 3, 0, 14, 8, 16),
-                            box(0, 8, 14, 14, 16, 16))
-                },
-                // width = 2
-                {
-                    Shapes.empty(),
-                    Shapes.or(box(0, 0, 0, 2, 16, 2),
-                            box(2, 3, 0, 16, 8, 16)),
-                    Shapes.or(box(0, 0, 14, 2, 16, 16),
-                            box(2, 3, 0, 16, 8, 16),
-                            box(2, 8, 14, 16, 16, 16))
-                }
+                    // width = 0
+                    {},
+                    // width = 1
+                    {
+                            Shapes.empty(),
+                            Shapes.or(box(14, 0, 0, 16, 16, 2),
+                                    box(0, 3, 0, 14, 8, 16)),
+                            Shapes.or(box(14, 0, 14, 16, 16, 16),
+                                    box(0, 3, 0, 14, 8, 16),
+                                    box(0, 8, 14, 14, 16, 16))
+                    },
+                    // width = 2
+                    {
+                            Shapes.empty(),
+                            Shapes.or(box(0, 0, 0, 2, 16, 2),
+                                    box(2, 3, 0, 16, 8, 16)),
+                            Shapes.or(box(0, 0, 14, 2, 16, 16),
+                                    box(2, 3, 0, 16, 8, 16),
+                                    box(2, 8, 14, 16, 16, 16))
+                    }
             },
             // height = 2
             {
-                // width = 0
-                {},
-                // width = 1
-                {
-                        Shapes.empty(),
-                        Shapes.or(box(14, 0, 0, 16, 16, 2),
-                                box(0, 14, 0, 14, 15, 16)),
-                        Shapes.or(box(14, 0, 14, 16, 16, 16),
-                                box(10, 0, 14, 14, 3, 16),
-                                box(0, 0, 14, 6, 4, 16),
-                                box(0, 14, 0, 14, 15, 16))
-                },
-                // width = 2
-                {
-                        Shapes.empty(),
-                        Shapes.or(box(0, 0, 0, 2, 16, 2),
-                                box(2, 14, 0, 16, 15, 16)),
-                        Shapes.or(box(0, 0, 14, 2, 16, 16),
-                                box(2, 0, 14, 6, 3, 16),
-                                box(10, 0, 14, 16, 4, 16),
-                                box(2, 14, 0, 16, 15, 16))
-                }
+                    // width = 0
+                    {},
+                    // width = 1
+                    {
+                            Shapes.empty(),
+                            Shapes.or(box(14, 0, 0, 16, 16, 2),
+                                    box(0, 14, 0, 14, 15, 16)),
+                            Shapes.or(box(14, 0, 14, 16, 16, 16),
+                                    box(10, 0, 14, 14, 3, 16),
+                                    box(0, 0, 14, 6, 4, 16),
+                                    box(0, 14, 0, 14, 15, 16))
+                    },
+                    // width = 2
+                    {
+                            Shapes.empty(),
+                            Shapes.or(box(0, 0, 0, 2, 16, 2),
+                                    box(2, 14, 0, 16, 15, 16)),
+                            Shapes.or(box(0, 0, 14, 2, 16, 16),
+                                    box(2, 0, 14, 6, 3, 16),
+                                    box(10, 0, 14, 16, 4, 16),
+                                    box(2, 14, 0, 16, 15, 16))
+                    }
             }
     };
 }

@@ -18,8 +18,8 @@ import java.util.Set;
 
 public class SmallClockTowerDialBER extends ClockBER {
 
-    public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/small_clock_tower_dial/long_hand");
-    public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/small_clock_tower_dial/short_hand");
+    public static final ResourceLocation LONG_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/small_clock_tower_dial/long_hand");
+    public static final ResourceLocation SHORT_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/small_clock_tower_dial/short_hand");
 
     public SmallClockTowerDialBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,
@@ -31,7 +31,7 @@ public class SmallClockTowerDialBER extends ClockBER {
 
     @Override
     public void render(ClockBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
-       super.render(pBlockEntity, pPartialTick, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay);
+        super.render(pBlockEntity, pPartialTick, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay);
     }
 
     public static void addSpecialModels(final Set<ResourceLocation> list) {

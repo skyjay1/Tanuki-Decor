@@ -40,22 +40,22 @@ public class PlasmaBallBlockEntity extends BlockEntity {
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, PlasmaBallBlockEntity blockEntity) {
         // validate arcs can update
-        if(!(blockState.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER && blockState.getValue(PlasmaBallBlock.ENABLED))) {
+        if (!(blockState.getValue(TallBlock.HALF) == DoubleBlockHalf.UPPER && blockState.getValue(PlasmaBallBlock.ENABLED))) {
             return;
         }
         // update arcs
         final Collection<Arc> arcsView = Collections.unmodifiableCollection(blockEntity.getArcs());
-        for(Arc arc : arcsView) {
+        for (Arc arc : arcsView) {
             arc.update(blockEntity, arcsView, level.getRandom());
         }
         // move arcs
-        for(Arc arc : arcsView) {
+        for (Arc arc : arcsView) {
             arc.move(blockEntity, level.getRandom());
         }
     }
 
     public List<Arc> getArcs() {
-        if(arcs.isEmpty() && this.getLevel() != null) {
+        if (arcs.isEmpty() && this.getLevel() != null) {
             // populate arcs
             this.arcs.addAll(createArcs(12, ARC_COLORS, this.getLevel().getRandom()));
         }
@@ -64,7 +64,7 @@ public class PlasmaBallBlockEntity extends BlockEntity {
 
     protected List<Arc> createArcs(final int count, final Gradient colors, final RandomSource random) {
         final List<Arc> list = new ArrayList<>(count);
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             list.add(new Arc(colors, random));
         }
         return list;
@@ -76,11 +76,11 @@ public class PlasmaBallBlockEntity extends BlockEntity {
         private static final float MAX_DELTA_POSITION = 0.028F;
         private static final float MAX_DELTA_QUADRATIC_TERM = 0.04F;
 
-        private Vector3f position;
-        private Vector3f deltaPosition;
-        private Vector3f quadraticTerm;
-        private Vector3f deltaQuadraticTerm;
-        private Gradient color;
+        private final Vector3f position;
+        private final Vector3f deltaPosition;
+        private final Vector3f quadraticTerm;
+        private final Vector3f deltaQuadraticTerm;
+        private final Gradient color;
 
         public Arc(final Gradient color, final RandomSource random) {
             // initialize values
@@ -96,37 +96,37 @@ public class PlasmaBallBlockEntity extends BlockEntity {
             setRandomFloats(this.deltaQuadraticTerm, random, -MAX_DELTA_QUADRATIC_TERM, MAX_DELTA_QUADRATIC_TERM);
         }
 
-        //// METHODS ////
+        /// / METHODS ////
 
         public void update(final BlockEntity blockEntity, final Collection<Arc> arcs, final RandomSource random) {
             // count edge touches
             int edges = 0;
-            if((this.position.x() * this.position.x() > 0.95F)) edges++;
-            if((this.position.y() * this.position.y() > 0.95F)) edges++;
-            if((this.position.z() * this.position.z() > 0.95F)) edges++;
+            if ((this.position.x() * this.position.x() > 0.95F)) edges++;
+            if ((this.position.y() * this.position.y() > 0.95F)) edges++;
+            if ((this.position.z() * this.position.z() > 0.95F)) edges++;
             // update delta rotation
-            if(random.nextFloat() < 0.01F + edges * 0.005F) {
+            if (random.nextFloat() < 0.01F + edges * 0.005F) {
                 setRandomFloats(this.deltaPosition, random, -MAX_DELTA_POSITION, MAX_DELTA_POSITION);
             }
             // update quadratic terms
-            if(random.nextFloat() < 0.004F + edges * 0.003F) {
+            if (random.nextFloat() < 0.004F + edges * 0.003F) {
                 setRandomFloats(this.deltaQuadraticTerm, random, -MAX_DELTA_QUADRATIC_TERM, MAX_DELTA_QUADRATIC_TERM);
             }
             // update delta quadratic terms
-            if(random.nextFloat() < 0.01F + edges * 0.009F) {
+            if (random.nextFloat() < 0.01F + edges * 0.009F) {
                 setRandomFloats(this.quadraticTerm, random, -MAX_QUADRATIC_TERM, MAX_QUADRATIC_TERM);
             }
             // update position
-            if(random.nextFloat() < 0.003F + edges * 0.04F) {
+            if (random.nextFloat() < 0.003F + edges * 0.04F) {
                 setRandomFloats(this.position, random, 0.0F, MAX_POSITION);
             }
             // iterate other arcs
             final Vec3 pos = new Vec3(this.getEndPosition());
-            for(Arc other : arcs) {
-                if(other == this) continue;
+            for (Arc other : arcs) {
+                if (other == this) continue;
                 // check distance to other arc
                 Vec3 otherVec = new Vec3(other.getEndPosition());
-                if(pos.closerThan(otherVec, 0.125F)) {
+                if (pos.closerThan(otherVec, 0.125F)) {
                     // when other arc is too close, move this one
                     setRandomFloats(this.position, random, 0.0F, MAX_POSITION);
                     break;
@@ -148,15 +148,15 @@ public class PlasmaBallBlockEntity extends BlockEntity {
                     Mth.clamp(this.quadraticTerm.z() + this.deltaQuadraticTerm.z(), -0.6F, 0.6F));
         }
 
-        //// GETTERS AND SETTERS ////
+        /// / GETTERS AND SETTERS ////
 
         public Vector3f getEndPosition() {
             return position;
         }
 
         /**
-         * @param percent the percent along the arc
-         * @param time the game time
+         * @param percent     the percent along the arc
+         * @param time        the game time
          * @param partialTick the partial tick
          * @return XYZ coordinates in the range [-1,1]
          */
@@ -185,7 +185,7 @@ public class PlasmaBallBlockEntity extends BlockEntity {
             return color.getColor(percent);
         }
 
-        //// HELPER METHODS ////
+        /// / HELPER METHODS ////
 
         protected static void setRandomFloats(final Vector3f vec, final RandomSource random, final float min, final float max) {
             final float range = max - min;

@@ -21,15 +21,12 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 @Immutable
@@ -52,9 +49,9 @@ public class MultiblockHandler {
     protected static final IntegerProperty DEPTH_1_2 = IntegerProperty.create(DEPTH, 1, 2);
     protected static final IntegerProperty DEPTH_0_2 = IntegerProperty.create(DEPTH, 0, 2);
 
-    protected static final IntegerProperty[] WIDTH_BY_MAX_VALUE = new IntegerProperty[] { null, WIDTH_1_2, WIDTH_0_2};
-    protected static final IntegerProperty[] HEIGHT_BY_MAX_VALUE = new IntegerProperty[] { null, HEIGHT_1_2, HEIGHT_0_2};
-    protected static final IntegerProperty[] DEPTH_BY_MAX_VALUE = new IntegerProperty[] { null, DEPTH_1_2, DEPTH_0_2};
+    protected static final IntegerProperty[] WIDTH_BY_MAX_VALUE = new IntegerProperty[]{null, WIDTH_1_2, WIDTH_0_2};
+    protected static final IntegerProperty[] HEIGHT_BY_MAX_VALUE = new IntegerProperty[]{null, HEIGHT_1_2, HEIGHT_0_2};
+    protected static final IntegerProperty[] DEPTH_BY_MAX_VALUE = new IntegerProperty[]{null, DEPTH_1_2, DEPTH_0_2};
 
     public static final MultiblockHandler MULTIBLOCK_3X3X3 = new MultiblockHandler(3, 3, 3);
     public static final MultiblockHandler MULTIBLOCK_3X3X1 = new MultiblockHandler(3, 3, 1);
@@ -73,7 +70,7 @@ public class MultiblockHandler {
     protected final @Nullable IntegerProperty widthProperty;
     protected final @Nullable IntegerProperty heightProperty;
     protected final @Nullable IntegerProperty depthProperty;
-    
+
     protected final Vec3i dimensions;
     protected final Vec3i minIndex;
     protected final Vec3i maxIndex;
@@ -81,7 +78,7 @@ public class MultiblockHandler {
 
     public MultiblockHandler(final int width, final int height, final int depth) {
         // validate dimensions
-        if(width < 1 || height < 1 || depth < 1) {
+        if (width < 1 || height < 1 || depth < 1) {
             throw new IllegalArgumentException(String.format("[MultiblockHandler] width, height, and depth must be greater than zero! Provided [{}, {}, {}]", width, height, depth));
         }
         this.dimensions = new Vec3i(width, height, depth);
@@ -93,7 +90,7 @@ public class MultiblockHandler {
         final BoundingBox boundingBox = BoundingBox.fromCorners(minIndex, maxIndex);
         this.bounds = createRotatedBoundingBoxMap(boundingBox, ORIGIN_DIRECTION);
     }
-    
+
     //// GETTERS ////
 
     /**
@@ -116,7 +113,7 @@ public class MultiblockHandler {
     public @Nullable IntegerProperty getDepthProperty() {
         return depthProperty;
     }
-    
+
     /**
      * @return a copy of the number of blocks in each axis
      */
@@ -145,13 +142,13 @@ public class MultiblockHandler {
     public BoundingBox getBounds(final Direction direction) {
         return bounds.get(direction);
     }
-    
+
     //// HELPER METHODS ////
-    
+
     /**
-     * @param pos the block position
+     * @param pos        the block position
      * @param blockState the block state of a multiblock part
-     * @param direction the facing direction
+     * @param direction  the facing direction
      * @return the block position of the center of the multiblock
      * @see #getIndex(BlockState)
      * @see #getCenterPos(BlockPos, BlockState, Direction)
@@ -161,7 +158,7 @@ public class MultiblockHandler {
     }
 
     /**
-     * @param center the center position
+     * @param center    the center position
      * @param direction the facing direction
      * @return the minimum position in the multiblock
      */
@@ -170,7 +167,7 @@ public class MultiblockHandler {
     }
 
     /**
-     * @param center the center position
+     * @param center    the center position
      * @param direction the facing direction
      * @return the maximum position in the multiblock
      */
@@ -188,9 +185,9 @@ public class MultiblockHandler {
         final BlockPos max = getMax(center, facing);
         return BlockPos.betweenClosed(min, max);
     }
-    
-    //// PROPERTY HELPER METHODS ////
-    
+
+    /// / PROPERTY HELPER METHODS ////
+
     public static @Nullable IntegerProperty getWidthProperty(final int maxWidth) {
         final int index = Mth.clamp(maxWidth - 1, 0, WIDTH_BY_MAX_VALUE.length - 1);
         return WIDTH_BY_MAX_VALUE[index];
@@ -215,13 +212,13 @@ public class MultiblockHandler {
     }
 
     public StateDefinition.Builder<Block, BlockState> createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        if(widthProperty != null) {
+        if (widthProperty != null) {
             builder.add(widthProperty);
         }
-        if(heightProperty != null) {
+        if (heightProperty != null) {
             builder.add(heightProperty);
         }
-        if(depthProperty != null) {
+        if (depthProperty != null) {
             builder.add(depthProperty);
         }
         return builder;
@@ -249,18 +246,18 @@ public class MultiblockHandler {
 
     /**
      * @param blockState the base block state
-     * @param index the desired index
+     * @param index      the desired index
      * @return a block state with values for the block at the given index of the multiblock
      */
     public BlockState getIndexedState(final BlockState blockState, final Vec3i index) {
         BlockState mutableBlockState = blockState;
-        if(widthProperty != null) {
+        if (widthProperty != null) {
             mutableBlockState = mutableBlockState.setValue(widthProperty, index.getX() + dimensions.getX() / 2);
         }
-        if(heightProperty != null) {
+        if (heightProperty != null) {
             mutableBlockState = mutableBlockState.setValue(heightProperty, index.getY() + dimensions.getY() / 2);
         }
-        if(depthProperty != null) {
+        if (depthProperty != null) {
             mutableBlockState = mutableBlockState.setValue(depthProperty, index.getZ() + dimensions.getZ() / 2);
         }
         return mutableBlockState;
@@ -271,10 +268,11 @@ public class MultiblockHandler {
 
     /**
      * Places all blocks in the multiblock
-     * @param level the level
-     * @param pos the block position
+     *
+     * @param level      the level
+     * @param pos        the block position
      * @param blockState the default block state
-     * @param direction the facing direction
+     * @param direction  the facing direction
      */
     public void onBlockPlaced(Level level, BlockPos pos, BlockState blockState, Direction direction) {
         // determine center
@@ -282,7 +280,7 @@ public class MultiblockHandler {
         // place multiblock
         iterateIndices(index -> {
             // skip center block
-            if(index.equals(CENTER_INDEX)) return;
+            if (index.equals(CENTER_INDEX)) return;
             // calculate block position
             BlockPos p = center.offset(indexToOffset(index, direction));
             // determine block to place
@@ -295,9 +293,10 @@ public class MultiblockHandler {
 
     /**
      * Checks and validates if the multiblock can be placed with the given context.
-     * @param context the block place context containing the center position of the multiblock
+     *
+     * @param context    the block place context containing the center position of the multiblock
      * @param blockState the base block state
-     * @param facing the facing direction
+     * @param facing     the facing direction
      * @return the block state for this position, can be null
      */
     @Nullable
@@ -306,7 +305,7 @@ public class MultiblockHandler {
         // determine center
         final BlockPos center = context.getClickedPos();
         // validate blocks can be placed
-        if(!allPositions(center, facing, p -> level.isInWorldBounds(p) && level.getBlockState(p).canBeReplaced(context))) {
+        if (!allPositions(center, facing, p -> level.isInWorldBounds(p) && level.getBlockState(p).canBeReplaced(context))) {
             return null;
         }
         // place block
@@ -315,9 +314,9 @@ public class MultiblockHandler {
 
     /**
      * @param blockState the block state
-     * @param level the level
-     * @param pos the block position
-     * @param facing the facing direction
+     * @param level      the level
+     * @param pos        the block position
+     * @param facing     the facing direction
      * @return true if all positions in the multiblock area have the same block as the given blockstate
      */
     public boolean canSurvive(final BlockState blockState, final LevelReader level, final BlockPos pos, final Direction facing) {
@@ -326,16 +325,17 @@ public class MultiblockHandler {
 
     /**
      * Removes the center block without allowing loot drops. This prevents the item from dropping, intended for use in creative mode.
-     * @param level the level
-     * @param pos the block position
+     *
+     * @param level      the level
+     * @param pos        the block position
      * @param blockState the block state
-     * @param facing the facing direction
-     * @param player the player
+     * @param facing     the facing direction
+     * @param player     the player
      */
     public void preventCreativeDropFromCenterPart(Level level, BlockPos pos, BlockState blockState, Direction facing, Player player) {
         final BlockPos origin = getCenterPos(pos, blockState, facing);
         final BlockState originState = level.getBlockState(origin);
-        if(originState.is(blockState.getBlock()) && getIndex(originState).equals(CENTER_INDEX)) {
+        if (originState.is(blockState.getBlock()) && getIndex(originState).equals(CENTER_INDEX)) {
             level.setBlock(origin, originState.getFluidState().createLegacyBlock(), Block.UPDATE_SUPPRESS_DROPS | Block.UPDATE_ALL);
             //pLevel.levelEvent(pPlayer, LevelEvent.PARTICLES_DESTROY_BLOCK, center, Block.getId(blockState));
         }
@@ -345,14 +345,14 @@ public class MultiblockHandler {
     //// POSITION HELPER METHODS ////
 
     /**
-     * @param center the block position of the center of the multiblock
-     * @param facing the facing direction
+     * @param center    the block position of the center of the multiblock
+     * @param facing    the facing direction
      * @param predicate a predicate to test
      * @return true if all positions passed.
      */
     public boolean allPositions(final BlockPos center, final Direction facing, final Predicate<BlockPos> predicate) {
-        for(BlockPos p : getPositions(center, facing)) {
-            if(!predicate.test(p)) {
+        for (BlockPos p : getPositions(center, facing)) {
+            if (!predicate.test(p)) {
                 return false;
             }
         }
@@ -360,14 +360,14 @@ public class MultiblockHandler {
     }
 
     /**
-     * @param center the block position of the center of the multiblock
-     * @param facing the facing direction
+     * @param center    the block position of the center of the multiblock
+     * @param facing    the facing direction
      * @param predicate a predicate to test
      * @return true if any position passed.
      */
     public boolean anyPositions(final BlockPos center, final Direction facing, final Predicate<BlockPos> predicate) {
-        for(BlockPos p : getPositions(center, facing)) {
-            if(predicate.test(p)) {
+        for (BlockPos p : getPositions(center, facing)) {
+            if (predicate.test(p)) {
                 return true;
             }
         }
@@ -376,14 +376,15 @@ public class MultiblockHandler {
 
     /**
      * Iterates all index values in each axis
+     *
      * @param consumer the consumer to handle each index value
      */
     public void iterateIndices(final Consumer<Vec3i> consumer) {
         // iterate index values in each axis
         final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        for(int x = minIndex.getX(); x <= maxIndex.getX(); x++) {
-            for(int y = minIndex.getY(); y <= maxIndex.getY(); y++) {
-                for(int z = minIndex.getZ(); z <= maxIndex.getZ(); z++) {
+        for (int x = minIndex.getX(); x <= maxIndex.getX(); x++) {
+            for (int y = minIndex.getY(); y <= maxIndex.getY(); y++) {
+                for (int z = minIndex.getZ(); z <= maxIndex.getZ(); z++) {
                     consumer.accept(mutable.set(x, y, z));
                 }
             }
@@ -399,7 +400,7 @@ public class MultiblockHandler {
         final Map<Direction, BoundingBox> map = new EnumMap<>(Direction.class);
         map.put(from, boundingBox);
         BoundingBox box = boundingBox;
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             Direction direction = Direction.from2DDataValue(from.get2DDataValue() + i + 1);
             box = new BoundingBox(1 - box.maxZ(), box.minY(), box.minX(), 1 - box.minZ(), box.maxY(), box.maxX());
             map.put(direction, box);
@@ -408,8 +409,8 @@ public class MultiblockHandler {
     }
 
     /**
-     * @param pos the block position
-     * @param index the index of the block at this position
+     * @param pos       the block position
+     * @param index     the index of the block at this position
      * @param direction the direction
      * @return the block position of a block with the given index
      */
@@ -421,17 +422,21 @@ public class MultiblockHandler {
     }
 
     /**
-     * @param index the relative position index
+     * @param index     the relative position index
      * @param direction the direction to rotate
      * @return the absolute offset calculated from the given index and direction
      */
     public static Vec3i indexToOffset(final Vec3i index, final Direction direction) {
         switch (direction) {
             default:
-            case NORTH: return new Vec3i(-index.getX(), index.getY(), index.getZ());
-            case EAST: return new Vec3i(-index.getZ(), index.getY(), -index.getX());
-            case SOUTH: return new Vec3i(index.getX(), index.getY(), -index.getZ());
-            case WEST: return new Vec3i(index.getZ(), index.getY(), index.getX());
+            case NORTH:
+                return new Vec3i(-index.getX(), index.getY(), index.getZ());
+            case EAST:
+                return new Vec3i(-index.getZ(), index.getY(), -index.getX());
+            case SOUTH:
+                return new Vec3i(index.getX(), index.getY(), -index.getZ());
+            case WEST:
+                return new Vec3i(index.getZ(), index.getY(), index.getX());
         }
     }
 }

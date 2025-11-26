@@ -23,7 +23,7 @@ public class BlueClockBlock extends TallClockBlock {
                 UPPER_SHAPE, LOWER_SHAPE, TDRegistry.BlockEntityReg.BLUE_CLOCK, pProperties);
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Override
     public int getTickSoundInterval(BlockState blockState) {

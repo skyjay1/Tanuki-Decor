@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 
 public class MetronomeBlockEntity extends ClockBlockEntity {
 
@@ -25,10 +24,5 @@ public class MetronomeBlockEntity extends ClockBlockEntity {
     @Override
     protected void playChime(Level level, BlockPos blockPos, BlockState blockState) {
         // do nothing
-    }
-
-    @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos()).inflate(1);
     }
 }

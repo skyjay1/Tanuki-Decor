@@ -26,8 +26,8 @@ import java.util.Set;
 
 public class StationClockBER extends ClockBER {
 
-    public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/station_clock/short_hand");
-    public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/station_clock/long_hand");
+    public static final ResourceLocation SHORT_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/station_clock/short_hand");
+    public static final ResourceLocation LONG_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/station_clock/long_hand");
 
     public StationClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,
@@ -73,7 +73,7 @@ public class StationClockBER extends ClockBER {
         pPoseStack.translate(-8.0D / 16.0D, -8.0D / 16.0D, -6.5D / 16.0D);
 
         // render on front and back
-        for(int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
 
             // render short hand
             this.clockRenderHelper

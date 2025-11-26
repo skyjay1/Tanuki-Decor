@@ -20,12 +20,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingWideBlock;
 import tanukidecor.block.Side;
 
-import java.util.Random;
-
 public class SmallFireplaceBlock extends RotatingWideBlock {
 
     public static final VoxelShape SHAPE_EAST = Shapes.or(
-            box(0, 2 , 2, 14, 14, 16),
+            box(0, 2, 2, 14, 14, 16),
             box(0, 0, 0, 16, 2, 16),
             box(0, 14, 0, 16, 16, 16));
     public static final VoxelShape SHAPE_WEST = Shapes.or(
@@ -37,11 +35,11 @@ public class SmallFireplaceBlock extends RotatingWideBlock {
         super(pProperties, createShapeBuilder(SHAPE_EAST, SHAPE_WEST));
     }
 
-    //// ANIMATE ////
+    /// / ANIMATE ////
 
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(pState.getValue(WATERLOGGED) || pState.getValue(SIDE) != Side.LEFT) {
+        if (pState.getValue(WATERLOGGED) || pState.getValue(SIDE) != Side.LEFT) {
             return;
         }
         // play sound
@@ -59,7 +57,7 @@ public class SmallFireplaceBlock extends RotatingWideBlock {
         // smoke particle
         pLevel.addParticle(ParticleTypes.SMOKE, pos.x(), pos.y(), pos.z(), 0.0D, 0.0D, 0.0D);
         // fire particle
-        if(pRandom.nextInt(5) == 0) {
+        if (pRandom.nextInt(5) == 0) {
             pLevel.addParticle(ParticleTypes.LAVA, pos.x(), pos.y(), pos.z(), 0.0D, 0.0D, 0.0D);
         }
     }

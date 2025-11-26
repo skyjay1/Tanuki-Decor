@@ -11,7 +11,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -51,7 +50,7 @@ public class NewtonsCradleBlock extends RotatingBlock implements EntityBlock, IC
                 .setValue(WATERLOGGED, false));
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -59,32 +58,32 @@ public class NewtonsCradleBlock extends RotatingBlock implements EntityBlock, IC
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pLevel.isClientSide()) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        if (pLevel.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
-        if(!pPlayer.isShiftKeyDown()) {
+        if (!pPlayer.isShiftKeyDown()) {
             pLevel.setBlock(pPos, pState.cycle(ENABLED), Block.UPDATE_ALL);
             pLevel.updateNeighbourForOutputSignal(pPos, pState.getBlock());
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     @Override
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
-        if(!pLevel.isClientSide() && pFromPos.getY() == pPos.getY() - 1 && pLevel.getBlockEntity(pPos) instanceof NewtonsCradleBlockEntity blockEntity) {
+        if (!pLevel.isClientSide() && pFromPos.getY() == pPos.getY() - 1 && pLevel.getBlockEntity(pPos) instanceof NewtonsCradleBlockEntity blockEntity) {
             blockEntity.setSilent(pLevel.getBlockState(pPos.below()).is(BlockTags.OCCLUDES_VIBRATION_SIGNALS));
         }
         super.neighborChanged(pState, pLevel, pPos, pBlock, pFromPos, pIsMoving);
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Nullable
     @Override
     public SoundEvent getTickSound(BlockState blockState) {
-        if(blockState.getValue(ENABLED)) {
+        if (blockState.getValue(ENABLED)) {
             return tickSound.get();
         }
         return null;
@@ -110,7 +109,7 @@ public class NewtonsCradleBlock extends RotatingBlock implements EntityBlock, IC
         return false;
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
@@ -124,7 +123,7 @@ public class NewtonsCradleBlock extends RotatingBlock implements EntityBlock, IC
         return (BlockEntityTicker<T>) (BlockEntityTicker<NewtonsCradleBlockEntity>) (NewtonsCradleBlockEntity::tick);
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {

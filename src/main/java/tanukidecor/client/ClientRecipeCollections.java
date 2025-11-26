@@ -11,15 +11,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.searchtree.FullTextSearchTree;
-import net.minecraft.client.searchtree.SearchRegistry;
+import net.minecraft.client.searchtree.SearchTree;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraftforge.client.event.RecipesUpdatedEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TagsUpdatedEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import tanukidecor.TDRegistry;
 
 import java.util.ArrayList;
@@ -27,39 +26,38 @@ import java.util.List;
 
 public final class ClientRecipeCollections {
 
-    public static final SearchRegistry.Key<RecipeCollection> DIY_RECIPE_COLLECTIONS_KEY = new SearchRegistry.Key<>();
     public static final List<RecipeCollection> DIY_RECIPE_COLLECTIONS = new ArrayList<>();
+    private static SearchTree<RecipeCollection> searchTree;
 
-    private ClientRecipeCollections() {}
+    private ClientRecipeCollections() {
+    }
 
     public static void register() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientRecipeCollections::onClientSetup);
-        MinecraftForge.EVENT_BUS.addListener(ClientRecipeCollections::onUpdateRecipes);
-        MinecraftForge.EVENT_BUS.addListener(ClientRecipeCollections::onUpdateTags);
+        NeoForge.EVENT_BUS.addListener(ClientRecipeCollections::onUpdateRecipes);
+        NeoForge.EVENT_BUS.addListener(ClientRecipeCollections::onUpdateTags);
     }
 
-    private static void onClientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(ClientRecipeCollections::registerSearchTrees);
-    }
-
-    /**
-     * Registers a search tree of {@link RecipeCollection}s that is indexed by item names
-     **/
-    private static void registerSearchTrees() {
+    public static void registerSearchTrees() {
         // create a search tree (copied from Minecraft#createSearchTrees)
-        Minecraft.getInstance().getSearchTreeManager().register(ClientRecipeCollections.DIY_RECIPE_COLLECTIONS_KEY, (recipes) ->
-                new FullTextSearchTree<>((recipeCollection) -> recipeCollection.getRecipes()
-                        .stream()
-                        .flatMap((recipe) -> recipe.getResultItem(recipeCollection.registryAccess()).getTooltipLines(null, TooltipFlag.Default.NORMAL).stream())
+        searchTree = new FullTextSearchTree<>(
+                (recipeCollection) -> recipeCollection.getRecipes().stream()
+                        .flatMap((recipe) -> recipe.value().getResultItem(recipeCollection.registryAccess())
+                                .getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.Default.NORMAL).stream())
                         .map((component) -> ChatFormatting.stripFormatting(component.getString()).trim())
-                        .filter((s) -> !s.isEmpty()), (collection) -> collection.getRecipes()
-                        .stream()
-                        .map((recipe) -> ForgeRegistries.ITEMS.getKey(recipe.getResultItem(collection.registryAccess()).getItem())), recipes));
+                        .filter((s) -> !s.isEmpty()),
+                (collection) -> collection.getRecipes().stream()
+                        .map((recipe) -> BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(collection.registryAccess()).getItem())),
+                DIY_RECIPE_COLLECTIONS);
+    }
+
+    public static List<RecipeCollection> searchRecipes(String query) {
+        return searchTree != null ? searchTree.search(query) : DIY_RECIPE_COLLECTIONS;
     }
 
     /**
      * Populates the recipe cache and search tree with {@link RecipeCollection}s that contain
      * one {@link tanukidecor.recipe.DIYRecipe} each
+     *
      * @param event the recipe update event
      */
     private static void onUpdateRecipes(final RecipesUpdatedEvent event) {
@@ -67,17 +65,15 @@ public final class ClientRecipeCollections {
         DIY_RECIPE_COLLECTIONS.clear();
         // add updated recipes to collections, one recipe per RecipeCollection
         final RegistryAccess registryAccess = Minecraft.getInstance().level.registryAccess();
-        event.getRecipeManager()
-                .getAllRecipesFor(TDRegistry.RecipeReg.DIY.get())
-                .stream()
-                .map(recipe -> new RecipeCollection(registryAccess, ImmutableList.of(recipe)))
-                .forEach(DIY_RECIPE_COLLECTIONS::add);
+        var diyRecipes = event.getRecipeManager().getAllRecipesFor(TDRegistry.RecipeReg.DIY.get());
+        diyRecipes.stream().map(recipe -> new RecipeCollection(registryAccess, ImmutableList.of(recipe))).forEach(DIY_RECIPE_COLLECTIONS::add);
         // refresh search tree
-        Minecraft.getInstance().populateSearchTree(DIY_RECIPE_COLLECTIONS_KEY, DIY_RECIPE_COLLECTIONS);
+        registerSearchTrees();
     }
 
     /**
      * Filters the recipe cache and search tree to remove any blacklisted items
+     *
      * @param event the tag update event
      */
     private static void onUpdateTags(final TagsUpdatedEvent event) {
@@ -85,12 +81,12 @@ public final class ClientRecipeCollections {
         final List<RecipeCollection> recipes = ImmutableList.copyOf(DIY_RECIPE_COLLECTIONS);
         DIY_RECIPE_COLLECTIONS.clear();
         // add all recipes that are not blacklisted back into the list and search tree
-        for(RecipeCollection recipeCollection : recipes) {
-            if(recipeCollection.getRecipes().size() == 1 && !recipeCollection.getRecipes().get(0).getResultItem(event.getRegistryAccess()).is(TDRegistry.DIY_BLACKLIST_TAG_KEY)) {
+        for (RecipeCollection recipeCollection : recipes) {
+            if (recipeCollection.getRecipes().size() == 1 && !recipeCollection.getRecipes().get(0).value().getResultItem(event.getRegistryAccess()).is(TDRegistry.DIY_BLACKLIST_TAG_KEY)) {
                 DIY_RECIPE_COLLECTIONS.add(recipeCollection);
             }
         }
         // refresh search tree
-        Minecraft.getInstance().populateSearchTree(DIY_RECIPE_COLLECTIONS_KEY, DIY_RECIPE_COLLECTIONS);
+        registerSearchTrees();
     }
 }

@@ -6,7 +6,6 @@
 
 package tanukidecor.integration;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -16,7 +15,8 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.Util;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -30,10 +30,10 @@ import java.util.Optional;
 
 public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
 
-    public static final ResourceLocation UID = new ResourceLocation(TanukiDecor.MODID, "diy");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "diy");
     public static final RecipeType<DIYRecipe> RECIPE_TYPE = new RecipeType<>(UID, DIYRecipe.class);
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(TanukiDecor.MODID, "textures/jei/diy_recipe.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "textures/jei/diy_recipe.png");
     private static final int PADDING = 10;
     private static final int INPUT_SPACING = 33;
     private static final int SLOT_SIZE = 18;
@@ -54,14 +54,14 @@ public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, DIYRecipe recipe, IFocusGroup focuses) {
-        final Optional<RegistryAccess> oRegistryAccess = TDJeiPlugin.getClientRegistryAccess();
-        if(oRegistryAccess.isEmpty()) {
+        final Optional<HolderLookup.Provider> oRegistryAccess = TDJeiPlugin.getClientRegistryAccess();
+        if (oRegistryAccess.isEmpty()) {
             return;
         }
         // input
         int x = PADDING + 1;
         int y = PADDING + 1;
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             builder.addSlot(RecipeIngredientRole.INPUT, x + INPUT_SPACING * i, y)
                     .setSlotName("input" + i)
                     .addItemStacks(List.of(DIYWorkbenchBlockEntity.INGREDIENTS[i].getItems()));
@@ -75,13 +75,23 @@ public class JeiDIYRecipeCategory implements IRecipeCategory<DIYRecipe> {
     }
 
     @Override
+    public int getWidth() {
+        return this.background.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return this.background.getHeight();
+    }
+
+    @Override
     public Component getTitle() {
         return this.title;
     }
 
     @Override
-    public IDrawable getBackground() {
-        return this.background;
+    public void draw(DIYRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        this.background.draw(guiGraphics);
     }
 
     @Override

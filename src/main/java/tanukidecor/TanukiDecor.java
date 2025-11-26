@@ -7,12 +7,12 @@
 package tanukidecor;
 
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 import tanukidecor.network.TDNetwork;
 
@@ -23,17 +23,27 @@ public class TanukiDecor {
 
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    private static final ForgeConfigSpec.Builder CONFIG_BUILDER = new ForgeConfigSpec.Builder();
+    private static final net.neoforged.neoforge.common.ModConfigSpec.Builder CONFIG_BUILDER = new net.neoforged.neoforge.common.ModConfigSpec.Builder();
     public static final TDConfig CONFIG = new TDConfig(CONFIG_BUILDER);
 
-    public TanukiDecor() {
+    public TanukiDecor(ModContainer container) {
+        IEventBus modEventBus = container.getEventBus();
         // register common config
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CONFIG_BUILDER.build());
+        container.registerConfig(ModConfig.Type.COMMON, CONFIG_BUILDER.build());
         // register network
         TDNetwork.register();
         // register registry objects
-        TDRegistry.register();
+        TDRegistry.register(modEventBus);
+        // register mod lifecycle events
+        modEventBus.addListener(this::commonSetup);
         // register client events
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> tanukidecor.client.TDClientEvents::register);
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            tanukidecor.client.TDClientEvents.register();
+            modEventBus.register(tanukidecor.client.TDClientEvents.ModHandler.class);
+        }
+    }
+
+    private void commonSetup(final net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) {
+        // Common setup if needed
     }
 }

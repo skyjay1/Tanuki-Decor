@@ -15,7 +15,7 @@ public class WoodenBlockBedBlock extends SingleBedBlock {
             box(1, 5, 4, 15, 8, 16),
             box(0, 3, 4, 16, 5, 16),
             box(0, 0, 0, 4, 4, 4),
-            box(12, 0,  0, 16, 4, 4),
+            box(12, 0, 0, 16, 4, 4),
             box(0, 4, 0, 16, 9, 4));
     public static final VoxelShape SHAPE_SOUTH = Shapes.or(
             box(1, 5, 0, 15, 8, 12),

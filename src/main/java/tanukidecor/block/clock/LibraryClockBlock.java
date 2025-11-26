@@ -35,7 +35,7 @@ public class LibraryClockBlock extends RotatingMultiblock implements EntityBlock
         this.chimeSound = TDRegistry.SoundReg.GRANDFATHER_CLOCK_CHIME;
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Nullable
     @Override
@@ -54,12 +54,12 @@ public class LibraryClockBlock extends RotatingMultiblock implements EntityBlock
         return 40;
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(this.getMultiblockHandler().isCenterState(pState)) {
+        if (this.getMultiblockHandler().isCenterState(pState)) {
             return TDRegistry.BlockEntityReg.LIBRARY_CLOCK.get().create(pPos, pState);
         }
         return null;
@@ -76,7 +76,7 @@ public class LibraryClockBlock extends RotatingMultiblock implements EntityBlock
     /**
      * Shape data for each block in the default horizontal direction, ordered by index {@code [height][width][depth]}
      **/
-    public static final VoxelShape[][][] LIBRARY_CLOCK_SHAPE = new VoxelShape[][][] {
+    public static final VoxelShape[][][] LIBRARY_CLOCK_SHAPE = new VoxelShape[][][]{
             // height = 0
             {
                     // width = 0

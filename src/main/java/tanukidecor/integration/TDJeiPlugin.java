@@ -7,19 +7,22 @@
 package tanukidecor.integration;
 
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
 import tanukidecor.recipe.DIYRecipe;
@@ -29,12 +32,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@mezz.jei.api.JeiPlugin
+@JeiPlugin
 public class TDJeiPlugin implements IModPlugin {
 
-    public static final ResourceLocation UID = new ResourceLocation(TanukiDecor.MODID, "jei");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "jei");
 
-    private static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = ForgeRegistries.ITEMS.tags().createTagKey(new ResourceLocation(TanukiDecor.MODID, "diy_blacklist"));
+    private static final TagKey<Item> DIY_BLACKLIST_TAG_KEY = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "diy_blacklist"));
+
+    public static Optional<HolderLookup.Provider> getClientRegistryAccess() {
+        return Optional.ofNullable(Minecraft.getInstance().level).map(Level::registryAccess);
+    }
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -48,14 +55,15 @@ public class TDJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        final Optional<RegistryAccess> oRegistryAccess = getClientRegistryAccess();
-        if(oRegistryAccess.isEmpty()) {
+        final Optional<HolderLookup.Provider> oRegistryAccess = getClientRegistryAccess();
+        if (oRegistryAccess.isEmpty()) {
             return;
         }
         final List<DIYRecipe> recipes = Minecraft.getInstance().level.getRecipeManager()
                 .getAllRecipesFor(TDRegistry.RecipeReg.DIY.get())
                 .stream()
-                .filter(recipe -> !recipe.getResultItem(oRegistryAccess.get()).is(DIY_BLACKLIST_TAG_KEY))
+                .filter(recipeHolder -> !recipeHolder.value().getResultItem(oRegistryAccess.get()).is(DIY_BLACKLIST_TAG_KEY))
+                .map(RecipeHolder::value)
                 .toList();
         registration.addRecipes(JeiDIYRecipeCategory.RECIPE_TYPE, recipes);
     }
@@ -67,16 +75,13 @@ public class TDJeiPlugin implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-        final Collection<ItemStack> blacklistItems = ForgeRegistries.ITEMS.tags().getTag(DIY_BLACKLIST_TAG_KEY)
-                .stream()
-                .map(ItemStack::new)
-                .collect(Collectors.toSet());
-        if(!blacklistItems.isEmpty()) {
+        final Collection<ItemStack> blacklistItems = BuiltInRegistries.ITEM.getTag(DIY_BLACKLIST_TAG_KEY)
+                .map(holders -> holders.stream()
+                        .map(holder -> new ItemStack(holder.value()))
+                        .collect(Collectors.toSet()))
+                .orElse(java.util.Collections.emptySet());
+        if (!blacklistItems.isEmpty()) {
             jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, blacklistItems);
         }
-    }
-
-    public static Optional<RegistryAccess> getClientRegistryAccess() {
-        return Optional.ofNullable(Minecraft.getInstance().level).map(Level::registryAccess);
     }
 }

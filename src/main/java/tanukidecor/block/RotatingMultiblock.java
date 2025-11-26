@@ -48,6 +48,11 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
+    /**
+     * ThreadLocal to pass multiblockHandler to createBlockStateDefinition during construction
+     */
+    private static final ThreadLocal<MultiblockHandler> CONSTRUCTING_HANDLER = new ThreadLocal<>();
+
     protected final MultiblockHandler multiblockHandler;
 
     protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
@@ -58,29 +63,37 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     protected RotatingMultiblock(MultiblockHandler multiblockHandler,
                                  ShapeBuilder shapeBuilder,
                                  Properties pProperties) {
-        super(pProperties.dynamicShape());
+        super(withHandler(multiblockHandler, pProperties).dynamicShape());
         this.multiblockHandler = multiblockHandler;
         this.shapeBuilder = shapeBuilder;
-        // re-create state definition
-        this.stateDefinition = createStateDefinition();
-        this.registerDefaultState(this.multiblockHandler.getCenterState(this.stateDefinition.any()
-                .setValue(WATERLOGGED, false)
-                .setValue(FACING, Direction.NORTH)));
+        // Clean up ThreadLocal
+        CONSTRUCTING_HANDLER.remove();
+        // Note: state definition now has all properties including multiblock ones
+        // Set the default state with center position values
+        BlockState defaultState = this.stateDefinition.any();
+        // Explicitly set the base properties to ensure they have the correct defaults
+        if (defaultState.hasProperty(WATERLOGGED)) {
+            defaultState = defaultState.setValue(WATERLOGGED, false);
+        }
+        if (defaultState.hasProperty(FACING)) {
+            defaultState = defaultState.setValue(FACING, Direction.NORTH);
+        }
+        // Apply multiblock center properties
+        this.registerDefaultState(this.multiblockHandler.getCenterState(defaultState));
         // calculate voxel shapes for all possible states
         this.precalculateShapes();
+    }
+
+    private static Properties withHandler(MultiblockHandler handler, Properties properties) {
+        CONSTRUCTING_HANDLER.set(handler);
+        return properties;
     }
 
     public MultiblockHandler getMultiblockHandler() {
         return multiblockHandler;
     }
 
-    protected StateDefinition<Block, BlockState> createStateDefinition() {
-        StateDefinition.Builder<Block, BlockState> builder = new StateDefinition.Builder<>(this);
-        this.createMultiblockStateDefinition(builder);
-        return builder.create(Block::defaultBlockState, BlockState::new);
-    }
-
-    //// DELEGATE PROVIDER ////
+    /// / DELEGATE PROVIDER ////
 
     @Override
     public BlockPos getDelegatePos(BlockState blockState, BlockPos blockPos) {
@@ -91,20 +104,25 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
 
     /**
      * @param pBuilder the state definition builder
-     * @deprecated use and override {@link #createMultiblockStateDefinition(StateDefinition.Builder)}
      */
     @Override
-    @Deprecated
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        // note: this method is called from the super constructor before the multiblockHandler is assigned
-        super.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
+        pBuilder.add(WATERLOGGED).add(FACING);
+        // Use ThreadLocal to get the handler during construction, or use the instance field after construction
+        MultiblockHandler handler = this.multiblockHandler != null ? this.multiblockHandler : CONSTRUCTING_HANDLER.get();
+        if (handler != null) {
+            handler.createBlockStateDefinition(pBuilder);
+        }
     }
 
     protected void createMultiblockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        this.multiblockHandler.createBlockStateDefinition(pBuilder.add(WATERLOGGED).add(FACING));
+        pBuilder.add(WATERLOGGED).add(FACING);
+        if (this.multiblockHandler != null) {
+            this.multiblockHandler.createBlockStateDefinition(pBuilder);
+        }
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -128,7 +146,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
         // validate block can stay
-        if(!multiblockHandler.canSurvive(pState, pLevel, pCurrentPos, pState.getValue(FACING))) {
+        if (!multiblockHandler.canSurvive(pState, pLevel, pCurrentPos, pState.getValue(FACING))) {
             return getFluidState(pState).createLegacyBlock();
         }
         return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
@@ -143,7 +161,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         // assume if the block at the given position is not this one, this is a preemptive check
-        if(!pLevel.getBlockState(pPos).is(this)) {
+        if (!pLevel.getBlockState(pPos).is(this)) {
             return true;
         }
         // validate the multiblock is intact
@@ -151,11 +169,11 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (!pLevel.isClientSide() && pPlayer.isCreative()) {
             multiblockHandler.preventCreativeDropFromCenterPart(pLevel, pPos, pState, pState.getValue(FACING), pPlayer);
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
     @Override
@@ -172,14 +190,14 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
         });
     }
 
-    //// FLUID ////
+    /// / FLUID ////
 
     @Override
     public FluidState getFluidState(BlockState pState) {
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
 
-    //// SHAPE ////
+    /// / SHAPE ////
 
     @Override
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
@@ -198,7 +216,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
         final Map<Direction, VoxelShape> centeredVisualShapes = new EnumMap<>(Direction.class);
         centeredVisualShapes.putAll(ShapeUtils.rotateShapes(MultiblockHandler.ORIGIN_DIRECTION, createMultiblockShape()));
         // iterate all block states
-        for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
+        for (BlockState blockState : this.stateDefinition.getPossibleStates()) {
             // cache the individual shape
             blockShapes.put(blockState, this.shapeBuilder.apply(blockState));
             // move the centered shape for the given rotation to the correct offset
@@ -206,7 +224,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
             Vec3i index = multiblockHandler.getIndex(blockState);
             Vec3i offset = MultiblockHandler.indexToOffset(index, direction);
             VoxelShape shape = centeredVisualShapes.get(blockState.getValue(FACING))
-                    .move(-offset.getX(), -offset.getY(),  -offset.getZ());
+                    .move(-offset.getX(), -offset.getY(), -offset.getZ());
             // cache the offset visual shape
             multiblockShapes.put(blockState, shape);
         }
@@ -246,7 +264,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
     //// SHAPE HELPER METHODS ////
 
     /**
-     * @param handler the multiblock handler
+     * @param handler  the multiblock handler
      * @param template the array of voxel shapes ordered by {@code [height][width][depth]}
      * @return a shape builder for the given handler that uses the {@link #FACING} property to rotate shapes
      */
@@ -254,7 +272,7 @@ public class RotatingMultiblock extends Block implements SimpleWaterloggedBlock,
         return blockState -> {
             final Vec3i index = handler.getIndex(blockState);
             final Vec3i dimensions = handler.getDimensions();
-            final Direction facing =  blockState.getValue(FACING);
+            final Direction facing = blockState.getValue(FACING);
             int heightIndex = (index.getY() + dimensions.getY() / 2);
             int widthIndex = (index.getX() + dimensions.getX() / 2);
             int depthIndex = (index.getZ() + dimensions.getZ() / 2);

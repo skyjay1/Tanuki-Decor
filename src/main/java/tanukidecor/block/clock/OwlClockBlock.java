@@ -34,7 +34,8 @@ public class OwlClockBlock extends ClockBlock {
         super(TDRegistry.SoundReg.MEDIUM_CLOCK_TICK2, NO_SOUND,
                 SHAPE, TDRegistry.BlockEntityReg.OWL_CLOCK, pProperties);
     }
-    //// PLACEMENT ////
+
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

@@ -31,7 +31,7 @@ public class CuckooClockBlock extends ClockBlock {
                 SHAPE, TDRegistry.BlockEntityReg.CUCKOO_CLOCK, pProperties);
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

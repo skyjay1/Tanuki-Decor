@@ -38,7 +38,7 @@ public class GrandfatherClockBlock extends RotatingMultiblock implements EntityB
         this.chimeSound = TDRegistry.SoundReg.GRANDFATHER_CLOCK_CHIME;
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Nullable
     @Override
@@ -57,12 +57,12 @@ public class GrandfatherClockBlock extends RotatingMultiblock implements EntityB
         return 40;
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(this.getMultiblockHandler().isCenterState(pState)) {
+        if (this.getMultiblockHandler().isCenterState(pState)) {
             return TDRegistry.BlockEntityReg.GRANDFATHER_CLOCK.get().create(pPos, pState);
         }
         return null;
@@ -74,9 +74,9 @@ public class GrandfatherClockBlock extends RotatingMultiblock implements EntityB
         return !pLevel.isClientSide() ? (BlockEntityTicker<T>) (BlockEntityTicker<ClockBlockEntity>) (ClockBlockEntity::tick) : null;
     }
 
-    //// SHAPE ////
+    /// / SHAPE ////
 
-    public static VoxelShape[] SHAPES = new VoxelShape[] {
+    public static VoxelShape[] SHAPES = new VoxelShape[]{
             // bottom
             Shapes.or(box(0, 0, 1, 16, 4, 15),
                     box(1, 4, 2, 15, 12, 14),
@@ -98,7 +98,7 @@ public class GrandfatherClockBlock extends RotatingMultiblock implements EntityB
     public static VoxelShape buildShape(final BlockState blockState) {
         final Vec3i index = MultiblockHandler.MULTIBLOCK_1X3X1.getIndex(blockState);
         final Vec3i dimensions = MultiblockHandler.MULTIBLOCK_1X3X1.getDimensions();
-        final Direction facing =  blockState.getValue(FACING);
+        final Direction facing = blockState.getValue(FACING);
         final VoxelShape shape = SHAPES[index.getY() + dimensions.getY() / 2];
         return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);
     }

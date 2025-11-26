@@ -14,16 +14,17 @@ import javax.annotation.Nullable;
 
 public interface IChimeProvider {
 
-    public static final long DAWN = 10L;
-    public static final long NOON = 6000L;
-    public static final long MIDNIGHT = 18000L;
-    public static final long MIN_CHIME_INTERVAL = 40L;
+    long DAWN = 10L;
+    long NOON = 6000L;
+    long MIDNIGHT = 18000L;
+    long MIN_CHIME_INTERVAL = 40L;
 
     /**
      * @param blockState the block state
      * @return the chime sound, if any
      **/
-    @Nullable default SoundEvent getChimeSound(BlockState blockState) {
+    @Nullable
+    default SoundEvent getChimeSound(BlockState blockState) {
         return null;
     }
 
@@ -31,7 +32,8 @@ public interface IChimeProvider {
      * @param blockState the block state
      * @return the tick sound, if any
      **/
-    @Nullable default SoundEvent getTickSound(BlockState blockState) {
+    @Nullable
+    default SoundEvent getTickSound(BlockState blockState) {
         return null;
     }
 
@@ -44,9 +46,8 @@ public interface IChimeProvider {
     }
 
     /**
-     *
      * @param blockState the block state
-     * @param dayTime the day time
+     * @param dayTime    the day time
      * @return true to play a chime sound in this tick
      */
     default boolean isTimeToChime(BlockState blockState, final long dayTime) {
@@ -54,10 +55,9 @@ public interface IChimeProvider {
     }
 
     /**
-     *
      * @param blockState the block state
-     * @param random the random instance
-     * @param dayTime the day time from 0 to 24000
+     * @param random     the random instance
+     * @param dayTime    the day time from 0 to 24000
      * @return the volume of the chime sound
      */
     default float getChimeVolume(BlockState blockState, RandomSource random, long dayTime) {
@@ -65,10 +65,9 @@ public interface IChimeProvider {
     }
 
     /**
-     *
      * @param blockState the block state
-     * @param random the random instance
-     * @param dayTime the day time from 0 to 24000
+     * @param random     the random instance
+     * @param dayTime    the day time from 0 to 24000
      * @return the pitch of the chime sound
      */
     default float getChimePitch(BlockState blockState, RandomSource random, long dayTime) {
@@ -76,10 +75,9 @@ public interface IChimeProvider {
     }
 
     /**
-     *
      * @param blockState the block state
-     * @param random the random instance
-     * @param dayTime the day time from 0 to 24000
+     * @param random     the random instance
+     * @param dayTime    the day time from 0 to 24000
      * @return the volume of the tick sound
      */
     default float getTickVolume(BlockState blockState, RandomSource random, long dayTime) {
@@ -87,10 +85,9 @@ public interface IChimeProvider {
     }
 
     /**
-     *
      * @param blockState the block state
-     * @param random the random instance
-     * @param dayTime the day time from 0 to 24000
+     * @param random     the random instance
+     * @param dayTime    the day time from 0 to 24000
      * @return the pitch of the tick sound
      */
     default float getTickPitch(BlockState blockState, RandomSource random, long dayTime) {

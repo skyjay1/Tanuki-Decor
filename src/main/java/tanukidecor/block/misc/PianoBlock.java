@@ -11,7 +11,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -23,7 +22,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.util.MultiblockHandler;
 
@@ -34,22 +32,22 @@ public class PianoBlock extends RotatingMultiblock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(!pPlayer.isShiftKeyDown() && pLevel.getBlockState(pPos.above()).isAir()) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        if (!pPlayer.isShiftKeyDown() && pLevel.getBlockState(pPos.above()).isAir()) {
             playNote(pLevel, pPos, pState, pPlayer);
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     protected void playNote(Level level, BlockPos blockPos, BlockState blockState, Player player) {
-        if(level.isClientSide() || !(level instanceof ServerLevel serverLevel) || !(player instanceof ServerPlayer serverPlayer)) {
+        if (level.isClientSide() || !(level instanceof ServerLevel serverLevel) || !(player instanceof ServerPlayer serverPlayer)) {
             return;
         }
         final int note;
         // detect note block below
         BlockState blockBelow = level.getBlockState(blockPos.below(2));
-        if(blockBelow.is(Blocks.NOTE_BLOCK)) {
+        if (blockBelow.is(Blocks.NOTE_BLOCK)) {
             // use the same note as the note block
             note = blockBelow.getValue(BlockStateProperties.NOTE);
         } else {
@@ -63,7 +61,7 @@ public class PianoBlock extends RotatingMultiblock {
     protected void playNoteAt(ServerLevel serverLevel, ServerPlayer player, BlockPos blockPos, int note) {
         // play sound
         float noteData = ((float) Math.pow(2.0D, (note - 12.0D) / 12.0D));
-        serverLevel.playSound(null, blockPos, NoteBlockInstrument.PLING.getSoundEvent().get(), SoundSource.RECORDS, 3.0F, noteData);
+        serverLevel.playSound(null, blockPos, NoteBlockInstrument.PLING.getSoundEvent().value(), SoundSource.RECORDS, 3.0F, noteData);
         // send particles
         final Vec3 vec = Vec3.atCenterOf(blockPos)
                 .add(0, 0.7D, 0);
@@ -77,7 +75,7 @@ public class PianoBlock extends RotatingMultiblock {
     /**
      * Shape data for each block in the default horizontal direction, ordered by index {@code [height][width][depth]}
      **/
-    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][] {
+    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][]{
             // height = 0
             {},
             // height = 1

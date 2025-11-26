@@ -11,12 +11,9 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
@@ -27,7 +24,6 @@ import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -55,16 +51,16 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
 
     /**
      * Attempts to open the storage menu, anger piglins, and play a sound
-     * @param blockState the block state
-     * @param level the level
-     * @param pos the block position
-     * @param player the player
-     * @param hand the hand
-     * @param hitResult the hit result
+     *
+     * @param blockState    the block state
+     * @param level         the level
+     * @param pos           the block position
+     * @param player        the player
+     * @param hitResult     the hit result
      * @param openMenuSound the sound to play when opening the menu
      * @return if the menu was opened
      */
-    public static InteractionResult use(BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult, SoundEvent openMenuSound) {
+    public static InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos pos, Player player, BlockHitResult hitResult, SoundEvent openMenuSound) {
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
@@ -78,11 +74,12 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
 
     /**
      * Drops the contents of the block entity inventory
+     *
      * @param blockState the block state
-     * @param level the level
-     * @param pos the block position
-     * @param newState the block state that replaced this one
-     * @param isMoving true if the block is moving
+     * @param level      the level
+     * @param pos        the block position
+     * @param newState   the block state that replaced this one
+     * @param isMoving   true if the block is moving
      */
     public static void onRemove(BlockState blockState, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (level.getBlockEntity(pos) instanceof StorageBlockEntity blockEntity) {
@@ -93,6 +90,7 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
 
     /**
      * Drops the contents of the block entity
+     *
      * @see Containers#dropContents(Level, BlockPos, NonNullList)
      */
     public void dropContents() {
@@ -102,7 +100,7 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
         }
     }
 
-    //// GETTERS ////
+    /// / GETTERS ////
 
     public NonNullList<ItemStack> getInventory() {
         return inventory;
@@ -116,7 +114,7 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
         return slots;
     }
 
-    //// CONTAINER ////
+    /// / CONTAINER ////
 
     @Override
     protected NonNullList<ItemStack> getItems() {
@@ -135,7 +133,7 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
         return getSlots();
     }
 
-    //// MENU PROVIDER ////
+    /// / MENU PROVIDER ////
 
     @Override
     protected Component getDefaultName() {
@@ -145,13 +143,20 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
     @Override
     protected AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory) {
         switch (rows) {
-            case 1: return new ChestMenu(MenuType.GENERIC_9x1, pContainerId, pInventory, this, rows);
-            case 2: return new ChestMenu(MenuType.GENERIC_9x2, pContainerId, pInventory, this, rows);
-            case 3: return ChestMenu.threeRows(pContainerId, pInventory, this);
-            case 4: return new ChestMenu(MenuType.GENERIC_9x4, pContainerId, pInventory, this, rows);
-            case 5: return new ChestMenu(MenuType.GENERIC_9x5, pContainerId, pInventory, this, rows);
-            case 6: return ChestMenu.sixRows(pContainerId, pInventory, this);
-            default: return null;
+            case 1:
+                return new ChestMenu(MenuType.GENERIC_9x1, pContainerId, pInventory, this, rows);
+            case 2:
+                return new ChestMenu(MenuType.GENERIC_9x2, pContainerId, pInventory, this, rows);
+            case 3:
+                return ChestMenu.threeRows(pContainerId, pInventory, this);
+            case 4:
+                return new ChestMenu(MenuType.GENERIC_9x4, pContainerId, pInventory, this, rows);
+            case 5:
+                return new ChestMenu(MenuType.GENERIC_9x5, pContainerId, pInventory, this, rows);
+            case 6:
+                return ChestMenu.sixRows(pContainerId, pInventory, this);
+            default:
+                return null;
         }
     }
 
@@ -161,22 +166,22 @@ public class StorageBlockEntity extends RandomizableContainerBlockEntity {
                 && pPlayer.position().closerThan(Vec3.atCenterOf(this.getBlockPos()), 8.0D);
     }
 
-    //// NBT ////
+    /// / NBT ////
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.saveAdditional(pTag, pLookup);
         if (!this.trySaveLootTable(pTag)) {
-            ContainerHelper.saveAllItems(pTag, this.inventory);
+            ContainerHelper.saveAllItems(pTag, this.inventory, pLookup);
         }
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.loadAdditional(pTag, pLookup);
         this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         if (!this.tryLoadLootTable(pTag)) {
-            ContainerHelper.loadAllItems(pTag, this.inventory);
+            ContainerHelper.loadAllItems(pTag, this.inventory, pLookup);
         }
     }
 }

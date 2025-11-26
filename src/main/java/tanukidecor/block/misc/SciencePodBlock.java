@@ -10,7 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -36,9 +36,9 @@ public class SciencePodBlock extends RotatingMultiblock implements EntityBlock, 
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
         BlockPos pos = getDelegatePos(pState, pPos);
-        return SingleSlotBlockEntity.use(pState, pLevel, pos, pPlayer, pHand, pHit);
+        return SingleSlotBlockEntity.useItemOn(pStack, pState, pLevel, pos, pPlayer, pHand, pHitResult);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SciencePodBlock extends RotatingMultiblock implements EntityBlock, 
         }
     }
 
-    //// DISPLAY PROVIDER ////
+    /// / DISPLAY PROVIDER ////
 
     @Override
     public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
@@ -68,18 +68,18 @@ public class SciencePodBlock extends RotatingMultiblock implements EntityBlock, 
         return DISPLAY_SCALE;
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(this.getMultiblockHandler().isCenterState(pState)) {
+        if (this.getMultiblockHandler().isCenterState(pState)) {
             return TDRegistry.BlockEntityReg.DISPLAY_CASE.get().create(pPos, pState);
         }
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);
     }
 
-    //// SHAPE ////
+    /// / SHAPE ////
 
     public static final VoxelShape SHAPE_LOWER = Shapes.or(
             box(1, 0, 1, 15, 3, 15),
@@ -96,10 +96,14 @@ public class SciencePodBlock extends RotatingMultiblock implements EntityBlock, 
     public static VoxelShape buildShape(final BlockState blockState) {
         final Vec3i index = MultiblockHandler.MULTIBLOCK_1X3X1.getIndex(blockState);
         switch (index.getY()) {
-            case -1: return SHAPE_LOWER;
-            case 0: return SHAPE_MIDDLE;
-            case 1: return SHAPE_UPPER;
-            default: return Shapes.block();
+            case -1:
+                return SHAPE_LOWER;
+            case 0:
+                return SHAPE_MIDDLE;
+            case 1:
+                return SHAPE_UPPER;
+            default:
+                return Shapes.block();
         }
     }
 }

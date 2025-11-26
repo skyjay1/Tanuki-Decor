@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingBlock;
@@ -28,7 +27,7 @@ public class SweetsWallLampBlock extends RotatingBlock {
         super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

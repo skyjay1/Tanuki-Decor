@@ -9,8 +9,6 @@ package tanukidecor.block.misc;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -54,7 +52,7 @@ public class MetronomeBlock extends RotatingBlock implements EntityBlock, IChime
                 .setValue(WATERLOGGED, false));
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -62,19 +60,19 @@ public class MetronomeBlock extends RotatingBlock implements EntityBlock, IChime
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pLevel.isClientSide()) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        if (pLevel.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
-        if(!pPlayer.isShiftKeyDown()) {
+        if (!pPlayer.isShiftKeyDown()) {
             pLevel.setBlock(pPos, pState.cycle(SPEED), Block.UPDATE_ALL);
             pLevel.updateNeighbourForOutputSignal(pPos, pState.getBlock());
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Nullable
     @Override
@@ -85,7 +83,7 @@ public class MetronomeBlock extends RotatingBlock implements EntityBlock, IChime
     @Override
     public int getTickSoundInterval(BlockState blockState) {
         final int speed = blockState.getValue(SPEED);
-        if(speed == 0) {
+        if (speed == 0) {
             return Integer.MAX_VALUE;
         }
         return 2 + (MAX_SPEED - speed) * 4;
@@ -97,7 +95,7 @@ public class MetronomeBlock extends RotatingBlock implements EntityBlock, IChime
     }
 
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
@@ -111,7 +109,7 @@ public class MetronomeBlock extends RotatingBlock implements EntityBlock, IChime
         return (BlockEntityTicker<T>) (BlockEntityTicker<MetronomeBlockEntity>) (MetronomeBlockEntity::tick);
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {

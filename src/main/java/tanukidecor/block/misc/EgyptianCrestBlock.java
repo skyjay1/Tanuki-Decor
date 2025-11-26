@@ -13,7 +13,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.RotatingBlock;
 import tanukidecor.block.RotatingWideBlock;
 
 import java.util.Optional;
@@ -34,15 +33,15 @@ public class EgyptianCrestBlock extends RotatingWideBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         BlockState blockState = super.getStateForPlacement(pContext);
-        if(blockState != null) {
+        if (blockState != null) {
             // check this block has support
             Optional<Direction> direction = NarrowStreamerBlock.getSupportingDirection(blockState, pContext.getLevel(), pContext.getClickedPos());
-            if(direction.isEmpty()) {
+            if (direction.isEmpty()) {
                 return null;
             }
             // check other side has support
             direction = NarrowStreamerBlock.getSupportingDirection(blockState.setValue(SIDE, blockState.getValue(SIDE).getOpposite()), pContext.getLevel(), getOppositeSide(blockState, pContext.getClickedPos()));
-            if(direction.isEmpty()) {
+            if (direction.isEmpty()) {
                 return null;
             }
         }

@@ -10,7 +10,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.RotatingBlock;
 import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeBuilder;

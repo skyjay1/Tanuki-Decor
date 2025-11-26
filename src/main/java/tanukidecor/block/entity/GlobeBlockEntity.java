@@ -16,7 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -42,31 +42,31 @@ public class GlobeBlockEntity extends BlockEntity {
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, GlobeBlockEntity blockEntity) {
         // verify server side
-        if(level.isClientSide()) {
+        if (level.isClientSide()) {
             return;
         }
-        if(blockEntity.isActive() && blockEntity.getStartTime() > 0) {
+        if (blockEntity.isActive() && blockEntity.getStartTime() > 0) {
             int timeElapsed = (int) (level.getGameTime() - blockEntity.getStartTime());
             // check if block is active and time has expired
-            if(timeElapsed > 20) {
+            if (timeElapsed > 20) {
                 blockEntity.stop(level);
             }
         }
     }
 
-    public static InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(!(level.getBlockEntity(pos) instanceof GlobeBlockEntity blockEntity) || blockEntity.isActive()) {
-            return InteractionResult.PASS;
+    public static ItemInteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!(level.getBlockEntity(pos) instanceof GlobeBlockEntity blockEntity) || blockEntity.isActive()) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
-        if(level.isClientSide()) {
-            return InteractionResult.SUCCESS;
+        if (level.isClientSide()) {
+            return ItemInteractionResult.SUCCESS;
         }
         // activate block entity
         blockEntity.start(level);
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
-    //// ACTIVE ////
+    /// / ACTIVE ////
 
     public boolean isActive() {
         return this.active;
@@ -74,7 +74,7 @@ public class GlobeBlockEntity extends BlockEntity {
 
     public void start(final Level level) {
         this.active = true;
-        if(!level.isClientSide()) {
+        if (!level.isClientSide()) {
             this.startTime = level.getGameTime();
             this.targetDirection = Direction.Plane.HORIZONTAL.getRandomDirection(level.getRandom());
             setChanged();
@@ -88,7 +88,7 @@ public class GlobeBlockEntity extends BlockEntity {
 
     public void stop(final Level level) {
         this.active = false;
-        if(!level.isClientSide()) {
+        if (!level.isClientSide()) {
             this.startTime = 0;
             setChanged();
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
@@ -105,36 +105,36 @@ public class GlobeBlockEntity extends BlockEntity {
     }
 
     public float getUsePercentage(final float partialTick) {
-        if(!this.active) {
+        if (!this.active) {
             return 1.0F;
         }
         int useTime = (int) (getLevel().getGameTime() - startTime);
         return Mth.lerp(partialTick, useTime - 1, useTime) / (float) 20;
     }
 
-    //// NBT ////
+    /// / NBT ////
 
     private static final String KEY_TIMESTAMP = "StartTime";
     private static final String KEY_TARGET_DIRECTION = "Direction";
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.loadAdditional(pTag, pLookup);
         this.startTime = pTag.getLong(KEY_TIMESTAMP);
         this.active = this.startTime > 0;
         this.targetDirection = Direction.byName(pTag.getString(KEY_TARGET_DIRECTION));
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.saveAdditional(pTag, pLookup);
         pTag.putLong(KEY_TIMESTAMP, this.startTime);
         pTag.putString(KEY_TARGET_DIRECTION, this.targetDirection.getSerializedName());
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        final CompoundTag tag = super.getUpdateTag();
+    public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider pLookup) {
+        final CompoundTag tag = super.getUpdateTag(pLookup);
         tag.putLong(KEY_TIMESTAMP, this.startTime);
         tag.putString(KEY_TARGET_DIRECTION, this.targetDirection.getSerializedName());
         return tag;

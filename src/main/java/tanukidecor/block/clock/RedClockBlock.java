@@ -19,7 +19,7 @@ public class RedClockBlock extends ClockBlock {
                 SHAPE, TDRegistry.BlockEntityReg.RED_CLOCK, pProperties);
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Override
     public boolean isTimeToChime(BlockState blockState, long dayTime) {

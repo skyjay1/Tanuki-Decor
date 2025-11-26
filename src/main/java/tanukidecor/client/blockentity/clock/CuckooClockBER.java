@@ -11,8 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.clock.IChimeProvider;
@@ -22,9 +22,10 @@ import java.util.Set;
 
 public class CuckooClockBER extends ClockBER {
 
-    public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/cuckoo_clock/long_hand");
-    public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/cuckoo_clock/short_hand");
-    public static final ResourceLocation CUCKOO = new ResourceLocation(TanukiDecor.MODID, "block/cuckoo_clock/cuckoo");
+    public static final ResourceLocation LONG_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/cuckoo_clock/long_hand");
+    public static final ResourceLocation SHORT_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/cuckoo_clock/short_hand");
+    public static final ResourceLocation CUCKOO = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/cuckoo_clock/cuckoo");
+    private static final ModelResourceLocation CUCKOO_MODEL = ModelResourceLocation.standalone(CUCKOO);
 
     public CuckooClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,
@@ -42,19 +43,19 @@ public class CuckooClockBER extends ClockBER {
     @Override
     public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity, MultiBufferSource bufferSource) {
         // validate block
-        if(!(blockEntity.getBlockState().getBlock() instanceof IChimeProvider chimeProvider)) {
+        if (!(blockEntity.getBlockState().getBlock() instanceof IChimeProvider chimeProvider)) {
             return;
         }
         // validate time
         final int duration = 20;
-        final long dayTime = (blockEntity.getLevel().getDayTime() + 0) % 24000L;
+        final long dayTime = (blockEntity.getLevel().getDayTime()) % 24000L;
         final long adjustedTime = duration * (dayTime / duration);
-        if(!chimeProvider.isTimeToChime(renderHelper.getBlockState(), adjustedTime)) {
+        if (!chimeProvider.isTimeToChime(renderHelper.getBlockState(), adjustedTime)) {
             return;
         }
 
         // prepare to render
-        final BakedModel model = Minecraft.getInstance().getModelManager().getModel(CUCKOO);
+        final BakedModel model = Minecraft.getInstance().getModelManager().getModel(CUCKOO_MODEL);
         final float cuckooPercent = (dayTime % duration + renderHelper.getPartialTick()) / ((float) duration);
         // the percent of the animation to spend at the apex
         final float apex = 0.15F;

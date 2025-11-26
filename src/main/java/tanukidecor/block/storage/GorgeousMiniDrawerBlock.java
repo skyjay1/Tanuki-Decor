@@ -8,7 +8,6 @@ package tanukidecor.block.storage;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -39,11 +38,11 @@ public class GorgeousMiniDrawerBlock extends RotatingBlock implements EntityBloc
         super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
-    //// CONTAINER ////
+    /// / CONTAINER ////
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        return StorageBlockEntity.use(pState, pLevel, pPos, pPlayer, pHand, pHit, SoundEvents.BARREL_OPEN);
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        return StorageBlockEntity.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult, SoundEvents.BARREL_OPEN);
     }
 
     @Override
@@ -54,7 +53,7 @@ public class GorgeousMiniDrawerBlock extends RotatingBlock implements EntityBloc
         }
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
@@ -62,7 +61,7 @@ public class GorgeousMiniDrawerBlock extends RotatingBlock implements EntityBloc
         return TDRegistry.BlockEntityReg.GORGEOUS_MINI_DRAWER.get().create(pPos, pState);
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {

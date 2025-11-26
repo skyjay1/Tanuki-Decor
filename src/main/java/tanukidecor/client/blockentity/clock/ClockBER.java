@@ -13,26 +13,28 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import tanukidecor.block.entity.ClockBlockEntity;
 
 public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
 
-    public static final ResourceLocation EMPTY = new ResourceLocation("block/air");
+    public static final ResourceLocation EMPTY = ResourceLocation.fromNamespaceAndPath("minecraft", "block/air");
     public static final Vec3 ROOT_POSITION = new Vec3(8.0D / 16.0D, 8.0D / 16.0D, 0);
     public static final Vec3 ROOT_PIVOT_POINT = new Vec3(8.0D / 16.0D, 0, 8.0D / 16.0D);
     public static final Vec3 HANDS_POSITION = new Vec3(-8.0D / 16.0D, -8.0D / 16.0D, 0);
 
     protected final BlockRenderDispatcher blockRenderer;
     protected final ClockRenderHelper clockRenderHelper;
-    protected final ResourceLocation shortHand;
-    protected final ResourceLocation longHand;
+    protected final ModelResourceLocation shortHand;
+    protected final ModelResourceLocation longHand;
     protected final Vec3 rootPosition;
     protected final Vec3 rootPivotPoint;
     protected final Vec3 handsPosition;
@@ -42,8 +44,8 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
                     ResourceLocation shortHand, ResourceLocation longHand,
                     Vec3 rootPosition, Vec3 rootPivotPoint,
                     Vec3 handsPosition, Vec3 handsPivotPoint) {
-        this.shortHand = shortHand;
-        this.longHand = longHand;
+        this.shortHand = shortHand != null ? ModelResourceLocation.standalone(shortHand) : null;
+        this.longHand = longHand != null ? ModelResourceLocation.standalone(longHand) : null;
         this.rootPosition = rootPosition;
         this.rootPivotPoint = rootPivotPoint;
         this.handsPosition = handsPosition;
@@ -86,7 +88,7 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
                 .rotateForDirection(direction);
 
         // render short hand
-        if(this.shortHand != null) {
+        if (this.shortHand != null) {
             this.clockRenderHelper
                     .withModel(mc.getModelManager().getModel(this.shortHand))
                     .withPosition(this.handsPosition)
@@ -96,7 +98,7 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
         }
 
         // render long hand
-        if(this.longHand != null) {
+        if (this.longHand != null) {
             this.clockRenderHelper
                     .withModel(mc.getModelManager().getModel(this.longHand))
                     .withPosition(this.handsPosition)
@@ -112,22 +114,28 @@ public class ClockBER implements BlockEntityRenderer<ClockBlockEntity> {
 
     /**
      * Allows implementations to render additional models
+     *
      * @param renderHelper the clock render helper
-     * @param blockEntity the block entity
+     * @param blockEntity  the block entity
      * @param bufferSource the buffer source
      */
-    public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity,  MultiBufferSource bufferSource) {
+    public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity, MultiBufferSource bufferSource) {
         // do nothing
     }
 
     /**
-     * @param speed the pendulum speed factor
+     * @param speed        the pendulum speed factor
      * @param maximumAngle the maximum angle in radians
-     * @param time the current time to pass into {@link ClockBlockEntity#getSecond(long, float)}
-     * @param partialTick the partial tick
+     * @param time         the current time to pass into {@link ClockBlockEntity#getSecond(long, float)}
+     * @param partialTick  the partial tick
      * @return the pendulum angle in radians
      */
     public static float getPendulumRotation(final float speed, final float maximumAngle, final long time, final float partialTick) {
         return Mth.sin(ClockBlockEntity.getSecond(time % 24000L, partialTick) * speed * Mth.TWO_PI) * maximumAngle;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(ClockBlockEntity blockEntity) {
+        return new AABB(blockEntity.getBlockPos()).inflate(1);
     }
 }

@@ -9,7 +9,6 @@ package tanukidecor.client.blockentity.misc;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
@@ -52,7 +51,7 @@ public class HandcartBER extends DisplayCaseBER {
         // determine render passes
         int renderCount = (int) Math.ceil((float) itemStack.getCount() / Math.max(1.0F, itemStack.getMaxStackSize() / 16.0F));
         // render each render pass
-        for(int renderPass = 0; renderPass < renderCount; renderPass++) {
+        for (int renderPass = 0; renderPass < renderCount; renderPass++) {
 
             // determine translation and rotation
             Vector3f translation = new Vector3f(0.5F, 0.5F, 0.5F);

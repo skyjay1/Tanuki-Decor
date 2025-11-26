@@ -7,18 +7,13 @@
 package tanukidecor.block.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import tanukidecor.block.misc.TrainSetBlock;
-import tanukidecor.util.MultiblockHandler;
 
 public class TrainSetBlockEntity extends BlockEntity {
 
@@ -35,14 +30,14 @@ public class TrainSetBlockEntity extends BlockEntity {
         }
         // play sounds
         final int time = (int) ((level.getGameTime() + blockPos.asLong()) % 24000L);
-        if(!blockEntity.isSilent()) {
+        if (!blockEntity.isSilent()) {
             // play ambient sound
             if (time % 12 == 0) {
                 level.playSound(null, blockPos, SoundEvents.GRASS_HIT, SoundSource.BLOCKS, 0.25F, 1.5F + level.getRandom().nextFloat() * 0.5F);
             }
             // play whistle
-            if(level.getRandom().nextInt(600) == 0) {
-                level.playSound(null, blockPos, SoundEvents.NOTE_BLOCK_FLUTE.get(), SoundSource.BLOCKS, 0.5F, 0.95F + level.getRandom().nextFloat() * 0.1F);
+            if (level.getRandom().nextInt(600) == 0) {
+                level.playSound(null, blockPos, SoundEvents.NOTE_BLOCK_FLUTE.value(), SoundSource.BLOCKS, 0.5F, 0.95F + level.getRandom().nextFloat() * 0.1F);
             }
         }
     }
@@ -56,24 +51,19 @@ public class TrainSetBlockEntity extends BlockEntity {
         this.setChanged();
     }
 
-    @Override
-    public AABB getRenderBoundingBox() {
-        return super.getRenderBoundingBox().inflate(2);
-    }
-
-    //// NBT ////
+    /// / NBT ////
 
     private static final String KEY_SILENT = "Silent";
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.loadAdditional(pTag, pLookup);
         this.silent = pTag.getBoolean(KEY_SILENT);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, net.minecraft.core.HolderLookup.Provider pLookup) {
+        super.saveAdditional(pTag, pLookup);
         pTag.putBoolean(KEY_SILENT, this.silent);
     }
 }

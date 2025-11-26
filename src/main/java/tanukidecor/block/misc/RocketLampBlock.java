@@ -51,12 +51,12 @@ public class RocketLampBlock extends TallBlock implements EntityBlock {
         return ImmutableMap.copyOf(COLORS);
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(getDelegatePos(pState, pPos).equals(pPos)) {
+        if (getDelegatePos(pState, pPos).equals(pPos)) {
             return TDRegistry.BlockEntityReg.ROCKET_LAMP.get().create(pPos, pState);
         }
         return null;

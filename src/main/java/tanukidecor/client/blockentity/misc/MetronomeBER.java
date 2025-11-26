@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.clock.IChimeProvider;
@@ -31,7 +32,7 @@ import java.util.Set;
 
 public class MetronomeBER implements BlockEntityRenderer<MetronomeBlockEntity> {
 
-    public static final ResourceLocation PENDULUM = new ResourceLocation(TanukiDecor.MODID, "block/metronome/pendulum");
+    public static final ResourceLocation PENDULUM = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/metronome/pendulum");
 
     private static final Vec3 PENDULUM_POSITION = new Vec3(-8.0D / 16.0D, -8.0D / 16.0D, 0);
     private static final Vec3 PENDULUM_PIVOT_POINT = new Vec3(8.0D / 16.0D, 3.0D / 16.0D, 0);
@@ -50,14 +51,14 @@ public class MetronomeBER implements BlockEntityRenderer<MetronomeBlockEntity> {
         final Minecraft mc = Minecraft.getInstance();
         final BlockState blockState = pBlockEntity.getBlockState();
         final Direction direction = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        final BakedModel pendulum = mc.getModelManager().getModel(PENDULUM);
+        final BakedModel pendulum = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(PENDULUM));
 
         final int blockSpeed = blockState.getValue(MetronomeBlock.SPEED);
         final float pendulumRotation;
-        if(blockSpeed == 0) {
+        if (blockSpeed == 0) {
             pendulumRotation = 0;
         } else {
-            final int tickInterval = ((IChimeProvider)blockState.getBlock()).getTickSoundInterval(blockState);
+            final int tickInterval = ((IChimeProvider) blockState.getBlock()).getTickSoundInterval(blockState);
             final float time = ((pBlockEntity.getLevel().getGameTime()) % 12000L) + pPartialTick;
             final float speed = Mth.PI / (float) tickInterval;
             final float angle = 30.0F * Mth.DEG_TO_RAD;
@@ -95,6 +96,11 @@ public class MetronomeBER implements BlockEntityRenderer<MetronomeBlockEntity> {
 
         // finish rendering
         pPoseStack.popPose();
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(MetronomeBlockEntity blockEntity) {
+        return new AABB(blockEntity.getBlockPos()).inflate(1);
     }
 
     public static void addSpecialModels(final Set<ResourceLocation> list) {

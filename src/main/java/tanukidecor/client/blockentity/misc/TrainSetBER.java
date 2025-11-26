@@ -22,7 +22,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.data.ModelData;
+import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.TrainSetBlockEntity;
 
@@ -30,7 +31,7 @@ import java.util.Set;
 
 public class TrainSetBER implements BlockEntityRenderer<TrainSetBlockEntity> {
 
-    public static final ResourceLocation TRAIN = new ResourceLocation(TanukiDecor.MODID, "block/train_set/train");
+    public static final ResourceLocation TRAIN = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/train_set/train");
 
     protected final BlockRenderDispatcher blockRenderer;
 
@@ -51,7 +52,7 @@ public class TrainSetBER implements BlockEntityRenderer<TrainSetBlockEntity> {
 
         final RenderType renderType = RenderType.cutout();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);
-        final BakedModel model = mc.getModelManager().getModel(TRAIN);
+        final BakedModel model = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(TRAIN));
 
         // start rendering
         pPoseStack.pushPose();
@@ -70,6 +71,11 @@ public class TrainSetBER implements BlockEntityRenderer<TrainSetBlockEntity> {
 
         // finish rendering
         pPoseStack.popPose();
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(TrainSetBlockEntity blockEntity) {
+        return new AABB(blockEntity.getBlockPos()).inflate(2.0D);
     }
 
     public static void addSpecialModels(final Set<ResourceLocation> list) {

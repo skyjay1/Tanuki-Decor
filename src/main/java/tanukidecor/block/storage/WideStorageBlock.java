@@ -9,7 +9,6 @@ package tanukidecor.block.storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -19,20 +18,17 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.RotatingWideBlock;
 import tanukidecor.block.entity.StorageBlockEntity;
 import tanukidecor.util.ShapeBuilder;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class WideStorageBlock extends RotatingWideBlock implements EntityBlock {
 
-    private Supplier<BlockEntityType<StorageBlockEntity>> blockEntitySupplier;
+    private final Supplier<BlockEntityType<StorageBlockEntity>> blockEntitySupplier;
     private final SoundEvent openSound;
 
     public WideStorageBlock(final Supplier<BlockEntityType<StorageBlockEntity>> blockEntity, final ShapeBuilder shapeBuilder, Properties pProperties) {
@@ -46,11 +42,11 @@ public class WideStorageBlock extends RotatingWideBlock implements EntityBlock {
         this.openSound = openSound;
     }
 
-    //// CONTAINER ////
+    /// / CONTAINER ////
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        return StorageBlockEntity.use(pState, pLevel, pPos, pPlayer, pHand, pHit, this.openSound);
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        return StorageBlockEntity.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult, this.openSound);
     }
 
     @Override
@@ -61,18 +57,18 @@ public class WideStorageBlock extends RotatingWideBlock implements EntityBlock {
         }
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pPos.equals(getDelegatePos(pState, pPos))) {
+        if (pPos.equals(getDelegatePos(pState, pPos))) {
             return this.blockEntitySupplier.get().create(pPos, pState);
         }
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {

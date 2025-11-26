@@ -8,7 +8,7 @@ package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
@@ -42,9 +42,9 @@ public class DisplayCaseBlock extends RotatingTallBlock implements EntityBlock, 
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
         BlockPos pos = getDelegatePos(pState, pPos);
-        return SingleSlotBlockEntity.use(pState, pLevel, pos, pPlayer, pHand, pHit);
+        return SingleSlotBlockEntity.useItemOn(pStack, pState, pLevel, pos, pPlayer, pHand, pHitResult);
     }
 
     @Override
@@ -55,25 +55,25 @@ public class DisplayCaseBlock extends RotatingTallBlock implements EntityBlock, 
         }
     }
 
-    //// DISPLAY PROVIDER ////
+    /// / DISPLAY PROVIDER ////
 
     @Override
     public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
         return new Vector3f(0, blockState.getValue(FACING).getOpposite().toYRot(), 0);
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pPos.equals(getDelegatePos(pState, pPos))) {
+        if (pPos.equals(getDelegatePos(pState, pPos))) {
             return TDRegistry.BlockEntityReg.DISPLAY_CASE.get().create(pPos, pState);
         }
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {

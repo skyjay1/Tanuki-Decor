@@ -32,9 +32,10 @@ public class ClockBlock extends RotatingBlock implements EntityBlock, IChimeProv
 
     /**
      * Simple constructor for a clock that takes up one block
-     * @param tickSound the tick sound supplier, use {@link ClockBlock#NO_SOUND} to skip
-     * @param chimeSound the chime sound supplier, use {@link ClockBlock#NO_SOUND} to skip
-     * @param shape the clock shape in the default direction
+     *
+     * @param tickSound   the tick sound supplier, use {@link ClockBlock#NO_SOUND} to skip
+     * @param chimeSound  the chime sound supplier, use {@link ClockBlock#NO_SOUND} to skip
+     * @param shape       the clock shape in the default direction
      * @param blockEntity the block entity type supplier
      * @param pProperties the block properties
      */
@@ -47,7 +48,7 @@ public class ClockBlock extends RotatingBlock implements EntityBlock, IChimeProv
         this.blockEntitySupplier = blockEntity;
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Nullable
     @Override
@@ -61,7 +62,7 @@ public class ClockBlock extends RotatingBlock implements EntityBlock, IChimeProv
         return this.chimeSound.get();
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override

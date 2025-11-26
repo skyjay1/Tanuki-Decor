@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -21,12 +22,13 @@ import java.util.Set;
 
 public class GingerbreadClockBER extends ClockBER {
 
-    public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/gingerbread_clock/long_hand");
-    public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/gingerbread_clock/short_hand");
-    public static final ResourceLocation PENDULUM = new ResourceLocation(TanukiDecor.MODID, "block/gingerbread_clock/pendulum");
+    public static final ResourceLocation LONG_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/gingerbread_clock/long_hand");
+    public static final ResourceLocation SHORT_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/gingerbread_clock/short_hand");
+    public static final ResourceLocation PENDULUM = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/gingerbread_clock/pendulum");
+    private static final ModelResourceLocation PENDULUM_MODEL = ModelResourceLocation.standalone(PENDULUM);
 
     private static final Vec3 PENDULUM_POSITION = new Vec3(-8.0D / 16.0D, -24.0D / 16.0D, 0);
-    private static final Vec3 PENDULUM_PIVOT_POINT = new Vec3(8.0D / 16.0D, 16.0D / 16.0D, 0);
+    private static final Vec3 PENDULUM_PIVOT_POINT = new Vec3(8.0D / 16.0D, 1.0, 0);
 
     public GingerbreadClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,
@@ -45,7 +47,7 @@ public class GingerbreadClockBER extends ClockBER {
     public void renderAdditional(ClockRenderHelper renderHelper, ClockBlockEntity blockEntity, MultiBufferSource bufferSource) {
         final float pendulumRotation = blockEntity.getBias() * getPendulumRotation(0.5F, 10 * Mth.DEG_TO_RAD, blockEntity.getLevel().getGameTime(), renderHelper.getPartialTick());
 
-        final BakedModel pendulum = Minecraft.getInstance().getModelManager().getModel(PENDULUM);
+        final BakedModel pendulum = Minecraft.getInstance().getModelManager().getModel(PENDULUM_MODEL);
 
         // render pendulum
         renderHelper

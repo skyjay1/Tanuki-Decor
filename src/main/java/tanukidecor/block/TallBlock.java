@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -55,13 +56,13 @@ public class TallBlock extends Block implements SimpleWaterloggedBlock, IDelegat
         precalculateShapes();
     }
 
-    //// SHAPE ////
+    /// / SHAPE ////
 
     protected void precalculateShapes() {
         multiblockShapes.clear();
         // create shapes for all possible block states
         final VoxelShape doubleBlockShape = createDoubleBlockShape();
-        for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
+        for (BlockState blockState : this.stateDefinition.getPossibleStates()) {
             // calculate multiblock shape
             double offset = blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? 0 : 1;
             VoxelShape shape = doubleBlockShape.move(0, offset, 0);
@@ -102,14 +103,14 @@ public class TallBlock extends Block implements SimpleWaterloggedBlock, IDelegat
         return getMultiblockShape(pState);
     }
 
-    //// DELEGATE PROVIDER ////
+    /// / DELEGATE PROVIDER ////
 
     @Override
     public BlockPos getDelegatePos(BlockState blockState, BlockPos blockPos) {
         return blockState.getValue(HALF) == DoubleBlockHalf.UPPER ? blockPos : blockPos.above();
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -157,11 +158,11 @@ public class TallBlock extends Block implements SimpleWaterloggedBlock, IDelegat
     }
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (!pLevel.isClientSide && pPlayer.isCreative()) {
-            DoublePlantBlock.preventCreativeDropFromBottomPart(pLevel, pPos, pState, pPlayer);
+            DoublePlantBlock.preventDropFromBottomPart(pLevel, pPos, pState, pPlayer);
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
     @Override

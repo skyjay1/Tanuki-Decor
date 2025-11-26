@@ -23,7 +23,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
+import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.RocketLampBlockEntity;
 import tanukidecor.block.misc.RocketLampBlock;
@@ -46,7 +47,7 @@ public class RocketLampBER implements BlockEntityRenderer<RocketLampBlockEntity>
     protected static ResourceLocation getWaxModel(final WaxSize waxSize, final String color) {
         return WAX_MODELS
                 .computeIfAbsent(color, s -> new EnumMap<>(WaxSize.class))
-                .computeIfAbsent(waxSize, size -> new ResourceLocation(TanukiDecor.MODID, "block/rocket_lamp/" + color + "/" + size.getSerializedName() + "_wax"));
+                .computeIfAbsent(waxSize, size -> ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/rocket_lamp/" + color + "/" + size.getSerializedName() + "_wax"));
     }
 
     @Override
@@ -62,9 +63,9 @@ public class RocketLampBER implements BlockEntityRenderer<RocketLampBlockEntity>
         final Minecraft mc = Minecraft.getInstance();
         final RenderType renderType = RenderType.solid();
         final VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        BakedModel largeModel = mc.getModelManager().getModel(getWaxModel(WaxSize.LARGE, color));
-        BakedModel mediumModel = mc.getModelManager().getModel(getWaxModel(WaxSize.MEDIUM, color));
-        BakedModel smallModel = mc.getModelManager().getModel(getWaxModel(WaxSize.SMALL, color));
+        BakedModel largeModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(getWaxModel(WaxSize.LARGE, color)));
+        BakedModel mediumModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(getWaxModel(WaxSize.MEDIUM, color)));
+        BakedModel smallModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(getWaxModel(WaxSize.SMALL, color)));
 
         poseStack.pushPose();
         poseStack.translate(0.5F, 0.5F, 0.5F);
@@ -82,15 +83,16 @@ public class RocketLampBER implements BlockEntityRenderer<RocketLampBlockEntity>
 
     /**
      * Renders the given baked model with transformations applied according to the given parameters
-     * @param poseStack the pose stack
-     * @param vertexConsumer the vertex consumer
-     * @param blockState the block state
-     * @param model the baked model
-     * @param sizeY the height of the baked model
-     * @param dx the x offset
-     * @param dz the z offset
-     * @param time the current time. For best results, this value should be less than 10430
-     * @param biasFactor a number from 0 to 1 that determines which end of the height range to tend towards
+     *
+     * @param poseStack       the pose stack
+     * @param vertexConsumer  the vertex consumer
+     * @param blockState      the block state
+     * @param model           the baked model
+     * @param sizeY           the height of the baked model
+     * @param dx              the x offset
+     * @param dz              the z offset
+     * @param time            the current time. For best results, this value should be less than 10430
+     * @param biasFactor      a number from 0 to 1 that determines which end of the height range to tend towards
      * @param amplitudeFactor a number greater than 0 that determines how much time is spent at the end of the height range
      * @param frequencyFactor a number greater than 0 that determines how quickly each cycle is completed
      */
@@ -127,16 +129,16 @@ public class RocketLampBER implements BlockEntityRenderer<RocketLampBlockEntity>
     }
 
     public static void addSpecialModels(final Set<ResourceLocation> set) {
-        for(String color : RocketLampBlock.getColors().keySet()) {
-            for(WaxSize size : WaxSize.values()) {
+        for (String color : RocketLampBlock.getColors().keySet()) {
+            for (WaxSize size : WaxSize.values()) {
                 set.add(getWaxModel(size, color));
             }
         }
     }
 
-    //// CLASSES ////
+    /// / CLASSES ////
 
-    private static enum WaxSize implements StringRepresentable {
+    private enum WaxSize implements StringRepresentable {
         SMALL("small"),
         MEDIUM("medium"),
         LARGE("large");
@@ -151,5 +153,10 @@ public class RocketLampBER implements BlockEntityRenderer<RocketLampBlockEntity>
         public String getSerializedName() {
             return this.name;
         }
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(RocketLampBlockEntity blockEntity) {
+        return new AABB(blockEntity.getBlockPos()).inflate(0.5F, 1.0F, 0.5F);
     }
 }

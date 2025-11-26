@@ -9,7 +9,7 @@ package tanukidecor.block.misc;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
@@ -55,7 +55,9 @@ public class HandcartBlock extends RotatingWideBlock implements EntityBlock, IDi
     );
 
     private static final Vector3f DISPLAY_SCALE = new Vector3f(0.5F, 0.5F, 0.5F);
-    /** Used client-side to display items with psuedorandom positions and rotations **/
+    /**
+     * Used client-side to display items with psuedorandom positions and rotations
+     **/
     private static final RandomSource RANDOM = new LegacyRandomSource(0);
 
     public HandcartBlock(Properties pProperties) {
@@ -63,9 +65,9 @@ public class HandcartBlock extends RotatingWideBlock implements EntityBlock, IDi
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
         BlockPos pos = getDelegatePos(pState, pPos);
-        return SingleSlotBlockEntity.use(pState, pLevel, pos, pPlayer, pHand, pHit);
+        return SingleSlotBlockEntity.useItemOn(pStack, pState, pLevel, pos, pPlayer, pHand, pHitResult);
     }
 
     @Override
@@ -79,13 +81,13 @@ public class HandcartBlock extends RotatingWideBlock implements EntityBlock, IDi
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(this.getDelegatePos(pState, pPos).equals(pPos)) {
+        if (this.getDelegatePos(pState, pPos).equals(pPos)) {
             return TDRegistry.BlockEntityReg.HANDCART.get().create(pPos, pState);
         }
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);
     }
 
-    //// DISPLAY PROVIDER ////
+    /// / DISPLAY PROVIDER ////
 
     @Override
     public Vector3f getDisplayRotation(Level level, BlockState blockState, BlockPos blockPos, ItemStack itemStack, int renderPass, float partialTick) {
@@ -94,7 +96,7 @@ public class HandcartBlock extends RotatingWideBlock implements EntityBlock, IDi
         RANDOM.nextFloat();
         // calculate x angle bias, this is set to 0 for blocks and 90 for most other items
         final float biasX;
-        if(level.getBlockEntity(getDelegatePos(blockState, blockPos)) instanceof DisplayBlockEntity displayBlockEntity && !(displayBlockEntity.getItem(0).getItem() instanceof BlockItem)) {
+        if (level.getBlockEntity(getDelegatePos(blockState, blockPos)) instanceof DisplayBlockEntity displayBlockEntity && !(displayBlockEntity.getItem(0).getItem() instanceof BlockItem)) {
             biasX = 90.0F;
         } else {
             biasX = 0.0F;
@@ -127,7 +129,7 @@ public class HandcartBlock extends RotatingWideBlock implements EntityBlock, IDi
         return DISPLAY_SCALE;
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {

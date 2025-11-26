@@ -7,17 +7,15 @@
 package tanukidecor.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.common.NeoForge;
 import tanukidecor.TDRegistry;
 import tanukidecor.TDRegistry.BlockEntityReg;
 import tanukidecor.block.seat.ISeatProvider;
@@ -31,17 +29,16 @@ import java.util.Set;
 public final class TDClientEvents {
 
     public static void register() {
-        FMLJavaModLoadingContext.get().getModEventBus().register(ModHandler.class);
-        MinecraftForge.EVENT_BUS.register(ForgeHandler.class);
+        NeoForge.EVENT_BUS.register(ForgeHandler.class);
         ClientRecipeCollections.register();
     }
 
     public static final class ForgeHandler {
 
         @SubscribeEvent
-        public static void onRenderOverlay(final RenderGuiOverlayEvent.Pre event) {
+        public static void onRenderOverlay(final RenderGuiLayerEvent.Pre event) {
             final Player player = Minecraft.getInstance().player;
-            if(event.getOverlay().id().equals(VanillaGuiOverlay.MOUNT_HEALTH.id())
+            if (VanillaGuiLayers.VEHICLE_HEALTH.equals(event.getName())
                     && player != null && player.isPassenger()
                     && ISeatProvider.IS_SEAT_ENTITY.test(player.getVehicle())) {
                 event.setCanceled(true);
@@ -52,12 +49,9 @@ public final class TDClientEvents {
     public static final class ModHandler {
 
         @SubscribeEvent
-        public static void onCommonSetup(final FMLCommonSetupEvent event) {
-            event.enqueueWork(ModHandler::registerMenuScreens);
-        }
-
-        private static void registerMenuScreens() {
-            MenuScreens.register(TDRegistry.MenuReg.DIY_WORKBENCH.get(), DIYWorkbenchScreen::new);
+        public static void onRegisterMenuScreens(final net.neoforged.neoforge.client.event.RegisterMenuScreensEvent event) {
+            event.register(TDRegistry.MenuReg.DIY_WORKBENCH.get(), DIYWorkbenchScreen::new);
+            ClientRecipeCollections.registerSearchTrees();
         }
 
         @SubscribeEvent
@@ -152,7 +146,7 @@ public final class TDClientEvents {
             SlotMachineBER.addSpecialModels(set);
             TrainSetBER.addSpecialModels(set);
             // register special models
-            set.forEach(event::register);
+            set.forEach(rl -> event.register(ModelResourceLocation.standalone(rl)));
         }
     }
 }

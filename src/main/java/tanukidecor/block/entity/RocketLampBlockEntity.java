@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import tanukidecor.block.misc.RocketLampBlock;
 
 public class RocketLampBlockEntity extends BlockEntity {
@@ -20,14 +19,9 @@ public class RocketLampBlockEntity extends BlockEntity {
     }
 
     public String getColor() {
-        if(getBlockState().getBlock() instanceof RocketLampBlock block) {
+        if (getBlockState().getBlock() instanceof RocketLampBlock block) {
             return block.getColor();
         }
         return "";
-    }
-
-    @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos()).inflate(0.5F, 1.0F, 0.5F);
     }
 }

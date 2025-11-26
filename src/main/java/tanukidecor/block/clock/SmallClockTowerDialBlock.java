@@ -37,7 +37,7 @@ public class SmallClockTowerDialBlock extends RotatingMultiblock implements Enti
         this.chimeSound = TDRegistry.SoundReg.CLOCK_TOWER_CHIME;
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Nullable
     @Override
@@ -66,12 +66,12 @@ public class SmallClockTowerDialBlock extends RotatingMultiblock implements Enti
         return 40;
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(this.getMultiblockHandler().isCenterState(pState)) {
+        if (this.getMultiblockHandler().isCenterState(pState)) {
             return TDRegistry.BlockEntityReg.SMALL_CLOCK_TOWER_DIAL.get().create(pPos, pState);
         }
         return null;
@@ -83,12 +83,12 @@ public class SmallClockTowerDialBlock extends RotatingMultiblock implements Enti
         return !pLevel.isClientSide() ? (BlockEntityTicker<T>) (BlockEntityTicker<ClockBlockEntity>) (ClockBlockEntity::tick) : null;
     }
 
-    //// SHAPE ////
+    /// / SHAPE ////
 
     public static VoxelShape SHAPE = box(0, 0, 13, 16, 16, 16);
 
     public static VoxelShape buildShape(final BlockState blockState) {
-        final Direction facing =  blockState.getValue(FACING);
+        final Direction facing = blockState.getValue(FACING);
         return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, SHAPE);
     }
 }

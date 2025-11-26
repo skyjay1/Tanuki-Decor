@@ -9,7 +9,6 @@ package tanukidecor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import org.slf4j.Logger;
 import tanukidecor.util.MultiblockHandler;
 
 import java.util.Objects;
@@ -17,9 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("ALL")
 public final class TDUnitTests {
-    
+
     private static final StringBuilder debug = new StringBuilder();
-    
+
     public static void run() {
         runMultiblockHandlerTests();
     }
@@ -113,11 +112,11 @@ public final class TDUnitTests {
     }
 
     private static boolean testEquals(final String message, final Object o1, final Object o2) {
-        if(Objects.equals(o1, o2)) {
+        if (Objects.equals(o1, o2)) {
             debug("  PASS " + message + " " + (o1 != null ? o1 : "null") + " = " + (o2 != null ? o2 : "null"));
             return true;
         } else {
-            debug("  FAIL " + message + " "  + (o1 != null ? o1 : "null") + " = " + (o2 != null ? o2 : "null"));
+            debug("  FAIL " + message + " " + (o1 != null ? o1 : "null") + " = " + (o2 != null ? o2 : "null"));
             return false;
         }
     }

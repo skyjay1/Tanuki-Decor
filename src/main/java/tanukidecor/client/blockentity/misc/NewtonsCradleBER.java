@@ -24,7 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import tanukidecor.TanukiDecor;
@@ -36,7 +36,7 @@ import java.util.Set;
 
 public class NewtonsCradleBER implements BlockEntityRenderer<NewtonsCradleBlockEntity> {
 
-    public static final ResourceLocation BALL = new ResourceLocation(TanukiDecor.MODID, "block/newtons_cradle/ball");
+    public static final ResourceLocation BALL = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/newtons_cradle/ball");
     protected static final Vector3f LINE_START = new Vector3f(4.0F / 16.0F, 8.0F / 16.0F, 5.0F / 16.0F);
     protected static final Vector3f LINE_MID = new Vector3f(4.0F / 16.0F, 4.0F / 16.0F, 8.0F / 16.0F);
     protected static final Vector3f LINE_END = new Vector3f(4.0F / 16.0F, 8.0F / 16.0F, 11.0F / 16.0F);
@@ -57,7 +57,7 @@ public class NewtonsCradleBER implements BlockEntityRenderer<NewtonsCradleBlockE
 
         // load baked models
         final Minecraft mc = Minecraft.getInstance();
-        final BakedModel ballModel = mc.getModelManager().getModel(BALL);
+        final BakedModel ballModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(BALL));
 
         final float timeFactor = Mth.PI / chimeProvider.getTickSoundInterval(blockState);
         final float maxAngle = 40.0F * Mth.DEG_TO_RAD;
@@ -111,7 +111,7 @@ public class NewtonsCradleBER implements BlockEntityRenderer<NewtonsCradleBlockE
         final VertexConsumer lineVertexConsumer = pBufferSource.getBuffer(RenderType.LINES);
 
         // render stationary lines
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             float startX = LINE_START.x() + (i + 1) * (2.0F / 16.0F);
             cradleLineStrip(pPoseStack, lineVertexConsumer,
                     startX, LINE_START.y(), LINE_START.z(),
@@ -152,22 +152,18 @@ public class NewtonsCradleBER implements BlockEntityRenderer<NewtonsCradleBlockE
         final PoseStack.Pose lastPose = poseStack.last();
         final Matrix4f matrix4f = lastPose.pose();
 
-        vertexConsumer.vertex(matrix4f, startX, startY, startZ)
-                .color(10, 10, 10, 255)
-                .normal(lastPose.normal(), 0.0F, 1.0F, 0.0F)
-                .endVertex();
-        vertexConsumer.vertex(matrix4f, midX, midY, midZ)
-                .color(10, 10, 10, 255)
-                .normal(lastPose.normal(), 0.0F, 1.0F, 0.0F)
-                .endVertex();
+        vertexConsumer.addVertex(matrix4f, startX, startY, startZ)
+                .setColor(10, 10, 10, 255)
+                .setNormal(lastPose, 0.0F, 1.0F, 0.0F);
+        vertexConsumer.addVertex(matrix4f, midX, midY, midZ)
+                .setColor(10, 10, 10, 255)
+                .setNormal(lastPose, 0.0F, 1.0F, 0.0F);
 
-        vertexConsumer.vertex(matrix4f, midX, midY, midZ)
-                .color(10, 10, 10, 255)
-                .normal(lastPose.normal(), 0.0F, 1.0F, 0.0F)
-                .endVertex();
-        vertexConsumer.vertex(matrix4f, endX, endY, endZ)
-                .color(10, 10, 10, 255)
-                .normal(lastPose.normal(), 0.0F, 1.0F, 0.0F)
-                .endVertex();
+        vertexConsumer.addVertex(matrix4f, midX, midY, midZ)
+                .setColor(10, 10, 10, 255)
+                .setNormal(lastPose, 0.0F, 1.0F, 0.0F);
+        vertexConsumer.addVertex(matrix4f, endX, endY, endZ)
+                .setColor(10, 10, 10, 255)
+                .setNormal(lastPose, 0.0F, 1.0F, 0.0F);
     }
 }

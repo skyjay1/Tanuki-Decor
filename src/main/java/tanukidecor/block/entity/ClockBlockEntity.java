@@ -16,11 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.block.clock.IChimeProvider;
-
-import java.util.Random;
 
 public class ClockBlockEntity extends BlockEntity {
 
@@ -33,21 +30,24 @@ public class ClockBlockEntity extends BlockEntity {
         this.bias = (byte) ((Mth.getSeed(pPos) % 2 == 0) ? -1 : 1);
     }
 
-    /** @return a number that is either -1 or 1, based on the block position **/
+    /**
+     * @return a number that is either -1 or 1, based on the block position
+     **/
     public byte getBias() {
         return this.bias;
     }
 
     /**
      * Updates the block entity each tick
-     * @param level the level
-     * @param blockPos the block entity position
-     * @param blockState the block state
+     *
+     * @param level       the level
+     * @param blockPos    the block entity position
+     * @param blockState  the block state
      * @param blockEntity the block entity
      */
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, ClockBlockEntity blockEntity) {
         // verify server side
-        if(level.isClientSide()) {
+        if (level.isClientSide()) {
             return;
         }
         // attempt to tick
@@ -58,7 +58,7 @@ public class ClockBlockEntity extends BlockEntity {
 
     protected void playTick(Level level, BlockPos blockPos, BlockState blockState) {
         // validate chime provider
-        if(null == chimeProvider) {
+        if (null == chimeProvider) {
             return;
         }
         final long gameTime = level.getGameTime();
@@ -66,7 +66,7 @@ public class ClockBlockEntity extends BlockEntity {
         final RandomSource random = level.getRandom();
         // attempt to play tick sound
         final SoundEvent tickSound = chimeProvider.getTickSound(blockState);
-        if(tickSound != null && gameTime % chimeProvider.getTickSoundInterval(blockState) == 0) {
+        if (tickSound != null && gameTime % chimeProvider.getTickSoundInterval(blockState) == 0) {
             final float pitch = chimeProvider.getTickPitch(blockState, random, dayTime);
             final float volume = chimeProvider.getTickVolume(blockState, random, dayTime);
             level.playSound(null, blockPos, tickSound, SoundSource.BLOCKS, volume, pitch);
@@ -75,18 +75,18 @@ public class ClockBlockEntity extends BlockEntity {
 
     protected void playChime(Level level, BlockPos blockPos, BlockState blockState) {
         // validate chime provider
-        if(null == chimeProvider) {
+        if (null == chimeProvider) {
             return;
         }
         // verify day cycle enabled
-        if(!level.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
+        if (!level.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT)) {
             return;
         }
         final long dayTime = level.getDayTime() % 24000L;
         final RandomSource random = level.getRandom();
         // attempt to play chime sound
         final SoundEvent chimeSound = chimeProvider.getChimeSound(blockState);
-        if(chimeSound != null && this.chimeProvider.isTimeToChime(blockState, dayTime)) {
+        if (chimeSound != null && this.chimeProvider.isTimeToChime(blockState, dayTime)) {
             final float pitch = chimeProvider.getChimePitch(blockState, random, dayTime);
             final float volume = chimeProvider.getChimeVolume(blockState, random, dayTime);
             level.playSound(null, blockPos, chimeSound, SoundSource.BLOCKS, volume, pitch);
@@ -94,7 +94,7 @@ public class ClockBlockEntity extends BlockEntity {
     }
 
     /**
-     * @param dayTime the day time
+     * @param dayTime     the day time
      * @param partialTick the partial tick
      * @return the current hour from 0 to 24
      */
@@ -103,7 +103,7 @@ public class ClockBlockEntity extends BlockEntity {
     }
 
     /**
-     * @param dayTime the day time
+     * @param dayTime     the day time
      * @param partialTick the partial tick
      * @return the current hour progress from 0 to 1
      */
@@ -113,16 +113,11 @@ public class ClockBlockEntity extends BlockEntity {
     }
 
     /**
-     * @param dayTime the day time
+     * @param dayTime     the day time
      * @param partialTick the partial tick
      * @return the current second
      */
     public static float getSecond(final long dayTime, final float partialTick) {
         return Mth.lerp(partialTick, dayTime - 1, dayTime) / 20;
-    }
-
-    @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos()).inflate(1);
     }
 }

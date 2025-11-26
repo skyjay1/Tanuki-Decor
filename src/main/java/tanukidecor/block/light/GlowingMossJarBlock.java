@@ -16,8 +16,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingBlock;
 
-import java.util.Random;
-
 public class GlowingMossJarBlock extends RotatingBlock {
 
     public static final VoxelShape SHAPE = Shapes.or(
@@ -31,11 +29,11 @@ public class GlowingMossJarBlock extends RotatingBlock {
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
         //if(pRandom.nextInt(4) == 0) {
-            final Vec3 pos = Vec3.atCenterOf(pPos)
-                    .add(0.3125D * (pRandom.nextDouble() - 0.5D) * 0.5D,
-                            0.625D * (pRandom.nextDouble() - 0.5D) * 0.5D,
-                            0.3125D * (pRandom.nextDouble() - 0.5D) * 0.5D);
-            pLevel.addParticle(ParticleTypes.FALLING_SPORE_BLOSSOM, pos.x(), pos.y(), pos.z(), 0, 0, 0);
+        final Vec3 pos = Vec3.atCenterOf(pPos)
+                .add(0.3125D * (pRandom.nextDouble() - 0.5D) * 0.5D,
+                        0.625D * (pRandom.nextDouble() - 0.5D) * 0.5D,
+                        0.3125D * (pRandom.nextDouble() - 0.5D) * 0.5D);
+        pLevel.addParticle(ParticleTypes.FALLING_SPORE_BLOSSOM, pos.x(), pos.y(), pos.z(), 0, 0, 0);
         //}
     }
 }

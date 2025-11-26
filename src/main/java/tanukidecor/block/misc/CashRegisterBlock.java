@@ -8,7 +8,6 @@ package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -34,9 +33,9 @@ public class CashRegisterBlock extends RotatingBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pPlayer.isShiftKeyDown()) {
-            return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        if (pPlayer.isShiftKeyDown()) {
+            return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
         }
         // play sound
         pLevel.playSound(pPlayer, pPos, TDRegistry.SoundReg.CASH_REGISTER_RING.get(), SoundSource.BLOCKS, 1.0F, 0.95F + pPlayer.getRandom().nextFloat() * 0.1F);

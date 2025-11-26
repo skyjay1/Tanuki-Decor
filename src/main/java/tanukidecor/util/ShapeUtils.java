@@ -24,10 +24,11 @@ import java.util.function.Function;
  */
 public final class ShapeUtils {
 
-    private ShapeUtils() { }
+    private ShapeUtils() {
+    }
 
     /**
-     * @param first the first voxel shape
+     * @param first  the first voxel shape
      * @param second the second voxel shape
      * @return the unoptimized combined shape using the {@link BooleanOp#OR} operation
      */
@@ -36,7 +37,7 @@ public final class ShapeUtils {
     }
 
     /**
-     * @param first the first voxel shape
+     * @param first  the first voxel shape
      * @param others any number of additional voxel shapes
      * @return the unoptimized combined shape using the {@link BooleanOp#OR} operation
      */
@@ -48,8 +49,8 @@ public final class ShapeUtils {
     }
 
     /**
-     * @param from the start horizontal direction
-     * @param to the target horizontal direction
+     * @param from  the start horizontal direction
+     * @param to    the target horizontal direction
      * @param shape the original shape
      * @return the rotated and optimized shape
      */
@@ -58,8 +59,8 @@ public final class ShapeUtils {
     }
 
     /**
-     * @param from the start horizontal direction
-     * @param to the target horizontal direction
+     * @param from  the start horizontal direction
+     * @param to    the target horizontal direction
      * @param shape the original shape
      * @return the unoptimized rotated shape
      */
@@ -91,7 +92,7 @@ public final class ShapeUtils {
     }
 
     /**
-     * @param from the horizontal start direction
+     * @param from  the horizontal start direction
      * @param shape the original unoptimized shape
      * @return an {@link EnumMap} containing rotated and unoptimized shapes for each horizontal direction
      */
@@ -110,7 +111,7 @@ public final class ShapeUtils {
         // iterate each AABB in the shape
         for (AABB box : sourceBoxes) {
             // iterate each remaining horizontal direction
-            for(int i = 0; i < 3; i++) {
+            for (int i = 0; i < 3; i++) {
                 Direction direction = Direction.from2DDataValue(from.get2DDataValue() + i + 1);
                 box = new AABB(1 - box.maxZ, box.minY, box.minX, 1 - box.minZ, box.maxY, box.maxX);
                 rotatedShapes.put(direction, orUnoptimized(rotatedShapes.computeIfAbsent(direction, computeShapeIfAbsent), Shapes.create(box)));
@@ -120,14 +121,14 @@ public final class ShapeUtils {
     }
 
     /**
-     * @param from the horizontal start direction
+     * @param from  the horizontal start direction
      * @param shape the original unoptimized shape
      * @return an {@link EnumMap} containing rotated and optimized shapes for each horizontal direction
      */
     public static Map<Direction, VoxelShape> rotateShapes(Direction from, VoxelShape shape) {
         final Map<Direction, VoxelShape> rotatedShapes = rotateShapesUnoptimized(from, shape);
         // optimize shapes
-        for(Direction direction : Direction.Plane.HORIZONTAL) {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
             rotatedShapes.put(direction, rotatedShapes.get(direction).optimize());
         }
         return rotatedShapes;

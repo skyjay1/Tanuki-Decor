@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -21,9 +22,10 @@ import java.util.Set;
 
 public class CarriageClockBER extends ClockBER {
 
-    public static final ResourceLocation LONG_HAND = new ResourceLocation(TanukiDecor.MODID, "block/carriage_clock/long_hand");
-    public static final ResourceLocation SHORT_HAND = new ResourceLocation(TanukiDecor.MODID, "block/carriage_clock/short_hand");
-    public static final ResourceLocation GEAR = new ResourceLocation(TanukiDecor.MODID, "block/carriage_clock/gear");
+    public static final ResourceLocation LONG_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/carriage_clock/long_hand");
+    public static final ResourceLocation SHORT_HAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/carriage_clock/short_hand");
+    public static final ResourceLocation GEAR = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/carriage_clock/gear");
+    private static final ModelResourceLocation GEAR_MODEL = ModelResourceLocation.standalone(GEAR);
 
     public CarriageClockBER(BlockEntityRendererProvider.Context pContext) {
         super(pContext, SHORT_HAND, LONG_HAND,
@@ -43,7 +45,7 @@ public class CarriageClockBER extends ClockBER {
         final float time = blockEntity.getLevel().getGameTime() + renderHelper.getPartialTick();
         final float angle = 0.00625F * time * Mth.PI;
 
-        final BakedModel gear = Minecraft.getInstance().getModelManager().getModel(GEAR);
+        final BakedModel gear = Minecraft.getInstance().getModelManager().getModel(GEAR_MODEL);
         final Vec3 gearPosition = new Vec3(-8.0D / 16.0D, -8.0D / 16.0D, 0);
 
         this.clockRenderHelper

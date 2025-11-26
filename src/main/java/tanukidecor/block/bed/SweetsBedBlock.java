@@ -20,26 +20,26 @@ public class SweetsBedBlock extends DoubleBedBlock {
     /**
      * Shape data for each block in the default horizontal direction, ordered by index {@code [height][width][depth]}
      **/
-    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][] {
+    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][]{
             // height = 0
             {
                     // width = 0
                     {},
                     // width = 1
                     {
-                        Shapes.empty(),
-                        box(0, 0, 0, 16, 8, 16),
-                        Shapes.or(box(0, 0, 0, 16, 8, 14),
-                                box(4, 8, 7, 10, 11, 13),
-                                box(0, 0, 14, 16, 16, 16))
+                            Shapes.empty(),
+                            box(0, 0, 0, 16, 8, 16),
+                            Shapes.or(box(0, 0, 0, 16, 8, 14),
+                                    box(4, 8, 7, 10, 11, 13),
+                                    box(0, 0, 14, 16, 16, 16))
                     },
                     // width = 2
                     {
-                        Shapes.empty(),
-                        box(0, 0, 0, 16, 8, 16),
-                        Shapes.or(box(0, 0, 0, 16, 8, 14),
-                                box(6, 8, 7, 12, 11, 13),
-                                box(0, 0, 14, 16, 16, 16))
+                            Shapes.empty(),
+                            box(0, 0, 0, 16, 8, 16),
+                            Shapes.or(box(0, 0, 0, 16, 8, 14),
+                                    box(6, 8, 7, 12, 11, 13),
+                                    box(0, 0, 14, 16, 16, 16))
                     }
             },
             // height = 1

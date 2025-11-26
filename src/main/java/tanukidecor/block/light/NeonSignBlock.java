@@ -21,7 +21,7 @@ public class NeonSignBlock extends RotatingBlock {
         super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

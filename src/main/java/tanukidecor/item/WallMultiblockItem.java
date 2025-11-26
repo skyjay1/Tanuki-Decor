@@ -21,7 +21,7 @@ public class WallMultiblockItem extends BlockItem {
 
     public WallMultiblockItem(Block pBlock, Properties pProperties) {
         super(pBlock, pProperties);
-        if(!(pBlock instanceof RotatingMultiblock)) {
+        if (!(pBlock instanceof RotatingMultiblock)) {
             throw new IllegalArgumentException("MultiblockItem is only valid for HorizontalMultiblock, not " + pBlock.getClass().getName());
         }
     }

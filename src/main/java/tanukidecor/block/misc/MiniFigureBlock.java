@@ -9,7 +9,6 @@ package tanukidecor.block.misc;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -37,18 +36,18 @@ public class MiniFigureBlock extends RotatingBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pPlayer.isShiftKeyDown()) {
-            return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        if (pPlayer.isShiftKeyDown()) {
+            return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
         }
         // determine sounds to play
         SoundEvent sqeak = getSqueakSound(pLevel, pState, pPos);
         SoundEvent extra = getExtraSqueakSound(pLevel, pState, pPos);
         // play sounds
-        if(sqeak != null) {
+        if (sqeak != null) {
             pLevel.playSound(pPlayer, pPos, sqeak, SoundSource.BLOCKS, 1.0F, 0.8F + pPlayer.getRandom().nextFloat() * 0.4F);
         }
-        if(extra != null) {
+        if (extra != null) {
             pLevel.playSound(pPlayer, pPos, extra, SoundSource.BLOCKS, 0.8F, 1.1F + pPlayer.getRandom().nextFloat() * 0.4F);
         }
         return InteractionResult.SUCCESS;

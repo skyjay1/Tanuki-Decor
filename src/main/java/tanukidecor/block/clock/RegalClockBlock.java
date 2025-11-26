@@ -25,7 +25,7 @@ public class RegalClockBlock extends TallClockBlock {
                 UPPER_SHAPE, LOWER_SHAPE, TDRegistry.BlockEntityReg.REGAL_CLOCK, pProperties);
     }
 
-    //// CHIME PROVIDER ////
+    /// / CHIME PROVIDER ////
 
     @Override
     public int getTickSoundInterval(BlockState blockState) {

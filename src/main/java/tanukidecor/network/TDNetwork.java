@@ -6,24 +6,31 @@
 
 package tanukidecor.network;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import tanukidecor.TanukiDecor;
 
-import java.util.Optional;
-
+@EventBusSubscriber(modid = TanukiDecor.MODID)
 public final class TDNetwork {
 
-    private static final String PROTOCOL_VERSION = "2";
-    public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(TanukiDecor.MODID, "channel"),
-            () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-
-    private TDNetwork() {}
+    private TDNetwork() {
+    }
 
     public static void register() {
-        int messageId = 0;
-        CHANNEL.registerMessage(messageId++, ServerBoundSelectDIYRecipePacket.class, ServerBoundSelectDIYRecipePacket::toBytes, ServerBoundSelectDIYRecipePacket::fromBytes, ServerBoundSelectDIYRecipePacket::handlePacket, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        // Network registration is now done via RegisterPayloadHandlersEvent
+    }
+
+    @SubscribeEvent
+    public static void registerPayloads(final RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar(TanukiDecor.MODID);
+
+        // Register server-bound packets
+        registrar.playToServer(
+                ServerBoundSelectDIYRecipePacket.TYPE,
+                ServerBoundSelectDIYRecipePacket.STREAM_CODEC,
+                ServerBoundSelectDIYRecipePacket::handle
+        );
     }
 }

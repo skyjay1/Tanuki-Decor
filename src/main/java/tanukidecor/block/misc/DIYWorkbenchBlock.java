@@ -9,7 +9,6 @@ package tanukidecor.block.misc;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -20,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
 import tanukidecor.TanukiDecor;
@@ -52,12 +50,12 @@ public class DIYWorkbenchBlock extends RotatingTallBlock implements EntityBlock 
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pLevel.isClientSide()) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        if (pLevel.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
         // check config settings
-        if(!TanukiDecor.CONFIG.isDIYWorkbenchEnabled.get()) {
+        if (!TanukiDecor.CONFIG.isDIYWorkbenchEnabled.get()) {
             // display message to user
             pPlayer.displayClientMessage(Component.translatable("message." + getDescriptionId() + ".disabled"), true);
             return InteractionResult.SUCCESS;
@@ -65,12 +63,12 @@ public class DIYWorkbenchBlock extends RotatingTallBlock implements EntityBlock 
         // determine block entity position
         BlockPos pos = getDelegatePos(pState, pPos);
         // open menu
-        if(!pPlayer.isShiftKeyDown() && pPlayer instanceof ServerPlayer serverPlayer
-            && pLevel.getBlockEntity(pos) instanceof MenuProvider menuProvider) {
-            NetworkHooks.openScreen(serverPlayer, menuProvider, buf -> buf.writeBlockPos(pos));
+        if (!pPlayer.isShiftKeyDown() && pPlayer instanceof ServerPlayer serverPlayer
+                && pLevel.getBlockEntity(pos) instanceof MenuProvider menuProvider) {
+            serverPlayer.openMenu(menuProvider, pos);
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     @Override
@@ -81,12 +79,12 @@ public class DIYWorkbenchBlock extends RotatingTallBlock implements EntityBlock 
         }
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pPos.equals(getDelegatePos(pState, pPos))) {
+        if (pPos.equals(getDelegatePos(pState, pPos))) {
             return TDRegistry.BlockEntityReg.DIY_WORKBENCH.get().create(pPos, pState);
         }
         return TDRegistry.BlockEntityReg.STORAGE_DELEGATE.get().create(pPos, pState);

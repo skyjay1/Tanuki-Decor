@@ -8,12 +8,15 @@ package tanukidecor.block.light;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -42,7 +45,7 @@ public class EgyptianLampBlock extends TallBlock {
             box(11, 0, 3, 13, 6, 5),
             box(11, 0, 11, 13, 6, 13));
 
-    private float fireDamage;
+    private final float fireDamage;
 
     public EgyptianLampBlock(int fireDamage, Properties pProperties) {
         super(SHAPE_UPPER, SHAPE_LOWER, pProperties);
@@ -58,16 +61,31 @@ public class EgyptianLampBlock extends TallBlock {
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         if (pState.getValue(HALF) == DoubleBlockHalf.UPPER && !pState.getValue(WATERLOGGED)
                 && !pEntity.fireImmune() && !((pEntity.position().y() + 3.0D / 16.0D) < pPos.getY())
-                && pEntity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)pEntity)) {
+                && pEntity instanceof LivingEntity livingEntity && !hasFrostWalker(livingEntity)) {
             pEntity.hurt(pLevel.damageSources().inFire(), this.fireDamage);
         }
 
         super.entityInside(pState, pLevel, pPos, pEntity);
     }
 
+    /**
+     * Checks if the entity has Frost Walker enchantment
+     */
+    private static boolean hasFrostWalker(LivingEntity entity) {
+        if (entity.level().isClientSide()) {
+            return false;
+        }
+        ResourceKey<Enchantment> frostWalkerKey = ResourceKey.create(Registries.ENCHANTMENT, 
+                ResourceLocation.withDefaultNamespace("frost_walker"));
+        return entity.level().registryAccess().registryOrThrow(Registries.ENCHANTMENT)
+                .getHolder(frostWalkerKey)
+                .map(holder -> EnchantmentHelper.getEnchantmentLevel(holder, entity) > 0)
+                .orElse(false);
+    }
+
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(!pState.isBurning(pLevel, pPos)) {
+        if (!pState.isBurning(pLevel, pPos)) {
             return;
         }
         // play sound
@@ -82,7 +100,7 @@ public class EgyptianLampBlock extends TallBlock {
         // smoke particle
         pLevel.addParticle(ParticleTypes.SMOKE, pos.x(), pos.y(), pos.z(), 0.0D, 0.0D, 0.0D);
         // fire particle
-        if(pRandom.nextInt(5) == 0) {
+        if (pRandom.nextInt(5) == 0) {
             pLevel.addParticle(ParticleTypes.LARGE_SMOKE, pos.x(), pos.y(), pos.z(), 0.0D, 0.0D, 0.0D);
         }
     }

@@ -22,7 +22,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.client.model.data.ModelData;
+import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.RotatingTallBlock;
 import tanukidecor.block.entity.SlotMachineBlockEntity;
@@ -31,8 +32,8 @@ import java.util.Set;
 
 public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntity> {
 
-    public static final ResourceLocation SLOT = new ResourceLocation(TanukiDecor.MODID, "block/slot_machine/slot");
-    public static final ResourceLocation LEVER = new ResourceLocation(TanukiDecor.MODID, "block/slot_machine/lever");
+    public static final ResourceLocation SLOT = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/slot_machine/slot");
+    public static final ResourceLocation LEVER = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/slot_machine/lever");
 
     protected final BlockRenderDispatcher blockRenderer;
 
@@ -40,11 +41,16 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         this.blockRenderer = pContext.getBlockRenderDispatcher();
     }
 
+    public static void addSpecialModels(final Set<ResourceLocation> list) {
+        list.add(SLOT);
+        list.add(LEVER);
+    }
+
     @Override
     public void render(SlotMachineBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         final BlockState blockState = pBlockEntity.getBlockState();
         // verify block entity
-        if(blockState.getValue(RotatingTallBlock.HALF) != DoubleBlockHalf.UPPER) {
+        if (blockState.getValue(RotatingTallBlock.HALF) != DoubleBlockHalf.UPPER) {
             return;
         }
         final float duration = pBlockEntity.getUsePercentage(pPartialTick);
@@ -56,8 +62,8 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
 
         final RenderType renderType = RenderType.cutout();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);
-        final BakedModel slotModel = mc.getModelManager().getModel(SLOT);
-        final BakedModel leverModel = mc.getModelManager().getModel(LEVER);
+        final BakedModel slotModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(SLOT));
+        final BakedModel leverModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(LEVER));
 
         double dx = 0.5D;
         double dy = 0.0D;
@@ -88,7 +94,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         dy = 3.5D / 16.0D;
         dz = 4.0D / 16.0D;
         xRot = 90.0F * rotations.getX();
-        if(pBlockEntity.isActive() && duration < 0.58F) {
+        if (pBlockEntity.isActive() && duration < 0.58F) {
             xRot += (360 * 10) * Math.pow(8.0D, -10.0D * (duration - 0.18D));
         }
         pPoseStack.pushPose();
@@ -102,7 +108,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
 
         // render slot 1
         xRot = 90.0F * rotations.getY();
-        if(pBlockEntity.isActive() && duration < 0.78F) {
+        if (pBlockEntity.isActive() && duration < 0.78F) {
             xRot += (360 * 20) * Math.pow(8.0D, -10.0D * (duration - 0.35D));
         }
         pPoseStack.pushPose();
@@ -116,7 +122,7 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
 
         // render slot 2
         xRot = 90.0F * rotations.getZ();
-        if(pBlockEntity.isActive() && duration < 0.99F) {
+        if (pBlockEntity.isActive() && duration < 0.99F) {
             xRot += (360 * 30) * Math.pow(8.0D, -10.0D * (duration - 0.56D));
         }
         pPoseStack.translate(-4.0D / 16.0D, 0, 0);
@@ -132,8 +138,8 @@ public class SlotMachineBER implements BlockEntityRenderer<SlotMachineBlockEntit
         pPoseStack.popPose();
     }
 
-    public static void addSpecialModels(final Set<ResourceLocation> list) {
-        list.add(SLOT);
-        list.add(LEVER);
+    @Override
+    public AABB getRenderBoundingBox(SlotMachineBlockEntity blockEntity) {
+        return new AABB(blockEntity.getBlockPos()).inflate(1);
     }
 }

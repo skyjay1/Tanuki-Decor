@@ -14,15 +14,15 @@ import org.joml.Vector3f;
 
 public interface IDisplayProvider {
 
-    public static Vector3f VEC_ZERO = new Vector3f(0, 0, 0);
-    public static Vector3f VEC_ONE = new Vector3f(1.0F, 1.0F, 1.0F);
+    Vector3f VEC_ZERO = new Vector3f(0, 0, 0);
+    Vector3f VEC_ONE = new Vector3f(1.0F, 1.0F, 1.0F);
 
     /**
-     * @param level the level
-     * @param blockState the block state
-     * @param blockPos the block position
-     * @param itemStack the item stack
-     * @param renderPass the render pass
+     * @param level       the level
+     * @param blockState  the block state
+     * @param blockPos    the block position
+     * @param itemStack   the item stack
+     * @param renderPass  the render pass
      * @param partialTick the partial tick
      * @return the rotation values for the x, y, and z axes in degrees
      */
@@ -31,11 +31,11 @@ public interface IDisplayProvider {
     }
 
     /**
-     * @param level the level
-     * @param blockState the block state
-     * @param blockPos the block position
-     * @param itemStack the item stack
-     * @param renderPass the render pass
+     * @param level       the level
+     * @param blockState  the block state
+     * @param blockPos    the block position
+     * @param itemStack   the item stack
+     * @param renderPass  the render pass
      * @param partialTick the partial tick
      * @return the translation values for the x, y, and z axes
      */
@@ -44,11 +44,11 @@ public interface IDisplayProvider {
     }
 
     /**
-     * @param level the level
-     * @param blockState the block state
-     * @param blockPos the block position
-     * @param itemStack the item stack
-     * @param renderPass the render pass
+     * @param level       the level
+     * @param blockState  the block state
+     * @param blockPos    the block position
+     * @param itemStack   the item stack
+     * @param renderPass  the render pass
      * @param partialTick the partial tick
      * @return the scale percentage values for the x, y, and z axes
      */

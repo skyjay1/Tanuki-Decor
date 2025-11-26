@@ -10,35 +10,29 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import tanukidecor.block.RotatingMultiblock;
 import tanukidecor.block.RotatingWideBlock;
-import tanukidecor.util.MultiblockHandler;
 import tanukidecor.util.ShapeBuilder;
-
-import java.util.Random;
 
 public class WideChairBlock extends RotatingWideBlock implements ISeatProvider {
 
-    private double seatYOffset;
+    private final double seatYOffset;
 
     /**
      * @param shapeBuilder the shape builder function
-     * @param seatYOffset the y offset of the seat in block units, generally 2 pixels above the seat part of the model
-     * @param pProperties the block properties
+     * @param seatYOffset  the y offset of the seat in block units, generally 2 pixels above the seat part of the model
+     * @param pProperties  the block properties
      */
     public WideChairBlock(final ShapeBuilder shapeBuilder, final double seatYOffset, Properties pProperties) {
         super(pProperties.randomTicks(), shapeBuilder);
         this.seatYOffset = seatYOffset;
     }
 
-    //// SEAT PROVIDER ////
+    /// / SEAT PROVIDER ////
 
     @Override
     public double getSeatYOffset(BlockState blockState, Level level, BlockPos blockPos) {
@@ -50,7 +44,7 @@ public class WideChairBlock extends RotatingWideBlock implements ISeatProvider {
         return blockState.getValue(FACING);
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
@@ -58,14 +52,14 @@ public class WideChairBlock extends RotatingWideBlock implements ISeatProvider {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pLevel.isClientSide()) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
+        if (pLevel.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
-        if(!pPlayer.isShiftKeyDown() && startSitting(pLevel.getBlockState(pPos), pLevel, pPos, pPlayer)) {
+        if (!pPlayer.isShiftKeyDown() && startSitting(pLevel.getBlockState(pPos), pLevel, pPos, pPlayer)) {
             return InteractionResult.SUCCESS;
         }
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHitResult);
     }
 
     @Override

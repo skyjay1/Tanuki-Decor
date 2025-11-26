@@ -20,7 +20,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.RotatingTallBlock;
 import tanukidecor.block.entity.GlobeBlockEntity;
@@ -29,7 +29,7 @@ import java.util.Set;
 
 public class GlobeBER implements BlockEntityRenderer<GlobeBlockEntity> {
 
-    public static final ResourceLocation GLOBE_MODEL = new ResourceLocation(TanukiDecor.MODID, "block/globe/globe_model");
+    public static final ResourceLocation GLOBE_MODEL = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/globe/globe_model");
 
     protected final BlockRenderDispatcher blockRenderer;
 
@@ -50,7 +50,7 @@ public class GlobeBER implements BlockEntityRenderer<GlobeBlockEntity> {
 
         final RenderType renderType = RenderType.cutout();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);
-        final BakedModel globeModel = mc.getModelManager().getModel(GLOBE_MODEL);
+        final BakedModel globeModel = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(GLOBE_MODEL));
 
         double dx = 0.5D;
         double dy = 0.5D;
@@ -66,7 +66,7 @@ public class GlobeBER implements BlockEntityRenderer<GlobeBlockEntity> {
 
         // render globe model
         yRot = targetDirection.toYRot();
-        if(pBlockEntity.isActive() && duration < 0.98F) {
+        if (pBlockEntity.isActive() && duration < 0.98F) {
             yRot += (100) * Math.pow(8.0D, -5.0D * (duration - 0.5F));
         }
         pPoseStack.translate(dx, dy, dz);

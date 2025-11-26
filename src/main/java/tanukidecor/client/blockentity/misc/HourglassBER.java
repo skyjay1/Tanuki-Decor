@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.HourglassBlockEntity;
 
@@ -26,7 +26,7 @@ import java.util.Set;
 public class HourglassBER implements BlockEntityRenderer<HourglassBlockEntity> {
 
     // TODO possible improvement: make 5 "one pixel tall" layers that gradually shrink until they disappear on top and appear on bottom
-    public static final ResourceLocation SAND = new ResourceLocation(TanukiDecor.MODID, "block/hourglass/sand");
+    public static final ResourceLocation SAND = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/hourglass/sand");
 
     protected final BlockRenderDispatcher blockRenderer;
 
@@ -45,13 +45,13 @@ public class HourglassBER implements BlockEntityRenderer<HourglassBlockEntity> {
 
         final RenderType renderType = RenderType.solid();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);
-        final BakedModel model = mc.getModelManager().getModel(SAND);
+        final BakedModel model = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(SAND));
 
         // start rendering
         pPoseStack.pushPose();
 
 
-        if(pBlockEntity.isActive()) {
+        if (pBlockEntity.isActive()) {
             // render top
             scale = 1.0F - percentage;
             pPoseStack.pushPose();

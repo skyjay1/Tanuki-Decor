@@ -19,7 +19,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraftforge.client.model.data.ModelData;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import tanukidecor.TanukiDecor;
 import tanukidecor.block.entity.PhonographBlockEntity;
 import tanukidecor.block.misc.PhonographBlock;
@@ -28,7 +28,7 @@ import java.util.Set;
 
 public class PhonographBER implements BlockEntityRenderer<PhonographBlockEntity> {
 
-    public static final ResourceLocation DISC = new ResourceLocation(TanukiDecor.MODID, "block/phonograph/disc");
+    public static final ResourceLocation DISC = ResourceLocation.fromNamespaceAndPath(TanukiDecor.MODID, "block/phonograph/disc");
 
     protected final BlockRenderDispatcher blockRenderer;
 
@@ -40,7 +40,7 @@ public class PhonographBER implements BlockEntityRenderer<PhonographBlockEntity>
     public void render(PhonographBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
         final BlockState blockState = pBlockEntity.getBlockState();
         // verify block entity has record
-        if(!blockState.getValue(PhonographBlock.HAS_RECORD) || blockState.getValue(PhonographBlock.HALF) != DoubleBlockHalf.LOWER) {
+        if (!blockState.getValue(PhonographBlock.HAS_RECORD) || blockState.getValue(PhonographBlock.HALF) != DoubleBlockHalf.LOWER) {
             return;
         }
         // prepare to render
@@ -49,7 +49,7 @@ public class PhonographBER implements BlockEntityRenderer<PhonographBlockEntity>
 
         final RenderType renderType = RenderType.cutout();
         final VertexConsumer vertexConsumer = pBufferSource.getBuffer(renderType);
-        final BakedModel model = mc.getModelManager().getModel(DISC);
+        final BakedModel model = mc.getModelManager().getModel(net.minecraft.client.resources.model.ModelResourceLocation.standalone(DISC));
 
         // start rendering
         pPoseStack.pushPose();

@@ -41,7 +41,7 @@ public class RegalSmallTableBlock extends Block implements SimpleWaterloggedBloc
                 .setValue(WATERLOGGED, false));
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
@@ -65,7 +65,7 @@ public class RegalSmallTableBlock extends Block implements SimpleWaterloggedBloc
         if (pState.getValue(WATERLOGGED)) {
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
-        if(pLevel.getBlockState(pCurrentPos).is(this) && !pState.canSurvive(pLevel, pCurrentPos)) {
+        if (pLevel.getBlockState(pCurrentPos).is(this) && !pState.canSurvive(pLevel, pCurrentPos)) {
             pLevel.destroyBlock(pCurrentPos, true);
             return pState.getFluidState().createLegacyBlock();
         }

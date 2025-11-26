@@ -6,6 +6,7 @@
 
 package tanukidecor.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -30,14 +31,23 @@ import tanukidecor.util.ShapeUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+
+    // Codec is not used for dynamically shaped blocks, but required by API
+    public static final MapCodec<RotatingBlock> CODEC = MapCodec.unit(() -> {
+        throw new UnsupportedOperationException("RotatingBlock requires ShapeBuilder and cannot be deserialized");
+    });
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected final Map<BlockState, VoxelShape> blockShapes = new HashMap<>();
     protected final ShapeBuilder shapeBuilder;
+
+    @Override
+    protected MapCodec<? extends RotatingBlock> codec() {
+        return CODEC;
+    }
 
     public RotatingBlock(Properties pProperties, ShapeBuilder shapeBuilder) {
         super(pProperties);
@@ -48,11 +58,11 @@ public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleW
         precalculateShapes();
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     protected void precalculateShapes() {
         blockShapes.clear();
-        for(BlockState blockState : this.stateDefinition.getPossibleStates()) {
+        for (BlockState blockState : this.stateDefinition.getPossibleStates()) {
             blockShapes.put(blockState, this.shapeBuilder.apply(blockState));
         }
     }
@@ -79,7 +89,7 @@ public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleW
         if (pState.getValue(WATERLOGGED)) {
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
-        if(pLevel.getBlockState(pCurrentPos).is(this) && !pState.canSurvive(pLevel, pCurrentPos)) {
+        if (pLevel.getBlockState(pCurrentPos).is(this) && !pState.canSurvive(pLevel, pCurrentPos)) {
             pLevel.destroyBlock(pCurrentPos, true);
             return pState.getFluidState().createLegacyBlock();
         }
@@ -93,7 +103,7 @@ public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleW
 
     public static ShapeBuilder createShapeBuilder(final VoxelShape shape) {
         return blockState -> {
-            final Direction facing =  blockState.getValue(FACING);
+            final Direction facing = blockState.getValue(FACING);
             return ShapeUtils.rotateShape(MultiblockHandler.ORIGIN_DIRECTION, facing, shape);
         };
     }
@@ -120,7 +130,7 @@ public class RotatingBlock extends HorizontalDirectionalBlock implements SimpleW
     /**
      * @param state the block state
      * @param level the level
-     * @param pos the block position
+     * @param pos   the block position
      * @return true if the block behind this one has a solid face
      * @see BlockState#isFaceSturdy(BlockGetter, BlockPos, Direction)
      */

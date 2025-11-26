@@ -7,7 +7,6 @@
 package tanukidecor.block.misc;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -22,7 +21,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.RotatingTallBlock;
-import tanukidecor.block.entity.PhonographBlockEntity;
 import tanukidecor.block.entity.SlotMachineBlockEntity;
 
 public class SlotMachineBlock extends RotatingTallBlock implements EntityBlock {
@@ -38,20 +36,20 @@ public class SlotMachineBlock extends RotatingTallBlock implements EntityBlock {
         super(pProperties, RotatingTallBlock.createShapeBuilder(SHAPE_UPPER, SHAPE_LOWER));
     }
 
-    //// METHODS ////
+    /// / METHODS ////
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
         BlockPos pos = getDelegatePos(pState, pPos);
-        return SlotMachineBlockEntity.use(pState, pLevel, pos, pPlayer, pHand, pHit);
+        return SlotMachineBlockEntity.use(pState, pLevel, pos, pPlayer, net.minecraft.world.InteractionHand.MAIN_HAND, pHitResult);
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(pPos.equals(getDelegatePos(pState, pPos))) {
+        if (pPos.equals(getDelegatePos(pState, pPos))) {
             return TDRegistry.BlockEntityReg.SLOT_MACHINE.get().create(pPos, pState);
         }
         return null;
@@ -63,7 +61,7 @@ public class SlotMachineBlock extends RotatingTallBlock implements EntityBlock {
         return !pLevel.isClientSide() ? (BlockEntityTicker<T>) (BlockEntityTicker<SlotMachineBlockEntity>) (SlotMachineBlockEntity::tick) : null;
     }
 
-    //// REDSTONE ////
+    /// / REDSTONE ////
 
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
@@ -73,10 +71,10 @@ public class SlotMachineBlock extends RotatingTallBlock implements EntityBlock {
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         if (level.getBlockEntity(getDelegatePos(state, pos)) instanceof SlotMachineBlockEntity blockEntity) {
-            if(blockEntity.isActive()) {
+            if (blockEntity.isActive()) {
                 return 1;
             }
-            if(blockEntity.isJackpot()) {
+            if (blockEntity.isJackpot()) {
                 return 15;
             }
         }

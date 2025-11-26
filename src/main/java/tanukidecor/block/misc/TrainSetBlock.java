@@ -13,7 +13,6 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -23,13 +22,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import tanukidecor.TDRegistry;
 import tanukidecor.block.RotatingMultiblock;
-import tanukidecor.block.entity.SlotMachineBlockEntity;
 import tanukidecor.block.entity.TrainSetBlockEntity;
 import tanukidecor.util.MultiblockHandler;
 
@@ -52,10 +49,10 @@ public class TrainSetBlock extends RotatingMultiblock implements EntityBlock {
         public void iterateIndices(final Consumer<Vec3i> consumer) {
             // iterate index values in each axis
             final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-            for(int x = minIndex.getX(); x <= maxIndex.getX(); x++) {
-                for(int y = minIndex.getY(); y <= maxIndex.getY(); y++) {
-                    for(int z = minIndex.getZ(); z <= maxIndex.getZ(); z++) {
-                        if(x == 0 && y == 0 && z == 0) continue;
+            for (int x = minIndex.getX(); x <= maxIndex.getX(); x++) {
+                for (int y = minIndex.getY(); y <= maxIndex.getY(); y++) {
+                    for (int z = minIndex.getZ(); z <= maxIndex.getZ(); z++) {
+                        if (x == 0 && y == 0 && z == 0) continue;
                         consumer.accept(mutable.set(x, y, z));
                     }
                 }
@@ -68,7 +65,7 @@ public class TrainSetBlock extends RotatingMultiblock implements EntityBlock {
             // determine center
             final BlockPos center = getCenterPos(context.getClickedPos(), blockState, facing);
             // validate blocks can be placed
-            if(!allPositions(center, facing, p -> level.isInWorldBounds(p) && level.getBlockState(p).canBeReplaced(context))) {
+            if (!allPositions(center, facing, p -> level.isInWorldBounds(p) && level.getBlockState(p).canBeReplaced(context))) {
                 return null;
             }
             // place block
@@ -79,7 +76,7 @@ public class TrainSetBlock extends RotatingMultiblock implements EntityBlock {
         public void preventCreativeDropFromCenterPart(final Level level, final BlockPos pos, final BlockState blockState, final Direction facing, final Player player) {
             final BlockPos origin = getCenterPos(pos, blockState, facing).offset(MultiblockHandler.indexToOffset(DEFAULT_INDEX, facing));
             final BlockState originState = level.getBlockState(origin);
-            if(originState.is(blockState.getBlock()) && getIndex(originState).equals(DEFAULT_INDEX)) {
+            if (originState.is(blockState.getBlock()) && getIndex(originState).equals(DEFAULT_INDEX)) {
                 level.setBlock(origin, originState.getFluidState().createLegacyBlock(), Block.UPDATE_SUPPRESS_DROPS | Block.UPDATE_ALL);
             }
         }
@@ -92,31 +89,31 @@ public class TrainSetBlock extends RotatingMultiblock implements EntityBlock {
                 .setValue(FACING, Direction.NORTH));
     }
 
-    //// METHODS ////
-
-    @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return false;
-    }
+    /// / METHODS ////
 
     @Override
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
-        if(!pLevel.isClientSide() && pFromPos.getY() == pPos.getY() - 1 && pLevel.getBlockEntity(pPos) instanceof TrainSetBlockEntity blockEntity) {
+        if (!pLevel.isClientSide() && pFromPos.getY() == pPos.getY() - 1) {
+            // Locate the block entity
             Direction facing = pState.getValue(TrainSetBlock.FACING);
             MultiblockHandler multiblockHandler = this.getMultiblockHandler();
-            boolean silent = multiblockHandler.anyPositions(multiblockHandler.getCenterPos(pPos, pState, facing), facing,
-                    b -> pLevel.getBlockState(b.below()).is(BlockTags.OCCLUDES_VIBRATION_SIGNALS));
-            blockEntity.setSilent(silent);
+            BlockPos centerPos = multiblockHandler.getCenterPos(pPos, pState, facing);
+            BlockPos entityPos = centerPos.offset(DEFAULT_INDEX);
+            // Silence the block entity when there is wool underneath any of its blocks
+            if (pLevel.getBlockEntity(entityPos) instanceof TrainSetBlockEntity blockEntity) {
+                boolean silent = multiblockHandler.anyPositions(centerPos, facing, b -> pLevel.getBlockState(b.below()).is(BlockTags.OCCLUDES_VIBRATION_SIGNALS));
+                blockEntity.setSilent(silent);
+            }
         }
         super.neighborChanged(pState, pLevel, pPos, pBlock, pFromPos, pIsMoving);
     }
 
-    //// BLOCK ENTITY ////
+    /// / BLOCK ENTITY ////
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        if(getMultiblockHandler().getIndex(pState).equals(DEFAULT_INDEX)) {
+        if (getMultiblockHandler().getIndex(pState).equals(DEFAULT_INDEX)) {
             return TDRegistry.BlockEntityReg.TRAIN_SET.get().create(pPos, pState);
         }
         return null;
@@ -133,7 +130,7 @@ public class TrainSetBlock extends RotatingMultiblock implements EntityBlock {
     /**
      * Shape data for each block in the default horizontal direction, ordered by index {@code [height][width][depth]}
      **/
-    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][] {
+    public static final VoxelShape[][][] SHAPE = new VoxelShape[][][]{
             // height = 0
             {
                     // width = 0

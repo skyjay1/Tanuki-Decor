@@ -35,7 +35,7 @@ public class RegalWallLampBlock extends RotatingBlock {
         super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

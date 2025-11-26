@@ -20,8 +20,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import tanukidecor.block.RotatingBlock;
 
-import java.util.Random;
-
 public class AntiqueWallOilLamp extends RotatingBlock {
 
     public static final VoxelShape SHAPE = Shapes.or(
@@ -40,7 +38,7 @@ public class AntiqueWallOilLamp extends RotatingBlock {
         super(pProperties, RotatingBlock.createShapeBuilder(SHAPE));
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -52,11 +50,11 @@ public class AntiqueWallOilLamp extends RotatingBlock {
         return canSurviveOnWall(pState, pLevel, pPos);
     }
 
-    //// ANIMATION ////
+    /// / ANIMATION ////
 
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(pState.getValue(WATERLOGGED)) {
+        if (pState.getValue(WATERLOGGED)) {
             return;
         }
         final Direction direction = pState.getValue(FACING);

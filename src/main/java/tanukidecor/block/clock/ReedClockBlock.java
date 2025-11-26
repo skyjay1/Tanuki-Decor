@@ -22,7 +22,7 @@ public class ReedClockBlock extends ClockBlock {
                 SHAPE, TDRegistry.BlockEntityReg.REED_CLOCK, pProperties);
     }
 
-    //// PLACEMENT ////
+    /// / PLACEMENT ////
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
