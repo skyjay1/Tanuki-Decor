@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Skyler James
+ * Copyright (c) 2026 Skyler James
  * Permission is granted to use, modify, and redistribute this software, in parts or in whole,
  * under the GNU LGPLv3 license (https://www.gnu.org/licenses/lgpl-3.0.en.html)
  */
@@ -63,6 +63,7 @@ public final class TDClientEvents {
             event.registerBlockEntityRenderer(BlockEntityReg.BANJO_CLOCK.get(), BanjoClockBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.BLUE_CLOCK.get(), BlueClockBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.CARRIAGE_CLOCK.get(), CarriageClockBER::new);
+            event.registerBlockEntityRenderer(BlockEntityReg.CRAB_CLOCK.get(), CrabClockBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.CRYSTAL_CLOCK.get(), CrystalClockBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.CUCKOO_CLOCK.get(), CuckooClockBER::new);
             event.registerBlockEntityRenderer(BlockEntityReg.DISPLAY_WATCH.get(), DisplayWatchBER::new);
@@ -112,6 +113,7 @@ public final class TDClientEvents {
             BanjoClockBER.addSpecialModels(set);
             BlueClockBER.addSpecialModels(set);
             CarriageClockBER.addSpecialModels(set);
+            CrabClockBER.addSpecialModels(set);
             CrystalClockBER.addSpecialModels(set);
             CuckooClockBER.addSpecialModels(set);
             DisplayWatchBER.addSpecialModels(set);

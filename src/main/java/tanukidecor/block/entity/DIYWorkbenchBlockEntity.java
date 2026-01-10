@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Skyler James
+ * Copyright (c) 2026 Skyler James
  * Permission is granted to use, modify, and redistribute this software, in parts or in whole,
  * under the GNU LGPLv3 license (https://www.gnu.org/licenses/lgpl-3.0.en.html)
  */
@@ -7,6 +7,7 @@
 package tanukidecor.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
@@ -26,7 +27,7 @@ public class DIYWorkbenchBlockEntity extends StorageBlockEntity {
             Ingredient.of(ItemTags.STONE_CRAFTING_MATERIALS),
             Ingredient.of(ItemTags.LOGS_THAT_BURN),
             Ingredient.of(Items.CLAY_BALL),
-            Ingredient.of(Items.IRON_INGOT)
+            Ingredient.of(ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "ingots/iron")))
     };
 
     public DIYWorkbenchBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {

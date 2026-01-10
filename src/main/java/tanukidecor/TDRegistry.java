@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Skyler James
+ * Copyright (c) 2026 Skyler James
  * Permission is granted to use, modify, and redistribute this software, in parts or in whole,
  * under the GNU LGPLv3 license (https://www.gnu.org/licenses/lgpl-3.0.en.html)
  */
@@ -120,6 +120,8 @@ public final class TDRegistry {
                 new CarriageClockBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).noOcclusion().strength(1.5F, 8.0F)));
         public static final DeferredHolder<Block, Block> CRYSTAL_CLOCK = registerWithItem("crystal_clock", () ->
                 new CrystalClockBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).noOcclusion().strength(1.5F, 6.0F)));
+        public static final DeferredHolder<Block, Block> CRAB_CLOCK = registerWithItem("crab_clock", () ->
+                new CrabClockBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).sound(SoundType.BONE_BLOCK).noOcclusion().strength(1.5F, 6.0F)));
         public static final DeferredHolder<Block, Block> DISPLAY_WATCH = registerWithItem("display_watch", () ->
                 new DisplayWatchBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).noOcclusion().strength(1.5F, 6.0F)));
         public static final DeferredHolder<Block, Block> CUCKOO_CLOCK = registerWithItem("cuckoo_clock", () ->
@@ -648,6 +650,8 @@ public final class TDRegistry {
                 () -> BlockEntityReg.BLUE_CLOCK, BlockReg.BLUE_CLOCK);
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ClockBlockEntity>> CARRIAGE_CLOCK = registerClock(
                 () -> BlockEntityReg.CARRIAGE_CLOCK, BlockReg.CARRIAGE_CLOCK);
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ClockBlockEntity>> CRAB_CLOCK = registerClock(
+                () -> BlockEntityReg.CRAB_CLOCK, BlockReg.CRAB_CLOCK);
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ClockBlockEntity>> CRYSTAL_CLOCK = registerClock(
                 () -> BlockEntityReg.CRYSTAL_CLOCK, BlockReg.CRYSTAL_CLOCK);
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ClockBlockEntity>> CUCKOO_CLOCK = registerClock(

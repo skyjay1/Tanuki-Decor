@@ -1,0 +1,37 @@
+{
+  "credit": "Made by skyjay1",
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "texture_size": [32, 32],
+  "textures": {
+    "particle": "tanukidecor:block/crab_clock",
+    "clock": "tanukidecor:block/crab_clock"
+  },
+  "elements": [
+    {
+      "name": "short",
+      "from": [7.5, 4.5, 8.99],
+      "to": [8.5, 7.5, 8.99],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 5, 8.5]},
+      "faces": {
+        "north": {"uv": [13.5, 0.5, 14, 2], "texture": "#clock"},
+        "south": {"uv": [13.5, 0.5, 14, 2], "texture": "#clock"}
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "hands",
+      "origin": [8, 7, 7],
+      "color": 0,
+      "children": [
+        {
+          "name": "short",
+          "origin": [8, 7, 7],
+          "color": 0,
+          "children": [0]
+        }
+      ]
+    }
+  ]
+}
